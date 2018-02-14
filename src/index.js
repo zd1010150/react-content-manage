@@ -4,10 +4,10 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { URL_PREFIX } from 'config/app.config';
 import { Provider } from 'react-redux';
 import { syncStateAndLocalStorage } from 'utils/localStorage';
 import configureStore from './store/configureStore';
+import I18n from './i18n/index';
 import { fetchGlobalSetting, fetchAccountInfo } from './store/global/action';
 import './assets/less/index.less';
 import { ErrorNotification } from './components/page/index';
@@ -35,11 +35,13 @@ window.addEventListener('beforeunload', () => {
 });
 
 const AppView = () => (
-  <Provider store={store}>
-    <BrowserRouter basename={URL_PREFIX} >
-        <App />
-    </BrowserRouter>
-  </Provider>
+    <Provider store={store}>
+        <I18n>
+            <BrowserRouter >
+                <App />
+            </BrowserRouter>
+        </I18n>
+    </Provider>
 );
 ReactDOM.render(<AppView />, document.getElementById('root'));
 

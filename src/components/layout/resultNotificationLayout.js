@@ -1,11 +1,9 @@
 import React from 'react';
 
 import { TopPanel,
-  HeaderContent,
   HeaderNav,
   Footer,
   CopyRight,
-  LeftSideNav,
 } from '../page/index';
 
 
@@ -16,7 +14,6 @@ const layout = () => (
         <TopPanel />
       </div>
       <div className="header content">
-        <HeaderContent />
       </div>
     </header>
     <div className="section nav-sections">
@@ -26,7 +23,7 @@ const layout = () => (
     <main id="maincontent" className="page-main">
       <div className="columns">
         <div className="sidebar sidebar-main">
-          <LeftSideNav />
+
         </div>
         <div className="column main" />
       </div>

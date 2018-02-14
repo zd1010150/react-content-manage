@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames/bind';
 import styles from '../Copyright.less';
-import { getAbsolutePath } from 'config/magento.config';
+
 import logo from 'assets/images/logo.png';
 const cx = classNames.bind(styles);
 const CopyRight = ({language}) => (
@@ -12,7 +12,7 @@ const CopyRight = ({language}) => (
       <small>Copyright © 2017 Breakable.</small>
     </div>
     <div className="col-sm-6 text-right">
-      <a href={getAbsolutePath('/', language)}><img  className={cx('logo')} src={logo} alt=" breakable logo" /></a>
+      <a href="javascrip:void(0)"><img  className={cx('logo')} src={logo} alt=" breakable logo" /></a>
     </div>
   </div>
 );

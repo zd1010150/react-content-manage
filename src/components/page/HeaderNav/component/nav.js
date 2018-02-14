@@ -3,8 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu } from 'antd';
 import classNames from 'classnames/bind';
-import { MagentoStaticLink } from 'components/ui/index';
-import { getAbsolutePath } from 'config/magento.config';
+
 import styles from '../HeaderNav.less';
 
 const cx = classNames.bind(styles);
@@ -42,7 +41,7 @@ const navView = ({ language }) => {
     }],
   }];
   const goToSubmenu = (href) => {
-    window.location.href = getAbsolutePath(href, language);
+    window.location.href = "";
   };
   const getChildrenTree = (item) => {
     if (item.children && item.children.length > 0) {
@@ -58,7 +57,7 @@ const navView = ({ language }) => {
     }
     return (
       <Menu.Item key={item.url}>
-        <MagentoStaticLink title={item.title} href={item.url} />
+        <a href={item.href} >{item.id}</a>
       </Menu.Item>);
   };
   return (

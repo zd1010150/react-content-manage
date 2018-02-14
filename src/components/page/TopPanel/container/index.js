@@ -5,7 +5,6 @@ import classNames from 'classnames/bind';
 import { toggleLanguage, fetchGlobalSetting } from 'store/global/action';
 import Language from '../component/language';
 import TopStaticNav from '../component/topStaticNav';
-import Operations from '../component/operations';
 import Welcome from '../component/welcomeMsg';
 import styles from '../TopPanel.less';
 
@@ -23,7 +22,6 @@ class topPanel extends React.Component {
       <div className={cx('panel', 'header')}>
         <Language language={language} onChange={(language) => this.changeLanguage(language) } />
         <TopStaticNav />
-        <Operations account={account} language={language}  />
         <Welcome account={account} />
       </div>
     );

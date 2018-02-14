@@ -1,5 +1,5 @@
 import React from 'react';
-import { MagentoStaticLink } from 'components/ui/index';
+
 import { Icon } from 'antd';
 import classNames from 'classnames/bind';
 import styles from '../Footer.less';
@@ -47,7 +47,7 @@ const Footer = () => {
             <ul className={cx('footer-ul')}>
               {
                 footerImformation.map((item, index) => (
-                  <li key={index}><MagentoStaticLink href={item.href} titleId={item.id} /></li>
+                  <li key={index}><a href={item.href} >{item.id}</a> </li>
                 ))
               }
             </ul>
@@ -63,7 +63,7 @@ const Footer = () => {
             <ul className={cx('footer-ul')}>
               {
                 footerOurOffers.map((item, index) => (
-                  <li key={index}><MagentoStaticLink href={item.href} titleId={item.id} /></li>
+                  <li key={index}><a href={item.href} >{item.id}</a></li>
                 ))
               }
             </ul>
@@ -81,7 +81,7 @@ const Footer = () => {
             <p>
               <Icon type="mail" /> <a href="mailto:info@breakable.com">info@breakable.com</a>
             </p>
-            <p><img src={payment} alt = ""/></p>
+            <p><img src={payment} alt="" /></p>
           </div>
         </div>
 
