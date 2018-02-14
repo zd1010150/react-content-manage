@@ -1,0 +1,21 @@
+@import "../theme.less";
+.sidebar-main{
+  .ant-menu.ant-menu-inline{
+    .ant-menu-item-selected{
+      background-color: transparent;
+      &:after{
+        border-right: none;
+
+      }
+      &:before{
+        content: '';
+        position: absolute;
+        left: 20px;
+        top:5px;
+        bottom:5px;
+        border-left: 3px solid @primary-color;
+      }
+    }
+  }
+
+}

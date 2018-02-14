@@ -1,21 +1,23 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable no-underscore-dangle */
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+import './assets/less/index.less';
+import { MainLayout, CmsLayout, ResultNotificationLayout } from './components/layout/index';
+
+// topPanel, headerContent, headerNav, leftSiderNav, mainContent, footer, notification,
+class App extends React.Component {
+    render() {
+        return (
+            <div className="App">
+              <Switch>
+                <Route path="/resultNotification" exact component={ResultNotificationLayout} />
+                <Route path="/CMS" exact component={CmsLayout} />
+                <Route path="/" component={MainLayout} />
+              </Switch>
+            </div>
+        );
+    }
 }
-
 export default App;
+
