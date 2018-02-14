@@ -1,5 +1,4 @@
 /* eslint-disable import/prefer-default-export */
-import MagentoStaticLink from './magentoStaticLink';
 import Upload from './upload';
 import QRcode from './qrcode';
 import InputNumber from './inputNumber';
@@ -13,7 +12,6 @@ import Group from './group';
 
 
 export {
-  MagentoStaticLink,
   Upload,
   QRcode,
   InputNumber,
