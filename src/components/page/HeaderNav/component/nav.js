@@ -3,61 +3,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu } from 'antd';
 import classNames from 'classnames/bind';
+import { NavLink } from 'react-router-dom';
 
 import styles from '../HeaderNav.less';
 
 const cx = classNames.bind(styles);
-const { SubMenu } = Menu;
-const navView = ({ language }) => {
+const navView = ({ }) => {
   const category = [{
-    title: 'Women',
-    url: '/women',
-    children: [{
-      title: 'Tshirt',
-      url: '/women/tshirt',
-    }, {
-      title: 'Skirt',
-      url: '/women/skirt',
-      children: [{
-        title: 'Long Skirt',
-        url: '/women/skirt/long-skirt',
-      }, {
-        title: 'Short Skirt',
-        url: '/women/skirt/short-skirt',
-      }],
-    }],
-  }, {
-    title: 'Men',
-    url: '/men',
-  }, {
-    title: 'Sports',
-    url: '/sports',
-    children: [{
-      title: 'Baskateball',
-      url: '/sports/baskateball',
-    }, {
-      title: 'Tennis',
-      url: '/sports/tennis',
-    }],
+    title: 'dd-demo',
+    url: '/dd-demo',
   }];
-  const goToSubmenu = (href) => {
-    window.location.href = "";
-  };
+
   const getChildrenTree = (item) => {
-    if (item.children && item.children.length > 0) {
-      return (
-        <SubMenu
-          title={item.title}
-          key={item.url}
-          onTitleClick={({ key }) => { goToSubmenu(key); }}
-        >
-          { item.children.map(cItem => getChildrenTree(cItem))}
-        </SubMenu>
-      );
-    }
     return (
       <Menu.Item key={item.url}>
-        <a href={item.href} >{item.id}</a>
+        <NavLink to={item.url}>{ item.title }</NavLink>
       </Menu.Item>);
   };
   return (

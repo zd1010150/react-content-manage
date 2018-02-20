@@ -1,3 +1,3 @@
-import Accounts from './container/index';
+import DDDemo from './container/index';
 
-export default Accounts;
+export default DDDemo;

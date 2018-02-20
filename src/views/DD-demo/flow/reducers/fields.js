@@ -1,6 +1,6 @@
 
 import _ from 'lodash';
-import { ADD_FIELD_TO_SECTION, DELETE_FROM_SECTION, MOVE_BETWEEN_SECTION } from './actionType';
+import { ADD_FIELD_TO_SECTION, DELETE_FROM_SECTION } from '../actionType';
 import { allFields, allSections } from '../mockData';
 
 /*
@@ -8,18 +8,31 @@ import { allFields, allSections } from '../mockData';
 * */
 const initFilels = (fields, sections) => {
   const allSelectedFileds = [];
-  sections.reduce((accumulator, item) => accumulator.push(item.fields.slice()), allSelectedFileds);
-
+  sections.reduce((accumulator, item) => {
+    accumulator.push(...item.fields);
+    return accumulator;
+  }, allSelectedFileds);
   return fields.map(item => Object.assign({}, item, {
-    isSelected: _.find(allSelectedFileds, { code: item.code }),
+    isSelected: !!_.find(allSelectedFileds, { id: item.id }),
   }));
 };
-
-
+const addFieldToSection = (state, { fieldId }) => state.map((item) => {
+  if (item.id === fieldId) {
+    return Object.assign({}, item, { isSelected: true });
+  } return item;
+});
+const deleteFieldFromSection = (state, { fieldId }) => state.map((item) => {
+  if (item.id === fieldId) {
+    return Object.assign({}, item, { isSelected: false });
+  } return item;
+});
 const fields = (state = initFilels(allFields, allSections), action) => {
-  switch (action.type) {
+  const { type, ...payload } = action;
+  switch (type) {
     case ADD_FIELD_TO_SECTION:
-      return;
+      return addFieldToSection(state, payload);
+    case DELETE_FROM_SECTION:
+      return deleteFieldFromSection(state, payload);
     default:
       return state;
   }

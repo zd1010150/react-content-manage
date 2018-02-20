@@ -2,32 +2,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setPageTitle } from 'store/global/action';
-import Table from './tableView';
+import { addFieldToSection, deleteFromSection, moveBetweenSection } from '../flow/action';
+import Section from '../component/section';
+import AllFields from '../component/allFields';
 
-class accountView extends React.Component {
-  componentDidMount() {
-    this.props.setPageTitle('global.pageTitle.accounts');
-  }
+class ddDemoView extends React.Component {
   render() {
+    const { allFields, sections } = this.props;
     return (
       <section className="section section-page">
-        <div className="section-content"><Table /></div>
+        <div className="section-content">
+          <AllFields fields={allFields} />
+          {
+              sections.map(section => <Section key={section.code} code={section.code} sequence={section.sequence} fields={section.fields} label={section.label} />)
+            }
+        </div>
         <div className="section-header" />
-      </section>
-    );
+      </section>);
   }
 }
 
-accountView.propTypes = {
-  setPageTitle: PropTypes.func.isRequired,
+ddDemoView.defaultProps = {
+  allFields: [],
+  sections: [],
 };
-const mapStateToProps = ({ accounts }) => ({
-  idViews: accounts.idViews,
+ddDemoView.propTypes = {
+  allFields: PropTypes.array,
+  sections: PropTypes.array,
+};
+const mapStateToProps = ({ ddDemo }) => ({
+  allFields: ddDemo.fields,
+  sections: ddDemo.sections,
 });
 const mapDispatchToProp = {
-  setPageTitle,
+  addFieldToSection,
+  deleteFromSection,
+  moveBetweenSection,
 };
 
-const AccountView = connect(mapStateToProps, mapDispatchToProp)(accountView);
-export default AccountView;
+const DDDemoView = connect(mapStateToProps, mapDispatchToProp)(ddDemoView);
+export default DDDemoView;
