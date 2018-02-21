@@ -19,7 +19,6 @@ const store = configureStore();
 
 if (process.env.NODE_ENV !== 'production') {
   store.subscribe(() => {
-      debugger;
     console.log('redux store ===', store.getState());
   });
 }

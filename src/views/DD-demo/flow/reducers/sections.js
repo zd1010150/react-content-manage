@@ -1,15 +1,30 @@
 /* eslint-disable no-param-reassign,max-len */
 
+
 import _ from 'lodash';
-import { ADD_FIELD_TO_SECTION, DELETE_FROM_SECTION, MOVE_BETWEEN_SECTION } from '../actionType';
+import { labelToCode } from 'utils/string';
+import { ADD_FIELD_TO_SECTION, DELETE_FROM_SECTION, MOVE_BETWEEN_SECTION, ADD_SECTION, DELETE_SECTION, UPDATE_SECTION, MOVE_SECTION } from '../actionType';
 import { allSections } from '../mockData';
+
+const getRowsAndCols = (section) => {
+  let rows = 0;
+  const { fields } = section;
+  _.forEach(fields, (value, key) => {
+    rows = fields[key].length > rows ? fields[key].length : rows;
+  });
+  const cols = Object.keys(fields).length;
+  return Object.assign({}, section, { rows, cols });
+};
 
 const initSection = (sections) => {
   const sortedSection = _.sortBy(sections, ['sequence']);
-  return sortedSection.map(section => Object.assign({}, section, {
-    fields: _.groupBy(section.fields.map(f => Object.assign({}, f, { x: f.position[0], y: f.position[1] })), 'y'),
-  }));
+  return sortedSection.map((section) => {
+    const newFields = _.groupBy(section.fields.map(f => Object.assign({}, f, { x: f.position[0], y: f.position[1] })), 'y');
+    return getRowsAndCols(Object.assign({}, section, { fields: newFields }));
+  });
 };
+
+
 const insertFields = (fields, sourceField, position) => {
   let [x, y] = position;
   let newTargetColumnFields = [];
@@ -46,7 +61,7 @@ const addFieldToSection = (state, {
   const section = state.filter(item => item.code === sectionCode)[0];
   const field = allFields.filter(item => item.id === fieldId)[0];
   const newFields = insertFields(section.fields, field, position);
-  const newSection = Object.assign({}, section, { fields: newFields });
+  const newSection = getRowsAndCols(Object.assign({}, section, { fields: newFields }));
   return state.map((item) => {
     if (item.code === sectionCode) {
       return newSection;
@@ -89,7 +104,7 @@ const deleteFieldFromSection = (state, {
 }) => {
   const section = state.filter(item => item.code === sectionCode)[0];
   const newFields = deleteFields(section.fields, fieldId);
-  const newSection = Object.assign({}, section, { fields: newFields });
+  const newSection = getRowsAndCols(Object.assign({}, section, { fields: newFields }));
   return state.map((item) => {
     if (item.code === sectionCode) {
       return newSection;
@@ -105,7 +120,53 @@ const moveField = (state, {
     fieldId, allFields, sectionCode: targetSectionCode, position,
   });
 };
+const moveSection = (state, {
+  sourceSectionCode, sequence,
+}) => {
+  const newState = state.slice();
+  const sourceSection = _.find(state, { code: sourceSectionCode });
+  const sourceSequence = sourceSection.sequence;
+  if (sourceSection && sequence !== sourceSequence) {
+    if (sequence > sourceSequence) {
+      for (let i = sourceSequence; i < sequence; i++) {
+        newState[i] = Object.assign({}, state[i + 1], { sequence: i });
+      }
+    } else {
+      for (let i = sequence; i < sourceSequence; i++) {
+        newState[i + 1] = Object.assign({}, state[i], { sequence: i + 1 });
+      }
+    }
+    newState[sequence] = Object.assign({}, sourceSection, { sequence });
+    return newState;
+  }
+  return state;
+};
+const addSection = (state, { label, sequence }) => {
+  const sectionCode = labelToCode(label);
+  const newSection = {
+    code: sectionCode,
+    sequence: state.length,
+    cols: 0,
+    rows: 0,
+    label,
+  };
+  const newState = state.slice();
+  newState.push(newSection);
+  return moveSection(newState, { sourceSectionCode: sectionCode, sequence });
+};
+const deleteSection = (state, { sectionCode } ) => {
+  debugger;
+  const newState = moveSection(state, { sourceSectionCode: sectionCode, sequence: state.length - 1 });
+  return newState.slice(0, state.length - 1);
+};
+const updateSection = (state, { label, sectionCode }) => state.map((section) => {
+  if (section.code === sectionCode) {
+    return Object.assign({}, section, { label });
+  }
+  return section;
+});
 const sections = (state = initSection(allSections), action) => {
+  debugger;
   const { type, ...payload } = action;
   switch (type) {
     case ADD_FIELD_TO_SECTION:
@@ -114,6 +175,14 @@ const sections = (state = initSection(allSections), action) => {
       return deleteFieldFromSection(state, payload);
     case MOVE_BETWEEN_SECTION:
       return moveField(state, payload);
+    case DELETE_SECTION:
+      return deleteSection(state, payload);
+    case ADD_SECTION:
+      return addSection(state, payload);
+    case MOVE_SECTION:
+      return moveSection(state, payload);
+    case UPDATE_SECTION:
+      return updateSection(state, payload);
     default:
       return state;
   }

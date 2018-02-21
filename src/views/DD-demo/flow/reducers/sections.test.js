@@ -1,4 +1,5 @@
 var _ = require('lodash');
+const labelToCode = label => label.replace(/\s/g, '') + Math.floor(Math.random() * 1000);
 const defaultFields = [{
     id: 'name',
     is_layout_required: true,
@@ -54,6 +55,36 @@ const allFields = [{
     label: 'Zip',
     type: 'text',
 }, {
+    id: 'zip2',
+    is_layout_required: false,
+    label: 'Zip2',
+    type: 'text',
+},  {
+    id: 'zip3',
+    is_layout_required: false,
+    label: 'Zip3',
+    type: 'text',
+},  {
+    id: 'zip4',
+    is_layout_required: false,
+    label: 'Zip4',
+    type: 'text',
+},   {
+    id: 'zip5',
+    is_layout_required: false,
+    label: 'Zip5',
+    type: 'text',
+},   {
+    id: 'zip6',
+    is_layout_required: false,
+    label: 'Zip6',
+    type: 'text',
+},   {
+    id: 'zip7',
+    is_layout_required: false,
+    label: 'Zip7',
+    type: 'text',
+},  {
     id: 'gender',
     is_layout_required: false,
     label: 'Gender',
@@ -96,15 +127,15 @@ const allFields = [{
 }];
 const allSections = [{
     code: 'default',
-    sequence: 3,
-    columns: 1,
+    sequence: 0,
+    cols: 1,
     rows: 3,
     label: 'Default Section',
     fields: defaultFields,
 }, {
     code: 'section_detail',
-    sequence: 2,
-    columns: 2,
+    sequence: 1,
+    cols: 2,
     rows: 1,
     label: 'Detail More',
     fields: [{
@@ -138,12 +169,63 @@ const allSections = [{
         type: 'select',
         position: [1, 0],
     }],
+}, {
+    code: 'section_detail2',
+    sequence: 5,
+    cols: 2,
+    rows: 1,
+    label: 'Detail More2',
+    fields: [{
+        id: 'zip',
+        is_layout_required: false,
+        label: 'zip',
+        type: 'text',
+        position: [0, 0],
+    }],
+}, {
+    code: 'section_detail3',
+    sequence: 4,
+    cols: 2,
+    rows: 1,
+    label: 'Detail More3',
+    fields: [{
+        id: 'zip',
+        is_layout_required: false,
+        label: 'zip',
+        type: 'text',
+        position: [0, 0],
+    }],
+}, {
+    code: 'section_detail4',
+    sequence:3,
+    cols: 2,
+    rows: 1,
+    label: 'Detail More4',
+    fields: [{
+        id: 'zip3',
+        is_layout_required: false,
+        label: 'zip3',
+        type: 'text',
+        position: [0, 0],
+    }],
+}, {
+    code: 'section_detail5',
+    sequence: 2,
+    cols: 2,
+    rows: 1,
+    label: 'Detail More5',
+    fields: [{
+        id: 'zip4',
+        is_layout_required: false,
+        label: 'zip4',
+        type: 'text',
+        position: [0, 0],
+    }],
 }];
 
 const initFilels = (fields, sections) => {
     const allSelectedFileds = [];
     sections.reduce((accumulator, item) => {
-        debugger;
         accumulator.push(...item.fields)
         return accumulator;
     }, allSelectedFileds);
@@ -282,4 +364,51 @@ const moveField = (state, {
 
 sections = moveField(sections, {fieldId: 'language', allFields, sourceSectionCode: 'section_detail', targetSectionCode: 'default', position: [1,0]});
 
+const moveSection = (state, {
+    sourceSectionCode, sequence,
+}) => {
+    const newState = state.slice();
+    const sourceSection = _.find(state, { code: sourceSectionCode });
+    const sourceSequence = sourceSection.sequence;
+    if (sourceSection && sequence !== sourceSequence) {
+        if (sequence > sourceSequence) {
+            for (let i = sourceSequence; i < sequence; i++) {
+                newState[i] = Object.assign({}, state[i + 1], { sequence: i });
+            }
+        } else {
+            for (let i = sequence; i < sourceSequence; i++) {
+                newState[i + 1] = Object.assign({}, state[i], { sequence: i + 1 });
+            }
+        }
+        newState[sequence] = Object.assign({}, sourceSection, { sequence });
+        return newState;
+    } else {
+        return state;
+    }
+};
+
+sections = moveSection(sections, {sourceSectionCode: 'section_detail3', sequence: 1})
+
+const sectionCode = labelToCode('test new');
+const addSection = (state, { label, sequence }) => {
+
+    const newSection = {
+        code: sectionCode,
+        sequence: state.length,
+        cols: 0,
+        rows: 0,
+        label,
+        fields: {},
+    };
+    const newState = state.slice();
+    newState.push(newSection);
+    return moveSection(newState, { sourceSectionCode: sectionCode, sequence });
+};
+const deleteSection = (state, sectionCode) => {
+    const newState = moveSection(state, { sourceSectionCode: sectionCode, sequence: state.length - 1 });
+    return newState.slice(0, state.length - 1);
+};
+
+sections = addSection(sections, {label: 'test_new', sequence: 1});
+sections = deleteSection(sections, sectionCode);
 console.log("%o", sections);

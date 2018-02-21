@@ -95,15 +95,15 @@ export const allFields = [{
 }];
 export const allSections = [{
   code: 'default',
-  sequence: 3,
-  columns: 1,
+  sequence: 0,
+  cols: 1,
   rows: 3,
   label: 'Default Section',
   fields: defaultFields,
 }, {
   code: 'section_detail',
-  sequence: 2,
-  columns: 2,
+  sequence: 1,
+  cols: 2,
   rows: 1,
   label: 'Detail More',
   fields: [{
@@ -136,5 +136,57 @@ export const allSections = [{
     label: 'Language4',
     type: 'select',
     position: [1, 0],
+  }],
+}, {
+  code: 'section_detail2',
+  sequence: 5,
+  cols: 2,
+  rows: 1,
+  label: 'Detail More2',
+  fields: [{
+    id: 'zip',
+    is_layout_required: false,
+    label: 'zip',
+    type: 'text',
+    position: [0, 0],
+  }],
+}, {
+  code: 'section_detail3',
+  sequence: 4,
+  cols: 2,
+  rows: 1,
+  label: 'Detail More3',
+  fields: [{
+    id: 'zip',
+    is_layout_required: false,
+    label: 'zip',
+    type: 'text',
+    position: [0, 0],
+  }],
+}, {
+  code: 'section_detail4',
+  sequence: 3,
+  cols: 2,
+  rows: 1,
+  label: 'Detail More4',
+  fields: [{
+    id: 'zip3',
+    is_layout_required: false,
+    label: 'zip3',
+    type: 'text',
+    position: [0, 0],
+  }],
+}, {
+  code: 'section_detail5',
+  sequence: 2,
+  cols: 2,
+  rows: 1,
+  label: 'Detail More5',
+  fields: [{
+    id: 'zip4',
+    is_layout_required: false,
+    label: 'zip4',
+    type: 'text',
+    position: [0, 0],
   }],
 }];

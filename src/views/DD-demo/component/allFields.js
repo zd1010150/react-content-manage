@@ -2,8 +2,29 @@
 
 
 import React from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import SingleField from './singleField';
+import { DropTarget } from 'react-dnd';
+import { ItemTypes } from './itemType';
+
+const allFieldsTarget = {
+  canDrop(props, monitor) {
+    const { isLayoutRequired } = monitor.getItem();
+    return !isLayoutRequired;
+  },
+  drop(props, monitor) {
+    const { deleteFromSection } = props;
+    const { fieldId, sourceSectionCode } = monitor.getItem();
+    if (!_.isEmpty(sourceSectionCode)) {
+      deleteFromSection({ fieldId, sectionCode: sourceSectionCode });
+    }
+  },
+};
+const collect = (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver(),
+});
 
 class allFields extends React.Component {
   buildTable(fields) {
@@ -13,7 +34,6 @@ class allFields extends React.Component {
     let pause = false;
     const cols = 10;
     const rows = Math.ceil(fields.length / cols);
-    debugger;
     for (let i = 0; i < rows; i++) {
       if (pause) break;
       tds = [];
@@ -28,16 +48,14 @@ class allFields extends React.Component {
       }
       trs.push(<tr key={i}>{tds}</tr>);
     }
-      return <table><tbody>{trs}</tbody></table>;
+    return <table><tbody>{trs}</tbody></table>;
   }
   render() {
-    const { fields } = this.props;
+    const { fields, connectDropTarget } = this.props;
     const table = this.buildTable(fields);
-    return (
-      <div className="fields">
-        { table }
-      </div>
-    );
+    return connectDropTarget(<div className="fields">
+      { table }
+    </div>);
   }
 }
 
@@ -46,7 +64,9 @@ allFields.defaultProps = {
 };
 allFields.propTypes = {
   fields: PropTypes.array,
+  deleteFromSection: PropTypes.func.isRequired,
+  connectDropTarget: PropTypes.func.isRequired,
 };
 
 
-export default allFields;
+export default DropTarget(ItemTypes.FIELD, allFieldsTarget, collect)(allFields);
