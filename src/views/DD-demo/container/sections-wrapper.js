@@ -24,7 +24,10 @@ class sectionsWrapper extends React.Component {
                   <Section sections={sections} allFields={allFields} deleteSection={deleteSection} toggleSectionAddEditDialog={toggleSectionAddEditDialog} rows={section.rows} cols={section.cols} code={section.code} sequence={section.sequence} fields={section.fields} label={section.label} addFieldToSection={addFieldToSection} moveBetweenSection={moveBetweenSection} />
                 </SectionWrapper>))
           }
-        <SectionEditAddDialog {...uiDialog} addSection={addSection} updateSection={updateSection} setSectionAttr={setSectionAttr} toggleSectionAddEditDialog={toggleSectionAddEditDialog} />
+          {
+            <SectionWrapper sequence={sections.length} toggleSectionAddEditDialog={toggleSectionAddEditDialog} moveSection={moveSection} classes={cx('section-wrapper-last')}/>
+          }
+        <SectionEditAddDialog {...uiDialog} addSection={addSection} updateSection={updateSection} setSectionAttr={setSectionAttr} toggleSectionAddEditDialog={toggleSectionAddEditDialog}  />
       </div>
     );
   }

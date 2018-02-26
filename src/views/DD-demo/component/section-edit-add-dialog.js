@@ -34,7 +34,7 @@ class sectionEditAddDialog extends React.Component {
         onOk={this.save.bind(this)}
         onCancel={this.cancel.bind(this)}
       >
-        <p><Input placeholder="输入section名" defaultValue={label} onInput={e => this.setAttr({ label: e.target.value })} /></p>
+        <p><Input placeholder="输入section名" defaultValue={label} value={label} onInput={e => this.setAttr({ label: e.target.value })} /></p>
         <RadioGroup onChange={e => this.setAttr({ cols: e.target.value })} value={cols}>
           <Radio value={1}>col 1</Radio>
           <Radio value={2}>col 2</Radio>

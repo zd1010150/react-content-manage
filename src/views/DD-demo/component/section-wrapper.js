@@ -16,7 +16,9 @@ const sectionWrapperTarget = {
     const { sourceSectionCode } = monitor.getItem();
     const { sequence, toggleSectionAddEditDialog, moveSection } = props;
     if (_.isEmpty(sourceSectionCode)) { // 如果为空就是增加
-      toggleSectionAddEditDialog({ isShow: true, sequence, operate: ADD, label: '' });
+      toggleSectionAddEditDialog({
+        isShow: true, sequence, operate: ADD, label: '', cols: 1,
+      });
     } else { // 否则就是移动
       moveSection({ sourceSectionCode, sequence });
     }
@@ -28,15 +30,16 @@ const collect = (connect, monitor) => ({
 });
 
 class sectionWrapper extends React.Component {
-
   render() {
-    const { connectDropTarget, isOver } = this.props;
-    return connectDropTarget(<div className={classNames(cx('section-wrapper'), isOver ? cx('section-wrapper-hover') : '')} >
+    const { connectDropTarget, isOver, classes } = this.props;
+    return connectDropTarget(<div className={classNames(cx('section-wrapper'), isOver ? cx('section-wrapper-hover') : '', classes)} >
       { this.props.children }
     </div>);
   }
 }
-
+sectionWrapper.defaultProps = {
+  classes: '',
+};
 
 sectionWrapper.propTypes = {
   isOver: PropTypes.bool.isRequired,
@@ -44,6 +47,7 @@ sectionWrapper.propTypes = {
   sequence: PropTypes.number.isRequired,
   toggleSectionAddEditDialog: PropTypes.func.isRequired,
   moveSection: PropTypes.func.isRequired,
+  classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 };
 
 
