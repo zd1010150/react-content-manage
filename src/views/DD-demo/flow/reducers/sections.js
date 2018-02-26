@@ -4,6 +4,7 @@
 import _ from 'lodash';
 import { labelToCode } from 'utils/string';
 import { ADD_FIELD_TO_SECTION, DELETE_FROM_SECTION, MOVE_BETWEEN_SECTION, ADD_SECTION, DELETE_SECTION, UPDATE_SECTION, MOVE_SECTION } from '../actionType';
+import { DEFAULT_SECTION_CODE } from '../config';
 import { allSections } from '../mockData';
 
 const getRowsAndCols = (section) => {
@@ -12,8 +13,8 @@ const getRowsAndCols = (section) => {
   _.forEach(fields, (value, key) => {
     rows = fields[key].length > rows ? fields[key].length : rows;
   });
-  const cols = Object.keys(fields).length;
-  return Object.assign({}, section, { rows, cols });
+  // const cols = Object.keys(fields).length;
+  return Object.assign({}, section, { rows });
 };
 
 const initSection = (sections) => {
@@ -28,7 +29,7 @@ const initSection = (sections) => {
 const insertFields = (fields, sourceField, position) => {
   let [x, y] = position;
   let newTargetColumnFields = [];
-  const targetColumnFields = fields[y];
+  const targetColumnFields = fields && fields[y] ? fields[y] : [];
   const columnLenght = targetColumnFields.length;
   x = x > columnLenght ? columnLenght : x; // 修正插入的位置
   if (x === columnLenght) {
@@ -141,32 +142,68 @@ const moveSection = (state, {
   }
   return state;
 };
-const addSection = (state, { label, sequence }) => {
+const addSection = (state, { label, sequence, cols }) => {
   const sectionCode = labelToCode(label);
   const newSection = {
     code: sectionCode,
     sequence: state.length,
-    cols: 0,
-    rows: 0,
+    cols,
+    rows: 1,
     label,
   };
   const newState = state.slice();
   newState.push(newSection);
   return moveSection(newState, { sourceSectionCode: sectionCode, sequence });
 };
-const deleteSection = (state, { sectionCode } ) => {
-  debugger;
-  const newState = moveSection(state, { sourceSectionCode: sectionCode, sequence: state.length - 1 });
+const deleteSection = (state, { sectionCode, allFields }) => {
+  if (sectionCode === DEFAULT_SECTION_CODE) return state;
+  let newState = state.slice();
+  const deletedSection = newState.filter(section => section.code === sectionCode);
+  if (deletedSection && deletedSection.length > 0 && deletedSection[0].fields) {
+    _.forEach(deletedSection[0].fields, (fields) => {
+      _.forEach(fields, (field) => {
+        if (field.is_layout_required) {
+          newState = addFieldToSection(newState, {
+            allFields, fieldId: field.id, sectionCode: DEFAULT_SECTION_CODE, position: [0, 0],
+          });
+        }
+      });
+    });
+  }
+  newState = moveSection(newState, { sourceSectionCode: sectionCode, sequence: state.length - 1 });
   return newState.slice(0, state.length - 1);
 };
-const updateSection = (state, { label, sectionCode }) => state.map((section) => {
+const converColsOfSection = (state, { sectionCode, cols }) => {
+  const converSection = state.filter(section => section.code === sectionCode)[0];
+  if (converSection.cols === cols || cols <= 0) {
+    return state;
+  }
+  const allSectionFields = [];
+  const newFields = {};
+  _.forEach(converSection.fields, (fields) => {
+    allSectionFields.push(...fields);
+  });
+  for (let i = 0, row = 0; i < allSectionFields.length; i++) {
+    if (i && i % cols === 0) { row++; }
+    const colIndex = i % cols;
+    let field = allSectionFields[i];
+    field = Object.assign({}, field, { x: row, y: colIndex });
+    _.isEmpty(newFields[colIndex]) ? newFields[colIndex] = [field] : newFields[colIndex].push(field);
+  }
+  return Object.assign({}, converSection, { fields: newFields, cols, rows: Math.ceil(allSectionFields.length / cols) });
+};
+const updateSection = (state, { label, sectionCode, cols }) => state.map((section) => {
   if (section.code === sectionCode) {
+    if (section.cols !== cols) {
+      section = converColsOfSection(state, { sectionCode, cols });
+    }
     return Object.assign({}, section, { label });
   }
   return section;
 });
+
+
 const sections = (state = initSection(allSections), action) => {
-  debugger;
   const { type, ...payload } = action;
   switch (type) {
     case ADD_FIELD_TO_SECTION:

@@ -53,6 +53,23 @@ export const allFields = [{
   label: 'Zip',
   type: 'text',
 }, {
+  id: 'zip2',
+  is_layout_required: false,
+  label: 'Zip2',
+  type: 'text',
+},
+{
+  id: 'zip3',
+  is_layout_required: false,
+  label: 'Zip3',
+  type: 'text',
+},
+{
+  id: 'zip4',
+  is_layout_required: false,
+  label: 'Zip4',
+  type: 'text',
+}, {
   id: 'gender',
   is_layout_required: false,
   label: 'Gender',
@@ -157,9 +174,9 @@ export const allSections = [{
   rows: 1,
   label: 'Detail More3',
   fields: [{
-    id: 'zip',
+    id: 'zip2',
     is_layout_required: false,
-    label: 'zip',
+    label: 'zip2',
     type: 'text',
     position: [0, 0],
   }],

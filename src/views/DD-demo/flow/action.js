@@ -1,4 +1,4 @@
-import { ADD_FIELD_TO_SECTION, DELETE_FROM_SECTION, MOVE_BETWEEN_SECTION, ADD_SECTION, DELETE_SECTION, UPDATE_SECTION, MOVE_SECTION, TOGGLE_SECTION_ADD_EDIT_DIALOG, SET_SECTION_LABEL } from './actionType';
+import { ADD_FIELD_TO_SECTION, DELETE_FROM_SECTION, MOVE_BETWEEN_SECTION, ADD_SECTION, DELETE_SECTION, UPDATE_SECTION, MOVE_SECTION, TOGGLE_SECTION_ADD_EDIT_DIALOG, SET_SECTION_ATTRIBUTE } from './actionType';
 
 export const addFieldToSection = args => ({
   type: ADD_FIELD_TO_SECTION,
@@ -19,13 +19,10 @@ export const addSection = args => ({
   ...args,
 });
 
-export const deleteSection = sectionCode => {
-  debugger;
-  return {
-      type: DELETE_SECTION,
-      sectionCode,
-  };
-};
+export const deleteSection = args => ({
+  type: DELETE_SECTION,
+  ...args,
+});
 
 export const updateSection = args => ({
   type: UPDATE_SECTION,
@@ -42,7 +39,8 @@ export const toggleSectionAddEditDialog = args => ({
   ...args,
 });
 
-export const setSectionLable = args => ({
-  type: SET_SECTION_LABEL,
+export const setSectionAttr = args => ({
+  type: SET_SECTION_ATTRIBUTE,
   ...args,
 });
+
