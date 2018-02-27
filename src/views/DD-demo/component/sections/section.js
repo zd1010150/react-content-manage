@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { Card, Button, Modal } from 'antd';
 import { DragSource } from 'react-dnd';
-import { ItemTypes } from './itemType';
+import { ItemTypes } from '../../flow/itemType';
 import Field from './field';
 import SectionTd from './section-td';
-import styles from '../DD-demo.less';
-import { EDIT } from '../flow/operateType';
+import styles from '../../DD-demo.less';
+import { EDIT } from '../../flow/operateType';
 
 const { confirm } = Modal;
 const cx = classNames.bind(styles);
@@ -28,16 +28,16 @@ const collect = (connect, monitor) => ({
 class Section extends React.Component {
   buildTable(props) {
     const {
-      allFields, rows, cols, fields, moveBetweenSection, addFieldToSection, code,
+      allFields, rows, cols, fields, moveBetweenSection, addFieldToSection, code, fieldCanDrop, setCanDrop,
     } = props;
-    let trs = [];
-    let table = [];
+    const trs = [];
+    const table = [];
     let tds = [];
     const _rows = rows <= 0 ? 1 : rows + 1;
     for (let i = 0; i < _rows; i++) {
       tds = [];
       for (let j = 0; j < cols; j++) {
-        tds.push(<SectionTd classes={`section-table-col-${cols}`} key={`${i}${j}`} x={i} y={j} allFields={allFields} sectionCode={code} moveBetweenSection={moveBetweenSection} addFieldToSection={addFieldToSection} />);
+        tds.push(<SectionTd classes={`section-table-col-${cols}`} setCanDrop={setCanDrop} key={`${i}${j}`} x={i} y={j} allFields={allFields} sectionCode={code} moveBetweenSection={moveBetweenSection} addFieldToSection={addFieldToSection} />);
       }
       table.push(tds);
     }
@@ -46,8 +46,8 @@ class Section extends React.Component {
       const rowLenght = value.length;
       for (let i = 0; i < rowLenght; i++) {
         const f = value[i];
-        table[i][columnIndex] = (<SectionTd classes={`section-table-col-${cols}`} key={f.id} x={i} y={columnIndex} allFields={allFields} sectionCode={code} moveBetweenSection={moveBetweenSection} addFieldToSection={addFieldToSection}>
-          <Field id={f.id} label={f.label} isLayoutRequired={f.is_layout_required} sectionCode={code} />
+        table[i][columnIndex] = (<SectionTd setCanDrop={setCanDrop} classes={`section-table-col-${cols}`} key={f.id} x={i} y={columnIndex} allFields={allFields} sectionCode={code} moveBetweenSection={moveBetweenSection} addFieldToSection={addFieldToSection}>
+          <Field setCanDrop={setCanDrop} id={f.id} label={f.label} isLayoutRequired={f.is_layout_required} sectionCode={code} />
         </SectionTd>);
       }
     });
@@ -69,7 +69,9 @@ class Section extends React.Component {
     });
   }
   editSection() {
-    const { code, label, sequence, cols } = this.props;
+    const {
+      code, label, sequence, cols,
+    } = this.props;
     this.props.toggleSectionAddEditDialog({
       isShow: true, code, label, sequence, operate: EDIT, cols,
     });
@@ -111,6 +113,8 @@ Section.propTypes = {
   isDragging: PropTypes.bool.isRequired,
   toggleSectionAddEditDialog: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
+  fieldCanDrop: PropTypes.bool.isRequired,
+  setCanDrop: PropTypes.func.isRequired,
 };
 
 

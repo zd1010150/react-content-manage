@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Input, Radio } from 'antd';
-import { ADD } from '../flow/operateType';
+import { ADD } from '../../flow/operateType';
 
 const RadioGroup = Radio.Group;
 class sectionEditAddDialog extends React.Component {

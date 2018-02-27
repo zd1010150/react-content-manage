@@ -3,17 +3,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { deleteFromSection } from '../flow/action';
-import AllFields from '../component/allFields';
-import AddSection from '../component/add-setion';
+import { deleteFromSection, setCanDrop } from '../flow/action';
+import AllFields from '../component/fields/allFields';
+import AddSection from '../component/actions/add-setion';
 
 class allFieldsWrapper extends React.Component {
   render() {
-    const { allFields, deleteFromSection } = this.props;
+    const { allFields, deleteFromSection, setCanDrop } = this.props;
     return (
       <div>
         <AddSection />
-        <AllFields fields={allFields} deleteFromSection={deleteFromSection} />
+        <AllFields fields={allFields} deleteFromSection={deleteFromSection} setCanDrop={setCanDrop} />
       </div>);
   }
 }
@@ -24,6 +24,7 @@ allFieldsWrapper.defaultProps = {
 allFieldsWrapper.propTypes = {
   allFields: PropTypes.array,
   deleteFromSection: PropTypes.func.isRequired,
+  setCanDrop: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ ddDemo }) => ({
   allFields: ddDemo.fields,
@@ -31,6 +32,7 @@ const mapStateToProps = ({ ddDemo }) => ({
 });
 const mapDispatchToProp = {
   deleteFromSection,
+  setCanDrop,
 };
 
 const AllFieldsWrapper = connect(mapStateToProps, mapDispatchToProp)(allFieldsWrapper);

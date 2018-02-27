@@ -3,12 +3,16 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { DropTarget } from 'react-dnd';
-import { ItemTypes } from './itemType';
-import styles from '../DD-demo.less';
+import { ItemTypes } from '../../flow/itemType';
+import styles from '../../DD-demo.less';
 
 const cx = classNames.bind(styles);
 
 const fieldTarget = {
+  // hover(props) {
+  //   // props.setCanDrop(true);
+  //   window.requestAnimationFrame(() => props.setCanDrop(true));
+  // // },
   drop(props, monitor) {
     const {
       x, y, sectionCode, moveBetweenSection, addFieldToSection, allFields,
@@ -34,6 +38,11 @@ const collect = (connect, monitor) => ({
 });
 
 class sectionTD extends React.Component {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isOver && (!this.props.isOver)) { // 进入
+      this.props.setCanDrop(true);
+    }
+  }
   renderOverLay() {
     const { isOver } = this.props;
     const maskClasses = classNames(
@@ -55,6 +64,9 @@ class sectionTD extends React.Component {
                              </td>);
   }
 }
+sectionTD.defaultProps = {
+  classes: '',
+};
 sectionTD.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
@@ -64,6 +76,7 @@ sectionTD.propTypes = {
   sectionCode: PropTypes.string.isRequired,
   moveBetweenSection: PropTypes.func.isRequired,
   addFieldToSection: PropTypes.func.isRequired,
-    classes: PropTypes.string,
+  classes: PropTypes.string,
+  setCanDrop: PropTypes.func.isRequired,
 };
 export default DropTarget(ItemTypes.FIELD, fieldTarget, collect)(sectionTD);

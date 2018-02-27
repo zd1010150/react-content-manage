@@ -6,9 +6,9 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { DropTarget } from 'react-dnd';
-import { ItemTypes } from './itemType';
-import styles from '../DD-demo.less';
-import { ADD } from '../flow/operateType';
+import { ItemTypes } from '../../flow/itemType';
+import styles from '../../DD-demo.less';
+import { ADD } from '../../flow/operateType';
 
 const cx = classNames.bind(styles);
 const sectionWrapperTarget = {
@@ -30,6 +30,7 @@ const collect = (connect, monitor) => ({
 });
 
 class sectionWrapper extends React.Component {
+
   render() {
     const { connectDropTarget, isOver, classes } = this.props;
     return connectDropTarget(<div className={classNames(cx('section-wrapper'), isOver ? cx('section-wrapper-hover') : '', classes)} >

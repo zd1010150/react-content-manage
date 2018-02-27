@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { DragSource } from 'react-dnd';
 import classNames from 'classnames/bind';
-import { ItemTypes } from './itemType';
-import styles from '../DD-demo.less';
+import { ItemTypes } from '../../flow/itemType';
+import styles from '../../DD-demo.less';
 
 const cx = classNames.bind(styles);
 

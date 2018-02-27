@@ -1,10 +1,7 @@
 import { TOGGLE_SECTION_ADD_EDIT_DIALOG, SET_SECTION_ATTRIBUTE, SET_CAN_DROP } from '../actionType';
-import { ADD } from '../operateType';
+
 
 const ui = (state = {
-  sectionAddEditDialog: {
-    isShow: false, sequence: 0, operate: ADD, label: '', cols: 1,
-  },
   fieldCanDrop: true,
 }, action) => {
   const { type, ...payload } = action;

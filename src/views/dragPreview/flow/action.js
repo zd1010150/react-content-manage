@@ -44,6 +44,6 @@ export const setSectionAttr = args => ({
   ...args,
 });
 export const setCanDrop = canDrop => ({
-  type: SET_CAN_DROP,
-  canDrop,
+    type: SET_CAN_DROP,
+    canDrop,
 });
