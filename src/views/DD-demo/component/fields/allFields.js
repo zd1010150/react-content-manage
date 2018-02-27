@@ -49,7 +49,7 @@ class allFields extends React.Component {
     let tds = [];
     let f;
     let pause = false;
-    const cols = 10;
+    const cols = 6;
     const rows = Math.ceil(fields.length / cols);
     for (let i = 0; i < rows; i++) {
       if (pause) break;
