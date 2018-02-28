@@ -59,3 +59,32 @@
 .ant-badge-count {
   border-radius: 2px !important;
 }
+.ant-form-item-label label {
+  text-transform: capitalize;
+}
+
+.ant-menu {
+  text-transform: capitalize;
+}
+
+.ant-menu-horizontal .ant-menu-item.ant-menu-item-selected {
+  &.dashboard {
+    background-color: @page-color-default;
+  }
+  &.leads {
+    background-color: @page-color-lead;
+  }
+  &.accounts {
+    background-color: @page-color-account;
+  }
+  &.opportunities {
+    background-color: @page-color-opportunity;
+  }
+  &.reports {
+    background-color: @page-color-report;
+  }
+}
+
+#root, #root > div {
+  height: 100%;
+}

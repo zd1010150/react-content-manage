@@ -5,6 +5,7 @@ import Footer from './Footer';
 import CopyRight from './CopyRight';
 import Notification from './Notification';
 import ErrorNotification from './ErrorNotification';
+import SetupSider from './Sider/container';
 
 export {
   TopPanel,
@@ -14,5 +15,6 @@ export {
   CopyRight,
   Notification,
   ErrorNotification,
+  SetupSider,
 };
 
