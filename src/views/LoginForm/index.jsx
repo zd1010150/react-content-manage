@@ -7,6 +7,8 @@ import { tryLogin } from './flow/actions';
 const contextTypes = { store: PropTypes.object };
 import classNames from 'classnames/bind';
 import styles from './loginForm.less';
+
+
 const cx = classNames.bind(styles);
 
 import { CopyRight } from '../../components/page/index';

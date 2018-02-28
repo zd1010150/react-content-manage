@@ -11,7 +11,7 @@ export const CHINESE_CODE = 'zh';
 
 export const UNAUTHENTICATION = { // Unauthentication rewrite url
   CODE: 401,
-  REWRIRE_URL: '/customer/account/login/',
+  LOGIN_URL: '/',
   REDIRECT_KEY: 'success_url',
 };
 

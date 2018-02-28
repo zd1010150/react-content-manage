@@ -1,40 +1,65 @@
 import React from 'react';
-import { 
-  TopPanel,
-  HeaderNav,
-  MainContent,
-  CopyRight,
-  Notification,
-  SetupSider,
-} from '../page/index';
-
-import { 
-  Leads,
-} from 'views/index';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getStore } from 'utils/localStorage';
+import _ from 'lodash';
 import { Layout } from 'antd';
-const { Content, Footer } = Layout;
+import EnumsManager from 'utils/EnumsManager';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { loginSuccess } from 'views/LoginForm/flow/actions.js';
 
-const MainLayout = ({ location }) => (
-  <Layout>
-    <TopPanel />
-    <Layout>
-      {location.pathname.indexOf('setup') !== -1
-          ? <SetupSider/>
-          : null}
-      <Layout>
-        <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
-          <Switch>
-            <Route exact path="/leads" component={Leads} />
-            {/* <Route exact path="/accounts" component={Accounts} />
-            <Route exact path="/opportunities" component={Opportunities} />
-            <Route exact path="/reports" component={Reports} /> */}
-          </Switch>
-        </Content>
-        <Footer><CopyRight /></Footer>
-      </Layout>
-    </Layout>
-  </Layout>
-);
+import { TopPanel } from '../page/index';
 
-export default withRouter(MainLayout);
+
+import SubMainLayout from './subMainLayout';
+import SetupLayout from './setupLayout';
+
+
+class MainLayout extends React.Component {
+    hasLoggedIn = () => {
+      // we'll check the login status in localstorage instead of redux/session storage
+      // because it will help us to sync the status across application instances
+      const localLoginUser = getStore(EnumsManager.LocalStorageKey);
+      if (!_.isEmpty(this.props.loginUser)) {
+        return true;
+      } else if (_.isEmpty(localLoginUser)) {
+        return false;
+      }
+      this.props.loginSuccess(localLoginUser);
+      return true;
+    }
+
+    render() {
+      // TODO: Skip the login if in dev mode
+      // const isDevMode = process.env.NODE_ENV === 'development' ? true : false;
+      return (
+        <div>
+          { !this.hasLoggedIn() ? (
+            <Redirect to="/auth/login" />
+                ) : (
+                  <Layout>
+                    <TopPanel />
+                    <Switch>
+                      <Route path="/setup" component={SetupLayout} />
+                      <Route path="/" component={SubMainLayout} />
+                    </Switch>
+                  </Layout>
+            )}
+        </div>
+      );
+    }
+}
+
+MainLayout.propTypes = {
+  loginSuccess: PropTypes.func.isRequired,
+  loginUser: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+};
+const mapStateToProps = ({ loginUser }) => ({
+  loginUser, // 将全局的user 信息注入到此组件
+});
+const mapDispatchToProp = {
+  loginSuccess,
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProp)(MainLayout);

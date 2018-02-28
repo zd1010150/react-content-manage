@@ -34,13 +34,13 @@ window.addEventListener('beforeunload', () => {
 });
 
 const AppView = () => (
-    <Provider store={store}>
-        <I18n>
-            <BrowserRouter >
-                <App />
-            </BrowserRouter>
-        </I18n>
-    </Provider>
+  <Provider store={store}>
+    <I18n>
+      <BrowserRouter >
+        <App />
+      </BrowserRouter>
+    </I18n>
+  </Provider>
 );
 ReactDOM.render(<AppView />, document.getElementById('root'));
 

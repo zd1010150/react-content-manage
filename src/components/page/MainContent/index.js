@@ -1,3 +1,3 @@
-import MainContent from './container/index';
+import MainContentView from './mainContentView.jsx';
 
-export default MainContent;
+export default MainContentView;

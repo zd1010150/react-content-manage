@@ -1,5 +1,7 @@
 export default {
   zh: {
+    ddDemo: 'demo',
+    dragPreview: 'dragPreview',
     companyInfo: '公司信息',
     users: '用户',
     orgChart: '公司结构',
@@ -13,6 +15,8 @@ export default {
     workflow: '业务流程设置',
   },
   en: {
+    ddDemo: 'demo',
+    dragPreview: 'dragPreview',
     companyInfo: 'company info',
     users: 'users',
     orgChart: 'organization chart',
