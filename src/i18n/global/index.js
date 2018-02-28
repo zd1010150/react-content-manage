@@ -7,6 +7,8 @@ import language from './language';
 import form from './form';
 import properNouns from './properNouns';
 import error from './error';
+import crm from './crm';
+import sider from './sider';
 
 export default{
   ui,
@@ -16,4 +18,6 @@ export default{
   form,
   properNouns,
   error,
+  crm,
+  sider,
 };

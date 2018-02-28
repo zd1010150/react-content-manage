@@ -10,8 +10,13 @@ import zhLocaleData from 'react-intl/locale-data/zh';
 import message from './message';
 
 addLocaleData(zhLocaleData);
-const i18n = ({ children, locale }) => <LocaleProvider locale={locale === 'zh' ? zh : en}><IntlProvider locale={locale} key={locale} messages={message[locale]}>{ children }</IntlProvider></LocaleProvider>;
-
+const i18n = ({ children, locale }) => (
+  <LocaleProvider locale={locale === 'zh' ? zh : en}>
+    <IntlProvider locale={locale} messages={message[locale]}>
+      { children }
+    </IntlProvider>
+  </LocaleProvider>
+);
 
 i18n.propTypes = {
   children: PropTypes.element.isRequired,

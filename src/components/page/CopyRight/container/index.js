@@ -1,25 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import classNames from 'classnames/bind';
-import styles from '../Copyright.less';
+import { intlShape, injectIntl } from 'react-intl';
+const propTypes = {
+  intl: intlShape.isRequired
+};
 
-import logo from 'assets/images/logo.png';
-const cx = classNames.bind(styles);
-const CopyRight = ({language}) => (
-  <div className={classNames('row', cx('copyright-container'))}>
-    <div className={classNames('col-sm-6', 'text-left', cx('copyright'))}>
-      <small>Copyright © 2017 Breakable.</small>
+const CopyRight = ({ intl, style }) => {
+  const { formatMessage } = intl;
+  const mergedStyle = {
+    textAlign: 'center',
+    color: '#8b91a0',
+    lineHeight: '45px',
+    ...style,
+  }
+  return (
+    <div style={mergedStyle}>
+      <small>{formatMessage({ id: 'global.crm.footer.copyright' })}</small>
     </div>
-    <div className="col-sm-6 text-right">
-      <a href="javascrip:void(0)"><img  className={cx('logo')} src={logo} alt=" breakable logo" /></a>
-    </div>
-  </div>
-);
-CopyRight.propTypes = {
-  language: PropTypes.string.isRequired,
-}
-const mapStateToProps = ({ global }) => ({
-  language: global.language,
-})
-export default connect(mapStateToProps)(CopyRight);
+  );
+};
+
+CopyRight.propTypes = propTypes;
+export default injectIntl(CopyRight);

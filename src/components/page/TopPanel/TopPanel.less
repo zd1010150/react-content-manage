@@ -1,43 +1,5 @@
 @import "~assets/less/theme.less";
-.panel.header{
-  max-width: @brk-page-max-width;
-  background-color: @primary-color;
-  padding:10px 20px;
-  margin:0 auto;
-  overflow: hidden;
-  [data-role="language"], [data-role="operations"],[data-role="welcomeMsg"]{
-    float: right;
-    display: inline-block;
-    margin-left: 15px;
-  }
-  a {
-    color: @brk-text-white-color;
-  }
-}
-.top-static-nav{
-  float: left;
-  list-style-type: none;
-  overflow: hidden;
-  margin-bottom: 0px;
-  padding-left: 0px;
-  li{
-    float: left;
-    padding: 0px 2px;
-    margin: 0px;
-    &:not(:last-child):after {
-      content: " | ";
-      display: inline-block;
-      color: rgba(255, 255, 255, 0.2);
-      padding: 0px 10px;
-    }
-    &:last-child:after {
-      content: "|";
-      padding: 0px 10px;
-      color: transparent;
-      display: inline-block;
-    }
-  }
-}
+
 .ant-dropdown-link{
   background-color: transparent;
   border: none;
@@ -46,4 +8,38 @@
   }
 }
 
+.header {
+  color: @brk-text-white-color;
+  > div, > ul, input {
+    float: left;
+    font-size: 12px;
+  }
 
+  .siteTitle {
+    font-size: 18px;
+    margin-right: 50px;
+    text-transform: uppercase;
+  }
+
+  .setupBtn {
+    margin-top: 11px;
+    border-color: transparent;
+    background-color: transparent;
+    color: @brk-text-white-color;
+    a {
+      color: @brk-text-white-color;
+      i {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  [data-role='language'], [data-role='globalSearch'], [data-role='setup'] {
+    float: right;
+    margin-left: 10px;
+    > button {
+      padding: 0 6px;
+    }
+  }
+
+}
