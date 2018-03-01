@@ -29,6 +29,7 @@ export default {
       action: '操作',
     },
     select: {
+      label: '视图',
       all: '全部',
     },
     dialog: {
@@ -65,6 +66,7 @@ export default {
       action: 'Action',
     },
     select: {
+      label: 'view',
       all: 'All',
     },
     dialog: {
