@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import FilterWrapper from '../components/Filter/index';
+import { Row } from 'antd';
 
 class Leads extends Component {
   constructor(props) {
@@ -9,7 +11,13 @@ class Leads extends Component {
 
   render() {
     return (
-      <h1>Leads</h1>
+      <Fragment>
+        <Row>
+          <FilterWrapper />
+          {/* btns */}
+        </Row>
+        {/* tables and table top bar */}
+      </Fragment>
     );
   }
 }

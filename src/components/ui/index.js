@@ -7,7 +7,7 @@ import Currency from './currency';
 import OrderStatus from './orderStatus';
 import Logistics from './logistics';
 import Group from './group';
-
+import ViewFilter from './ViewFilter';
 
 export {
   Upload,
@@ -18,4 +18,6 @@ export {
   OrderStatus,
   Logistics,
   Group,
+  
+  ViewFilter,
 };
