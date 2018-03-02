@@ -1,20 +1,48 @@
+
+/*crm 各个主题颜色*/
+@crm-green: #43A047;
+@crm-blue: #1E88E5;
+@crm-purple: #7E57C2;
+@crm-red: #E53935;
+@crm-white: #fff;
+
+
+/*antd style*/
 @body-background: #f2f5f8;
 @component-background: #f5f5f5;
 @tooltip-bg: rgba(255, 255, 255, .75);
 @primary-color          : #1b1e24;
 @primary-2 :#e2e8da;
-@error-color            : #ff5501;
+@error-color            : @crm-red;
 @error-color-2: #f4ffb8;
 
+// page primary colors
+@page-color-default: #4e4e4e;
+@page-color-lead: #2E7D32;
+@page-color-account: #1E88E5;
+@page-color-opportunity: #7E57C2;
+@page-color-report: #E53935;
+@btn-danger-bg: @error-color;
+@btn-danger-color: @crm-white;
+@btn-danger-border: @error-color;
 
-
-
+@btn-height-base: 36px;
+@btn-default-color: @crm-white;
+@btn-default-bg      : @page-color-default ;
 
 @highlight-color : #ff5501;
 @tooltip-color: @primary-color;
 @icon-url: '~assets/font/iconfont/iconfont';
 @card-head-color: rgba(0, 0, 0, 0.65);
 @card-head-background: @primary-2;
+
+
+
+@lead-theme-color: @crm-green;
+@account-theme-color: @crm-blue;
+@opport-theme-color: @crm-purple;
+@report-theme-color: @crm-red;
+
 
 // breakable 的参数变量
 @brk-text-white-color: #fff;
@@ -30,70 +58,13 @@
 
 @layout-footer-padding: 0;
 
-// page primary colors
-@page-color-default: #4e4e4e;
-@page-color-lead: #2E7D32;
-@page-color-account: #1E88E5;
-@page-color-opportunity: #7E57C2;
-@page-color-report: #E53935;
+/*变量用于遍历*/
 
-.pt-sm{
-  padding-top: 5px;
-}
-.pt-md{
-  padding-top: 10px;
-}
-.pt-lg{
-   padding-top: 15px;
- }
-.pt-xlg{
-  padding-top: 20px;
-}
-.pb-sm{
-  padding-bottom: 5px;
-}
-.pb-md{
-  padding-bottom: 10px;
-}
-.pb-lg{
-  padding-bottom: 15px;
-}
-.pb-xlg{
-  padding-bottom: 20px;
-}
-.pr-sm{
-  padding-right: 5px;
-}
-.pr-md{
-  padding-right: 10px;
-}
-.pr-lg{
-  padding-right: 15px;
-}
-.pr-xlg{
-  padding-right: 20px;
-}
-.ml-sm{
-  margin-left: 5px;
-}
-.ml-md{
-  margin-left: 10px;
-}
-.ml-lg{
-  margin-left: 15px;
-}
-.ml-xlg{
-  margin-left: 20px;
-}
-.mb-sm{
-  margin-bottom: 5px;
-}
-.mb-md{
-  margin-bottom: 10px;
-}
-.mb-lg{
-  margin-bottom: 15px;
-}
-.mb-xlg{
-  margin-bottom: 20px;
-}
+@lead: 'lead';
+@account: 'account';
+@opport: 'opport';
+@report: 'report';
+
+
+
+

@@ -7,6 +7,7 @@ import {
   Leads,
   DDDemo,
   DragPreview,
+  UIDemo,
 } from 'views/index';
 
 const MainContent = () => (
@@ -14,6 +15,7 @@ const MainContent = () => (
     <Route path="/leads" component={Leads} />
     <Route path="/setup/dd-demo" component={DDDemo} />
     <Route path="/setup/drag-preveiw" component={DragPreview} />
+    <Route path="/setup/ui-demo" component={UIDemo} />
   </Switch>
 );
 export default MainContent;

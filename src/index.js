@@ -10,7 +10,7 @@ import { syncStateAndLocalStorage } from 'utils/localStorage';
 import configureStore from './store/configureStore';
 import I18n from './i18n/index';
 import { fetchGlobalSetting, fetchAccountInfo } from './store/global/action';
-import 'antd/dist/antd.less';
+import 'antd/dist/antd.less'; // should before the customized style
 import './assets/less/index.less';
 import { ErrorNotification } from './components/page/index';
 import App from './App';

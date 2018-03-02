@@ -8,7 +8,7 @@ const welcomeMsgView = ({ intl, account }) => {
   const { formatMessage } = intl;
   return (
     <div data-role="welcomeMsg">
-      <span> { formatMessage({ id: 'global.magento.welcomeMsg' })} <Username firstName={account.first_name} lastName={account.last_name} /> !</span>
+      <span> { formatMessage({ id: 'global.magento.welcomeMsg' })} {account.first_name} {account.last_name}  !</span>
     </div>
   );
 };

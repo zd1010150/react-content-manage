@@ -13,7 +13,7 @@ const SetupLayout = () => (
     <SetupSider />
     <Layout>
       <Content style={{
-                background: '#444', padding: 24, margin: 0, minHeight: 280,
+                background: '#fff', padding: 24, margin: 0, minHeight: 280,
             }}
       >
         <MainContent />

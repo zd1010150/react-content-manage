@@ -1,0 +1,50 @@
+@import "../../theme.less";
+
+.panel {
+  margin-bottom: 15px;
+  width:100%;
+  color:#4e4e4e;
+  border-radius: 5px;
+  background:#fff;
+  border-top:3px solid #4e4e4e;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  .panel-header{
+    padding: 6px 15px;
+    position: relative;
+    min-height: 32px;
+    border-bottom: 1px solid #eee;
+    .panel-title{
+      float: left;
+    }
+    .panel-actions{
+      float:right;
+      &.panel-no-title-actions{
+        float: none;
+        width:100%;
+      }
+      .actions-left{
+        float: left;
+      }
+      .actions-right{
+        float:right;
+      }
+    }
+  }
+  .panel-content{
+    padding: 0 15px;
+    overflow: auto;
+  }
+}
+
+.panel.lead-theme-panel{
+  border-top:3px solid @lead-theme-color;
+}
+.panel.account-theme-panel{
+  border-top:3px solid @account-theme-color;
+}
+.panel.opport-theme-panel{
+  border-top: 3px solid @opport-theme-color;
+}
+.panel.report-theme-panel{
+  border-top: 3px solid @report-theme-color;
+}

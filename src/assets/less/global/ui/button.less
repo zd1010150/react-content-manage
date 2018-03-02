@@ -1,0 +1,59 @@
+@import "../../theme.less";
+
+.btn-ellipse{
+  border-radius: 30px;
+  padding: 6px 12px;
+  height:auto;
+  line-height: 14px;
+}
+.ant-btn-danger:hover, .ant-btn-danger:focus{
+  color: @error-color;
+  background-color: @crm-white;
+  border-color: @error-color;
+}
+
+
+/*dandan*/
+.theme-btn(@theme){
+  @selector : ~'.@{theme}-theme-btn'; /*获取selector*/
+  @theme-color-value-name: '@{theme}-theme-color'; /*获取变量名*/
+  @theme-color-value: @@theme-color-value-name; /*获取变量名对应的值*/
+  @{selector}{
+    background-color: @theme-color-value;
+    &:hover, &:focus{
+      color: @theme-color-value;
+      background-color: @crm-white;
+      border-color: @theme-color-value;
+    }
+  }
+}
+
+
+@themes: lead, account, opport, report;
+
+.make-theme-btn-classes(@i: length(@themes)) when (@i > 0) {
+  .make-theme-btn-classes(@i - 1);
+  @theme: extract(@themes, @i);
+  .theme-btn(@theme)
+}
+
+.make-theme-btn-classes();
+
+//.ant-btn{
+//  &.lead-theme-btn{
+//    background-color: @lead-theme-color;
+//    &:hover, &:focus{
+//      color: @lead-theme-color;
+//      background-color: @crm-white;
+//      border-color: @lead-theme-color;
+//    }
+//  }
+//  &.account-theme-btn{
+//    background-color: @account-theme-color;
+//    &:hover, &:focus{
+//      color: @lead-theme-color;
+//      background-color: @crm-white;
+//      border-color: @lead-theme-color;
+//    }
+//  }
+//}
