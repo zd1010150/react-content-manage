@@ -28,6 +28,7 @@ const ViewFilter = ({ intl, onChange, activeId, options }) => {
       <Select
         className={cx('filterSelect')}
         size="small"
+        dropdownMatchSelectWidth={false}
         onChange={onChange}
       >
         {options.map(option => {
