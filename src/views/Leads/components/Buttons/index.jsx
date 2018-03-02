@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
+import { ListTopButtons } from 'components/ui/index';
 
 class ButtonsWrapper extends Component {
   constructor(props) {
@@ -9,18 +11,14 @@ class ButtonsWrapper extends Component {
 
   render() {
     return (
-      <div>
-        <button>abc</button>
-      </div>
+        <ListTopButtons />
     );
   }
 }
 
 const mapStateToProps = ({ global }) => ({
-  user: global.orderUser,
+  language: global.language,
 });
 const mapDispatchToProp = {
-  // setPageTitle,
-  // resetUser,
 };
-export default ButtonsWrapper;
+export default connect(mapStateToProps)(ButtonsWrapper);

@@ -14,7 +14,7 @@ const Topbar = () => {
       <Col {...colLayout}>
         <ViewFilterWrapper />
       </Col>
-      <Col {...colLayout}>
+      <Col {...colLayout} style={{ textAlign: 'right' }}>
         <BtnsWrapper />
       </Col>
     </Row>
