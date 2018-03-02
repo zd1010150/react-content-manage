@@ -25,7 +25,11 @@ const ViewFilter = ({ intl, onChange, activeId, options }) => {
       <label className={cx('filterLabel')}>
         {formatMessage({ id: 'global.ui.select.label' })}
       </label>
-      <Select style={{ width: 120 }} onChange={onChange}>
+      <Select
+        className={cx('filterSelect')}
+        size="small"
+        onChange={onChange}
+      >
         {options.map(option => {
           const id = option.id;
           return (

@@ -6,3 +6,21 @@
   font-weight: bold;
   text-transform: capitalize;
 }
+
+.filterSelect {
+  min-width: 120px;
+  > div {
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 0;
+    transition: all 0.3s;
+
+    &:hover {
+      border-color: transparent;
+    }
+    &:focus {
+      border-color: transparent transparent red;
+      box-shadow: none;
+    }
+  }
+}
