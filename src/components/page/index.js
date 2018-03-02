@@ -6,6 +6,8 @@ import CopyRight from './CopyRight';
 import Notification from './Notification';
 import ErrorNotification from './ErrorNotification';
 import SetupSider from './Sider/container';
+import AuthMainContent from './AuthMainContent';
+import SetupContent from './SetupContent';
 
 export {
   TopPanel,
@@ -16,5 +18,7 @@ export {
   Notification,
   ErrorNotification,
   SetupSider,
+  AuthMainContent,
+  SetupContent,
 };
 

@@ -39,5 +39,5 @@ const mapDispatchToProp = {
   setCanDrop,
 };
 
-const DDDemoView = DragDropContext(HTML5Backend)(connect(mapStateToProps, mapDispatchToProp)(ddDemoView));
+const DDDemoView = connect(mapStateToProps, mapDispatchToProp)(ddDemoView);
 export default DDDemoView;

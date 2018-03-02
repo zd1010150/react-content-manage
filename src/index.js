@@ -5,10 +5,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { Button } from 'antd';
 import { syncStateAndLocalStorage } from 'utils/localStorage';
 import configureStore from './store/configureStore';
 import I18n from './i18n/index';
 import { fetchGlobalSetting, fetchAccountInfo } from './store/global/action';
+import 'antd/dist/antd.less';
 import './assets/less/index.less';
 import { ErrorNotification } from './components/page/index';
 import App from './App';
@@ -34,13 +36,13 @@ window.addEventListener('beforeunload', () => {
 });
 
 const AppView = () => (
-    <Provider store={store}>
-        <I18n>
-            <BrowserRouter >
-                <App />
-            </BrowserRouter>
-        </I18n>
-    </Provider>
+  <Provider store={store}>
+    <I18n>
+      <BrowserRouter >
+        <App />
+      </BrowserRouter>
+    </I18n>
+  </Provider>
 );
 ReactDOM.render(<AppView />, document.getElementById('root'));
 

@@ -46,6 +46,16 @@ const SetupSider = ({ intl }) => {
       id: 'companyInfo',
       isSubMenu: true,
       items: [
+          {
+              id: 'ddDemo',
+              path: `${pathPrefix}/dd-demo`,
+              icon: 'setting',
+          },
+          {
+              id: 'dragPreview',
+              path: `${pathPrefix}/drag-preveiw`,
+              icon: 'setting',
+          },
         {
           id: 'companyInfo',
           path: `${pathPrefix}/companyInfo`,
