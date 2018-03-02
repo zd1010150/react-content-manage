@@ -19,6 +19,8 @@ export default {
       previous: '上一步',
       detail: '查看详情',
       goBack: '返回',
+      edit: '编辑',
+      createNew: '添加'
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -29,6 +31,7 @@ export default {
       action: '操作',
     },
     select: {
+      label: '视图',
       all: '全部',
     },
     dialog: {
@@ -55,6 +58,8 @@ export default {
       previous: 'Previous',
       detail: 'Detail',
       goBack: 'Go Back',
+      edit: 'Edit',
+      createNew: 'Create New '
     },
     input: {
       searchStore: 'Search entire store here...',
@@ -65,6 +70,7 @@ export default {
       action: 'Action',
     },
     select: {
+      label: 'view',
       all: 'All',
     },
     dialog: {

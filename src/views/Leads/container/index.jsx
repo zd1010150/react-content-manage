@@ -1,5 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { Row } from 'antd';
+
+import Topbar from './Topbar';
 
 class Leads extends Component {
   constructor(props) {
@@ -9,7 +12,10 @@ class Leads extends Component {
 
   render() {
     return (
-      <h1>Leads</h1>
+      <Fragment>
+        <Topbar />
+        {/* tables and table top bar */}
+      </Fragment>
     );
   }
 }

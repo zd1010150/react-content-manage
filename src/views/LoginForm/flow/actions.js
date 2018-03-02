@@ -4,6 +4,9 @@ import {
 import { getStore } from '../../../utils/localStorage';
 import EnumsManager from '../../../utils/EnumsManager';
 
+import { post } from 'store/http/httpAction';
+const url = '/admin/login';
+
 const generateRequest = (url, fetchType = 'GET', bodyContent = {}) => {
   const requestConfig = {
     method: fetchType,
@@ -28,27 +31,15 @@ const loginOrOutFailed = () => ({
   type: LOGINOROUT_FAILURE,
 });
 
-export const tryLogin = (values) => {
-  const request = generateRequest('https://api.staging.breakable.com/v1/admin/login', 'POST', values);
-  return function (dispatch, getState) {
-    return fetch(request)
-      .then(response =>
-        response.json().then(json => ({
-          status: response.status,
-          json,
-        })))
-      .then(({ status, json }) => {
-        if (status >= 400) {
-          dispatch(loginOrOutException());
-        } else {
-          window.location = '/leads';
-          dispatch(loginSuccess(json));
-        }
-      })
-      .catch(error =>
-        dispatch(loginOrOutException()));
-  };
-};
+export const tryLogin = (
+  values,
+) => dispatch => post(url, values, dispatch)
+                  .then(json => {
+                    if (json && (!_.isEmpty(json.data))) {
+                      dispatch(loginSuccess(json))
+                    }
+                  });
+
 
 
 const logoutSuccess = json => ({

@@ -1,0 +1,36 @@
+@import "~assets/less/theme.less";
+
+.filterLabel {
+  margin-right: 5px;
+  color: @secondary-dark-color;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.filterSelect {
+  min-width: 80px;
+  > div {
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 0;
+
+    &:hover {
+      border-color: transparent;
+    }
+    &:focus {
+      border-color: transparent transparent red;
+      box-shadow: none;
+    }
+    
+    span:before {
+      content: '';
+      transition: transform .3s;
+      width: 0;
+      height: 0;
+      margin-top: 4px;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid @secondary-dark-color;
+    }
+  }
+}

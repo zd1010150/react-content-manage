@@ -1,63 +1,39 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Icon, Input, Button } from 'antd';
-const FormItem = Form.Item;
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { getStore } from 'utils/localStorage';
+import { tryLogin } from '../LoginForm/flow/actions';
+import LoginForm from './container/index';
+import EnumsManager from 'utils/EnumsManager';
 
-import { tryLogin } from './flow/actions';
-const contextTypes = { store: PropTypes.object };
-import classNames from 'classnames/bind';
-import styles from './loginForm.less';
+class LoginFormWrapper extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-
-const cx = classNames.bind(styles);
-
-import { CopyRight } from '../../components/page/index';
-
-class LoginForm extends Component {
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const { store } = this.context;
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-        store.dispatch(tryLogin(values));
-      }
-    });
+  hasLoggedIn = () => {
+    const localLoginUser = getStore(EnumsManager.LocalStorageKey);
+    if (!_.isEmpty(localLoginUser)) {
+      return true;
+    }
+    return false;
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { tryLogin } = this.props;
     return (
-      <Fragment>
-      <Form layout="vertical" onSubmit={this.handleSubmit} className={cx('formWrapper')}>
-        <div className={cx('siteTitle')}>logix crm</div>
-        <div className={cx('fieldsWrapper')}>
-          <FormItem label="email" className={cx('formItem')}>
-            {getFieldDecorator('email', {
-              rules: [{ required: true, message: 'Please input your email!' }],
-            })(
-              <Input suffix={<Icon type="user"/>} placeholder="Email" />
-            )}
-          </FormItem>
-          <FormItem label="password" className={cx('formItem')}>
-            {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Please input your Password!' }],
-            })(
-              <Input suffix={<Icon type="lock"/>} type="password" placeholder="Password" />
-            )}
-          </FormItem>
-          <FormItem className={cx('formItem')}>
-            <Button type="primary" htmlType="submit" className={cx('signInBtn')}>
-              Sign in
-            </Button>
-          </FormItem>
-        </div >
-        <CopyRight />
-      </Form>
-      </Fragment>
+      this.hasLoggedIn()
+        ? <Redirect to="/" />
+        : <LoginForm tryLogin={tryLogin} />
     );
   }
 }
 
-LoginForm.contextTypes = contextTypes;
-export default Form.create()(LoginForm);
+const mapStateToProps = ({ loginUser }) => ({
+  loginUser,
+});
+const mapDispatchToProps = {
+  tryLogin,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(LoginFormWrapper);
