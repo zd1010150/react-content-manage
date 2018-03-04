@@ -7,7 +7,7 @@ import Buttons from '../component/buttons';
 const AntdPanel = Collapse.Panel;
 
 
-const UIDEMO = () => (
+const UIDemo = () => (
   <Collapse defaultActiveKey={['1']}>
     <AntdPanel header="panels" key="1">
       <Panels />
@@ -22,4 +22,4 @@ const UIDEMO = () => (
 );
 
 
-export default UIDEMO;
+export default UIDemo;

@@ -14,10 +14,10 @@ class Panel extends React.Component {
       const actions = [];
       const isRenderLeftActions = _.isEmpty($panelTitle) && !_.isEmpty(actionsLeft);
       if (isRenderLeftActions) {
-        actions.push(<div className="actions-left">{ actionsLeft }</div>);
+        actions.push(<div className="actions-left" key="actions-left">{ actionsLeft }</div>);
       }
       if (!_.isEmpty(actionsRight)) {
-        actions.push(<div className="actions-right">{ actionsRight }</div>);
+        actions.push(<div className="actions-right" key="actions-right">{ actionsRight }</div>);
       }
       return _.isEmpty(actions) ? '' : <div className={classNames('panel-actions clearfix', isRenderLeftActions ? 'panel-no-title-actions' : '')}>{ actions }</div>;
     })();
@@ -34,8 +34,8 @@ class Panel extends React.Component {
 }
 Panel.defaultProps = {
   panelTitle: '',
-  actionsLeft: '',
-  actionsRight: '',
+  actionsLeft: <span />,
+  actionsRight: <span />,
   content: '',
   panelClasses: '',
   contentClasses: '',

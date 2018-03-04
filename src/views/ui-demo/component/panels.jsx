@@ -10,7 +10,7 @@ const UIDEMO = () => {
   return (
     <div>
       <h2 />
-      <Panel >
+      <Panel>
                 this is test
       </Panel>
       <h2> panelClass = lead-theme-panel</h2>

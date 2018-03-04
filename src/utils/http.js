@@ -4,6 +4,21 @@ import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 import { baseUrl } from '../config/env.config';
 import { MAX_FETCH_TIMEOUT } from '../config/app.config';
+import { getStore } from 'utils/localStorage';
+import EnumsManager from 'utils/EnumsManager';
+
+const getAuthorization = () => {
+  const loginUser = getStore(EnumsManager.LocalStorageKey);
+  if (_.isEmpty(loginUser)) {
+    return '';
+  }
+  const userData = JSON.parse(loginUser).token_info;
+  if (_.isEmpty(userData)) {
+    return '';
+  }
+  const { token_type, access_token } = userData;
+  return `${token_type} ${access_token}`;
+};
 
 export default async (type = 'GET', url = '', data = {}, headers = {}, apiDomain = '') => {
   type = type.toUpperCase();
@@ -16,6 +31,7 @@ export default async (type = 'GET', url = '', data = {}, headers = {}, apiDomain
       Accept: 'application/json',
       'Accept-Language': langauge,
       'Content-Type': 'application/json',
+      'Authorization': getAuthorization(),
       ...headers,
     },
     mode: 'cors',

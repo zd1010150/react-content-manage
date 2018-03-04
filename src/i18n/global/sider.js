@@ -1,5 +1,6 @@
 export default {
   zh: {
+    uiDemo: 'UI 示例',
     ddDemo: 'demo',
     dragPreview: 'dragPreview',
     companyInfo: '公司信息',
@@ -15,6 +16,7 @@ export default {
     workflow: '业务流程设置',
   },
   en: {
+    uiDemo: 'UI Demo',
     ddDemo: 'demo',
     dragPreview: 'dragPreview',
     companyInfo: 'company info',

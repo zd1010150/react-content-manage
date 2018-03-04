@@ -1,0 +1,2 @@
+export const SET_VIEWS = 'LEADS_SET_VIEWS';
+export const SET_ACTIVE_ID = 'LEADS_SET_ACTIVE_ID';
