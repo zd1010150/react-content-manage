@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 import { Collapse } from 'antd';
+import { Link } from 'react-router-dom';
 import Panels from '../component/panels';
 import Buttons from '../component/buttons';
 import Checkboxes from '../component/checbox';
@@ -26,6 +27,9 @@ const UIDemo = () => (
     </AntdPanel>
     <AntdPanel header="Dialogs" key="5">
       <Dialog />
+    </AntdPanel>
+    <AntdPanel header="Edit Field" key="6">
+          参见<Link to="/setup/company-info">公司信息的修改  click me! </Link>
     </AntdPanel>
   </Collapse>
 

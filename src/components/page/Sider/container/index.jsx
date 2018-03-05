@@ -64,7 +64,7 @@ const SetupSider = ({ intl }) => {
 
         {
           id: 'companyInfo',
-          path: `${pathPrefix}/companyInfo`,
+          path: `${pathPrefix}/company-info`,
           icon: 'setting',
         },
         {
