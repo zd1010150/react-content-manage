@@ -50,8 +50,8 @@ class logo extends React.Component {
           <Modal
             title="Upload Icon"
             visible={this.state.visible}
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}
+            onOk={() => this.onOk()}
+            onCancel={() => this.onCancel()}
           >
             <Upload {...uploadProps}>
               <Button>
