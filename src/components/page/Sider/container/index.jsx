@@ -1,163 +1,164 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { intlShape, injectIntl } from 'react-intl';
+import { withRouter } from 'react-router';
+import { Layout, Menu } from 'antd';
+import classNames from 'classnames/bind';
+import { getParentUrl } from 'utils/url';
+import styles from '../Sider.less';
 
-import { Layout, Menu, Icon } from 'antd';
+
 const { SubMenu } = Menu;
 const { Sider } = Layout;
-import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
-import styles from '../Sider.less';
-const propTypes = {
-  intl: intlShape.isRequired
-};
 
-const renderMenuItem = (item, intl) => {  
+
+const pathPrefix = '/setup';
+const menuItems = [
+  {
+    id: 'companyInfo',
+    path: `${pathPrefix}/company-info`,
+    children: [
+      {
+        id: 'uiDemo',
+        path: `${pathPrefix}/company-info/ui-demo`,
+        icon: 'setting',
+      },
+      {
+        id: 'ddDemo',
+        path: `${pathPrefix}/company-info/dd-demo`,
+        icon: 'setting',
+      },
+      {
+        id: 'dragPreview',
+        path: `${pathPrefix}/company-info/drag-preveiw`,
+        icon: 'setting',
+      },
+
+      {
+        id: 'companyInfo',
+        path: `${pathPrefix}/company-info/company-info`,
+        icon: 'setting',
+      },
+      {
+        id: 'users',
+        path: `${pathPrefix}/company-info/users`,
+        icon: 'setting',
+      },
+      {
+        id: 'orgChart',
+        path: `${pathPrefix}/company-info/chart`,
+        icon: 'setting',
+      },
+      {
+        id: 'permissions',
+        path: `${pathPrefix}/company-info/permissions`,
+        icon: 'setting',
+      },
+    ],
+  },
+  {
+    id: 'leads',
+    path: `${pathPrefix}/leads`,
+    children: [
+      {
+        id: 'fields',
+        path: `${pathPrefix}/leads/fields`,
+        icon: 'setting',
+      },
+      {
+        id: 'pageLayout',
+        path: `${pathPrefix}/leads/pageLayout`,
+        icon: 'setting',
+      },
+    ],
+  },
+  {
+    id: 'accounts',
+    path: `${pathPrefix}/accounts`,
+    items: [
+      {
+        id: 'fields',
+        path: `${pathPrefix}/accounts/fields`,
+        icon: 'setting',
+      },
+      {
+        id: 'pageLayout',
+        path: `${pathPrefix}/accounts/pageLayout`,
+        icon: 'setting',
+      },
+    ],
+  },
+  {
+    id: 'opportunities',
+    path: `${pathPrefix}/opportunities`,
+    items: [
+      {
+        id: 'fields',
+        path: `${pathPrefix}/opportunities/fields`,
+        icon: 'setting',
+      },
+      {
+        id: 'pageLayout',
+        path: `${pathPrefix}/opportunities/pageLayout`,
+        icon: 'setting',
+      },
+    ],
+  },
+  {
+    id: 'email',
+    path: `${pathPrefix}/email`,
+
+  },
+  {
+    id: 'workflow',
+    path: `${pathPrefix}/workflow`,
+
+  },
+];
+
+const renderMenuItem = (intl) => {
   const { formatMessage } = intl;
   const i18nPath = 'global.sider';
-  const title = formatMessage({ id: `${i18nPath}.${item.id}` });
-
-  if (item.isSubMenu && _.isArray(item.items)) {
-    const childItems = item.items.map(childItem => renderMenuItem(childItem, intl));
+  const getChildrenTree = (item) => {
+    if (item.children && item.children.length > 0) {
+      return (
+        <SubMenu
+          title={formatMessage({ id: `${i18nPath}.${item.id}` })}
+          key={item.path}
+          onTitleClick={() => {}}
+        >
+          { item.children.map(cItem => getChildrenTree(cItem))}
+        </SubMenu>
+      );
+    }
     return (
-      <SubMenu
-        key={item.id}
-        title={<span>{title}</span>}
-      >
-        {childItems}
-      </SubMenu>
-    );
-  }
-  return (
-    <Menu.Item
-      key={item.id}
-      className={cx('menuItem')}
+      <Menu.Item key={item.path} className={cx('left-nav-item')}>
+        <NavLink to={item.path}>{ formatMessage({ id: `${i18nPath}.${item.id}` }) }</NavLink>
+      </Menu.Item>);
+  };
+
+  return menuItems.map(item => getChildrenTree(item));
+};
+const SetupSider = ({ intl, location }) => (
+  <Sider width={250} className={cx('setupSider')}>
+    <div className={cx('siderTitle')}>setup</div>
+    <Menu
+      mode="inline"
+      defaultSelectedKeys={[location.pathname]}
+      defaultOpenKeys={[getParentUrl(location.pathname)]}
+      selectedKeys={[location.pathname]}
+      style={{ height: '100%', borderRight: 0 }}
     >
-      {item.icon ? <Icon type={item.icon} /> : null}
-      <Link className={cx('itemLink')} to={item.path}>{title}</Link>
-    </Menu.Item>
-  );
+      {renderMenuItem(intl)}
+    </Menu>
+  </Sider>
+);
+
+
+SetupSider.propTypes = {
+  intl: intlShape.isRequired,
+  location: PropTypes.object.isRequired,
 };
-
-const SetupSider = ({ intl }) => {
-  const pathPrefix = '/setup';
-  const menuItems = [
-    {
-      id: 'companyInfo',
-      isSubMenu: true,
-      items: [
-          {
-              id: 'uiDemo',
-              path: `${pathPrefix}/ui-demo`,
-              icon: 'setting',
-          },
-          {
-              id: 'ddDemo',
-              path: `${pathPrefix}/dd-demo`,
-              icon: 'setting',
-          },
-          {
-              id: 'dragPreview',
-              path: `${pathPrefix}/drag-preveiw`,
-              icon: 'setting',
-          },
-
-        {
-          id: 'companyInfo',
-          path: `${pathPrefix}/company-info`,
-          icon: 'setting',
-        },
-        {
-          id: 'users',
-          path: `${pathPrefix}/users`,
-          icon: 'setting',
-        },
-        {
-          id: 'orgChart',
-          path: `${pathPrefix}/chart`,
-          icon: 'setting',
-        },
-        {
-          id: 'permissions',
-          path: `${pathPrefix}/permissions`,
-          icon: 'setting',
-        },
-      ],
-    },
-    {
-      id: 'leads',
-      isSubMenu: true,
-      items: [
-        {
-          id: 'fields',
-          path: `${pathPrefix}/leadsFields`,
-          icon: 'setting',
-        },
-        {
-          id: 'pageLayout',
-          path: `${pathPrefix}/leadsPageLayout`,
-          icon: 'setting',
-        },
-      ],
-    },
-    {
-      id: 'accounts',
-      isSubMenu: true,
-      items: [
-        {
-          id: 'fields',
-          path: `${pathPrefix}/accountsFields`,
-          icon: 'setting',
-        },
-        {
-          id: 'pageLayout',
-          path: `${pathPrefix}/accountsPageLayout`,
-          icon: 'setting',
-        },
-      ],
-    },
-    {
-      id: 'opportunities',
-      isSubMenu: true,
-      items: [
-        {
-          id: 'fields',
-          path: `${pathPrefix}/opportunitiesFields`,
-          icon: 'setting',
-        },
-        {
-          id: 'pageLayout',
-          path: `${pathPrefix}/opportunitiesPageLayout`,
-          icon: 'setting',
-        },
-      ],
-    },
-    {
-      id: 'email',
-      path: `${pathPrefix}/email`,
-      isSubMenu: false,
-    },
-    {
-      id: 'workflow',
-      path: `${pathPrefix}/workflow`,
-      isSubMenu: false,
-    },
-  ];
-
-  return (
-    <Sider width={250} className={cx('setupSider')}>
-      <div className={cx('siderTitle')}>setup</div>
-      <Menu
-        mode="inline"
-        defaultSelectedKeys={['companyInfo']}
-        defaultOpenKeys={['companyInfo']}
-        style={{ height: '100%', borderRight: 0 }}
-      >
-      {menuItems.map(item => renderMenuItem(item, intl))}
-      </Menu>
-    </Sider>
-  );
-};
-
-SetupSider.propTypes = propTypes;
-export default injectIntl(SetupSider);
+export default withRouter(injectIntl(SetupSider));

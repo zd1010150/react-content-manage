@@ -8,7 +8,7 @@ import { intlShape, injectIntl } from 'react-intl';
 class usersTableView extends React.Component {
   render() {
     const { formatMessage } = this.props.intl;
-    const rightActions = <Button key="addBtn" className="btn-ellipse ml-sm" size="small" icon="user-add" onClick={() => window.location = './setup/users?action=add'}>{ formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>;
+    const rightActions = <Button key="addBtn" className="btn-ellipse ml-sm" size="small" icon="user-add" onClick={() => window.location = '/setup/company-info/users?action=add'}>{ formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>;
     const dataSource = [{
       key: '1',
       name: '胡彦斌',

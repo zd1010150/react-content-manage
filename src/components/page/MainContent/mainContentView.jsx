@@ -15,11 +15,11 @@ import {
 const MainContent = () => (
   <Switch>
     <Route path="/leads" component={Leads} />
-    <Route path="/setup/dd-demo" component={DDDemo} />
-    <Route path="/setup/drag-preveiw" component={DragPreview} />
-    <Route path="/setup/ui-demo" component={UIDemo} />
-    <Route path="/setup/company-info" component={CompanyInfo} />
-    <Route path="/setup/users" component={Users} />
+    <Route path="/setup/company-info/dd-demo" component={DDDemo} />
+    <Route path="/setup/company-info/drag-preveiw" component={DragPreview} />
+    <Route path="/setup/company-info/ui-demo" component={UIDemo} />
+    <Route path="/setup/company-info/company-info" component={CompanyInfo} />
+    <Route path="/setup/company-info/users" component={Users} />
   </Switch>
 );
 export default MainContent;

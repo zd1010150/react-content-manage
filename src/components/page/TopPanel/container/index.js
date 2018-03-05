@@ -35,7 +35,7 @@ class topPanel extends React.Component {
         <UserSettings email={email} onClick={this.onLogoutClick} />
         <Language language={language} onChange={(language) => this.changeLanguage(language) } />
         <Button className={cx('setupBtn')} size="small" data-role="setup">
-          <Link to='/setup'><Icon type='setting' />Setup</Link>
+          <Link to='/setup/company-info/company-info'><Icon type='setting' />Setup</Link>
         </Button>
         <Input.Search
           placeholder="input search text"
