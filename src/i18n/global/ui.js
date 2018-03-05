@@ -6,7 +6,7 @@ export default {
       submit: '提交',
       addBtn: '新增{actionType}',
       upload: '上传',
-      view: '查看{file}',
+      view: '查看{actionType}',
       select: '选择',
       addGoodsToCart: '加入发货车',
       delete: '删除',
@@ -20,7 +20,8 @@ export default {
       detail: '查看详情',
       goBack: '返回',
       edit: '编辑',
-      createNew: '添加'
+      createNew: '添加',
+      update: '更新',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -45,7 +46,7 @@ export default {
       submit: 'Submit',
       addBtn: 'Add {actionType}',
       upload: 'Upload',
-      view: 'View {file}',
+      view: 'View {actionType}',
       select: 'Select',
       addGoodsToCart: 'Add to Cart',
       delete: 'Delete',
@@ -59,7 +60,8 @@ export default {
       detail: 'Detail',
       goBack: 'Go Back',
       edit: 'Edit',
-      createNew: 'Create New '
+      createNew: 'Create New ',
+      update: 'Update',
     },
     input: {
       searchStore: 'Search entire store here...',

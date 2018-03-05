@@ -10,8 +10,8 @@ class companyInfo extends Component {
     return (
       <Fragment>
         <ComponanyInfoPanel />
-        {/*<CompaneyUserStatic />*/}
-        {/*<Logo />*/}
+        <CompaneyUserStatic />
+        <Logo />
       </Fragment>
     );
   }

@@ -1,62 +1,53 @@
 /* eslint-disable no-shadow */
 import React from 'react';
-import { Select, Row, Col } from 'antd';
-import { Panel, EditBox } from 'components/ui/index';
+import { Table, Button } from 'antd';
+import { Panel } from 'components/ui/index';
 import { intlShape, injectIntl } from 'react-intl';
 
 
 class companyUserStatic extends React.Component {
-    onBlur(fieldName, value) {
-        console.log(fieldName, value);
-    }
-    render() {
-        const { formatMessage } = this.props.intl;
-        const timeZoneOptions = (() => {
-            const options = [];
-            options.push({ value: 'bj', text: '北京时间' });
-            options.push({ value: 'sydney', text: '悉尼时间' });
-            return options;
-        })();
-        return (
-            <Panel panelTitle={formatMessage({ id: 'page.comInfo.organizationDetail' })}>
-                <div className="info-display-table">
-                    <Row className="info-display-table-row">
-                        <Col className="gutter-row" span={12}>
-                            <Row>
-                                <Col className="gutter-row field-label" span={12}>Organization Name:</Col>
-                                <Col className="gutter-row field-value" span={12}> <EditBox type="input" value="acy zeologix" onBlur={value => this.onBlur('name', value)} /></Col>
-                            </Row>
-                        </Col>
-                        <Col className="gutter-row" span={12}>
-                            <Row>
-                                <Col className="gutter-row field-label" span={12}>Default Time Zone:</Col>
-                                <Col className="gutter-row field-value" span={12}> <EditBox type="select" value="bj" options={timeZoneOptions} onBlur={value => this.onBlur('timezone', value)} /></Col>
-                            </Row>
-                        </Col>
+  render() {
+    const { formatMessage } = this.props.intl;
+    const rightActions = (() => {
+      const actions = [];
+      actions.push(<Button className="btn-ellipse ml-sm" size="small" icon="user-add" onClick={() => window.location = './setup/users?action=add'}>{ formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>);
+      actions.push(<Button className="btn-ellipse ml-sm" size="small" icon="eye" onClick={() => window.location = './setup/users?action=view'}>{ formatMessage({ id: 'global.ui.button.view' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>);
+      return actions;
+    })();
+    const dataSource = [{
+      key: '1',
+      name: '胡彦斌',
+      age: 32,
+      address: '西湖区湖底公园1号',
+    }, {
+      key: '2',
+      name: '胡彦祖',
+      age: 42,
+      address: '西湖区湖底公园1号',
+    }];
 
-                    </Row>
-                    <Row className="info-display-table-row">
-                        <Col className="gutter-row" span={12}>
-                            <Row>
-                                <Col className="gutter-row field-label" span={12}>Organization Name:</Col>
-                                <Col className="gutter-row field-value" span={12}> <EditBox type="input" value="acy zeologix" onBlur={value => this.onBlur('name', value)} /></Col>
-                            </Row>
-                        </Col>
-                        <Col className="gutter-row" span={12}>
-                            <Row>
-                                <Col className="gutter-row field-label" span={12}>Default Time Zone:</Col>
-                                <Col className="gutter-row field-value" span={12}> <EditBox type="select" value="bj" options={timeZoneOptions} onBlur={value => this.onBlur('timezone', value)} /></Col>
-                            </Row>
-                        </Col>
-
-                    </Row>
-                </div>
-            </Panel>
-        );
-    }
+    const columns = [{
+      title: '姓名',
+      dataIndex: 'name',
+      key: 'name',
+    }, {
+      title: '年龄',
+      dataIndex: 'age',
+      key: 'age',
+    }, {
+      title: '住址',
+      dataIndex: 'address',
+      key: 'address',
+    }];
+    return (
+      <Panel panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions}>
+        <Table dataSource={dataSource} columns={columns} pagination={false} rowSelection={{}} />
+      </Panel>
+    );
+  }
 }
 companyUserStatic.propTypes = {
-    intl: intlShape.isRequired,
+  intl: intlShape.isRequired,
 };
 
 export default injectIntl(companyUserStatic);

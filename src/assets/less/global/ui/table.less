@@ -1,0 +1,20 @@
+@import "../../theme.less";
+
+.ant-table-thead > tr > th{
+  border-bottom: 2px solid #cad6e2;
+  color: @page-color-default;
+  &:first-child{
+    padding-left: 15px;
+  }
+
+}
+.ant-table-tbody > tr {
+   & > td{
+    &:first-child{
+      padding-left: 15px;
+    }
+  }
+  &:nth-of-type(odd) {
+    background-color: #f2f5f8;
+  }
+}
