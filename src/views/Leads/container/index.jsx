@@ -5,10 +5,6 @@ import { Row } from 'antd';
 import Topbar from './Topbar';
 
 class Leads extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
 
   render() {
     return (
