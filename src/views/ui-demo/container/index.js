@@ -5,6 +5,7 @@ import Panels from '../component/panels';
 import Buttons from '../component/buttons';
 import Checkboxes from '../component/checbox';
 import Radios from '../component/radios';
+import Dialog from '../component/dialog';
 
 const AntdPanel = Collapse.Panel;
 
@@ -22,6 +23,9 @@ const UIDemo = () => (
     </AntdPanel>
     <AntdPanel header="Radios" key="4">
       <Radios />
+    </AntdPanel>
+    <AntdPanel header="Dialogs" key="5">
+      <Dialog />
     </AntdPanel>
   </Collapse>
 
