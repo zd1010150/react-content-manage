@@ -5,7 +5,7 @@ import { Panel } from 'components/ui/index';
 
 
 const UIDEMO = () => {
-  const actionsLeft = <div><Button className="btn-ellipse ml-sm lead-theme" size="small">mass update</Button><Button className="btn-ellipse ml-sm account-theme" size="small">mass delete</Button></div>;
+  const actionsLeft = <div><Button className="btn-ellipse ml-sm lead-theme-btn" size="small">mass update</Button><Button className="btn-ellipse ml-sm account-theme-btn" size="small">mass delete</Button></div>;
 
   return (
     <div>
