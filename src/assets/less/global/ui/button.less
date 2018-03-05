@@ -12,8 +12,6 @@
   border-color: @error-color;
 }
 
-
-/*dandan*/
 .theme-btn(@theme){
   @selector : ~'.@{theme}-theme-btn'; /*获取selector*/
   @theme-color-value-name: '@{theme}-theme-color'; /*获取变量名*/
@@ -28,9 +26,6 @@
   }
 }
 
-
-@themes: lead, account, opport, report;
-
 .make-theme-btn-classes(@i: length(@themes)) when (@i > 0) {
   .make-theme-btn-classes(@i - 1);
   @theme: extract(@themes, @i);
@@ -38,22 +33,3 @@
 }
 
 .make-theme-btn-classes();
-
-//.ant-btn{
-//  &.lead-theme-btn{
-//    background-color: @lead-theme-color;
-//    &:hover, &:focus{
-//      color: @lead-theme-color;
-//      background-color: @crm-white;
-//      border-color: @lead-theme-color;
-//    }
-//  }
-//  &.account-theme-btn{
-//    background-color: @account-theme-color;
-//    &:hover, &:focus{
-//      color: @lead-theme-color;
-//      background-color: @crm-white;
-//      border-color: @lead-theme-color;
-//    }
-//  }
-//}

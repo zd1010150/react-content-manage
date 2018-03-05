@@ -36,15 +36,19 @@
   }
 }
 
-.panel.lead-theme-panel{
-  border-top:3px solid @lead-theme-color;
+.theme-panel(@theme){
+  @selector : ~'.panel.@{theme}-theme-panel'; /*获取selector*/
+  @theme-color-value-name: '@{theme}-theme-color'; /*获取变量名*/
+  @theme-color-value: @@theme-color-value-name; /*获取变量名对应的值*/
+  @{selector}{
+    border-top: 3px solid @theme-color-value;
+  }
 }
-.panel.account-theme-panel{
-  border-top:3px solid @account-theme-color;
+
+.make-theme-panel-classes(@i: length(@themes)) when (@i > 0) {
+  .make-theme-panel-classes(@i - 1);
+  @theme: extract(@themes, @i);
+  .theme-panel(@theme)
 }
-.panel.opport-theme-panel{
-  border-top: 3px solid @opport-theme-color;
-}
-.panel.report-theme-panel{
-  border-top: 3px solid @report-theme-color;
-}
+
+.make-theme-panel-classes();

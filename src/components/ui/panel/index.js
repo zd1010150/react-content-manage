@@ -34,8 +34,8 @@ class Panel extends React.Component {
 }
 Panel.defaultProps = {
   panelTitle: '',
-  actionsLeft: <span />,
-  actionsRight: <span />,
+  actionsLeft: null,
+  actionsRight: null,
   content: '',
   panelClasses: '',
   contentClasses: '',
