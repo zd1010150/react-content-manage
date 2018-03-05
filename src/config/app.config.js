@@ -20,5 +20,10 @@ export const CURRENCY_SYMBOL = {
   [CHINA_RMB_CODE]: '￥',
   [AUS_DOLLER_CODE]: '$',
 };
-
+export const PAGE_ACTION = {
+  ADD: 'add',
+  EDIT: 'edit',
+  VIEWALL: 'viewAll',
+  VIEWDETAIL: 'viewDetail',
+};
 export const URL_PREFIX = '/admin'; // 配置的url前缀，在magento中,本应用的所有的访问路径前缀

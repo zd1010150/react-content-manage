@@ -19,7 +19,7 @@ const MainContent = () => (
     <Route path="/setup/drag-preveiw" component={DragPreview} />
     <Route path="/setup/ui-demo" component={UIDemo} />
     <Route path="/setup/company-info" component={CompanyInfo} />
-    {/*<Route path="/setup/users" component={Users} />*/}
+    <Route path="/setup/users" component={Users} />
   </Switch>
 );
 export default MainContent;

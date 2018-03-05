@@ -3,17 +3,12 @@ import React from 'react';
 import { Table, Button } from 'antd';
 import { Panel } from 'components/ui/index';
 import { intlShape, injectIntl } from 'react-intl';
-import { PAGE_ACTION } from 'config/app.config';
 
-class companyUserStatic extends React.Component {
+
+class usersTableView extends React.Component {
   render() {
     const { formatMessage } = this.props.intl;
-    const rightActions = (() => {
-      const actions = [];
-      actions.push(<Button key="addBtn" className="btn-ellipse ml-sm" size="small" icon="user-add" onClick={() => window.location = `./setup/users?action=${PAGE_ACTION.ADD}`}>{ formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>);
-      actions.push(<Button key="viewAll" className="btn-ellipse ml-sm" size="small" icon="eye" onClick={() => window.location = `./setup/users?action=${PAGE_ACTION.VIEWALL}`}>{ formatMessage({ id: 'global.ui.button.view' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>);
-      return actions;
-    })();
+    const rightActions = <Button key="addBtn" className="btn-ellipse ml-sm" size="small" icon="user-add" onClick={() => window.location = './setup/users?action=add'}>{ formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>;
     const dataSource = [{
       key: '1',
       name: '胡彦斌',
@@ -46,8 +41,8 @@ class companyUserStatic extends React.Component {
     );
   }
 }
-companyUserStatic.propTypes = {
+usersTableView.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default injectIntl(companyUserStatic);
+export default injectIntl(usersTableView);
