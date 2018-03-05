@@ -10,8 +10,8 @@ class companyUserStatic extends React.Component {
     const { formatMessage } = this.props.intl;
     const rightActions = (() => {
       const actions = [];
-      actions.push(<Button className="btn-ellipse ml-sm" size="small" icon="user-add" onClick={() => window.location = './setup/users?action=add'}>{ formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>);
-      actions.push(<Button className="btn-ellipse ml-sm" size="small" icon="eye" onClick={() => window.location = './setup/users?action=view'}>{ formatMessage({ id: 'global.ui.button.view' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>);
+      actions.push(<Button key="addBtn" className="btn-ellipse ml-sm" size="small" icon="user-add" onClick={() => window.location = './setup/users?action=add'}>{ formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>);
+      actions.push(<Button key="viewAll" className="btn-ellipse ml-sm" size="small" icon="eye" onClick={() => window.location = './setup/users?action=view'}>{ formatMessage({ id: 'global.ui.button.view' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>);
       return actions;
     })();
     const dataSource = [{
