@@ -42,8 +42,8 @@ Panel.defaultProps = {
 };
 Panel.propTypes = {
   panelTitle: PropTypes.string,
-  actionsLeft: PropTypes.element,
-  actionsRight: PropTypes.element,
+  actionsLeft: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
+  actionsRight: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   panelClasses: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   contentClasses: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),

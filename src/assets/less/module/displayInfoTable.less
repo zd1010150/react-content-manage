@@ -1,0 +1,23 @@
+@import "../theme.less";
+
+.info-display-table{
+  width: 100%;
+  .info-display-table-row{
+    border-bottom: @grey-border;
+    &:last-child{
+      border-bottom: none;
+    }
+  }
+  .field-label{
+    font-weight: 700;
+    display: inline-block;
+    text-align: right;
+    padding: 4px 0 3px;
+  }
+  .field-value{
+    text-align: left;
+    line-height: 28px;
+    display: inline-block;
+    padding: 0px 4px;
+  }
+}
