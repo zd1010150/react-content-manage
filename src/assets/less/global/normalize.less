@@ -59,16 +59,20 @@
 .mb-xlg{
   margin-bottom: 20px;
 }
+/*dannormal*/
+.theme-normal(@theme){
+  @selector : ~'.@{theme}-theme'; /*获取selector*/
+  @theme-color-value-name: '@{theme}-theme-color'; /*获取变量名*/
+  @theme-color-value: @@theme-color-value-name; /*获取变量名对应的值*/
+  @{selector}{
+    background-color: @theme-color-value !important;
+  }
+}
 
-.lead-theme{
-  background-color: @lead-theme-color !important;
+.make-theme-normal-classes(@i: length(@themes)) when (@i > 0) {
+  .make-theme-normal-classes(@i - 1);
+  @theme: extract(@themes, @i);
+  .theme-normal(@theme)
 }
-.account-theme{
-  background-color: @account-theme-color !important;
-}
-.opport-theme{
-  background-color: @opport-theme-color !important;
-}
-.report-theme{
-  background-color: @report-theme-color !important;
-}
+
+.make-theme-normal-classes();
