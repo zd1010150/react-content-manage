@@ -7,17 +7,14 @@ const cx = classNames.bind(styles);
 
 const defaultProps = {
   labelText: 'Default Label',
-  placeholder: 'enter'
+  withSearch: false,
 };
 const propTypes = {
   labelText: PropTypes.string.isRequired,
   labelColor: PropTypes.string,
   placeholder: PropTypes.string,
-  underlineColor: PropTypes.shape({
-    default: PropTypes.string,
-    focused: PropTypes.string,
-  }),
   syncWithRedux: PropTypes.func,
+  withSearch: PropTypes.bool.isRequired,
 };
 
 class FloatingLabelInput extends Component {
@@ -43,22 +40,28 @@ class FloatingLabelInput extends Component {
   }
 
   onChange = e => {
-    const value = e.target.value;
+    const { value } = e.target;
     this.setState({
       isEmpty: value.length === 0,
       value: value,
     });
-    // TODO:
-    // able to sync with redux
+  }
+
+  onSearch = value => {
+    // Exposure to redux actions
     const { syncWithRedux } = this.props;
     if (syncWithRedux && typeof syncWithRedux === 'function') {
       syncWithRedux(value);
     }
   }
 
+  onPressEnter = e => {
+    this.onSearch(e.target.value);
+  }
+
   render() {
     const { isEmpty, isFocused, value } = this.state;
-    const { labelText, placeholder, labelColor } = this.props;
+    const { labelText, labelColor, placeholder , withSearch } = this.props;
     const shouldLabelUp = !(!isFocused && isEmpty);
     const shouldShowPlaceholder = isFocused && isEmpty;
 
@@ -70,18 +73,30 @@ class FloatingLabelInput extends Component {
         >
           {labelText}
         </label>
-        <div className={cx('placeholder') + (shouldShowPlaceholder ? ' ' + cx('show') : '')}>
+        <div className={cx('placeholder') + (shouldShowPlaceholder ? ` ${cx('show')}` : '')}>
           {placeholder}
         </div>
-        <Input
-          value={value}
-          onBlur={this.onBlur}
-          onChange={this.onChange}
-          onFocus={this.onFocus}
-        />
+        {withSearch ? (
+          <Input.Search
+            value={value}
+            onBlur={this.onBlur}
+            onChange={this.onChange}
+            onFocus={this.onFocus}
+            onPressEnter={this.onPressEnter}
+            onSearch={this.onSearch}
+            enterButton
+          />
+        ) : (
+          <Input
+            value={value}
+            onBlur={this.onBlur}
+            onChange={this.onChange}
+            onFocus={this.onFocus}
+          />
+        )}
         <div>
           <hr />
-          <hr className={cx('default') + (isFocused ? ' ' + cx('highlighted') : '')} />
+          <hr className={cx('default') + (isFocused ? ` ${cx('highlighted')}` : '')} />
         </div>
       </div>
     );
