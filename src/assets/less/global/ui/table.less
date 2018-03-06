@@ -65,15 +65,32 @@
     width: 200px;
 
     .ant-pagination-total-text {
-      float: right;
+      // float: right;
       margin-right: 0;
-      background-color: @secondary-dark-color;
+      position: absolute;
+      bottom: 32px;
+      right: 0;
+    }
+
+    .ant-pagination-total-text,
+    .ant-pagination-options {
       background-color: @secondary-dark-color;
       color: @brk-text-white-color;
       padding: 0 15px 0;
       border-radius: 15px 0 0 15px;
     }
     
+    .ant-pagination-options {
+      padding: 2px 15px;
+      .ant-select-selection {
+        font-size: @font-size-sm;
+        color: @brk-text-white-color;
+        .ant-select-arrow {
+          color: @brk-text-white-color;
+        }
+      }
+    }
+
     .ant-pagination-prev,
     .ant-pagination-item {
       margin: 0 0 5px 150px;
@@ -86,6 +103,8 @@
     }
 
     .ant-pagination-next {
+      margin-left: 150px;
+      margin-bottom: 35px;
       .ant-pagination-item-link:after {
         content: '\E61D';
       }

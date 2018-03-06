@@ -20,6 +20,7 @@ const PaginationExample = () => {
         showTotal={(total, range) => `${range[0]}-${range[1]} / ${total}`}
         pageSize={20}
         defaultCurrent={1}
+        showSizeChanger
         className="stickToRight"
         size="small"
       />
