@@ -1,5 +1,8 @@
 import moment from 'moment';
 import { getStore } from './localStorage';
+
+// possible utc offset list pls refer to https://en.wikipedia.org/wiki/List_of_UTC_time_offsets
+
 /**
  * 
  * @param {string} timeStr normal time string, e.g. '2018-03-06 20:00:00'
