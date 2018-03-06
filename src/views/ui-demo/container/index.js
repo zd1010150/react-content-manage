@@ -8,6 +8,8 @@ import Checkboxes from '../component/checbox';
 import Radios from '../component/radios';
 import Dialog from '../component/dialog';
 
+import DateTimePicker from '../component/DateTimePicker';
+
 const AntdPanel = Collapse.Panel;
 
 
@@ -30,6 +32,9 @@ const UIDemo = () => (
     </AntdPanel>
     <AntdPanel header="Edit Field" key="6">
           参见<Link to="/setup/company-info">公司信息的修改  click me! </Link>
+    </AntdPanel>
+    <AntdPanel header="Date Conversion" key="8">
+      <DateTimePicker />
     </AntdPanel>
   </Collapse>
 
