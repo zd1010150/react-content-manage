@@ -23,7 +23,6 @@ class FloatingLabelInput extends Component {
     this.state = {
       isEmpty: true,
       isFocused: false,
-      value: '',
     };
   }
 
@@ -43,25 +42,30 @@ class FloatingLabelInput extends Component {
     const { value } = e.target;
     this.setState({
       isEmpty: value.length === 0,
-      value: value,
     });
-  }
 
-  onSearch = value => {
-    // Exposure to redux actions
-    const { syncWithRedux } = this.props;
-    if (syncWithRedux && typeof syncWithRedux === 'function') {
-      syncWithRedux(value);
+    // Exposure to parent component
+    const { handleChange } = this.props;
+    if (handleChange && typeof handleChange === 'function') {
+      handleChange(value);
     }
   }
 
-  onPressEnter = e => {
-    this.onSearch(e.target.value);
+  onSearch = () => {
+    // Exposure to parent component
+    const { syncWithRedux } = this.props;
+    if (syncWithRedux && typeof syncWithRedux === 'function') {
+      syncWithRedux();
+    }
+  }
+
+  onPressEnter = () => {
+    this.onSearch();
   }
 
   render() {
-    const { isEmpty, isFocused, value } = this.state;
-    const { labelText, labelColor, placeholder , withSearch } = this.props;
+    const { isEmpty, isFocused } = this.state;
+    const { labelText, labelColor, placeholder , withSearch, value } = this.props;
     const shouldLabelUp = !(!isFocused && isEmpty);
     const shouldShowPlaceholder = isFocused && isEmpty;
 

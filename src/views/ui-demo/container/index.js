@@ -26,14 +26,14 @@ const UIDemo = () => (
     <AntdPanel header="Radios" key="4">
       <Radios />
     </AntdPanel>
-    <AntdPanel header="Inputs" key="5">
-      <Inputs />
-    </AntdPanel>
-    <AntdPanel header="Dialogs" key="6">
+    <AntdPanel header="Dialogs" key="5">
       <Dialog />
     </AntdPanel>
-    <AntdPanel header="Edit Field" key="7">
+    <AntdPanel header="Edit Field" key="6">
       参见<Link to="/setup/company-info">公司信息的修改  click me! </Link>
+    </AntdPanel>
+    <AntdPanel header="Inputs" key="7">
+      <Inputs />
     </AntdPanel>
   </Collapse>
 
