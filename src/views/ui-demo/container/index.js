@@ -8,6 +8,9 @@ import Checkboxes from '../component/checbox';
 import Radios from '../component/radios';
 import Dialog from '../component/dialog';
 
+
+import PaginationExample from '../component/Pagination';
+
 const AntdPanel = Collapse.Panel;
 
 
@@ -30,6 +33,9 @@ const UIDemo = () => (
     </AntdPanel>
     <AntdPanel header="Edit Field" key="6">
           参见<Link to="/setup/company-info">公司信息的修改  click me! </Link>
+    </AntdPanel>
+    <AntdPanel header="Pagination" key="9">
+      <PaginationExample />
     </AntdPanel>
   </Collapse>
 

@@ -18,3 +18,43 @@
     background-color: #f2f5f8;
   }
 }
+
+.ant-pagination.mini {  
+  text-align: right;
+  font-size: @font-size-sm;
+
+  .ant-pagination-total-text {
+    float: left;
+  }
+  
+  .ant-pagination-prev {
+    margin-right: 5px;
+  }
+
+  .ant-pagination-prev, .ant-pagination-next {
+    border-radius: 15px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 2px 0 rgba(0,0,0,.12);
+    background-color: @brk-text-white-color;
+  }
+
+  .ant-pagination-item {
+    margin-right: 5px;
+    border-radius: 15px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 2px 0 rgba(0,0,0,.12);
+    
+    &:not(.ant-pagination-item-active) {
+      background-color: @brk-text-white-color;
+    }
+
+    a {
+      color: @secondary-dark-color;
+    }
+
+    &.ant-pagination-item-active {
+      background-color: @secondary-dark-color !important;
+      a {
+        color: @brk-text-white-color;
+      }
+    }
+  }
+}
