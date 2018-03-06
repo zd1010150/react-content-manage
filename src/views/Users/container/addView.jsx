@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Table, Button } from 'antd';
 import { Panel } from 'components/ui/index';
 import { intlShape, injectIntl } from 'react-intl';
-
+import { TeamTree } from 'components/page/index';
 
 class addEditView extends React.Component {
   render() {
@@ -12,7 +12,7 @@ class addEditView extends React.Component {
 
     return (
       <Panel panelTitle={this.props.actionType}>
-        edit
+        <TeamTree />
       </Panel>
     );
   }

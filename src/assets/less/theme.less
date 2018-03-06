@@ -5,6 +5,7 @@
 @crm-purple: #7E57C2;
 @crm-red: #E53935;
 @crm-white: #fff;
+@crm-hover-color: #f2f5f8;
 @secondary-dark-color: #4e4e4e;
 
 @lead-theme-color: @crm-green;
@@ -17,7 +18,7 @@
 @component-background: #f5f5f5;
 @tooltip-bg: rgba(255, 255, 255, .75);
 @primary-color          : #1b1e24;
-@primary-2 :#e2e8da;
+@primary-2 :@crm-hover-color;
 @error-color            : @crm-red;
 @error-color-2: #f4ffb8;
 
@@ -38,9 +39,14 @@
 @radio-button-bg: @crm-white;
 @table-padding-vertical: 5px;
 @table-padding-horizontal: 5px;
-@table-row-hover-bg:#f2f5f8;
+@table-row-hover-bg:@crm-hover-color;
+@item-hover-bg:@crm-hover-color;
+@item-active-bg:@crm-hover-color;
 
-// breakable 的参数变量
+@menu-dark-color: #8e8e8e;
+@menu-item-height: 30px;
+
+  // breakable 的参数变量
 @brk-text-white-color: #fff;
 @brk-body-bg-color: #f5f5f5;
 @brk-page-max-width: 1280px;

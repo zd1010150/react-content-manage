@@ -13,12 +13,13 @@ const SetupLayout = () => (
     <SetupSider />
     <Layout>
       <Content style={{
-                background: '#fff', padding: 24, margin: 0, minHeight: 280,
+                background: '#fff', padding: 24, margin: 0, minHeight: 400, maxHeight: 1000, overflow: 'auto',
             }}
       >
         <MainContent />
+
       </Content>
-      <Footer><CopyRight /></Footer>
+      <Footer ><CopyRight /></Footer>
     </Layout>
   </Layout>
 );
