@@ -10,7 +10,7 @@ const Topbar = () => {
     sm: 12,
   }
   return (
-    <Row>
+    <Row style={{ marginBottom: 5 }}>
       <Col {...colLayout}>
         <ViewFilterWrapper />
       </Col>

@@ -10,9 +10,10 @@ const propTypes = {
   intl: intlShape.isRequired,
   theme: PropTypes.oneOf(['lead', 'account', 'opport']),
   selectedIds: PropTypes.array.isRequired,
+  onMassUpdateClick: PropTypes.func,
 };
 
-const LeftActions = ({ intl, theme, selectedIds, permissions }) => {
+const LeftActions = ({ intl, theme, selectedIds, onMassUpdateClick, permissions }) => {
   const { formatMessage } = intl;
   const btnSettings = {
     className: `btn-ellipse ml-sm ${theme}-theme-btn`,
@@ -24,7 +25,7 @@ const LeftActions = ({ intl, theme, selectedIds, permissions }) => {
 
   return (
     <Fragment>
-      <Button {...btnSettings} >
+      <Button {...btnSettings} onClick={onMassUpdateClick} >
         <Icon type="edit"/>
         {formatMessage({ id: 'global.ui.button.massUpdate' })}
       </Button>
