@@ -8,8 +8,9 @@ import Checkboxes from '../component/checbox';
 import Radios from '../component/radios';
 import Inputs from '../component/Inputs';
 import Dialog from '../component/dialog';
-
+import PaginationExample from '../component/Pagination';
 import DateTimePicker from '../component/DateTimePicker';
+
 
 const AntdPanel = Collapse.Panel;
 
@@ -39,6 +40,9 @@ const UIDemo = () => (
     </AntdPanel>
     <AntdPanel header="Date Conversion" key="8">
       <DateTimePicker />
+    </AntdPanel>
+    <AntdPanel header="Pagination" key="9">
+      <PaginationExample />
     </AntdPanel>
   </Collapse>
 
