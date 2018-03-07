@@ -2,12 +2,13 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Panel, LeftActions, RightActions, Modal } from 'components/ui/index';
+import TableWrapper from '../components/Table/index';
 
 class LeadPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIds: [1],
+      selectedIds: [],
       visible: false,
     }
   }
@@ -24,6 +25,10 @@ class LeadPanel extends Component {
 
   onModalCancelClick = () => {
     this.setState({ visible: false });
+  }
+
+  onSelectChange = (selectedIds, records) => {
+    this.setState({ selectedIds });
   }
 
   render() {
@@ -52,7 +57,10 @@ class LeadPanel extends Component {
           actionsLeft={leftActions}
           actionsRight={rightActions}
         >
-          this is test
+          <TableWrapper
+            selectedIds={selectedIds}
+            onSelectChange={this.onSelectChange}
+          />
         </Panel>
         <Modal
           title="Mass Update"
