@@ -9,6 +9,8 @@ import Radios from '../component/radios';
 import Inputs from '../component/Inputs';
 import Dialog from '../component/dialog';
 
+import DateTimePicker from '../component/DateTimePicker';
+
 const AntdPanel = Collapse.Panel;
 
 
@@ -34,6 +36,9 @@ const UIDemo = () => (
     </AntdPanel>
     <AntdPanel header="Inputs" key="7">
       <Inputs />
+    </AntdPanel>
+    <AntdPanel header="Date Conversion" key="8">
+      <DateTimePicker />
     </AntdPanel>
   </Collapse>
 
