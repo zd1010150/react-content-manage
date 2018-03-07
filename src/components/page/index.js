@@ -8,6 +8,7 @@ import ErrorNotification from './ErrorNotification';
 import SetupSider from './Sider/container';
 import AuthMainContent from './AuthMainContent';
 import SetupContent from './SetupContent';
+import TeamTree from './TeamTree';
 
 export {
   TopPanel,
@@ -20,5 +21,6 @@ export {
   SetupSider,
   AuthMainContent,
   SetupContent,
+  TeamTree,
 };
 
