@@ -5,10 +5,14 @@ import { Row } from 'antd';
 import Topbar from './Topbar';
 import Panel from './Panel';
 
+// test
+import { FloatingLabelInput } from 'components/ui/index';
+// test ends
+
 class Leads extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+
+  syncWithRedux = value => {
+    console.log(`ATTENTION -> ${value}`);
   }
 
   render() {
