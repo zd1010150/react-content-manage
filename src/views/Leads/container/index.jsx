@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Row } from 'antd';
 
 import Topbar from './Topbar';
+import Panel from './Panel';
 
 class Leads extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class Leads extends Component {
       <Fragment>
         <Topbar />
         {/* tables and table top bar */}
+        <Panel theme="lead"/>
       </Fragment>
     );
   }

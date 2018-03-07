@@ -12,6 +12,8 @@ const EnumsManager = Object.freeze({
     'timepicker',
     'picklist'
   ]),
+
+  ThemeTypes: Object.freeze(['lead', 'account', 'opport']),
 });
 
 export default EnumsManager;

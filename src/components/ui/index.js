@@ -5,7 +5,7 @@ import ViewFilter from './ViewFilter';
 import ListTopButtons from './ListTopButton/index';
 import EditBox from './editBox/index';
 import Panel from './panel/index';
-
+import { LeftActions, RightActions } from './ActionButtons/index';
 
 export {
   Upload,
@@ -14,4 +14,7 @@ export {
   ListTopButtons,
   Panel,
   EditBox,
+
+  LeftActions,
+  RightActions,
 };
