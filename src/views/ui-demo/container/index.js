@@ -6,6 +6,7 @@ import Panels from '../component/panels';
 import Buttons from '../component/buttons';
 import Checkboxes from '../component/checbox';
 import Radios from '../component/radios';
+import Inputs from '../component/Inputs';
 import Dialog from '../component/dialog';
 
 const AntdPanel = Collapse.Panel;
@@ -29,7 +30,10 @@ const UIDemo = () => (
       <Dialog />
     </AntdPanel>
     <AntdPanel header="Edit Field" key="6">
-          参见<Link to="/setup/company-info">公司信息的修改  click me! </Link>
+      参见<Link to="/setup/company-info">公司信息的修改  click me! </Link>
+    </AntdPanel>
+    <AntdPanel header="Inputs" key="7">
+      <Inputs />
     </AntdPanel>
   </Collapse>
 

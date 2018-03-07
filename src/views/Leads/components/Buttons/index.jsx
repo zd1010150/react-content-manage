@@ -11,7 +11,7 @@ class ButtonsWrapper extends Component {
 
   render() {
     return (
-        <ListTopButtons />
+      <ListTopButtons />
     );
   }
 }
