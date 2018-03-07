@@ -33,7 +33,7 @@ const UIDemo = () => (
       <Dialog />
     </AntdPanel>
     <AntdPanel header="Edit Field" key="6">
-      参见<Link to="/setup/company-info">公司信息的修改  click me! </Link>
+      参见<Link to="/setup/company-info/company-info">公司信息的修改  click me! </Link>
     </AntdPanel>
     <AntdPanel header="Inputs" key="7">
       <Inputs />
