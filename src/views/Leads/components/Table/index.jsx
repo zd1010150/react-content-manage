@@ -7,7 +7,6 @@ import Enums from 'utils/EnumsManager';
 import { fetchByParams, deleteLead } from './flow/actions';
 
 const defaultProps = {
-
 };
 const propTypes = {
   selectedIds: PropTypes.arrayOf(PropTypes.number),
@@ -28,12 +27,11 @@ class TableWrapper extends Component {
 
   onTableChange = (pagination, filters, sorter) => {
     debugger;
-    // TODO: fetch on page change
-
-    // TODO: fetch on sorter change -> sorter.field, sorter.order
     const { current, pageSize } = pagination;
     const { columnKey, order } = sorter;
-    this.props.fetchByParams(current, pageSize, columnKey, order);
+    // Antd only provide two sort orders, values are not match with API requirements, so we have to change the value for backend
+    const orderToBackend = order ? Enums.SortOrders[order] : '';
+    this.props.fetchByParams(current, pageSize, columnKey, orderToBackend);
   }
 
   render() {
@@ -52,6 +50,7 @@ class TableWrapper extends Component {
         rowSelection={rowSelection}
         onChange={this.onTableChange}
         onDeleteClick={this.onItemDelete}
+        pagination={pagination}
         isPaginationFixed
         theme="lead"
       />
@@ -67,7 +66,7 @@ const mapStateToProps = ({ leads }) => ({
   pagination: leads.table.pagination,
 });
 const mapDispatchToProps = {
-  deleteLead,
   fetchByParams,
+  deleteLead,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TableWrapper);

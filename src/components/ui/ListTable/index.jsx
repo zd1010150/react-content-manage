@@ -5,14 +5,17 @@ import { Table, Icon } from 'antd';
 import classNames from 'classnames/bind';
 import styles from './index.less';
 const cx = classNames.bind(styles);
+import Enums from 'utils/EnumsManager';
 
 const defaultProps = {
+  theme: 'lead',
   columns: [],
   dataSource: [],
   pagination: {},
   isPaginationFixed: false,
 };
 const propTypes = {
+  theme: PropTypes.string.isRequired,
   columns: PropTypes.array.isRequired,
   dataSource: PropTypes.array.isRequired,
   pagination: PropTypes.object.isRequired,
@@ -21,22 +24,29 @@ const propTypes = {
 
 // merge pagination from redux with static settings
 const getPagination = (pagination, isFixed) => {
+  const { current, pageSize, total } = pagination;
   return {
+    ...pagination,
+    pageSizeOptions: Enums.DefaultPageConfigs.Options,
     size: 'small',
     className: isFixed ? 'stickToRight' : '',
-    total: 800,
     showSizeChanger: isFixed ? true : false,
     showTotal: (total, range) => isFixed ? `${range[0]}-${range[1]} / ${total}` : `showing ${range[0]}-${range[1]} of ${total} items`,
   };
 };
 
-const renderColumns = (data, onDeleteClick) => {
+const renderColumns = (data, onDeleteClick, theme) => {
   const columns = data.map(column => {
     let render = {};
     if (column.field_name === 'name' || column.field_name === 'email') {
       render = {
-        render: text => (
-          <Link to={`/lead/${text.id}`}>{text}</Link>
+        render: (text, record) => (
+          <Link
+            className={`${theme}-link`}
+            to={`/${theme}/${record.id}`}
+          >
+            {text}
+          </Link>
         ),
       };
     }
@@ -70,25 +80,24 @@ const ListTable = ({
   columns, isPaginationFixed,
   onDeleteClick,
   pagination,
-  // same name
-  // {...other}
-  dataSource,
-  onChange,
-  rowSelection,
+  theme,
+  
+  // dataSource,
+  // onChange,
+  // rowSelection,
+  ...other
 }) => {
 
   return (
     <Table
-      columns={renderColumns(columns, onDeleteClick)}      
+      columns={renderColumns(columns, onDeleteClick, theme)}
       pagination={getPagination(pagination, isPaginationFixed)}
       scroll={{ x: 2000 }}
       rowKey={record => record.id}
       size="small"
       className={cx('listTable')}
-      // {...other}
-      dataSource={dataSource}
-      onChange={onChange}
-      rowSelection={rowSelection}
+
+      {...other}
     />
   );
 };
