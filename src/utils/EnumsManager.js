@@ -4,7 +4,8 @@ const EnumsManager = Object.freeze({
   PhantomID: '0000-0000',
 
   DefaultPageConfigs: Object.freeze({
-    PageSize: 10,
+    PageSizeSmall: 10,
+    PageSize: 25,
   }),
 
   DataType: Object.freeze([
