@@ -8,38 +8,38 @@ const cx = ClassNames.bind(styles);
 const TreeNode = Tree.TreeNode;
 
 const treeData = [{
-  title: '0-0',
+  title: 'administrator 1',
   key: '0-0',
   children: [{
-    title: '0-0-0',
+    title: 'administrator sub 1',
     key: '0-0-0',
     children: [
-      { title: '0-0-0-0', key: '0-0-0-0' },
-      { title: '0-0-0-1', key: '0-0-0-1' },
-      { title: '0-0-0-2', key: '0-0-0-2' },
+      { title: 'administrator sub 1 1', key: '0-0-0-0' },
+      { title: 'administrator sub 1 2', key: '0-0-0-1' },
+      { title: 'administrator sub 1 3', key: '0-0-0-2' },
     ],
   }, {
-    title: '0-0-1',
+    title: 'administrator sub 2',
     key: '0-0-1',
     children: [
-      { title: '0-0-1-0', key: '0-0-1-0' },
-      { title: '0-0-1-1', key: '0-0-1-1' },
-      { title: '0-0-1-2', key: '0-0-1-2' },
+      { title: 'administrator sub 2 1', key: '0-0-1-0' },
+      { title: 'administrator sub 2 2', key: '0-0-1-1' },
+      { title: 'administrator sub 2 3', key: '0-0-1-2' },
     ],
   }, {
-    title: '0-0-2',
+    title: 'administrator 2',
     key: '0-0-2',
   }],
 }, {
-  title: '0-1',
+  title: 'marketing 1',
   key: '0-1',
   children: [
-    { title: '0-1-0-0', key: '0-1-0-0' },
-    { title: '0-1-0-1', key: '0-1-0-1' },
-    { title: '0-1-0-2', key: '0-1-0-2' },
+    { title: 'marketing sub 1', key: '0-1-0-0' },
+    { title: 'marketing sub 2', key: '0-1-0-1' },
+    { title: 'marketing sub 3', key: '0-1-0-2' },
   ],
 }, {
-  title: '0-2',
+  title: 'Personnel 1',
   key: '0-2',
 }];
 
@@ -66,10 +66,9 @@ class teamTree extends React.Component {
       this.setState({ checkedKeys });
       this.props.onCheck(checkedKeys);
     }
-    onSelect = (selectedKeys, info) => {
-      console.log('onSelect', info);
+    onSelect = (selectedKeys) => {
       this.setState({ selectedKeys });
-      this.props.onSelect(selectedKeys);
+      this.props.onSelect(selectedKeys, treeData);
     }
     renderTreeNodes(data) {
       const {
@@ -90,7 +89,7 @@ class teamTree extends React.Component {
         );
         if (item.children) {
           return (
-            <TreeNode className={cx('tree-node-line')} title={treeEl} key={item.key} dataRef={item}>
+            <TreeNode className={cx('tree-node-line')} title={treeEl} key={item.key}>
               {this.renderTreeNodes(item.children)}
             </TreeNode>
           );

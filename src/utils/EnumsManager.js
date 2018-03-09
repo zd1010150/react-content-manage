@@ -1,6 +1,6 @@
 const EnumsManager = Object.freeze({
   LocalStorageKey: 'crmLoginUser',
-  
+
   PhantomID: '0000-0000',
 
   DefaultPageConfigs: Object.freeze({
@@ -10,7 +10,7 @@ const EnumsManager = Object.freeze({
   DataType: Object.freeze([
     'datepicker',
     'timepicker',
-    'picklist'
+    'picklist',
   ]),
 });
 
