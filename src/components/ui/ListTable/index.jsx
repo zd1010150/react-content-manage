@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Table, Icon } from 'antd';
+import { Table, Icon, Popconfirm } from 'antd';
 import classNames from 'classnames/bind';
 import styles from './index.less';
 const cx = classNames.bind(styles);
@@ -35,9 +35,17 @@ const getPagination = (pagination, isFixed) => {
   };
 };
 
+const getDataIndexByType = column => {
+  if (column.crm_data_type === Enums.FieldTypes.Lookup) {
+    return `${column.field_name}.${column.lookup_own_field_name}`;
+  }
+  return column.field_name;
+};
+
 const renderColumns = (data, onDeleteClick, theme) => {
   const columns = data.map(column => {
     let render = {};
+    const dataIndex = column.crm_data_type
     if (column.field_name === 'name' || column.field_name === 'email') {
       render = {
         render: (text, record) => (
@@ -53,7 +61,7 @@ const renderColumns = (data, onDeleteClick, theme) => {
     return {
       title: column.field_label,
       key: column.id,
-      dataIndex: column.field_name,
+      dataIndex: getDataIndexByType(column),
       sorter: true,
       ...render
     }
@@ -64,12 +72,12 @@ const renderColumns = (data, onDeleteClick, theme) => {
     key: 'actions',
     width: 30,
     render: text => (
-      <Icon
-        data-id={text.id}
-        style={{ fontSize: 12 }}
-        type='delete'
-        onClick={onDeleteClick}
-      />
+      <Popconfirm
+        title="Are you sure to delete?"
+        onConfirm={() => onDeleteClick(text.id)}
+      >
+        <Icon style={{ fontSize: 12 }} type='delete' />
+      </Popconfirm>
     ),
   });
   return columns;
@@ -90,14 +98,14 @@ const ListTable = ({
 
   return (
     <Table
+      {...other}
+
       columns={renderColumns(columns, onDeleteClick, theme)}
       pagination={getPagination(pagination, isPaginationFixed)}
       scroll={{ x: 2000 }}
       rowKey={record => record.id}
       size="small"
-      className={cx('listTable')}
-
-      {...other}
+      className={cx('listTable')}      
     />
   );
 };

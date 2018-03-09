@@ -18,7 +18,7 @@ const dispatch = (request, dispatcher = () => {}) => {
     if (data.status_code === UNAUTHENTICATION.CODE) { // 如果是401为授权，就跳转到登录界面
       window.location.href = 'https://www.google.com';
     }
-    if (data.errors || data.status_code || data.message) {
+    if (data.errors || data.status_code) {
       let { errors } = data;
       errors = errors || data.status_code;
       if (!_.isEmpty(data.errors)) {

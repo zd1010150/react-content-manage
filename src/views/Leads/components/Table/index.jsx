@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ListTable } from 'components/ui/index';
-import Enums from 'utils/EnumsManager';
-
+import { mapToAPIOrderStr } from 'utils/common';
 import { fetchByParams, deleteLead } from './flow/actions';
 
 const defaultProps = {
@@ -18,20 +17,22 @@ class TableWrapper extends Component {
     this.props.fetchByParams();
   }
 
-  onItemDelete = e => {
-    debugger;
-    // TODO: dispatch to delete
-    this.props.deleteLead(e.target.dataset.id);
-    // TODO: dispatch to refetch
+  onItemDelete = id => {
+    const { pagination, sorter } = this.props;
+    const { current, pageSize } = pagination;
+    const { orderBy, sortedBy } = sorter;
+    this.props.deleteLead(id, {
+      current, pageSize, orderBy, sortedBy
+    });
   }
 
   onTableChange = (pagination, filters, sorter) => {
-    debugger;
     const { current, pageSize } = pagination;
     const { columnKey, order } = sorter;
-    // Antd only provide two sort orders, values are not match with API requirements, so we have to change the value for backend
-    const orderToBackend = order ? Enums.SortOrders[order] : '';
-    this.props.fetchByParams(current, pageSize, columnKey, orderToBackend);
+    // Antd only provide two sort orders, both values are not match with API requirements,
+    // so we have to change the value for backend
+    const mappedOrder = mapToAPIOrderStr(order);
+    this.props.fetchByParams(current, pageSize, columnKey, mappedOrder);
   }
 
   render() {
@@ -64,6 +65,7 @@ const mapStateToProps = ({ leads }) => ({
   columns: leads.table.columns,
   data: leads.table.data,
   pagination: leads.table.pagination,
+  sorter: leads.table.sorter,
 });
 const mapDispatchToProps = {
   fetchByParams,

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Panel, LeftActions, RightActions, Modal } from 'components/ui/index';
 import TableWrapper from '../components/Table/index';
+import { massUpdate, massDelete } from '../components/Table/flow/actions';
 
 class LeadPanel extends Component {
   constructor(props) {
@@ -10,12 +11,24 @@ class LeadPanel extends Component {
     this.state = {
       selectedIds: [],
       visible: false,
-    }
+    };
   }
 
   onMassUpdateClick = () => {
     this.setState({ visible: true });
     // load data
+  }
+
+  onMassDeleteClick = () => {
+    const { selectedIds } = this.state;
+    const { pagination, sorter } = this.props;
+    const { current, pageSize } = pagination;
+    const { orderBy, sortedBy } = sorter;
+    this.props.massDelete(selectedIds, {
+      current, pageSize, orderBy, sortedBy
+    });
+    // reset selectedIds
+    this.setState({ selectedIds: [] });
   }
 
   onModalSaveClick = () => {
@@ -41,6 +54,7 @@ class LeadPanel extends Component {
         selectedIds={selectedIds}
         permissions={permissions}
         onMassUpdateClick={this.onMassUpdateClick}
+        onMassDeleteClick={this.onMassDeleteClick}
       />
     );
     const rightActions = (
@@ -77,9 +91,12 @@ class LeadPanel extends Component {
 
 // LeadPanel.defaultProps = defaultProps;
 // LeadPanel.propTypes = propTypes;
-const mapStateToProps = ({ global }) => ({
-  language: global.language,
+const mapStateToProps = ({ leads }) => ({
+  pagination: leads.table.pagination,
+  sorter: leads.table.sorter,
 });
 const mapDispatchToProp = {
+  massUpdate,
+  massDelete,
 };
-export default connect(mapStateToProps)(LeadPanel);
+export default connect(mapStateToProps, mapDispatchToProp)(LeadPanel);

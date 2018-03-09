@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
-import { Button, Icon } from 'antd';
+import { Button, Icon, Popconfirm } from 'antd';
 
 const defaultProps = {
   selectedIds: [],
@@ -11,9 +11,10 @@ const propTypes = {
   theme: PropTypes.oneOf(['lead', 'account', 'opport']),
   selectedIds: PropTypes.array.isRequired,
   onMassUpdateClick: PropTypes.func,
+  onMassDeleteClick: PropTypes.func,
 };
 
-const LeftActions = ({ intl, theme, selectedIds, onMassUpdateClick, permissions }) => {
+const LeftActions = ({ intl, theme, selectedIds, onMassUpdateClick, onMassDeleteClick, permissions }) => {
   const { formatMessage } = intl;
   const btnSettings = {
     className: `btn-ellipse ml-sm ${theme}-theme-btn`,
@@ -29,10 +30,15 @@ const LeftActions = ({ intl, theme, selectedIds, onMassUpdateClick, permissions 
         <Icon type="edit"/>
         {formatMessage({ id: 'global.ui.button.massUpdate' })}
       </Button>
-      <Button {...btnSettings} >
-        <Icon type="delete"/>
-        {formatMessage({ id: 'global.ui.button.massDelete' })}
-      </Button>
+      <Popconfirm
+        title='Are you sure to delete them all?'
+        onConfirm={onMassDeleteClick}
+      >
+        <Button {...btnSettings} >
+          <Icon type="delete"/>
+          {formatMessage({ id: 'global.ui.button.massDelete' })}
+        </Button>
+      </Popconfirm>
     </Fragment>
   );
 };

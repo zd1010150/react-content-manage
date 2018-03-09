@@ -1,17 +1,22 @@
 import { combineReducers } from 'redux';
-import { SET_TABLE_DATA, DELETE_SUCCESS } from './actionTypes';
+import { SET_TABLE_DATA } from './actionTypes';
 import Enums from 'utils/EnumsManager';
 
 const initialState = {
   columns: [],
   data: [],
   pagination: {},
+  sorter: {
+    orderBy: '',
+    sortedBy: '',
+  },
 };
 
 const table = (state = initialState, action) => {
   switch (action.type) {
     case SET_TABLE_DATA:
-      const { index, selector_meta } = action.payload;
+      const { json, sorter } = action.payload;
+      const { index, selector_meta } = json;
       const { data, meta } = index;
       const { pagination } = meta;
       const pageInfo = {
@@ -24,15 +29,9 @@ const table = (state = initialState, action) => {
         columns,
         data,
         pagination: pageInfo,
+        sorter,
       };
-    case DELETE_SUCCESS:
-      const { id } = action.payload;
-      const dataCopy = state.data;
-      const deletedData = dataCopy.filter(record => record.id != id);
-      return {
-        ...state,
-        data: deletedData,
-      };
+      
     default:
       return state;
   }

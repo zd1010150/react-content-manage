@@ -1,12 +1,15 @@
-import { SET_TABLE_DATA, DELETE_SUCCESS } from './actionTypes';
-import { get } from 'store/http/httpAction';
+import { SET_TABLE_DATA } from './actionTypes';
+import { get, httpDelete, update } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
 
 const url = '/admin/leads';
 
-const setTableData = json => ({  
+const setTableData = (json, sorter) => ({  
   type: SET_TABLE_DATA,
-  payload: json,
+  payload: {
+    json,
+    sorter,
+  }
 });
 
 export const fetchByParams = (
@@ -23,21 +26,51 @@ export const fetchByParams = (
               console.log(`fetching -> page:${page}, per_page:${per_page}, orderBy:${orderBy}, sortedBy:${sortedBy}`);
               if (json && (!_.isEmpty(json.index))) {
                 debugger;
-                dispatch(setTableData(json))
+                const sorter = {
+                  orderBy,
+                  sortedBy,
+                };
+                dispatch(setTableData(json, sorter))
               }
             });
 
 
-const syncDeletion = id => ({
-  type: DELETE_SUCCESS,
-  payload: { id },
+/**
+ *  Delete and mass delete
+ */
+const syncDeletion = ids => ({
+  type: SYNC_DELETE,
+  payload: { ids },
 });
 
-export const deleteLead = id => 
-  dispatch => get(url, {}, dispatch)
-    // => delete(`${url}/${id}`, {}, dispatch)
+export const deleteLead = (id, refetchParams) => 
+  dispatch => httpDelete(`${url}/${id}`, {}, dispatch)
     .then(json => {
-      if (json) {
-        dispatch(syncDeletion(id))
+      if (json.deleted) {
+        const { current, pageSize, orderBy, sortedBy } = refetchParams;
+        dispatch(fetchByParams(current, pageSize, orderBy, sortedBy));
       }
     });
+
+export const massDelete = (ids, refetchParams) => 
+  dispatch => httpDelete(`${url}/mass-delete`, { ids }, dispatch)
+    .then(json => {
+      if (json) {
+        const { current, pageSize, orderBy, sortedBy } = refetchParams;
+        dispatch(fetchByParams(current, pageSize, orderBy, sortedBy));
+      }
+    });
+
+
+// mass update
+export const massUpdate = () => {
+  console.log('test mass udpate');
+}
+// export const massUpdate = (id, refetchParams) => 
+//     dispatch => update(`${url}/${id}`, {}, dispatch)
+//       .then(json => {
+//         if (json.deleted) {
+//           const { current, pageSize, orderBy, sortedBy } = refetchParams;
+//           dispatch(fetchByParams(current, pageSize, orderBy, sortedBy));
+//         }
+//       });

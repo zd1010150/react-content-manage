@@ -21,6 +21,15 @@ const EnumsManager = Object.freeze({
     ascend: 'asc',
     descend: 'desc',
   }),
+
+  FieldTypes: Object.freeze({    
+    DateTime: 'datetime',
+    LongText: 'longtext',
+    Lookup: 'lookup',
+    Number: 'number',
+    PickList: 'picklist',
+    Text: 'text',
+  }),
 });
 
 export default EnumsManager;
