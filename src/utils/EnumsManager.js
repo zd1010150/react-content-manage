@@ -22,8 +22,10 @@ const EnumsManager = Object.freeze({
     descend: 'desc',
   }),
 
-  FieldTypes: Object.freeze({    
+  FieldTypes: Object.freeze({
+    Date: 'date',
     DateTime: 'datetime',
+    Email: 'email',
     LongText: 'longtext',
     Lookup: 'lookup',
     Number: 'number',

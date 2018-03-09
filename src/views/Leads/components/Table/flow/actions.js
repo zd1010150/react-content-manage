@@ -1,5 +1,5 @@
 import { SET_TABLE_DATA } from './actionTypes';
-import { get, httpDelete, update } from 'store/http/httpAction';
+import { get, httpDelete, update, post } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
 
 const url = '/admin/leads';
@@ -38,11 +38,6 @@ export const fetchByParams = (
 /**
  *  Delete and mass delete
  */
-const syncDeletion = ids => ({
-  type: SYNC_DELETE,
-  payload: { ids },
-});
-
 export const deleteLead = (id, refetchParams) => 
   dispatch => httpDelete(`${url}/${id}`, {}, dispatch)
     .then(json => {
@@ -61,16 +56,14 @@ export const massDelete = (ids, refetchParams) =>
       }
     });
 
-
-// mass update
-export const massUpdate = () => {
-  console.log('test mass udpate');
-}
-// export const massUpdate = (id, refetchParams) => 
-//     dispatch => update(`${url}/${id}`, {}, dispatch)
-//       .then(json => {
-//         if (json.deleted) {
-//           const { current, pageSize, orderBy, sortedBy } = refetchParams;
-//           dispatch(fetchByParams(current, pageSize, orderBy, sortedBy));
-//         }
-//       });
+/**
+ *  Mass update
+ */
+export const massUpdate = (ids, field_name, value, refetchParams) => 
+    dispatch => post(`${url}/mass-update`, { ids, field_name, value }, dispatch)
+      .then(json => {
+        if (json.updated_ids.length > 0) {
+          const { current, pageSize, orderBy, sortedBy } = refetchParams;
+          dispatch(fetchByParams(current, pageSize, orderBy, sortedBy));
+        }
+      });
