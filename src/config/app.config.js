@@ -27,3 +27,28 @@ export const PAGE_ACTION = {
   VIEWDETAIL: 'viewDetail',
 };
 export const URL_PREFIX = '/admin'; // 配置的url前缀，在magento中,本应用的所有的访问路径前缀
+
+
+export const FORM_LAYOUT_CONFIG = {
+    labelCol: {
+        xs: { span: 24 },
+        sm: { span: 6 },
+    },
+    wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 18 },
+    },
+};
+
+export const FORM_FOOTER_CONFIG = {
+    wrapperCol: {
+        xs: {
+            span: 24,
+            offset: 0,
+        },
+        sm: {
+            span: 16,
+            offset: 6,
+        },
+    },
+};

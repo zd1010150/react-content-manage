@@ -61,5 +61,5 @@ export const get = (url, data, dispatcher, apiDomain = '', realHeaders = {}) =>
 export const httpDelete = (url, data, dispatcher, apiDomain = '', realHeaders = {}) =>
   (dispatch(http('delete', url, data, realHeaders, apiDomain), dispatcher));
 
-export const put = (url, data, dispatcher, apiDomain = '', realHeaders = {}) =>
-  (dispatch(http('put', url, data, realHeaders, apiDomain), dispatcher));
+export const patch = (url, data, dispatcher, apiDomain = '', realHeaders = {}) =>
+  (dispatch(http('patch', url, data, realHeaders, apiDomain), dispatcher));

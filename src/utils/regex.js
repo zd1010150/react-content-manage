@@ -3,3 +3,4 @@ export const zipCodeReg = /\d{4,6}/;
 export const domainReg = /^https?:\/\/[\w-.]+(:\d+)?/i;
 export const idNumberReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
 export const positiveFloat = /^(0|([1-9][0-9]*))(\.?)\d{0,2}$/;
+export const passwordReg = /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;

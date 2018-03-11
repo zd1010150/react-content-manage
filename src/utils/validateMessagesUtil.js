@@ -1,5 +1,5 @@
 import formField from 'i18n/global/form';
-import { phoneReg, zipCodeReg, idNumberReg } from 'utils/regex';
+import { phoneReg, zipCodeReg, idNumberReg, passwordReg } from 'utils/regex';
 // 定义所有校验规则的错误信息
 const errorMessages = (() => {
   const zhMessages = {
@@ -211,10 +211,30 @@ const idNumber = (() => {
     },
   };
 })();
+const password = (() => {
+  const zhMsg = { idNumber: () => '密码必须包含大小写字母, 数字,至少8个字符' };
+  const enMsg = { idNumber: () => 'Should include upper and lower letters and numbers.At least 8 letters.' };
+  return {
+    zhMsg,
+    enMsg,
+    ruleName: 'password',
+    validator: language => (rule, value = '', callback) => {
+      const val = value.trim();
+      if (val.length < 1) {
+        callback();
+      } else if (val.length < 8 || (!passwordReg.test(val))) {
+        callback(getErrorMsg('password', rule.field, language));
+      } else {
+        callback();
+      }
+    },
+  };
+})();
 const validator = {
   between: registerRule(between),
   phone: registerRule(phone),
   zipCode: registerRule(zipCode),
   idNumber: registerRule(idNumber),
+  password: registerRule(password),
 };
 export { getExistRule, getErrorMsg, validator };
