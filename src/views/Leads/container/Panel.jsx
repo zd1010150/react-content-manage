@@ -63,8 +63,7 @@ class LeadPanel extends Component {
   }
 
   handleValueInputChangeByType = arg => {
-    // console.log(`newValue => ${e.target.value}`);
-    // arg is synthetic event if type is text, number, longtext 
+    // arg will be synthetic event if type is text, number, longtext 
     // otherwise arg is string
     const newValue = _.isObject(arg) ? arg.target.value : arg;
     this.setState({ selectedFieldInputValue: newValue });
@@ -84,7 +83,7 @@ class LeadPanel extends Component {
         return <TextArea autosize={{ minRows: 3, maxRows: 10 }} onChange={this.handleValueInputChangeByType} />;
       case FieldTypes.PickList:
         return (
-          <Select>
+          <Select onChange={this.handleValueInputChangeByType}>
             {targetColumn.picklists.data.map(item => (
               <Option key={item.id} value={item.option_value}>{item.option_value}</Option>
             ))}
