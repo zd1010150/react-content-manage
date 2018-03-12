@@ -5,7 +5,7 @@ import DragPreview from './dragPreview';
 import UIDemo from './ui-demo';
 import CompanyInfo from './CompanyInfo';
 import Users from './Users';
-
+import OrganisationChart from './OrganisationChart';
 export {
   Leads,
   LoginForm,
@@ -14,4 +14,5 @@ export {
   UIDemo,
   CompanyInfo,
   Users,
+  OrganisationChart,
 };

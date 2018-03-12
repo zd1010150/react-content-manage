@@ -1,0 +1,2 @@
+export const SET_ALL_DEPARTMENT = 'SET_ALL_DEPARTMENT';
+

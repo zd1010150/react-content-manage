@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Tree, Icon, Row, Col } from 'antd';
 import ClassNames from 'classnames/bind';
 import styles from '../TeamTree.less';
+import { EditBox } from 'components/ui';
 
 const cx = ClassNames.bind(styles);
 const TreeNode = Tree.TreeNode;
@@ -70,21 +71,52 @@ class teamTree extends React.Component {
       this.setState({ selectedKeys });
       this.props.onSelect(selectedKeys, treeData);
     }
+    onDragEnter= ({ event, node, expandedKeys }) => {
+      console.log('drag enter', event, node, expandedKeys);
+      this.props.onDragEnter({ event, node, expandedKeys });
+    }
+    onDrop=({
+      event, node, dragNode, dragNodesKeys,
+    }) => {
+      console.log('drop', event, node, dragNode, dragNodesKeys);
+      this.props.onDrop({
+        event, node, dragNode, dragNodesKeys,
+      });
+    }
+    onDragOver=({ event, node }) => {
+     // console.log(event, node, 'over');
+      this.props.onDragOver({ event, node });
+    }
+    onDragEnd=({ event, node }) => {
+      //console.log(event, node, 'end');
+      this.props.onDragEnd({ event, node });
+    }
+    onDragLeave=({ event, node }) => {
+     // console.log(event, node, 'leave');
+      this.props.onDragLeave({ event, node });
+    }
+    onDragStart=({ event, node }) => {
+      //console.log('start', event, node );
+      this.props.onDragStart({ event, node });
+    }
+    onRightClick=({ event, node }) => {
+      console.log(event, node, 'right click');
+      this.props.onRightClick({ event, node });
+    }
     renderTreeNodes(data) {
       const {
-        canAdd, canDelete, onAdd, onDelete,
+        canAdd, canDelete, onAdd, onDelete, canModifyTeamName, modifyTeamName,
       } = this.props;
       return data.map((item) => {
         const treeEl = (
           <Fragment>
             <span className={cx('tree-node-title')} span={12}>
-              {item.title}
+                { canModifyTeamName ? <EditBox type="input" value={item.title} onBlur={newTeamname => modifyTeamName(newTeamname, item.key)} /> : <span>{item.title}</span> }
             </span>
             <div className={cx('tree-node-operate')} span={12} >
               { canAdd ? <Icon type="plus-square-o " onClick={() => { onAdd(item.key); }} /> : ''}
               { canDelete ? <Icon type="delete" onClick={() => { onDelete(item.key); }} /> : ''}
             </div>
-
           </Fragment>
         );
         if (item.children) {
@@ -98,9 +130,10 @@ class teamTree extends React.Component {
       });
     }
     render() {
-      const { checkable } = this.props;
+      const { checkable, draggable } = this.props;
       return (
         <Tree
+          draggable={draggable}
           checkable={checkable}
           onExpand={this.onExpand}
           expandedKeys={this.state.expandedKeys}
@@ -108,6 +141,13 @@ class teamTree extends React.Component {
           onCheck={this.onCheck}
           checkedKeys={this.state.checkedKeys}
           onSelect={this.onSelect}
+          onDragEnter={this.onDragEnter}
+          onDrop={this.onDrop}
+          onDragOver={this.onDragOver}
+          onDragEnd={this.onDragEnd}
+          onDragLeave={this.onDragLeave}
+          onDragStart={this.onDragStart}
+          onRightClick={this.onRightClick}
           selectedKeys={this.state.selectedKeys}
         >
           {this.renderTreeNodes(treeData)}
@@ -133,6 +173,16 @@ teamTree.defaultProps = {
   checkable: false,
   canAdd: false,
   canDelete: false,
+    canModifyTeamName: false,
+  draggable: false,
+  onDragEnter: () => {},
+  onDrop: () => {},
+  onDragOver: () => {},
+  onDragEnd: () => {},
+  onDragLeave: () => {},
+  onDragStart: () => {},
+  onRightClick: () => {},
+  modifyTeamName: () => {},
 };
 teamTree.propTypes = {
   onSelect: PropTypes.func,
@@ -143,6 +193,16 @@ teamTree.propTypes = {
   checkable: PropTypes.bool,
   canAdd: PropTypes.bool,
   canDelete: PropTypes.bool,
+    canModifyTeamName: PropTypes.bool,
+  draggable: PropTypes.bool,
+  onDragEnter: PropTypes.func,
+  onDrop: PropTypes.func,
+  onDragOver: PropTypes.func,
+  onDragEnd: PropTypes.func,
+  onDragLeave: PropTypes.func,
+  onDragStart: PropTypes.func,
+  onRightClick: PropTypes.func,
+  modifyTeamName: PropTypes.func,
 
 };
 export default teamTree;

@@ -36,7 +36,7 @@ export const FORM_LAYOUT_CONFIG = {
     },
     wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 18 },
+        sm: { span: 14 },
     },
 };
 
