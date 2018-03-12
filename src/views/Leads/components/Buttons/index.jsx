@@ -5,20 +5,16 @@ import { connect } from 'react-redux';
 import { ListTopButtons } from 'components/ui/index';
 
 class ButtonsWrapper extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
+    const { activeId } = this.props;
     return (
-      <ListTopButtons />
+      <ListTopButtons viewId={activeId} />
     );
   }
 }
 
-const mapStateToProps = ({ global }) => ({
+const mapStateToProps = ({ global, leads }) => ({
   language: global.language,
+  activeId: leads.filter.activeId,
 });
-const mapDispatchToProp = {
-};
 export default connect(mapStateToProps)(ButtonsWrapper);

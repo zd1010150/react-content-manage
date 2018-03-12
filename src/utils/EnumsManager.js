@@ -32,6 +32,8 @@ const EnumsManager = Object.freeze({
     PickList: 'picklist',
     Text: 'text',
   }),
+
+  ObjectTypes: Object.freeze(['leads', 'accounts', 'opportunities']),
 });
 
 export default EnumsManager;
