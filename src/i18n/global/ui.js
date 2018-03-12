@@ -22,6 +22,9 @@ export default {
       edit: '编辑',
       createNew: '添加',
       update: '更新',
+      massUpdate: '批量更新',
+      massDelete: '批量删除',
+      addToCampaign: '添加到营销活动',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -62,6 +65,9 @@ export default {
       edit: 'Edit',
       createNew: 'Create New ',
       update: 'Update',
+      massUpdate: 'Mass Update',
+      massDelete: 'Mass Delete',
+      addToCampaign: 'Add to Campaign',
     },
     input: {
       searchStore: 'Search entire store here...',

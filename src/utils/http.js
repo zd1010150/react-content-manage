@@ -47,8 +47,7 @@ export default async (type = 'GET', url = '', data = {}, headers = {}, apiDomain
       dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
       url = `${url}?${dataStr}`;
     }
-  }
-  if (type === 'POST' || type === 'PUT') {
+  } else {
     if (!_.isEmpty(data)) {
       Object.defineProperty(requestConfig, 'body', {
         value: JSON.stringify(data),

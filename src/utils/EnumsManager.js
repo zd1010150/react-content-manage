@@ -4,7 +4,9 @@ const EnumsManager = Object.freeze({
   PhantomID: '0000-0000',
 
   DefaultPageConfigs: Object.freeze({
-    PageSize: 10,
+    PageSizeSmall: 10,
+    PageSize: 25,
+    Options: ['10', '25', '50', '100', '200', '300'],
   }),
 
   DataType: Object.freeze([
@@ -12,6 +14,26 @@ const EnumsManager = Object.freeze({
     'timepicker',
     'picklist',
   ]),
+
+  ThemeTypes: Object.freeze(['lead', 'account', 'opport']),
+
+  SortOrders: Object.freeze({
+    ascend: 'asc',
+    descend: 'desc',
+  }),
+
+  FieldTypes: Object.freeze({
+    Date: 'date',
+    DateTime: 'datetime',
+    Email: 'email',
+    LongText: 'longtext',
+    Lookup: 'lookup',
+    Number: 'number',
+    PickList: 'picklist',
+    Text: 'text',
+  }),
+
+  ObjectTypes: Object.freeze(['leads', 'accounts', 'opportunities']),
 });
 
 export default EnumsManager;
