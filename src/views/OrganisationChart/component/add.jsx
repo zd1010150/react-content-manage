@@ -23,7 +23,7 @@ class Add extends React.Component {
         handleChange={this.onSearchableInputChange}
         syncWithRedux={this.onSearch}
         value={secondInputText}
-        addonAfter={<span> <Icon type="save" className="danger pr-sm" /> <Icon type="close-circle-o" /></span>}
+        addonAfter={<span> <Icon type="save" className="danger pr-sm" onClick={() => { alert('save'); }} /> <Icon type="close" onClick={() => { alert('cencel'); }} /></span>}
       />
 
     );
