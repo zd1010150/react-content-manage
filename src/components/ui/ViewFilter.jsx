@@ -19,7 +19,6 @@ const defaultProps = {
 
 const ViewFilter = ({ intl, onChange, activeId, options }) => {
   const { formatMessage } = intl;
-  console.log(`options are -> ${options}`);
   return (
     <Fragment>
       <label className={cx('filterLabel')}>
@@ -30,6 +29,7 @@ const ViewFilter = ({ intl, onChange, activeId, options }) => {
         size="small"
         dropdownMatchSelectWidth={false}
         onChange={onChange}
+        defaultValue="All"
       >
         {options.map(option => {
           const id = option.id;

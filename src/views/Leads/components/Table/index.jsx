@@ -18,21 +18,22 @@ class TableWrapper extends Component {
   }
 
   onItemDelete = id => {
-    const { pagination, sorter } = this.props;
+    const { pagination, sorter, activeId } = this.props;
     const { current, pageSize } = pagination;
     const { orderBy, sortedBy } = sorter;
     this.props.deleteLead(id, {
-      current, pageSize, orderBy, sortedBy
+      current, pageSize, orderBy, sortedBy, activeId
     });
   }
 
   onTableChange = (pagination, filters, sorter) => {
+    const { activeId } = this.props;
     const { current, pageSize } = pagination;
     const { columnKey, order } = sorter;
     // Antd only provide two sort orders, both values are not match with API requirements,
     // so we have to change the value for backend
     const mappedOrder = mapToAPIOrderStr(order);
-    this.props.fetchByParams(current, pageSize, columnKey, mappedOrder);
+    this.props.fetchByParams(current, pageSize, columnKey, mappedOrder, activeId);
   }
 
   render() {
@@ -66,6 +67,7 @@ const mapStateToProps = ({ leads }) => ({
   data: leads.table.data,
   pagination: leads.table.pagination,
   sorter: leads.table.sorter,
+  activeId: leads.filter.activeId,
 });
 const mapDispatchToProps = {
   fetchByParams,

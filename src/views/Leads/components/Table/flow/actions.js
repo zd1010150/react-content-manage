@@ -1,10 +1,11 @@
-import { SET_TABLE_DATA } from './actionTypes';
-import { get, httpDelete, update, post } from 'store/http/httpAction';
+import { get, httpDelete, post } from 'store/http/httpAction';
+import { getUrlByViewId } from 'utils/common';
 import Enums from 'utils/EnumsManager';
 
+import { SET_TABLE_DATA } from './actionTypes';
 const url = '/admin/leads';
 
-const setTableData = (json, sorter) => ({  
+export const setTableData = (json, sorter) => ({  
   type: SET_TABLE_DATA,
   payload: {
     json,
@@ -17,22 +18,16 @@ export const fetchByParams = (
   per_page = Enums.DefaultPageConfigs.PageSize,
   orderBy = '',
   sortedBy = '',
-) => dispatch => get(url, {
-  page,
-  per_page,
-  orderBy,
-  sortedBy
-}, dispatch).then(json => {
-              console.log(`fetching -> page:${page}, per_page:${per_page}, orderBy:${orderBy}, sortedBy:${sortedBy}`);
-              if (json && (!_.isEmpty(json.index))) {
-                debugger;
-                const sorter = {
-                  orderBy,
-                  sortedBy,
-                };
-                dispatch(setTableData(json, sorter))
-              }
-            });
+  activeId = Enums.PhantomID,
+) => dispatch => get(getUrlByViewId(activeId, 'leads'), { page, per_page, orderBy, sortedBy }, dispatch).then(json => {
+  console.log(`fetching -> page:${page}, per_page:${per_page}, orderBy:${orderBy}, sortedBy:${sortedBy}, activeId:${activeId}`);
+  if (json && (!_.isEmpty(json.index))) {
+    dispatch(setTableData(json, {
+      orderBy,
+      sortedBy,
+    }));
+  }
+});
 
 
 /**
