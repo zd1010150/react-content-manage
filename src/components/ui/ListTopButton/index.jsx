@@ -6,28 +6,35 @@ import { Button } from 'antd';
 import classNames from 'classnames/bind';
 import styles from './index.less';
 const cx = classNames.bind(styles);
-import EnumsManager from 'utils/EnumsManager';
+
+import Enums from 'utils/EnumsManager';
 
 const defaultProps = {
-  id: 0,
+  viewId: Enums.PhantomID,
   object: 'leads',
 };
 const propTypes = {
-  id: PropTypes.any.isRequired,
-  object: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
+  object: PropTypes.oneOf(Enums.ObjectTypes).isRequired,
+  viewId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
 };
 
-const ListTopButtons = ({ intl, object, id }) => {
+const ListTopButtons = ({ intl, object, viewId }) => {
   const { formatMessage } = intl;
+  const shouldEditDisabled = viewId === Enums.PhantomID ? true : false;
+  
   return (
     <Fragment>
-      <Button size="small" className={cx('button')}>
-        <Link to={`/${object}/views/${id}`}>
+      <Button size="small" className={cx('button')} disabled={shouldEditDisabled} >
+        <Link to={`/${object}/views/${viewId}`}>
           {formatMessage({ id: 'global.ui.button.edit' })}
         </Link>
       </Button>
       <Button size="small" className={cx('button')}>
-        <Link to={`/${object}/views/${EnumsManager.PhantomID}`}>
+        <Link to={`/${object}/views/${Enums.PhantomID}`}>
           {formatMessage({ id: 'global.ui.button.createNew' })}
         </Link>
       </Button>

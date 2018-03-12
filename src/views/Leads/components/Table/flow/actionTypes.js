@@ -1,0 +1,1 @@
+export const SET_TABLE_DATA = 'LEADS_SET_TABLE_DATA';

@@ -1,35 +1,26 @@
 import { combineReducers } from 'redux';
 import { SET_VIEWS, SET_ACTIVE_ID } from './actionTypes';
-import EnumsManager from 'utils/EnumsManager';
+import Enums from 'utils/EnumsManager';
+
+const viewAll = {
+  id: Enums.PhantomID,
+  view_name: "All",
+};
 
 const initialState = {
-  activeId: EnumsManager.PhantomID,
-  options: [],
+  activeId: Enums.PhantomID,
+  options: [viewAll],
 };
 const filter = (state = initialState, action) => {
   switch (action.type) {
     case SET_VIEWS:
       const { data } = action.payload;
-      // test
-      const options = [
-        {
-          id: 1,
-          view_name: 'test1'
-        },
-        {
-          id: 2,
-          view_name: 'test2'
-        },
-        {
-          id: 3,
-          view_name: 'test3'
-        },
-      ];
-      // ends
+      data.unshift(viewAll);
       return {
         ...state,
-        options,
+        options: data,
       };
+
     case SET_ACTIVE_ID:
       const { id } = action.payload;
       return {
