@@ -23,7 +23,7 @@ export const setPageTitle = pageTitle => ({
 export const resetUser = () => ({
   type: RESET_USER,
 });
-const setTeams = teams => () => ({
+export const setTeams = teams => ({
   type: SET_TEAMS,
   teams,
 });
@@ -45,9 +45,10 @@ export const fetchAccountInfo = () => dispatch => post('/affiliate/me').then((da
 });
 
 
-export const fetchTeams = () => dispatch => get('/admin/teams').then((data) => {
-  if (!_.isEmpty(data)) {
-    dispatch(setTeams(data));
+export const fetchTeams = () => dispatch => get('/admin/teams/struct/info').then((data) => {
+  if (!_.isEmpty(data.teams)) {
+    const params = setTeams(data.teams);
+    dispatch(params);
   }
 });
 
