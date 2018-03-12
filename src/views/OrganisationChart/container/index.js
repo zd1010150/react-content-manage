@@ -16,7 +16,6 @@ class organizationChartIndexView extends React.Component {
   }
   render() {
     const { teams, setTeams } = this.props;
-    debugger;
     return (
       <Panel panelTitle="Organisational Chart" contentClasses="pl-lg pr-lg">
         <AddDepartment />

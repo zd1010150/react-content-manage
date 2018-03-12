@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Icon } from 'antd';
 import { FloatingLabelInput } from 'components/ui/index';
 
 
@@ -22,7 +23,7 @@ class Add extends React.Component {
         handleChange={this.onSearchableInputChange}
         syncWithRedux={this.onSearch}
         value={secondInputText}
-        withSearch
+        addonAfter={<span> <Icon type="save" className="danger pr-sm" /> <Icon type="close-circle-o" /></span>}
       />
 
     );

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Input } from 'antd';
 import classNames from 'classnames/bind';
 import styles from './index.less';
+
 const cx = classNames.bind(styles);
 
 const defaultProps = {
@@ -14,6 +15,7 @@ const propTypes = {
   labelColor: PropTypes.string,
   placeholder: PropTypes.string,
   syncWithRedux: PropTypes.func,
+  addonAfter: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   withSearch: PropTypes.bool.isRequired,
 };
 
@@ -26,19 +28,19 @@ class FloatingLabelInput extends Component {
     };
   }
 
-  onFocus = e => {
+  onFocus = (e) => {
     this.setState({
       isFocused: true,
     });
   }
 
-  onBlur = e => {
+  onBlur = (e) => {
     this.setState({
       isFocused: false,
     });
   }
 
-  onChange = e => {
+  onChange = (e) => {
     const { value } = e.target;
     this.setState({
       isEmpty: value.length === 0,
@@ -65,14 +67,16 @@ class FloatingLabelInput extends Component {
 
   render() {
     const { isEmpty, isFocused } = this.state;
-    const { labelText, labelColor, placeholder , withSearch, value } = this.props;
+    const {
+      labelText, labelColor, placeholder, withSearch, value, addonAfter,
+    } = this.props;
     const shouldLabelUp = !(!isFocused && isEmpty);
     const shouldShowPlaceholder = isFocused && isEmpty;
 
     return (
-      <div className={cx('floatingInputWrapper')}>
+      <div className={classNames(cx('floatingInputWrapper'), 'floatingInputWrapper')}>
         <label
-          className={shouldLabelUp ? cx('toTop') : '' }
+          className={shouldLabelUp ? cx('toTop') : ''}
           style={{ color: labelColor }}
         >
           {labelText}
@@ -96,6 +100,7 @@ class FloatingLabelInput extends Component {
             onBlur={this.onBlur}
             onChange={this.onChange}
             onFocus={this.onFocus}
+            addonAfter={addonAfter}
           />
         )}
         <div>
