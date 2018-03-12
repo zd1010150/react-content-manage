@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Row, Select, Input } from 'antd';
+import { Row, Col, Select, Input } from 'antd';
 const Option = Select.Option;
 const { TextArea } = Input;
 import { Panel, LeftActions, RightActions, Modal } from 'components/ui/index';
@@ -76,14 +76,14 @@ class LeadPanel extends Component {
     const { FieldTypes } = Enums;
     switch (targetColumn.crm_data_type) {
       case FieldTypes.Text:
-        return <Input onChange={this.handleValueInputChangeByType} />;
+        return <Input onChange={this.handleValueInputChangeByType} size="small" />;
       case FieldTypes.Number:
-        return <Input type="number" onChange={this.handleValueInputChangeByType} />;
+        return <Input type="number" onChange={this.handleValueInputChangeByType} size="small" />;
       case FieldTypes.LongText:
         return <TextArea autosize={{ minRows: 3, maxRows: 10 }} onChange={this.handleValueInputChangeByType} />;
       case FieldTypes.PickList:
         return (
-          <Select onChange={this.handleValueInputChangeByType}>
+          <Select onChange={this.handleValueInputChangeByType} size="small">
             {targetColumn.picklists.data.map(item => (
               <Option key={item.id} value={item.option_value}>{item.option_value}</Option>
             ))}
@@ -143,21 +143,25 @@ class LeadPanel extends Component {
           columns={columns}
         >
           <Row>
-            <label>Select Field</label>
-            <Select style={{ width: 120 }} onChange={this.onFieldChange} dropdownMatchSelectWidth={false}>
-              {columns.map(column => (
-                <Option
-                  key={column.field_name}
-                  value={column.field_name}  // this will be passed into onChange
-                >
-                  {column.field_label}
-                </Option>
-              ))}
-            </Select>
+            <Col sm={6} xs={24}>
+              <label>Select Field</label>
+            </Col>
+            <Col sm={18} xs={24}>
+              <Select style={{ width: '100%' }} size="small" onChange={this.onFieldChange} dropdownMatchSelectWidth={false}>
+                {columns.map(column => (
+                  <Option
+                    key={column.field_name}
+                    value={column.field_name}  // this will be passed into onChange
+                  >
+                    {column.field_label}
+                  </Option>
+                ))}
+              </Select>
+            </Col>
           </Row>
-          {selectedFieldId ? (<Row>
-            <label>{valueFieldName}</label>
-            {valueField}
+          {selectedFieldId ? (<Row style={{ marginTop: 5 }}>
+            <Col sm={6} xs={24}><label>{valueFieldName}</label></Col>
+            <Col sm={18} xs={24}>{valueField}</Col>
           </Row>) : null}
         </Modal>
       </Fragment>
