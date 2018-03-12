@@ -27,23 +27,23 @@ class LeadPanel extends Component {
 
   onMassDeleteClick = () => {
     const { selectedIds } = this.state;
-    const { pagination, sorter } = this.props;
+    const { pagination, sorter, activeId } = this.props;
     const { current, pageSize } = pagination;
     const { orderBy, sortedBy } = sorter;
     this.props.massDelete(selectedIds, {
-      current, pageSize, orderBy, sortedBy
+      current, pageSize, orderBy, sortedBy, activeId
     });
     // reset selectedIds
     this.setState({ selectedIds: [] });
   }
 
   onModalSaveClick = () => {
-    const { pagination, sorter } = this.props;
+    const { pagination, sorter, activeId } = this.props;
     const { current, pageSize } = pagination;
     const { orderBy, sortedBy } = sorter;
     const { selectedIds, selectedFieldId, selectedFieldInputValue } = this.state;
     this.props.massUpdate(selectedIds, selectedFieldId, selectedFieldInputValue, {
-      current, pageSize, orderBy, sortedBy
+      current, pageSize, orderBy, sortedBy, activeId
     });
 
     this.setState({ visible: false });
@@ -171,6 +171,7 @@ const mapStateToProps = ({ leads }) => ({
   columns: leads.table.columns,
   pagination: leads.table.pagination,
   sorter: leads.table.sorter,
+  activeId: leads.filter.activeId,
 });
 const mapDispatchToProp = {
   massUpdate,

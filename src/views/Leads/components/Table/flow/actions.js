@@ -37,8 +37,8 @@ export const deleteLead = (id, refetchParams) =>
   dispatch => httpDelete(`${url}/${id}`, {}, dispatch)
     .then(json => {
       if (json.deleted) {
-        const { current, pageSize, orderBy, sortedBy } = refetchParams;
-        dispatch(fetchByParams(current, pageSize, orderBy, sortedBy));
+        const { current, pageSize, orderBy, sortedBy, activeId } = refetchParams;
+        dispatch(fetchByParams(current, pageSize, orderBy, sortedBy, activeId));
       }
     });
 
@@ -46,8 +46,8 @@ export const massDelete = (ids, refetchParams) =>
   dispatch => httpDelete(`${url}/mass-delete`, { ids }, dispatch)
     .then(json => {
       if (json) {
-        const { current, pageSize, orderBy, sortedBy } = refetchParams;
-        dispatch(fetchByParams(current, pageSize, orderBy, sortedBy));
+        const { current, pageSize, orderBy, sortedBy, activeId } = refetchParams;
+        dispatch(fetchByParams(current, pageSize, orderBy, sortedBy, activeId));
       }
     });
 
@@ -58,7 +58,7 @@ export const massUpdate = (ids, field_name, value, refetchParams) =>
     dispatch => post(`${url}/mass-update`, { ids, field_name, value }, dispatch)
       .then(json => {
         if (json.updated_ids.length > 0) {
-          const { current, pageSize, orderBy, sortedBy } = refetchParams;
-          dispatch(fetchByParams(current, pageSize, orderBy, sortedBy));
+          const { current, pageSize, orderBy, sortedBy, activeId } = refetchParams;
+          dispatch(fetchByParams(current, pageSize, orderBy, sortedBy, activeId));
         }
       });
