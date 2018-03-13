@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { combineReducers } from 'redux';
-import { moments } from 'utils/dateTimeUtils';
+import { moments, years } from 'utils/dateTimeUtils';
 import { navLanguage } from 'utils/navigationUtil';
 import { TOGGLE_LANGUAGE, SET_PERMISSION, SET_ACCOUNTINFO, SET_PAGETITLE, SET_GLOBAL_SETTING, SET_TEAMS } from './actionType';
 
@@ -48,14 +48,21 @@ const pageTitle = (state = 'global.pageTitle.leads', action) => {
 
 
 const mapSettingData = (state, data) => Object.assign({}, state, {
-  timeZones: data.time_zones,
-  hours: [{ val: '9:20' }],
+  timeZones: data.timezones,
+  languages: data.languages,
+  countries: data.countries,
+  fields: data.fields,
+  model: data.model,
 });
 const settings = (state = {
-  timeZones: [{ id: 1, text: '北京时间' }, { id: 2, text: '悉尼时间' }],
-  hours: [],
+  timeZones: [],
+  languages: [],
+  countries: [],
+  fields: {},
+  model: {},
   moments,
-  teams: JSON.parse('[{"id":1,"name":"team1","parent_id":0,"child_team_rec":[{"id":2,"name":"team2","parent_id":1,"child_team_rec":[{"id":5,"name":"team5","parent_id":2,"child_team_rec":[{"id":10,"name":"team10","parent_id":5,"child_team_rec":[]}]},{"id":6,"name":"team6","parent_id":2,"child_team_rec":[{"id":7,"name":"team7","parent_id":6,"child_team_rec":[]}]}]},{"id":3,"name":"team3","parent_id":1,"child_team_rec":[{"id":8,"name":"team8","parent_id":3,"child_team_rec":[]},{"id":9,"name":"team9","parent_id":3,"child_team_rec":[]}]},{"id":4,"name":"team4","parent_id":1,"child_team_rec":[]}]}]'),
+  years,
+  teams: [],
 }, action) => {
   switch (action.type) {
     case SET_GLOBAL_SETTING:

@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Table, Button } from 'antd';
 import { Panel } from 'components/ui/index';
 import { intlShape, injectIntl } from 'react-intl';
@@ -7,6 +8,7 @@ import { PAGE_ACTION } from 'config/app.config';
 
 class companyUserStatic extends React.Component {
   render() {
+    const { userInfo } = this.props;
     const { formatMessage } = this.props.intl;
     const rightActions = (() => {
       const actions = [];
@@ -14,40 +16,30 @@ class companyUserStatic extends React.Component {
       actions.push(<Button key="viewAll" className="btn-ellipse ml-sm" size="small" icon="eye" onClick={() => window.location = `/setup/company-info/users?action=${PAGE_ACTION.VIEWALL}`}>{ formatMessage({ id: 'global.ui.button.view' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>);
       return actions;
     })();
-    const dataSource = [{
-      key: '1',
-      name: '胡彦斌',
-      age: 32,
-      address: '西湖区湖底公园1号',
-    }, {
-      key: '2',
-      name: '胡彦祖',
-      age: 42,
-      address: '西湖区湖底公园1号',
-    }];
-
+    const dataSource = [Object.assign({}, userInfo, { key: 1 })];
     const columns = [{
-      title: '姓名',
-      dataIndex: 'name',
-      key: 'name',
+      title: formatMessage({ id: 'page.comInfo.totalUser' }),
+      dataIndex: 'total',
+      key: 'total',
     }, {
-      title: '年龄',
-      dataIndex: 'age',
-      key: 'age',
+      title: formatMessage({ id: 'page.comInfo.activeUser' }),
+      dataIndex: 'activeCount',
+      key: 'activeCount',
     }, {
-      title: '住址',
-      dataIndex: 'address',
-      key: 'address',
+      title: formatMessage({ id: 'page.comInfo.inactiveUser' }),
+      dataIndex: 'inactiveCount',
+      key: 'inactiveCount',
     }];
     return (
       <Panel panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions}>
-        <Table dataSource={dataSource} columns={columns} pagination={false} rowSelection={{}} />
+        <Table dataSource={dataSource} columns={columns} pagination={false} />
       </Panel>
     );
   }
 }
 companyUserStatic.propTypes = {
   intl: intlShape.isRequired,
+  userInfo: PropTypes.object,
 };
 
 export default injectIntl(companyUserStatic);

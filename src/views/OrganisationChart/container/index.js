@@ -17,7 +17,7 @@ class organizationChartIndexView extends React.Component {
   render() {
     const { teams, setTeams } = this.props;
     return (
-      <Panel panelTitle="Organisational Chart" contentClasses="pl-lg pr-lg">
+      <Panel panelTitle="Organisational Chart" contentClasses="pl-lg pr-lg pt-lg">
         <AddDepartment />
         <Row className="pt-lg">
           <Col className="gutter-row field-label" span={12}>

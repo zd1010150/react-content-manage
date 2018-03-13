@@ -30,25 +30,26 @@ export const URL_PREFIX = '/admin'; // 配置的url前缀，在magento中,本应
 
 
 export const FORM_LAYOUT_CONFIG = {
-    labelCol: {
-        xs: { span: 24 },
-        sm: { span: 6 },
-    },
-    wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 14 },
-    },
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 6 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 14 },
+  },
 };
 
 export const FORM_FOOTER_CONFIG = {
-    wrapperCol: {
-        xs: {
-            span: 24,
-            offset: 0,
-        },
-        sm: {
-            span: 16,
-            offset: 6,
-        },
+  wrapperCol: {
+    xs: {
+      span: 24,
+      offset: 0,
     },
+    sm: {
+      span: 16,
+      offset: 6,
+    },
+  },
 };
+export const MINIMUM_YEAR = 1990;

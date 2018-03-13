@@ -32,7 +32,7 @@ const setGlobalSetting = settings => ({
   type: SET_GLOBAL_SETTING,
   settings,
 });
-export const fetchGlobalSetting = () => dispatch => get('/affiliate/global-settings', {}, dispatch).then((data) => {
+export const fetchGlobalSetting = () => dispatch => get('/admin/global-settings', {}, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
     dispatch(setGlobalSetting(data));
   }
