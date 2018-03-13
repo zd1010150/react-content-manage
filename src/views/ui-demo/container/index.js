@@ -11,11 +11,8 @@ import Dialog from '../component/dialog';
 import PaginationExample from '../component/Pagination';
 import DateTimePicker from '../component/DateTimePicker';
 import TeamTree from '../component/TeamTree';
-// test
-import MultiDrag from 'components/ui/multipleDragFields/index';
-import DropZone from 'components/ui/multipleDragFields/dropZone';
 import DnDContainer from 'components/ui/multipleDragFields/Container';
-// ends
+
 const AntdPanel = Collapse.Panel;
 const { TabPane } = Tabs;
 
@@ -51,8 +48,6 @@ const UIDemo = () => (
           <PaginationExample />
         </AntdPanel>
         <AntdPanel header="dnd" key="10">
-          {/* <MultiDrag /> */}
-          <DropZone />
           <DnDContainer />
         </AntdPanel>
       </Collapse>
