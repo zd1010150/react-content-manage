@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import update from 'immutability-helper'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import Card from './Card'
@@ -10,8 +9,7 @@ const style = {
 
 class Container extends Component {
 	constructor(props) {
-		super(props)
-		this.moveCard = this.moveCard.bind(this)
+		super(props);
 		this.state = {
 			cards: [
 				{
@@ -43,34 +41,82 @@ class Container extends Component {
 					id: 7,
 					text: 'PROFIT',
 				},
-			],
-		}
+      ],
+      selectStartIndex: -1,
+      selectEndIndex: -1,
+      isOtherDragging: false,
+		};
 	}
 
-	moveCard(dragIndex, hoverIndex) {
-		const { cards } = this.state
-		const dragCard = cards[dragIndex]
-    debugger;
+  onMultipleSelect = e => {
+    const { id } = e.target.dataset;
+    const { selectStartIndex, selectEndIndex } = this.state;
+
+    if (!e.shiftKey) {
+      return this.setState({
+        selectStartIndex: id,
+        selectEndIndex: id,
+      }); 
+    }
+
+    if (id < selectStartIndex) {
+      return this.setState({
+        selectStartIndex: id,
+        selectEndIndex: selectStartIndex,
+      });
+    } else {
+      return this.setState({
+        selectEndIndex: id,
+      });
+    }
+  }
+
+  clearDragging = () => {
+    this.setState({
+      isOtherDragging: false,
+    });
+  }
+
+	moveCard = (dragIndex, hoverIndex, start, end) => {
+    console.log('on move');
+    // avoid selected cards switch position internally
+    if (start !== end && dragIndex <= end && dragIndex >= start) {
+      return this.setState({
+        isOtherDragging: true,
+      });
+    }
+
+    const { cards } = this.state;
+    const length = end - start + 1;
+    const dragCard = cards[dragIndex];
+    // batch udpate positions
+
     const newCards = cards.filter((card, index) => index !== dragIndex);
     newCards.splice(hoverIndex, 0, dragCard);
-    
+    console.log('test');
+    console.log(newCards);
 		this.setState({
       cards: newCards,
+      isOtherDragging: true,
 		});
 	}
 
 	render() {
-		const { cards } = this.state
+		const { cards, isOtherDragging, selectStartIndex, selectEndIndex } = this.state;
 
 		return (
-			<div style={style}>
+			<div style={style} onClick={this.onMultipleSelect}>
 				{cards.map((card, i) => (
 					<Card
 						key={card.id}
 						index={i}
 						id={card.id}
 						text={card.text}
-						moveCard={this.moveCard}
+            moveCard={this.moveCard}
+            startIndex={selectStartIndex}
+            endIndex={selectEndIndex}
+            isOtherDragging={isOtherDragging}
+            clearDragging={this.clearDragging}
 					/>
 				))}
 			</div>
@@ -78,5 +124,4 @@ class Container extends Component {
 	}
 }
 
-// export default DragDropContext(HTML5Backend)(Container);
 export default Container;

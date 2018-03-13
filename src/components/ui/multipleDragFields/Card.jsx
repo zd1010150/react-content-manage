@@ -16,15 +16,19 @@ const cardSource = {
 	beginDrag(props) {
 		return {
 			id: props.id,
-			index: props.index,
+      index: props.index,
+      start: props.startIndex,
+      end: props.endIndex,
 		}
 	},
 }
 
 const cardTarget = {
 	hover(props, monitor, component) {
-		const dragIndex = monitor.getItem().index
-		const hoverIndex = props.index
+		const dragIndex = monitor.getItem().index;
+    const hoverIndex = props.index;
+    const start = props.startIndex;
+    const end = props.endIndex;
 
 		// Don't replace items with themselves
 		if (dragIndex === hoverIndex) {
@@ -58,14 +62,19 @@ const cardTarget = {
 		}
 
 		// Time to actually perform the action
-		props.moveCard(dragIndex, hoverIndex)
+		props.moveCard(dragIndex, hoverIndex, start, end);
 
 		// Note: we're mutating the monitor item here!
 		// Generally it's better to avoid mutations,
 		// but it's good here for the sake of performance
 		// to avoid expensive index searches.
-		monitor.getItem().index = hoverIndex
-	},
+		monitor.getItem().index = hoverIndex;
+  },
+  
+  drop(props, monitor, component) {
+    props.clearDragging();
+  },
+
 }
 
 class Card extends Component {
@@ -84,15 +93,39 @@ class Card extends Component {
 			text,
 			isDragging,
 			connectDragSource,
-			connectDropTarget,
-		} = this.props
-		const opacity = isDragging ? 0 : 1
-
+      connectDropTarget,
+      index,
+      startIndex,
+      endIndex,
+      isOtherDragging
+    } = this.props;
+    
+    const draggingTogether = isOtherDragging && (index <= endIndex && index >= startIndex) ? true : false;
+    const opacity = isDragging || draggingTogether ? .5 : 1;
+    const backgroundColor = (index <= endIndex && index >= startIndex) ? '#09c' : 'white';
+    console.log(index);
 		return connectDragSource(
-			connectDropTarget(<div style={{ ...style, opacity }}>{text}</div>),
-		)
+			connectDropTarget(
+        <div
+          data-id={index}
+          style={{ ...style, opacity, backgroundColor }}>
+          {text}
+        </div>),
+		);
 	}
 }
+
+//
+// const isDraggingWithOthers = monitor => {
+//   if (monitor.getItem() === null) {
+//     return false;
+//   }
+//   const { index, start, end } = monitor.getItem();
+//   if (index >= start && index <= end) {
+//     return true;
+//   }
+//   return false;
+// };
 
 export default _.flow(
   DragSource(ItemTypes.CARD, cardSource, (connect, monitor) => ({
