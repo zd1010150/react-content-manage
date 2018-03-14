@@ -12,7 +12,7 @@ class Inputs extends Component {
     };
   }
 
-  handleSearch = () => this.setState({ searchText: this.state.secondInputText })
+  handleSearch = value => this.setState({ searchText: value })
   handleTextInputChange = value => this.setState({ firstInputText: value })
   handleSearchInputChange = value => this.setState({ secondInputText: value })
 
@@ -20,8 +20,9 @@ class Inputs extends Component {
     const { firstInputText, secondInputText } = this.state;
     return (
       <Fragment>        
-        <p>using &lt;FloatingLabelInput / &gt;, exposed props as below</p>
+        <p>Using &lt;FloatingLabelInput / &gt;, exposed props as below</p>
         <p>labelText, labelColor, placeholder, handleChange, handleSearch, withSearch</p>
+        <p style={{ color: 'red' }}>Both handleChange and handleSearch handlers will receive current value of input instead of Event object</p>
         <h4>Text only Input</h4>
         <FloatingLabelInput
           labelText="Click to release me"
