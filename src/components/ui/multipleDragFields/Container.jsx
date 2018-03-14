@@ -92,15 +92,18 @@ class Container extends Component {
     }
   }
 
-  clearDragging = () => {
-    this.setState({
-			// startIndex: -1,
-      // endIndex: -1,
-      isOtherDragging: false,
+	setDragging = () => {
+		const { startIndex, endIndex } = this.state;
+		this.setState({
+				isOtherDragging: true,
+				cards: this.setSelectedCards(startIndex, endIndex),
     });
 	}
+
+  clearDragging = () => {
+    this.setState({ isOtherDragging: false });
+	}
 	
-	// test algorithm 1
 	moveCard = (dragIndex, hoverIndex) => {
 		const { startIndex, endIndex, cards } = this.state;
     // avoid selected cards switch position internally
@@ -152,50 +155,6 @@ class Container extends Component {
 		});
 	}
 
-	// moveCard = (dragIndex, hoverIndex) => {		
-	// 	const start = Number(this.state.startIndex);
-	// 	const end = Number(this.state.endIndex);
-  //   // avoid selected cards switch position internally
-  //   if (start !== end && dragIndex <= end && dragIndex >= start) {
-  //     return this.setState({
-  //       isOtherDragging: true,
-  //     });
-  //   }
-
-  //   const { cards } = this.state;
-	// 	const length = end - start + 1;
-    
-  //   // batch udpate positions
-	// 	// remove and get all dragging cards
-	// 	const hoverCard = cards[hoverIndex];
-	// 	const dragCards = cards.splice(start, length);
-	// 	console.log(dragCards);
-	// 	// insert all drag cards into hoverIndex
-	// 	// 1. 在remove后的原数组中找到hoverindex元素现在的index
-	// 	let newHoverIndex = -1;
-	// 	cards.forEach((card, i) => {
-	// 		if (card.id === hoverCard.id) {
-	// 			newHoverIndex = i;
-	// 		}
-	// 	});
-	// 	// 2. 将remove后的原数组以当前hoverindex的new index为界拆分为两部分
-	// 	if (newHoverIndex === -1) {
-	// 		return console.log('error');
-	// 	}
-	// 	const frontArray = cards.filter((card, i) => i < newHoverIndex);
-	// 	const backArray = cards.filter((card, i) => i > newHoverIndex);
-	// 	// 3. 组合前，removed，后三部分为一个新数组
-		
-	// 	const newCards = [...frontArray, hoverCard, ...dragCards, ...backArray];
-	// 	// const dragCard = cards[dragIndex];
-  //   // const newCards = cards.filter((card, index) => index !== dragIndex);
-  //   // newCards.splice(hoverIndex, 0, dragCard);
-	// 	this.setState({
-  //     cards: newCards,
-  //     isOtherDragging: true,
-	// 	});
-	// }
-
 	render() {
 		const { cards, isOtherDragging, startIndex, endIndex } = this.state;
 		return (
@@ -211,7 +170,8 @@ class Container extends Component {
 						endIndex={endIndex}
 						isSelected={card.selected}
             isOtherDragging={isOtherDragging}
-            clearDragging={this.clearDragging}
+						clearDragging={this.clearDragging}
+						setDragging={this.setDragging}
 					/>
 				))}
 			</div>

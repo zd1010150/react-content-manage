@@ -7,14 +7,14 @@ import ItemTypes from './ItemTypes'
 const style = {
 	border: '1px dashed gray',
 	padding: '0.5rem 1rem',
-	marginBottom: '.5rem',
 	backgroundColor: 'white',
 	cursor: 'move',
 }
 
 const cardSource = {
 	beginDrag(props) {
-		console.log(`begin drag with index = ${props.index}`);
+		// make all selected in dragging status when one of them is dragging
+		props.setDragging();
 		return {
 			id: props.id,
       index: props.index,
@@ -22,7 +22,8 @@ const cardSource = {
 	},
 
 	endDrag(props) {
-		console.log('end drag');
+		// console.log('end drag');
+		props.clearDragging();
 	}
 }
 
@@ -77,12 +78,6 @@ const cardTarget = {
 		// to avoid expensive index searches.
 		monitor.getItem().index = hoverIndex;
   },
-  
-  drop(props, monitor, component) {
-		console.log('on drop');
-    props.clearDragging();
-  },
-
 }
 
 class Card extends Component {
@@ -109,7 +104,7 @@ class Card extends Component {
       isOtherDragging,
     } = this.props;
     
-    const opacity = isDragging || (isOtherDragging && isSelected) ? .5 : 1;
+    const opacity = isDragging || (isOtherDragging && isSelected) ? .3 : 1;
     const backgroundColor = isSelected ? '#09c' : 'white';
 		return connectDragSource(
 			connectDropTarget(
@@ -121,18 +116,6 @@ class Card extends Component {
 		);
 	}
 }
-
-//
-// const isDraggingWithOthers = monitor => {
-//   if (monitor.getItem() === null) {
-//     return false;
-//   }
-//   const { index, start, end } = monitor.getItem();
-//   if (index >= start && index <= end) {
-//     return true;
-//   }
-//   return false;
-// };
 
 export default _.flow(
   DragSource(ItemTypes.CARD, cardSource, (connect, monitor) => ({
