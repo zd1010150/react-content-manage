@@ -12,34 +12,23 @@ class Inputs extends Component {
     };
   }
 
-  onSearch = () => {
-    // Work with redux
-    const { secondInputText } = this.state;
-    this.setState({ searchText: secondInputText });
-  }
-
-  onTextOnlyInputChange = firstInputText => {
-    // update internal state and/or sync with redux
-    this.setState({ firstInputText });
-  }
-
-  onSearchableInputChange = secondInputText => {
-    // update internal state and/or sync with redux
-    this.setState({ secondInputText });
-  }
+  handleSearch = value => this.setState({ searchText: value })
+  handleTextInputChange = value => this.setState({ firstInputText: value })
+  handleSearchInputChange = value => this.setState({ secondInputText: value })
 
   render () {
     const { firstInputText, secondInputText } = this.state;
     return (
       <Fragment>        
-        <p>using &lt;FloatingLabelInput / &gt;, exposed props as below</p>
-        <p>labelText, labelColor, placeholder, syncWithRedux, withSearch</p>
+        <p>Using &lt;FloatingLabelInput / &gt;, exposed props as below</p>
+        <p>labelText, labelColor, placeholder, handleChange, handleSearch, withSearch</p>
+        <p style={{ color: 'red' }}>Both handleChange and handleSearch handlers will receive current value of input instead of Event object</p>
         <h4>Text only Input</h4>
         <FloatingLabelInput
           labelText="Click to release me"
           labelColor="green"
           placeholder="Wow, the label is floating"
-          handleChange={this.onTextOnlyInputChange}
+          handleChange={this.handleTextInputChange}
           value={firstInputText}
         />
         <span>Real-time Text -> {this.state.firstInputText}</span>
@@ -49,8 +38,8 @@ class Inputs extends Component {
           labelText="Click to release me"
           labelColor="#09c"
           placeholder="Wow, the label is floating too"
-          handleChange={this.onSearchableInputChange}
-          syncWithRedux={this.onSearch}
+          handleChange={this.handleSearchInputChange}
+          handleSearch={this.handleSearch}
           value={secondInputText}
           withSearch
         />
