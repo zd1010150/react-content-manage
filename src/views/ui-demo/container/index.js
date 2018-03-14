@@ -19,7 +19,10 @@ const { TabPane } = Tabs;
 const UIDemo = () => (
   <Tabs defaultActiveKey="1">
     <TabPane tab="Html UI" key="1">
-      <Collapse >
+      <Collapse defaultActiveKey={['10']}>
+        <AntdPanel header="dnd" key="10">
+          <DnDContainer />
+        </AntdPanel>
         <AntdPanel header="panels" key="1">
           <Panels />
         </AntdPanel>
@@ -46,9 +49,6 @@ const UIDemo = () => (
         </AntdPanel>
         <AntdPanel header="Pagination" key="9">
           <PaginationExample />
-        </AntdPanel>
-        <AntdPanel header="dnd" key="10">
-          <DnDContainer />
         </AntdPanel>
       </Collapse>
     </TabPane>

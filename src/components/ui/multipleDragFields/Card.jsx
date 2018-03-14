@@ -14,38 +14,45 @@ const style = {
 
 const cardSource = {
 	beginDrag(props) {
+		console.log(`begin drag with index = ${props.index}`);
 		return {
 			id: props.id,
       index: props.index,
-      start: props.startIndex,
-      end: props.endIndex,
 		}
 	},
+
+	endDrag(props) {
+		console.log('end drag');
+	}
 }
 
 const cardTarget = {
 	hover(props, monitor, component) {
 		const dragIndex = monitor.getItem().index;
-    const hoverIndex = props.index;
-    const start = props.startIndex;
-    const end = props.endIndex;
+		const hoverIndex = props.index;
+		const { startIndex, endIndex } = props;
 
 		// Don't replace items with themselves
 		if (dragIndex === hoverIndex) {
-			return
+			return;
+		}
+
+		// Don't replace items with other selected items
+		if (hoverIndex >= startIndex && hoverIndex <= endIndex) {
+			return;
 		}
 
 		// Determine rectangle on screen
-		const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
+		const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
 
 		// Get vertical middle
-		const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+		const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
 		// Determine mouse position
-		const clientOffset = monitor.getClientOffset()
+		const clientOffset = monitor.getClientOffset();
 
 		// Get pixels to the top
-		const hoverClientY = clientOffset.y - hoverBoundingRect.top
+		const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
 		// Only perform the move when the mouse has crossed half of the items height
 		// When dragging downwards, only move when the cursor is below 50%
@@ -53,16 +60,16 @@ const cardTarget = {
 
 		// Dragging downwards
 		if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-			return
+			return;
 		}
 
 		// Dragging upwards
 		if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-			return
+			return;
 		}
 
 		// Time to actually perform the action
-		props.moveCard(dragIndex, hoverIndex, start, end);
+		props.moveCard(dragIndex, hoverIndex);
 
 		// Note: we're mutating the monitor item here!
 		// Generally it's better to avoid mutations,
@@ -72,6 +79,7 @@ const cardTarget = {
   },
   
   drop(props, monitor, component) {
+		console.log('on drop');
     props.clearDragging();
   },
 
@@ -96,18 +104,17 @@ class Card extends Component {
       connectDropTarget,
       index,
       startIndex,
-      endIndex,
-      isOtherDragging
+			endIndex,
+			isSelected,
+      isOtherDragging,
     } = this.props;
     
-    const draggingTogether = isOtherDragging && (index <= endIndex && index >= startIndex) ? true : false;
-    const opacity = isDragging || draggingTogether ? .5 : 1;
-    const backgroundColor = (index <= endIndex && index >= startIndex) ? '#09c' : 'white';
-    console.log(index);
+    const opacity = isDragging || (isOtherDragging && isSelected) ? .5 : 1;
+    const backgroundColor = isSelected ? '#09c' : 'white';
 		return connectDragSource(
 			connectDropTarget(
         <div
-          data-id={index}
+					data-index={index}
           style={{ ...style, opacity, backgroundColor }}>
           {text}
         </div>),

@@ -14,107 +14,202 @@ class Container extends Component {
 			cards: [
 				{
 					id: 1,
-					text: 'Write a cool JS library',
+					text: 'A',
 				},
 				{
 					id: 2,
-					text: 'Make it generic enough',
+					text: 'B',
 				},
 				{
 					id: 3,
-					text: 'Write README',
+					text: 'C',
 				},
 				{
 					id: 4,
-					text: 'Create some examples',
+					text: 'D',
 				},
 				{
 					id: 5,
-					text:
-						'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
+					text: 'E',
 				},
 				{
 					id: 6,
-					text: '???',
+					text: 'F',
 				},
 				{
 					id: 7,
-					text: 'PROFIT',
+					text: 'G',
 				},
       ],
-      selectStartIndex: -1,
-      selectEndIndex: -1,
+      startIndex: -1,
+      endIndex: -1,
       isOtherDragging: false,
 		};
 	}
 
-  onMultipleSelect = e => {
-    const { id } = e.target.dataset;
-    const { selectStartIndex, selectEndIndex } = this.state;
+	// 提权func到这层而不直接使用startindex, endindex来判断isselected状态的原因是让cards component更干净，使用container的状态来作为single source of truth
+	// reset all select to false
+	clearSelectedCards = () => {
+		const { cards } = this.state;
+		return cards.map(card => card.selected = false);
+	}
+
+	// set record selected status
+	setSelectedCards = (start, end) => {
+		const { cards } = this.state;
+		return cards.map((card, i) => {
+			card.selected = i >= start && i <= end;
+			return card;
+		});
+	}
+
+  handleItemSelection = e => {
+    const { index } = e.target.dataset;
+    const { startIndex, endIndex } = this.state;
 
     if (!e.shiftKey) {
+			const newCards = this.setSelectedCards(index, index);
       return this.setState({
-        selectStartIndex: id,
-        selectEndIndex: id,
-      }); 
+				cards: newCards,
+        startIndex: index,
+        endIndex: index,
+      });
     }
 
-    if (id < selectStartIndex) {
+    if (index < startIndex) {
+			const newCards = this.setSelectedCards(index, startIndex);
       return this.setState({
-        selectStartIndex: id,
-        selectEndIndex: selectStartIndex,
+				cards: newCards,
+        startIndex: index,
+        endIndex: startIndex,
       });
     } else {
+			const newCards = this.setSelectedCards(startIndex, index);
       return this.setState({
-        selectEndIndex: id,
+				cards: newCards,
+        endIndex: index,
       });
     }
   }
 
   clearDragging = () => {
     this.setState({
+			// startIndex: -1,
+      // endIndex: -1,
       isOtherDragging: false,
     });
-  }
-
-	moveCard = (dragIndex, hoverIndex, start, end) => {
-    console.log('on move');
+	}
+	
+	// test algorithm 1
+	moveCard = (dragIndex, hoverIndex) => {
+		const { startIndex, endIndex, cards } = this.state;
     // avoid selected cards switch position internally
-    if (start !== end && dragIndex <= end && dragIndex >= start) {
-      return this.setState({
-        isOtherDragging: true,
-      });
-    }
+    // if (hoverIndex <= endIndex && hoverIndex >= startIndex) {
+    //   return this.setState({
+    //     isOtherDragging: true,
+    //   });
+    // }
 
-    const { cards } = this.state;
-    const length = end - start + 1;
-    const dragCard = cards[dragIndex];
-    // batch udpate positions
-
-    const newCards = cards.filter((card, index) => index !== dragIndex);
-    newCards.splice(hoverIndex, 0, dragCard);
-    console.log('test');
-    console.log(newCards);
+		// 1. 以start, end为界分为三部分
+		const frontArray = cards.filter((card, i) => i < startIndex);
+		const backArray = cards.filter((card, i) => i > endIndex);
+		const dragLength = endIndex - startIndex + 1;
+		const dragCards = [...cards].splice(startIndex, dragLength);
+		// 2. if hoverIndex == 0, dragcards, front, back
+		// 3. if hoverIndex == last, front, back, dragcards
+		// 4.1 if hoverIndex in front, then insert dragcards in hoverindex and move hoverindex to back
+		// 4.2 if hoverIndex in back, then push dragcards in hoverindex and move hoverindex in front
+		let newCards;
+		if (hoverIndex == 0) {
+			newCards = [...dragCards, ...frontArray, ...backArray];
+		} else if (hoverIndex == cards.length - 1) {
+			newCards = [...frontArray, ...backArray, ...dragCards];
+		} else {
+			const hoverCard = cards[hoverIndex];
+			console.log('===hovercard===');
+			console.log(hoverCard);
+			const isInFront = !!frontArray.find(elem => elem.id === hoverCard.id);
+			if (isInFront) {
+				const newFront = frontArray.filter(elem => elem.id !== hoverCard.id);
+				newCards = [...newFront, ...dragCards, hoverCard, ...backArray];
+			} else {
+				const newBack = backArray.filter(elem => elem.id !== hoverCard.id);
+				newCards = [...frontArray, hoverCard, ...dragCards, ...newBack];
+			}
+		}
+		
+		// update startIndex and endIndex
+		console.log('---after moving cards----');
+		console.dir(newCards);
+		const newStartIndex = newCards.findIndex(card => card.id === dragCards[0].id);
+		const newEndIndex = newCards.findIndex(card => card.id === dragCards[dragCards.length - 1].id);
+		console.log(`new start: ${newStartIndex} and new end: ${newEndIndex}`);
 		this.setState({
+			startIndex: newStartIndex,
+      endIndex: newEndIndex,
       cards: newCards,
       isOtherDragging: true,
 		});
 	}
 
-	render() {
-		const { cards, isOtherDragging, selectStartIndex, selectEndIndex } = this.state;
+	// moveCard = (dragIndex, hoverIndex) => {		
+	// 	const start = Number(this.state.startIndex);
+	// 	const end = Number(this.state.endIndex);
+  //   // avoid selected cards switch position internally
+  //   if (start !== end && dragIndex <= end && dragIndex >= start) {
+  //     return this.setState({
+  //       isOtherDragging: true,
+  //     });
+  //   }
 
+  //   const { cards } = this.state;
+	// 	const length = end - start + 1;
+    
+  //   // batch udpate positions
+	// 	// remove and get all dragging cards
+	// 	const hoverCard = cards[hoverIndex];
+	// 	const dragCards = cards.splice(start, length);
+	// 	console.log(dragCards);
+	// 	// insert all drag cards into hoverIndex
+	// 	// 1. 在remove后的原数组中找到hoverindex元素现在的index
+	// 	let newHoverIndex = -1;
+	// 	cards.forEach((card, i) => {
+	// 		if (card.id === hoverCard.id) {
+	// 			newHoverIndex = i;
+	// 		}
+	// 	});
+	// 	// 2. 将remove后的原数组以当前hoverindex的new index为界拆分为两部分
+	// 	if (newHoverIndex === -1) {
+	// 		return console.log('error');
+	// 	}
+	// 	const frontArray = cards.filter((card, i) => i < newHoverIndex);
+	// 	const backArray = cards.filter((card, i) => i > newHoverIndex);
+	// 	// 3. 组合前，removed，后三部分为一个新数组
+		
+	// 	const newCards = [...frontArray, hoverCard, ...dragCards, ...backArray];
+	// 	// const dragCard = cards[dragIndex];
+  //   // const newCards = cards.filter((card, index) => index !== dragIndex);
+  //   // newCards.splice(hoverIndex, 0, dragCard);
+	// 	this.setState({
+  //     cards: newCards,
+  //     isOtherDragging: true,
+	// 	});
+	// }
+
+	render() {
+		const { cards, isOtherDragging, startIndex, endIndex } = this.state;
 		return (
-			<div style={style} onClick={this.onMultipleSelect}>
+			<div style={style} onClick={this.handleItemSelection}>
 				{cards.map((card, i) => (
 					<Card
 						key={card.id}
 						index={i}
 						id={card.id}
 						text={card.text}
-            moveCard={this.moveCard}
-            startIndex={selectStartIndex}
-            endIndex={selectEndIndex}
+						moveCard={this.moveCard}
+						startIndex={startIndex}
+						endIndex={endIndex}
+						isSelected={card.selected}
             isOtherDragging={isOtherDragging}
             clearDragging={this.clearDragging}
 					/>
