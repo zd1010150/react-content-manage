@@ -2,18 +2,16 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { fetchTeams } from 'store/global/action';
 import { connect } from 'react-redux';
 import { Panel } from 'components/ui/index';
 import { intlShape, injectIntl } from 'react-intl';
-import { setDepartment, toggleDepartmentDialog, updateUsers, addUsers } from '../flow/action';
+import { setDepartment, toggleDepartmentDialog, updateUsers, addUsers, setEditUser } from '../flow/action';
 import EditAndAddForm from '../component/editAndAddForm';
 import DepartmentDialog from '../component/departmentDialog';
 
 class addEditView extends React.Component {
-  componentDidMount() {
-    this.props.fetchTeams();
-  }
+
+
   render() {
     const {
       timeZones, moments, editUser, selectedDepartmentId, selectedDepartmentText, isDisplayDepartmentDialog, setDepartment, toggleDepartmentDialog, addUsers, updateUsers, teams,
@@ -21,7 +19,7 @@ class addEditView extends React.Component {
     const { formatMessage } = this.props.intl;
     return (
       <Panel contentClasses="pl-lg pr-lg" panelTitle={_.isEmpty(editUser) ? formatMessage({ id: 'page.users.addUser' }) : formatMessage({ id: 'page.users.editUser' })} >
-        <EditAndAddForm editObj={editUser} addUsers={addUsers} updateUsers={updateUsers} toggleDepartmentDialog={toggleDepartmentDialog} timeZones={timeZones} moments={moments} selectedDepartmentId={selectedDepartmentId} selectedDepartmentText={selectedDepartmentText} />
+        <EditAndAddForm editObject={editUser} addUsers={addUsers} updateUsers={updateUsers} toggleDepartmentDialog={toggleDepartmentDialog} timeZones={timeZones} moments={moments} selectedDepartmentId={selectedDepartmentId} selectedDepartmentText={selectedDepartmentText} key={Math.random()} />
         <DepartmentDialog isDisplayDepartmentDialog={isDisplayDepartmentDialog} toggleDepartmentDialog={toggleDepartmentDialog} setDepartment={setDepartment} teams={teams} />
       </Panel>
     );
@@ -46,7 +44,7 @@ const mapDispatchToProps = {
   toggleDepartmentDialog,
   addUsers,
   updateUsers,
-  fetchTeams,
+  setEditUser,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(addEditView));
 

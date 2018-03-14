@@ -12,8 +12,8 @@ import allInfos from 'i18n/global/info';
 
 import { addError } from '../error/action';
 
-const successNotify = (method) => {
-  if (method === 'get') {
+const successNotify = (method, url) => {
+  if (method === 'get' || url.indexOf('/admin/login') > -1) {
     return;
   }
   const info = allInfos[window.globalLanguage];
@@ -22,7 +22,7 @@ const successNotify = (method) => {
     duration: 3,
   });
 };
-const dispatch = (method, request, dispatcher = () => {}) => {
+const dispatch = (method, url, request, dispatcher = () => {}) => {
   dispatcher({
     type: HTTP_ACTION_DOING,
     payload: {},
@@ -51,7 +51,7 @@ const dispatch = (method, request, dispatcher = () => {}) => {
           data,
         },
       });
-      successNotify(method);
+      successNotify(method, url);
       return data;
     }
   }).catch((err) => {
@@ -66,13 +66,13 @@ const dispatch = (method, request, dispatcher = () => {}) => {
 };
 
 export const post = (url, data = {}, dispatcher, apiDomain = '', realHeaders = {}) =>
-  (dispatch('post', http('post', url, data, realHeaders, apiDomain), dispatcher));
+  (dispatch('post', url, http('post', url, data, realHeaders, apiDomain), dispatcher));
 
 export const get = (url, data, dispatcher, apiDomain = '', realHeaders = {}) =>
-  (dispatch('get', http('get', url, data, realHeaders, apiDomain), dispatcher));
+  (dispatch('get', url, http('get', url, data, realHeaders, apiDomain), dispatcher));
 
 export const httpDelete = (url, data, dispatcher, apiDomain = '', realHeaders = {}) =>
-  (dispatch('httpDelete', http('delete', url, data, realHeaders, apiDomain), dispatcher));
+  (dispatch('httpDelete', url, http('delete', url, data, realHeaders, apiDomain), dispatcher));
 
 export const patch = (url, data, dispatcher, apiDomain = '', realHeaders = {}) =>
-  (dispatch('patch', http('patch', url, data, realHeaders, apiDomain), dispatcher));
+  (dispatch('patch', url, http('patch', url, data, realHeaders, apiDomain), dispatcher));

@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 import _ from 'lodash';
+import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import { Table, Button, Icon, Modal, notification } from 'antd';
 import { PAGE_ACTION } from 'config/app.config';
@@ -8,7 +9,9 @@ import { connect } from 'react-redux';
 import { Panel } from 'components/ui/index';
 import { intlShape, injectIntl } from 'react-intl';
 import { FloatingLabelInput } from 'components/ui/index';
-import { queryByPaging, queryBySearchKey, deleteUsers, setEditUser } from '../flow/action';
+import { queryByPaging, queryBySearchKey, deleteUsers, fetchEditUser, setDepartment} from '../flow/action';
+import { getTreeItemByKey } from 'utils/treeUtil';
+
 
 const { confirm } = Modal;
 
@@ -19,10 +22,16 @@ class usersTableView extends React.Component {
   searchUser(value) {
     this.props.queryBySearchKey(value);
   }
-  edit(record) {
-    const { setEditUser } = this.props;
-    setEditUser(record);
-    window.location = `/setup/company-info/users?action=${PAGE_ACTION.EDIT}`;
+  edit(id) {
+    const self = this;
+    this.props.fetchEditUser(id, (user) => {
+      const { id, name } = getTreeItemByKey(self.props.teams, user.team_id);
+      self.props.setDepartment({
+        department_id: id,
+        department_name: name,
+      });
+      self.props.history.push(`/setup/company-info/users?action=${PAGE_ACTION.EDIT}`);
+    });
   }
   delete(id) {
     const { deleteUsers } = this.props;
@@ -42,18 +51,29 @@ class usersTableView extends React.Component {
     });
   }
   render() {
-    const { usersDataTablePagination, users, queryByPaging } = this.props;
+    const {
+      usersDataTablePagination, users, queryByPaging, history,
+    } = this.props;
     const { formatMessage } = this.props.intl;
-    const rightActions = <Button key="addBtn" className="btn-ellipse ml-sm" size="small" icon="user-add" onClick={() => window.location = '/setup/company-info/users?action=add'}>{ formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>;
-
+    const rightActions = (<Button
+      key="addBtn"
+      className="btn-ellipse ml-sm"
+      size="small"
+      icon="user-add"
+      onClick={() => {
+        history.push('/setup/company-info/users?action=add');
+    }}
+    >
+      { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}
+                          </Button>);
     const columns = [
       {
         title: formatMessage({ id: 'global.ui.table.action' }),
         key: 'id',
-        render: (text, record) => (
+        render: record => (
           <span>
-            <Icon type="edit" onClick={() => this.edit(record)} />
-            <Icon type="delete" className="danger pl-lg" onClick={() => this.delete(text)} />
+            <Icon type="edit" onClick={() => this.edit(record.id)} />
+            <Icon type="delete" className="danger pl-lg" onClick={() => this.delete(record.id)} />
           </span>
         ),
       }, {
@@ -66,17 +86,17 @@ class usersTableView extends React.Component {
         key: 'join_date',
       }, {
         title: formatMessage({ id: 'global.properNouns.department' }),
-        key: 'team',
-        render: (team) => {
-          if (!_.isEmpty(team.name)) {
-            return team.name;
-          }
-          return '';
-        },
+        dataIndex: 'team.name',
       }, {
         title: formatMessage({ id: 'global.properNouns.leadPageLayout' }),
-        dataIndex: 'address',
-        key: 'address',
+        dataIndex: 'page_layouts.data.leads.name',
+      }, {
+        title: formatMessage({ id: 'global.properNouns.accountPageLayout' }),
+        dataIndex: 'page_layouts.data.accounts.name',
+      },
+      {
+        title: formatMessage({ id: 'global.properNouns.opportunitiesPageLayout' }),
+        dataIndex: 'page_layouts.data.opportunities.name',
       },
     ];
 
@@ -109,10 +129,12 @@ usersTableView.propTypes = {
   intl: intlShape.isRequired,
   queryByPaging: PropTypes.func,
   queryBySearchKey: PropTypes.func,
+  fetchEditUser: PropTypes.func.isRequired,
 };
-const mapStateToProps = ({ setupUsers }) => {
+const mapStateToProps = ({ setupUsers, global }) => {
   const { users, usersDataTablePagination } = setupUsers;
   return {
+    teams: global.settings.teams,
     users: users.users,
     usersDataTablePagination,
   };
@@ -121,6 +143,7 @@ const mapDispatchToProps = {
   queryByPaging,
   queryBySearchKey,
   deleteUsers,
-  setEditUser,
+  fetchEditUser,
+  setDepartment,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(usersTableView));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(usersTableView)));

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import ComponanyInfoPanel from '../component/companyInfoPanel';
 import CompaneyUserStatic from '../component/companyUserStatic';
@@ -13,13 +14,13 @@ class companyInfo extends Component {
   }
   render() {
     const {
-      userInfo, companyLogo, setLogo,
+      userInfo, companyLogo, setLogo, history
     } = this.props;
 
     return (
       <Fragment>
         <ComponanyInfoPanel {...this.props} />
-        <CompaneyUserStatic userInfo={userInfo} />
+        <CompaneyUserStatic userInfo={userInfo} history={history}/>
         <Logo companyLogo={companyLogo} setLogo={setLogo} />
       </Fragment>
     );
@@ -47,4 +48,4 @@ const mapDispatchToProps = {
   updateCompanyInfo,
   setLogo,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(companyInfo);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(companyInfo));

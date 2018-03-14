@@ -13,10 +13,10 @@ const users = (state = {
   switch (type) {
     case SET_DEPARTMENT:
       return Object.assign({}, state, { ...payload });
-      case SET_USERS:
+    case SET_USERS:
       return Object.assign({}, state, { ...payload });
     case SET_EDIT_USER:
-      return Object.assign({}, state, { editUser: { ...payload }, department_id: payload.team_id, department_text: '主管部门' });
+      return Object.assign({}, state, { editUser: payload.user });
     default:
       return state;
   }

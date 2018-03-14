@@ -13,12 +13,7 @@ const cx = classNames.bind(styles);
 class companyInfoPanel extends React.Component {
   onBlur(fieldName, value) {
     const { formatMessage } = this.props.intl;
-    this.props.updateCompanyInfo({ [fieldName]: value }, () => {
-      notification.success({
-        message: formatMessage({ id: 'global.info.successUpdate' }),
-          duration: 3,
-      });
-    });
+    this.props.updateCompanyInfo({ [fieldName]: value });
   }
   render() {
     const {

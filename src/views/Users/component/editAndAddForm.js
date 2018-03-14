@@ -9,17 +9,18 @@ import { FORM_LAYOUT_CONFIG, FORM_FOOTER_CONFIG } from 'config/app.config.js';
 import { getExistRule, validator } from 'utils/validateMessagesUtil';
 import styles from '../users.less';
 
+
 const { Search } = Input;
 const cx = classNames.bind(styles);
 class userForm extends React.Component {
   onSubmit() {
     const {
-      editObj, addUsers, updateUsers, form, selectedDepartmentId,
+      editObject, addUsers, updateUsers, form, selectedDepartmentId,
     } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       const submitFormData = Object.assign({}, values, { team_id: selectedDepartmentId });
       if (!err) {
-        if (_.isEmpty(editObj)) {
+        if (_.isEmpty(editObject)) {
           addUsers(submitFormData, () => {
             form.resetFields();
           });
@@ -54,6 +55,8 @@ class userForm extends React.Component {
         }
     </Select>);
     const momentsEl = (<Select>{moments.map(item => <Option value={item} key={item}>{item}</Option>)}</Select>);
+
+
     return (
 
       <Form>
@@ -156,7 +159,7 @@ userForm.defaultProps = {
 };
 userForm.propTypes = {
   intl: intlShape.isRequired,
-  editObj: PropTypes.object,
+  editObject: PropTypes.object,
   addUsers: PropTypes.func.isRequired,
   updateUsers: PropTypes.func.isRequired,
   toggleDepartmentDialog: PropTypes.func.isRequired,

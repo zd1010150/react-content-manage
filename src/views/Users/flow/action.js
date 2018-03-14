@@ -3,9 +3,9 @@ import _ from 'lodash';
 import EnumsManager from 'utils/EnumsManager';
 import { TOGGLE_DEPARTMENT_SELECT_DIALOG, SET_DEPARTMENT, SET_PAGENATIONS, SET_USERS, SET_EDIT_USER, SET_SEARCHKEY } from './actionType';
 
-export const setEditUser = args => ({
+export const setEditUser = user => ({
   type: SET_EDIT_USER,
-  ...args,
+  user,
 });
 export const toggleDepartmentDialog = visible => ({
   type: TOGGLE_DEPARTMENT_SELECT_DIALOG,
@@ -62,16 +62,23 @@ export const addUsers = (form, callback) => dispatch => post('/admin/users', { .
   }
 });
 
-export const deleteUsers = (id, cb) => dispatch => httpDelete(`/admin/users/${id}`, {}, dispatch).then((data) => {
+export const deleteUsers = (id, cb) => (dispatch, getState) => httpDelete(`/admin/users/${id}`, {}, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
-    dispatch(fetchUsers(dispatch));
-    _.isFunction(cb) ? cb() : '';
+    debugger;
+    const { usersDataTablePagination, searchKey } = getState().setupUsers;
+    const { perPage, currentPage } = usersDataTablePagination;
+    dispatch(fetchUsers(perPage, currentPage, searchKey, dispatch));
+    if (_.isFunction(cb)) {
+      cb(data);
+    }
   }
 });
 
-export const fetchEditUser = () => dispatch => httpDelete(`/admin/users/${id}`, {}, dispatch).then((data) => {
-  if (!_.isEmpty(data)) {
-    dispatch(fetchUsers());
-    _.isFunction(cb) ? cb() : '';
+export const fetchEditUser = (id, cb) => dispatch => get(`/admin/users/${id}`, {}, dispatch).then((data) => {
+  if (!_.isEmpty(data.data)) {
+    dispatch(setEditUser(data.data));
+    if (_.isFunction(cb)) {
+      cb(data.data);
+    }
   }
 });
