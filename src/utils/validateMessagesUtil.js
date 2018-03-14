@@ -212,8 +212,8 @@ const idNumber = (() => {
   };
 })();
 const password = (() => {
-  const zhMsg = { idNumber: () => '密码必须包含大小写字母, 数字,至少8个字符' };
-  const enMsg = { idNumber: () => 'Should include upper and lower letters and numbers.At least 8 letters.' };
+  const zhMsg = { password: () => '密码必须包含大小写字母, 数字,至少8个字符' };
+  const enMsg = { password: () => 'Should include upper and lower letters and numbers.At least 8 letters.' };
   return {
     zhMsg,
     enMsg,

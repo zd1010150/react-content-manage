@@ -10,6 +10,7 @@ import {
   UIDemo,
   CompanyInfo,
   Users,
+  OrganisationChart,
 } from 'views/index';
 
 const MainContent = () => (
@@ -20,6 +21,7 @@ const MainContent = () => (
     <Route path="/setup/company-info/ui-demo" component={UIDemo} />
     <Route path="/setup/company-info/company-info" component={CompanyInfo} />
     <Route path="/setup/company-info/users" component={Users} />
+    <Route path="/setup/company-info/chart" component={OrganisationChart} />
   </Switch>
 );
 export default MainContent;

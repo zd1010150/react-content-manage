@@ -9,7 +9,13 @@ class EditBox extends React.Component {
       value: this.props.value,
       isEdting: false,
     }
-
+    componentWillReceiveProps(nextProps) {
+      if (nextProps.value !== this.props.value) {
+        this.setState({
+          value: nextProps.value,
+        });
+      }
+    }
     onChange(value) {
       console.log('change inner', value);
       this.setState({ value });
@@ -25,24 +31,35 @@ class EditBox extends React.Component {
       this.setState({ isEdting: false });
       this.props.onBlur(this.state.value);
     }
+    filterSelectText(val) {
+      const option = this.props.options.filter(item => item.value === val);
+      return _.isEmpty(option) ? '' : option[0].text;
+    }
     buildElm() {
-      const { type, options } = this.props;
+      const { type, options, inputClasses } = this.props;
 
       switch (type) {
         case 'select':
-          return <Select value={this.state.value} size="small" onChange={val => this.onChange(val)} onBlur={() => this.onBlur()}>{ options.map((op, index) => <Option value={op.value} key={op.value}>{ op.text }</Option>) }</Select>;
+          return <Select className={inputClasses} value={this.state.value} size="small" onChange={val => this.onChange(val)} onBlur={() => this.onBlur()}>{ options.map((op, index) => <Option value={op.value} key={op.value}>{ op.text }</Option>) }</Select>;
         case 'input':
         default:
-          return <Input size="small" value={this.state.value} onBlur={() => this.onBlur()} onPressEnter={e => this.onBlur(e.target.value)} onChange={(e) => { this.onChange(e.target.value); }} />;
+          return <Input className={inputClasses} size="small" value={this.state.value} onBlur={() => this.onBlur()} onPressEnter={e => this.onBlur(e.target.value)} onChange={(e) => { this.onChange(e.target.value); }} />;
       }
+    }
+    buildValue() {
+      const { type } = this.props;
+      if (type === 'select') {
+        return this.filterSelectText(this.state.value);
+      }
+      return this.state.value;
     }
 
     render() {
-    // TODO: Skip the login if in dev mode
-    // const isDevMode = process.env.NODE_ENV === 'development' ? true : false;
+      const { spanClasses, type } = this.props;
+      console.log(type, type === 'select' ? this.filterSelectText(this.state.value) : this.state.value, 'test edit--------------------');
       return (
-        <span onDoubleClick={() => this.onEditing()}>
-          { this.state.isEdting ? this.buildElm() : this.state.value }
+        <span onDoubleClick={() => this.onEditing()} className={spanClasses}>
+          { this.state.isEdting ? this.buildElm() : this.buildValue() }
         </span>
       );
     }
@@ -64,6 +81,8 @@ EditBox.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   options: PropTypes.array,
+  inputClasses: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  spanClasses: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 };
 
 

@@ -2,10 +2,10 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { Form, Input, Select, Button } from 'antd';
+import { Form, Input, Select, Button, Icon } from 'antd';
 import { intlShape, injectIntl } from 'react-intl';
 import classNames from 'classnames/bind';
-import { FORM_LAYOUT_CONFIG, FORM_FOOTER_CONFIG} from 'config/app.config.js';
+import { FORM_LAYOUT_CONFIG, FORM_FOOTER_CONFIG } from 'config/app.config.js';
 import { getExistRule, validator } from 'utils/validateMessagesUtil';
 import styles from '../users.less';
 
@@ -20,7 +20,9 @@ class userForm extends React.Component {
       const submitFormData = Object.assign({}, values, { team_id: selectedDepartmentId });
       if (!err) {
         if (_.isEmpty(editObj)) {
-          addUsers(submitFormData);
+          addUsers(submitFormData, () => {
+            form.resetFields();
+          });
         } else {
           updateUsers(submitFormData);
         }
@@ -43,28 +45,18 @@ class userForm extends React.Component {
       selectedDepartmentText,
       selectedDepartmentId,
     } = this.props;
-
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 6 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 18 },
-      },
-    };
+    const formItemLayout = FORM_LAYOUT_CONFIG;
 
     const timeZoneSelector = getFieldDecorator('time_zone', {
-      initialValue: editObject.time_zone || timeZones[0].id,
+      initialValue: editObject.time_zone || (_.isEmpty(timeZones) ? '' : timeZones[0].id),
     })(<Select>{
-            timeZones.map(item => <Option value={item.id} key={item.id}>{item.text}</Option>)
+            timeZones.map(item => <Option value={item.id} key={item.id}>{item.display_value}</Option>)
         }
     </Select>);
     const momentsEl = (<Select>{moments.map(item => <Option value={item} key={item}>{item}</Option>)}</Select>);
     return (
 
-      <Form onSubmit={this.onSubmit}>
+      <Form>
         <FormItem>
           {
                         getFieldDecorator('id', {
@@ -125,11 +117,7 @@ class userForm extends React.Component {
           {...formItemLayout}
           label={formatMessage({ id: 'global.form.department' })}
         >
-          {/* { */}
-          {/* getFieldDecorator('team_text', { */}
-          {/* initialValue: selectedDepartmentText, */}
-          {/* })(<Search readOnly  onClick={() => { () => { debugger; this.toggleDepartment(); }; }} />)} */}
-          <Search readOnly onClick={() => { this.toggleDepartment(); }} defaultValue={selectedDepartmentText} />
+          <Search readOnly onClick={() => { this.toggleDepartment(); }} value={selectedDepartmentText} />
         </FormItem>
         <FormItem
           {...formItemLayout}
@@ -150,13 +138,13 @@ class userForm extends React.Component {
           {...formItemLayout}
           label={formatMessage({ id: 'global.form.workingHourEnd' })}
         >
-          {getFieldDecorator('end_work_time ', {
+          {getFieldDecorator('end_work_time', {
                   initialValue: editObject.end_work_time || '',
               })(momentsEl)}
         </FormItem>
-        <FormItem {...formItemLayout}>
-          <Button type="primary" htmlType="submit">save</Button>
-          <Button type="danger">cancel</Button>
+        <FormItem {...FORM_FOOTER_CONFIG}>
+          <Button type="primary" htmlType="submit" onClick={() => { this.onSubmit(); }}><Icon type="save" />save</Button>
+          <Button type="danger" className="ml-sm"><Icon type="close" />cancel</Button>
         </FormItem>
       </Form>
     );
@@ -175,15 +163,7 @@ userForm.propTypes = {
   timeZones: PropTypes.array.isRequired,
   moments: PropTypes.array.isRequired,
   selectedDepartmentText: PropTypes.string,
-  selectedDepartmentId: PropTypes.string,
+  selectedDepartmentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
-
-
-class WrapperForm extends React.Component {
-  render() {
-    const AddForm = Form.create()(injectIntl(userForm));
-    return <AddForm {...this.props} ref={(instance) => { this.instance = instance; }} />;
-  }
-}
-
-export default WrapperForm;
+const UserFormWrapper = Form.create()(injectIntl(userForm));
+export default UserFormWrapper;

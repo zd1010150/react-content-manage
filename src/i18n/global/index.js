@@ -8,6 +8,7 @@ import properNouns from './properNouns';
 import error from './error';
 import crm from './crm';
 import sider from './sider';
+import info from './info';
 
 export default{
   ui,
@@ -18,4 +19,5 @@ export default{
   error,
   crm,
   sider,
+  info,
 };

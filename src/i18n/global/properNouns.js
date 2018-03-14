@@ -8,8 +8,13 @@ export default {
     opport: 'Opport',
     opportunities: 'Opport',
     users: '用户',
+    joinDate: '入职日期',
+    department: '部门',
+    leadPageLayout: 'Lead Page Layout',
+    accountPageLayout: 'Account Page Layout',
+    opportunitiesPageLayout: 'Opportunity Page Layout',
   },
-  en: {  
+  en: {
     lead: 'Lead',
     leads: 'Leads',
     account: 'Account',
@@ -17,5 +22,10 @@ export default {
     opport: 'Opport',
     opportunities: 'Opport',
     users: 'Users',
+    joinDate: 'Join Date',
+    department: 'Department',
+    leadPageLayout: 'Lead Page Layout',
+    accountPageLayout: 'Account Page Layout',
+    opportunitiesPageLayout: 'Opportunity Page Layout',
   },
 };

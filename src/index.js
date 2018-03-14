@@ -25,8 +25,10 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 window.__store__ = store;
-// store.dispatch(fetchGlobalSetting()); // 获取全局配置,页面中大多数数据请求都基于本配置
+store.dispatch(fetchGlobalSetting()); // 获取全局配置,页面中大多数数据请求都基于本配置
 // store.dispatch(fetchAccountInfo()); // 获取用户基本信息
+
+
 
 ErrorNotification(store);
 

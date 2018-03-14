@@ -5,6 +5,7 @@ import { getStore } from '../../../utils/localStorage';
 import EnumsManager from '../../../utils/EnumsManager';
 
 import { post } from 'store/http/httpAction';
+
 const url = '/admin/login';
 
 const generateRequest = (url, fetchType = 'GET', bodyContent = {}) => {
@@ -31,15 +32,12 @@ const loginOrOutFailed = () => ({
   type: LOGINOROUT_FAILURE,
 });
 
-export const tryLogin = (
-  values,
-) => dispatch => post(url, values, dispatch)
-                  .then(json => {
-                    if (json && (!_.isEmpty(json.data))) {
-                      dispatch(loginSuccess(json))
-                    }
-                  });
-
+export const tryLogin = values => dispatch => post(url, values, dispatch)
+  .then((json) => {
+    if (json && (!_.isEmpty(json.data))) {
+      dispatch(loginSuccess(json));
+    }
+  });
 
 
 const logoutSuccess = json => ({

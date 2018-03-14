@@ -1,6 +1,6 @@
 import { get, post } from 'store/http/httpAction';
 import _ from 'lodash';
-import { TOGGLE_LANGUAGE, SET_PERMISSION, SET_ACCOUNTINFO, SET_PAGETITLE, SET_GLOBAL_SETTING, RESET_USER, SET_TEAMS } from './actionType';
+import { TOGGLE_LANGUAGE, SET_PERMISSION, SET_ACCOUNTINFO, SET_PAGETITLE, SET_GLOBAL_SETTING, RESET_USER, SET_TEAMS, SET_LOGO } from './actionType';
 
 
 export const toggleLanguage = language => ({
@@ -23,16 +23,19 @@ export const setPageTitle = pageTitle => ({
 export const resetUser = () => ({
   type: RESET_USER,
 });
-const setTeams = teams => () => ({
+export const setTeams = teams => ({
   type: SET_TEAMS,
   teams,
 });
-
+export const setLogo = logo => ({
+  type: SET_LOGO,
+  logo,
+});
 const setGlobalSetting = settings => ({
   type: SET_GLOBAL_SETTING,
   settings,
 });
-export const fetchGlobalSetting = () => dispatch => get('/affiliate/global-settings', {}, dispatch).then((data) => {
+export const fetchGlobalSetting = () => dispatch => get('/admin/global-settings', {}, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
     dispatch(setGlobalSetting(data));
   }
@@ -45,9 +48,10 @@ export const fetchAccountInfo = () => dispatch => post('/affiliate/me').then((da
 });
 
 
-export const fetchTeams = () => dispatch => get('/admin/teams').then((data) => {
-  if (!_.isEmpty(data)) {
-    dispatch(setTeams(data));
+export const fetchTeams = () => dispatch => get('/admin/teams/struct/info').then((data) => {
+  if (!_.isEmpty(data.teams)) {
+    const params = setTeams(data.teams);
+    dispatch(params);
   }
 });
 

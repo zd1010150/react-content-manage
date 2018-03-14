@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import EnumsManager from 'utils/EnumsManager';
-import { TOGGLE_DEPARTMENT_SELECT_DIALOG, SET_DEPARTMENT, SET_USERS, SET_PAGENATIONS, SET_EDIT_USER, SET_SEARCHKEY } from './actionType';
+import { TOGGLE_DEPARTMENT_SELECT_DIALOG, SET_DEPARTMENT, SET_USERS, SET_PAGENATIONS, SET_EDIT_USER } from './actionType';
 
 
 const users = (state = {
@@ -13,7 +13,7 @@ const users = (state = {
   switch (type) {
     case SET_DEPARTMENT:
       return Object.assign({}, state, { ...payload });
-      case SET_USERS:
+    case SET_USERS:
       return Object.assign({}, state, { ...payload });
     case SET_EDIT_USER:
       return Object.assign({}, state, { editUser: { ...payload }, department_id: payload.team_id, department_text: '主管部门' });
@@ -33,15 +33,6 @@ const usersDataTablePagination = (state = { perPage: EnumsManager.DefaultPageCon
       return state;
   }
 };
-const searchKey = (state = { searchKey: '' }, action) => {
-  const { type, ...payload } = action;
-  switch (type) {
-    case SET_SEARCHKEY:
-      return Object.assign({}, state, { searchKey: payload.searchKey });
-    default:
-      return state;
-  }
-};
 const ui = (state = {
   isDisplayDepartmentDialog: false,
 }, action) => {
@@ -57,6 +48,5 @@ export default combineReducers({
   ui,
   users,
   usersDataTablePagination,
-  searchKey,
 });
 
