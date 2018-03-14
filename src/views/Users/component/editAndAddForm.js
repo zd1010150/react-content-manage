@@ -20,7 +20,9 @@ class userForm extends React.Component {
       const submitFormData = Object.assign({}, values, { team_id: selectedDepartmentId });
       if (!err) {
         if (_.isEmpty(editObj)) {
-          addUsers(submitFormData);
+          addUsers(submitFormData, () => {
+            form.resetFields();
+          });
         } else {
           updateUsers(submitFormData);
         }
@@ -32,7 +34,6 @@ class userForm extends React.Component {
     toggleDepartmentDialog(true);
   }
   render() {
-
     const { Item: FormItem } = Form;
     const { Option } = Select;
     const { formatMessage, locale } = this.props.intl;
@@ -45,10 +46,11 @@ class userForm extends React.Component {
       selectedDepartmentId,
     } = this.props;
     const formItemLayout = FORM_LAYOUT_CONFIG;
+
     const timeZoneSelector = getFieldDecorator('time_zone', {
-      initialValue: editObject.time_zone || timeZones[0].id,
+      initialValue: editObject.time_zone || (_.isEmpty(timeZones) ? '' : timeZones[0].id),
     })(<Select>{
-            timeZones.map(item => <Option value={item.id} key={item.id}>{item.text}</Option>)
+            timeZones.map(item => <Option value={item.id} key={item.id}>{item.display_value}</Option>)
         }
     </Select>);
     const momentsEl = (<Select>{moments.map(item => <Option value={item} key={item}>{item}</Option>)}</Select>);
@@ -161,7 +163,7 @@ userForm.propTypes = {
   timeZones: PropTypes.array.isRequired,
   moments: PropTypes.array.isRequired,
   selectedDepartmentText: PropTypes.string,
-  selectedDepartmentId: PropTypes.string,
+  selectedDepartmentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 const UserFormWrapper = Form.create()(injectIntl(userForm));
 export default UserFormWrapper;

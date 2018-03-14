@@ -3,19 +3,21 @@ import PropTypes from 'prop-types';
 import { Input } from 'antd';
 import classNames from 'classnames/bind';
 import styles from './index.less';
+
 const cx = classNames.bind(styles);
 
 const defaultProps = {
   labelText: 'Default Label',
   withSearch: false,
+  handleChange: () => {},
 };
 const propTypes = {
   labelText: PropTypes.string.isRequired,
   labelColor: PropTypes.string,
   placeholder: PropTypes.string,
   addonAfter: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  withSearch: PropTypes.bool.isRequired,
-  handleChange: PropTypes.func.isRequired,
+  withSearch: PropTypes.bool,
+  handleChange: PropTypes.func,
   handleSearch: PropTypes.func,
 };
 
@@ -30,9 +32,11 @@ class FloatingLabelInput extends Component {
 
   onBlur = e => this.setState({ isFocused: false })
   onFocus = e => this.setState({ isFocused: true })
-  onPressEnter = e => this.props.handleSearch(e.target.value)
+  onPressEnter = (e) => {
+    this.props.handleSearch(e.target.value);
+  }
 
-  onChange = e => {
+  onChange = (e) => {
     const { value } = e.target;
     this.setState({
       isEmpty: value.length === 0,
@@ -68,17 +72,17 @@ class FloatingLabelInput extends Component {
         </div>
         {withSearch ? (
           <Input.Search
-            value={value}
+            defaultValue={value}
             onBlur={this.onBlur}
             onChange={this.onChange}
             onFocus={this.onFocus}
             onPressEnter={this.onPressEnter}
-            onSearch={handleSearch}
+            onSearch={value => handleSearch(value)}
             enterButton
           />
         ) : (
           <Input
-            value={value}
+            defaultValue={value}
             onBlur={this.onBlur}
             onChange={this.onChange}
             onFocus={this.onFocus}

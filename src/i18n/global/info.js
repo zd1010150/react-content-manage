@@ -1,8 +1,12 @@
 export default {
   zh: {
-    successUpdate: '更新成功',
+    post: '新增成功',
+    patch: '更新成功',
+    httpDelete: '删除成功',
   },
   en: {
-    successUpdate: 'Success Update',
+    post: 'Success Add',
+    patch: 'Success Update',
+    httpDelete: 'Success Delete',
   },
 };

@@ -61,7 +61,7 @@ class teamTree extends React.Component {
           }
         });
       };
-      const data = [...this.props.teams ];
+      const data = [...this.props.teams];
 
       let dragObj;
       loop(data, dragKey, (item, index, arr) => {
@@ -87,8 +87,6 @@ class teamTree extends React.Component {
           item.child_team_rec.push(dragObj);
         });
       }
-
-      console.log('after drag============', data, 'after drag============');
 
       this.props.setTeams(data);
       this.props.onDrop({
@@ -143,11 +141,12 @@ class teamTree extends React.Component {
     }
     render() {
       const {
-        checkable, draggable, teams,
+        checkable, draggable, teams, defaultExpandAll,
       } = this.props;
 
       return (
         <Tree
+          defaultExpandAll={defaultExpandAll}
           draggable={draggable}
           checkable={checkable}
           onExpand={args => this.onExpand(args)}
@@ -184,6 +183,7 @@ teamTree.defaultProps = {
   canModifyTeamName: false,
   draggable: false,
   autoExpandParent: true,
+  defaultExpandAll: true,
   onDragEnter: () => {},
   onDrop: () => {},
   onDragOver: () => {},
@@ -214,7 +214,8 @@ teamTree.propTypes = {
   onDragStart: PropTypes.func,
   onRightClick: PropTypes.func,
   modifyTeamName: PropTypes.func,
-  setTeams: PropTypes.func.isRequired,
+  setTeams: PropTypes.func,
+  defaultExpandAll: PropTypes.bool,
 
 };
 

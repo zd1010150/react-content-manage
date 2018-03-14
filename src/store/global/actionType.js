@@ -5,3 +5,4 @@ export const SET_PAGETITLE = 'SET_PAGETITLE';
 export const SET_GLOBAL_SETTING = 'SET_GLOBAL_SETTING';
 export const RESET_USER = 'RESET_USER';
 export const SET_TEAMS = 'SET_TEAMS';
+export const SET_LOGO = 'SET_LOGO';

@@ -2,7 +2,7 @@
 import { combineReducers } from 'redux';
 import { moments, years } from 'utils/dateTimeUtils';
 import { navLanguage } from 'utils/navigationUtil';
-import { TOGGLE_LANGUAGE, SET_PERMISSION, SET_ACCOUNTINFO, SET_PAGETITLE, SET_GLOBAL_SETTING, SET_TEAMS } from './actionType';
+import { TOGGLE_LANGUAGE, SET_PERMISSION, SET_ACCOUNTINFO, SET_PAGETITLE, SET_GLOBAL_SETTING, SET_TEAMS, SET_LOGO } from './actionType';
 
 // 页面默认语言为 en，此处只是mock
 
@@ -74,11 +74,20 @@ const settings = (state = {
   }
 };
 
+const companyLogo = (state = 'https://www.seoclerk.com/pics/558390-11FO8A1505384509.png', action) => {
+  switch (action.type) {
+    case SET_LOGO:
+      return action.logo;
+    default:
+      return state;
+  }
+};
 const rootReducer = combineReducers({
   language,
   permission,
   account,
   pageTitle,
   settings,
+  companyLogo,
 });
 export default rootReducer;

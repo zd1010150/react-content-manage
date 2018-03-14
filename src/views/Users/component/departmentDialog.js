@@ -10,22 +10,23 @@ import { getTreeItemByKey } from 'utils/treeUtil';
 class DepartmentDialog extends React.Component {
   selectDepartment(selectedKeys, treeData) {
     const { toggleDepartmentDialog, setDepartment } = this.props;
-    const { key, title } = getTreeItemByKey(treeData, selectedKeys[0]);
+    const { id, name } = getTreeItemByKey(treeData, selectedKeys[0]);
     toggleDepartmentDialog(false);
     setDepartment({
-      department_id: key,
-      department_name: title,
+      department_id: id,
+      department_name: name,
     });
   }
   render() {
-    const { isDisplayDepartmentDialog } = this.props;
+    const { isDisplayDepartmentDialog, teams } = this.props;
     return (
       <Modal
         visible={isDisplayDepartmentDialog}
         title="Title"
         footer={[]}
+        onCancel={() => this.props.toggleDepartmentDialog(false)}
       >
-        <TeamTree onSelect={(selectedKeys, treeData) => this.selectDepartment(selectedKeys, treeData) } />
+        <TeamTree onSelect={(selectedKeys, treeData) => this.selectDepartment(selectedKeys, treeData)} teams={teams} defaultExpandAll />
       </Modal>
     );
   }
@@ -40,6 +41,7 @@ DepartmentDialog.propTypes = {
   isDisplayDepartmentDialog: PropTypes.bool,
   toggleDepartmentDialog: PropTypes.func,
   setDepartment: PropTypes.func,
+  teams: PropTypes.array,
 };
 
 export default injectIntl(DepartmentDialog);

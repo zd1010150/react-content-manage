@@ -40,6 +40,7 @@ export default {
     },
     dialog: {
       info: '提示',
+      deleteTitle: '确定删除这条记录',
     },
   },
   en: {
@@ -82,7 +83,8 @@ export default {
       all: 'All',
     },
     dialog: {
-      info: '提示',
+      info: 'Info',
+      deleteTitle: 'Are you sure to delete this record?',
     },
   },
 };

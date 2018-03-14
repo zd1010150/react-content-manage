@@ -1,6 +1,6 @@
 import { get, post } from 'store/http/httpAction';
 import _ from 'lodash';
-import { TOGGLE_LANGUAGE, SET_PERMISSION, SET_ACCOUNTINFO, SET_PAGETITLE, SET_GLOBAL_SETTING, RESET_USER, SET_TEAMS } from './actionType';
+import { TOGGLE_LANGUAGE, SET_PERMISSION, SET_ACCOUNTINFO, SET_PAGETITLE, SET_GLOBAL_SETTING, RESET_USER, SET_TEAMS, SET_LOGO } from './actionType';
 
 
 export const toggleLanguage = language => ({
@@ -27,7 +27,10 @@ export const setTeams = teams => ({
   type: SET_TEAMS,
   teams,
 });
-
+export const setLogo = logo => ({
+  type: SET_LOGO,
+  logo,
+});
 const setGlobalSetting = settings => ({
   type: SET_GLOBAL_SETTING,
   settings,

@@ -1,7 +1,9 @@
 /* eslint-disable no-shadow */
 import React from 'react';
-import { Modal, Button, Upload, notification, Icon } from 'antd';
-import { Panel } from 'components/ui/index';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import { Modal, Button, notification, Icon } from 'antd';
+import { Panel, Upload } from 'components/ui/index';
 import { intlShape, injectIntl } from 'react-intl';
 
 
@@ -24,36 +26,34 @@ class logo extends React.Component {
         visible: false,
       });
     }
+    onAllDone(response, error) {
+      if (_.isEmpty(error)) {
+        this.setState({
+          visible: false,
+        });
+        const logo = response && response[0].logo;
+        this.props.setLogo(logo);
+      }
+    }
     render() {
+      const { companyLogo } = this.props;
       const { formatMessage } = this.props.intl;
       const rightActions = <Button className="btn-ellipse ml-sm" size="small" icon="edit" onClick={() => this.showUploadDialog()}>{ formatMessage({ id: 'global.ui.button.update' })}</Button>;
       const uploadProps = {
-        name: 'file',
-        action: '//jsonplaceholder.typicode.com/posts/',
-        headers: {
-          authorization: 'authorization-text',
-        },
-        onChange(info) {
-          if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-          }
-          if (info.file.status === 'done') {
-            notification.success(`${info.file.name} file uploaded successfully`);
-          } else if (info.file.status === 'error') {
-            notification.error(`${info.file.name} file upload failed.`);
-          }
-        },
+        name: 'document',
+        action: '/admin/files/company_logo',
+        withCredentials: true,
       };
       return (
         <Panel panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions}>
-          <img _ngcontent-c23="" alt="" height="250" src="https://www.seoclerk.com/pics/558390-11FO8A1505384509.png" width="250" />
+          <img _ngcontent-c23="" alt="" height="250" src={ companyLogo } width="250" />
           <Modal
             title="Upload Icon"
             visible={this.state.visible}
             onOk={() => this.onOk()}
             onCancel={() => this.onCancel()}
           >
-            <Upload {...uploadProps}>
+            <Upload uploadConfig={uploadProps} onAllDone={(response, error) => this.onAllDone(response, error)} key={Math.random()}>
               <Button>
                 <Icon type="upload" /> Click to Upload
               </Button>
@@ -65,6 +65,8 @@ class logo extends React.Component {
 }
 logo.propTypes = {
   intl: intlShape.isRequired,
+  companyLogo: PropTypes.string,
+  setLogo: PropTypes.func.isRequired,
 };
 
 export default injectIntl(logo);

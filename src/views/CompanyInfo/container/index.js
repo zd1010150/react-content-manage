@@ -5,6 +5,7 @@ import ComponanyInfoPanel from '../component/companyInfoPanel';
 import CompaneyUserStatic from '../component/companyUserStatic';
 import Logo from '../component/logo';
 import { getCompanyInfo, updateCompanyInfo } from '../flow/action';
+import { setLogo } from 'store/global/action';
 
 class companyInfo extends Component {
   componentDidMount() {
@@ -12,14 +13,14 @@ class companyInfo extends Component {
   }
   render() {
     const {
-      userInfo,
+      userInfo, companyLogo, setLogo,
     } = this.props;
 
     return (
       <Fragment>
         <ComponanyInfoPanel {...this.props} />
         <CompaneyUserStatic userInfo={userInfo} />
-        <Logo />
+        <Logo companyLogo={companyLogo} setLogo={setLogo} />
       </Fragment>
     );
   }
@@ -32,6 +33,7 @@ const mapStateToProps = ({ global, setupCompanyInfo }) => {
     timeZones, languages, countries, moments, years,
   } = global.settings;
   return {
+    companyLogo: global.companyLogo,
     timeZones,
     languages,
     countries,
@@ -43,5 +45,6 @@ const mapStateToProps = ({ global, setupCompanyInfo }) => {
 const mapDispatchToProps = {
   getCompanyInfo,
   updateCompanyInfo,
+  setLogo,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(companyInfo);

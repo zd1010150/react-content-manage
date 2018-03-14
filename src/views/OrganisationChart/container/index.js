@@ -7,12 +7,11 @@ import { fetchTeams } from 'store/global/action';
 import AddDepartment from '../component/add';
 import Department from '../component/department';
 import User from '../component/user';
-import DemoTree from '../component/demotree';
 import { setTeams } from 'store/global/action';
 
 class organizationChartIndexView extends React.Component {
   componentDidMount() {
-    // this.props.fetchTeams();
+    this.props.fetchTeams();
   }
   render() {
     const { teams, setTeams } = this.props;
@@ -25,7 +24,6 @@ class organizationChartIndexView extends React.Component {
           </Col>
           <Col className="gutter-row field-value" span={12}><User /></Col>
         </Row>
-        <DemoTree />
       </Panel>
     );
   }
