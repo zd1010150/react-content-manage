@@ -11,36 +11,7 @@ class Container extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			cards: [
-				{
-					id: 1,
-					text: 'A',
-				},
-				{
-					id: 2,
-					text: 'B',
-				},
-				{
-					id: 3,
-					text: 'C',
-				},
-				{
-					id: 4,
-					text: 'D',
-				},
-				{
-					id: 5,
-					text: 'E',
-				},
-				{
-					id: 6,
-					text: 'F',
-				},
-				{
-					id: 7,
-					text: 'G',
-				},
-      ],
+			cards: props.data,
       startIndex: -1,
       endIndex: -1,
       isOtherDragging: false,
@@ -106,12 +77,10 @@ class Container extends Component {
 	
 	moveCard = (dragIndex, hoverIndex) => {
 		const { startIndex, endIndex, cards } = this.state;
-    // avoid selected cards switch position internally
-    // if (hoverIndex <= endIndex && hoverIndex >= startIndex) {
-    //   return this.setState({
-    //     isOtherDragging: true,
-    //   });
-    // }
+		// Don't replace items with other selected items
+		if (hoverIndex >= startIndex && hoverIndex <= endIndex) {
+			return;
+		}
 
 		// 1. 以start, end为界分为三部分
 		const frontArray = cards.filter((card, i) => i < startIndex);
@@ -129,8 +98,8 @@ class Container extends Component {
 			newCards = [...frontArray, ...backArray, ...dragCards];
 		} else {
 			const hoverCard = cards[hoverIndex];
-			console.log('===hovercard===');
-			console.log(hoverCard);
+			// console.log('===hovercard===');
+			// console.log(hoverCard);
 			const isInFront = !!frontArray.find(elem => elem.id === hoverCard.id);
 			if (isInFront) {
 				const newFront = frontArray.filter(elem => elem.id !== hoverCard.id);
@@ -142,17 +111,20 @@ class Container extends Component {
 		}
 		
 		// update startIndex and endIndex
-		console.log('---after moving cards----');
-		console.dir(newCards);
+		// console.log('---after moving cards----');
+		// console.dir(newCards);
 		const newStartIndex = newCards.findIndex(card => card.id === dragCards[0].id);
 		const newEndIndex = newCards.findIndex(card => card.id === dragCards[dragCards.length - 1].id);
-		console.log(`new start: ${newStartIndex} and new end: ${newEndIndex}`);
+		// console.log(`new start: ${newStartIndex} and new end: ${newEndIndex}`);
 		this.setState({
 			startIndex: newStartIndex,
       endIndex: newEndIndex,
       cards: newCards,
       isOtherDragging: true,
 		});
+
+		// sync with parent component
+		this.props.onOrderChange(newCards);
 	}
 
 	render() {

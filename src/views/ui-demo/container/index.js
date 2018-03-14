@@ -11,7 +11,7 @@ import Dialog from '../component/dialog';
 import PaginationExample from '../component/Pagination';
 import DateTimePicker from '../component/DateTimePicker';
 import TeamTree from '../component/TeamTree';
-import DnDContainer from 'components/ui/multipleDragFields/Container';
+import MultiDnD from 'components/ui/multipleDragFields/Controller';
 
 const AntdPanel = Collapse.Panel;
 const { TabPane } = Tabs;
@@ -21,7 +21,7 @@ const UIDemo = () => (
     <TabPane tab="Html UI" key="1">
       <Collapse defaultActiveKey={['10']}>
         <AntdPanel header="dnd" key="10">
-          <DnDContainer />
+          <MultiDnD />
         </AntdPanel>
         <AntdPanel header="panels" key="1">
           <Panels />

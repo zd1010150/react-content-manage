@@ -38,11 +38,6 @@ const cardTarget = {
 			return;
 		}
 
-		// Don't replace items with other selected items
-		if (hoverIndex >= startIndex && hoverIndex <= endIndex) {
-			return;
-		}
-
 		// Determine rectangle on screen
 		const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
 
