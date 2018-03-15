@@ -1,7 +1,10 @@
-import React, { Component } from 'react'
-import { DragDropContext } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
-import Card from './Card'
+import React, { Component } from 'react';
+import { DragDropContext } from 'react-dnd';
+import classNames from 'classnames/bind';
+import styles from './index.less';
+const cx = classNames.bind(styles);
+
+import Card from './Card';
 
 const style = {
 	width: 400,
@@ -130,7 +133,11 @@ class Container extends Component {
 	render() {
 		const { cards, isOtherDragging, startIndex, endIndex } = this.state;
 		return (
-			<div style={style} onClick={this.handleItemSelection}>
+			<div
+				className={cx('cardContainer')}
+				style={style}
+				onClick={this.handleItemSelection}
+			>
 				{cards.map((card, i) => (
 					<Card
 						key={card.id}
@@ -138,12 +145,11 @@ class Container extends Component {
 						id={card.id}
 						text={card.text}
 						moveCard={this.moveCard}
-						startIndex={startIndex}
-						endIndex={endIndex}
 						isSelected={card.selected}
             isOtherDragging={isOtherDragging}
 						clearDragging={this.clearDragging}
 						setDragging={this.setDragging}
+						theme={this.props.theme}
 					/>
 				))}
 			</div>

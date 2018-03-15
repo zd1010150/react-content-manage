@@ -11,18 +11,15 @@ import Dialog from '../component/dialog';
 import PaginationExample from '../component/Pagination';
 import DateTimePicker from '../component/DateTimePicker';
 import TeamTree from '../component/TeamTree';
-import MultiDnD from 'components/ui/multipleDragFields/Controller';
+import MultiDnD from '../component/MultiDragContainer';
 
 const AntdPanel = Collapse.Panel;
 const { TabPane } = Tabs;
 
 const UIDemo = () => (
-  <Tabs defaultActiveKey="1">
+  <Tabs defaultActiveKey="3">
     <TabPane tab="Html UI" key="1">
-      <Collapse defaultActiveKey={['10']}>
-        <AntdPanel header="dnd" key="10">
-          <MultiDnD />
-        </AntdPanel>
+      <Collapse>
         <AntdPanel header="panels" key="1">
           <Panels />
         </AntdPanel>
@@ -60,7 +57,13 @@ const UIDemo = () => (
 
       </Collapse>
     </TabPane>
-    <TabPane tab="Tab 3" key="3">Content of Tab Pane 3</TabPane>
+    <TabPane tab="DnD UI" key="3">
+      <Collapse defaultActiveKey={['1']}>
+        <AntdPanel header="Multi Draggable Items" key="1">
+          <MultiDnD />
+        </AntdPanel>
+      </Collapse>
+    </TabPane>
   </Tabs>
 
 

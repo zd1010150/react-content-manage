@@ -1,37 +1,33 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { findDOMNode } from 'react-dom'
-import { DragSource, DropTarget } from 'react-dnd'
-import ItemTypes from './ItemTypes'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { findDOMNode } from 'react-dom';
+import { DragSource, DropTarget } from 'react-dnd';
+import classNames from 'classnames/bind';
+import styles from './index.less';
+const cx = classNames.bind(styles);
 
-const style = {
-	border: '1px dashed gray',
-	padding: '0.5rem 1rem',
-	backgroundColor: 'white',
-	cursor: 'move',
-}
+import ItemTypes from './ItemTypes';
 
 const cardSource = {
-	beginDrag(props) {
+	canDrag({ isSelected }) {
+		return isSelected;
+	},
+	
+	beginDrag({ id, index, setDragging }) {
 		// make all selected in dragging status when one of them is dragging
-		props.setDragging();
-		return {
-			id: props.id,
-      index: props.index,
-		}
+		setDragging();
+		return { id, index };
 	},
 
-	endDrag(props) {
-		// console.log('end drag');
-		props.clearDragging();
+	endDrag({ clearDragging }) {
+		clearDragging();
 	}
-}
+};
 
 const cardTarget = {
 	hover(props, monitor, component) {
 		const dragIndex = monitor.getItem().index;
 		const hoverIndex = props.index;
-		const { startIndex, endIndex } = props;
 
 		// Don't replace items with themselves
 		if (dragIndex === hoverIndex) {
@@ -73,19 +69,19 @@ const cardTarget = {
 		// to avoid expensive index searches.
 		monitor.getItem().index = hoverIndex;
   },
-}
+};
+
+const propTypes = {
+	connectDragSource: PropTypes.func.isRequired,
+	connectDropTarget: PropTypes.func.isRequired,
+	index: PropTypes.number.isRequired,
+	isDragging: PropTypes.bool.isRequired,
+	id: PropTypes.any.isRequired,
+	text: PropTypes.string.isRequired,
+	moveCard: PropTypes.func.isRequired,
+};
 
 class Card extends Component {
-	static propTypes = {
-		connectDragSource: PropTypes.func.isRequired,
-		connectDropTarget: PropTypes.func.isRequired,
-		index: PropTypes.number.isRequired,
-		isDragging: PropTypes.bool.isRequired,
-		id: PropTypes.any.isRequired,
-		text: PropTypes.string.isRequired,
-		moveCard: PropTypes.func.isRequired,
-	}
-
 	render() {
 		const {
 			text,
@@ -93,25 +89,27 @@ class Card extends Component {
 			connectDragSource,
       connectDropTarget,
       index,
-      startIndex,
-			endIndex,
 			isSelected,
-      isOtherDragging,
+			isOtherDragging,
+			theme,
     } = this.props;
     
-    const opacity = isDragging || (isOtherDragging && isSelected) ? .3 : 1;
-    const backgroundColor = isSelected ? '#09c' : 'white';
+    const draggingCls = isDragging || (isOtherDragging && isSelected) ? cx('dragging') : '';
+		const selectedCls = isSelected ? cx('selected') : '';
+		const themeCls = theme ? cx(theme) : '';
 		return connectDragSource(
 			connectDropTarget(
         <div
+					className={`${cx('card')} ${selectedCls} ${draggingCls} ${themeCls}`}
 					data-index={index}
-          style={{ ...style, opacity, backgroundColor }}>
+        >
           {text}
         </div>),
 		);
 	}
 }
 
+Card.propTypes = propTypes;
 export default _.flow(
   DragSource(ItemTypes.CARD, cardSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
