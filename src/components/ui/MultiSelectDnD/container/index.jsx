@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { Input, Button, Radio } from 'antd';
+import { Input, Button, Radio, Row, Col } from 'antd';
 
 import Container from '../components/Container';
 import RadioGroup from 'views/ui-demo/component/radios';
@@ -54,7 +54,7 @@ class MultiDnDWrapper extends Component {
   }
 
   /**
-   * unnecessary fucntions, just for display the diff among themes
+   * unnecessary fucntions, just for display the color diff among themes
    */
   onRadioChange = e => {
     const { themes } = this.state;
@@ -98,7 +98,6 @@ class MultiDnDWrapper extends Component {
         return;
       case Edit:
       default:
-        console.log('not found');
         return;
     }
   }
@@ -107,33 +106,41 @@ class MultiDnDWrapper extends Component {
     const { data } = this.props;
     const { activeTheme } = this.state;
     return (
-      <div>
-        <RadioGroup onChange={this.onRadioChange} />
-        <br /><br />
-        <FloatingLabelInput
-          labelText="Add New Value"
-          labelColor="#09c"
-          placeholder="New value"
-          handleSearch={this.handleAdd}
-          withSearch
-        />
-        <br />
-        <Container
-          data={data}
-          theme={activeTheme}
-          width={400}
-          onDrop={this.onDrop}
-          onIconClick={this.onIconClick}
-        />
-      </div>
+      <Row>
+        <Col sm={10}>
+          <div style={{color: '#09c'}}>
+            <p></p>
+          </div>
+          <RadioGroup onChange={this.onRadioChange} />
+          <br /><br />
+          <div style={{ width: 500, color: '#FF9800', fontWeight: 700}}>
+            <p>The wrapper component needs to own its own drop handler, icon click handler, theme and picklist values data to the multi selected dnd component.</p>
+            <p>The multi selected dnd component will handle the order and selection internally.</p>
+            <p>Add, remove or deactivate picklist value need to handle by redux and return a new picklist data in order to refresh the dnd component.</p>
+          </div>          
+          <FloatingLabelInput
+            labelText="Add New Value"
+            labelColor="#09c"
+            placeholder="New value"
+            handleSearch={this.handleAdd}
+            withSearch
+          />
+          <br />
+          <Container
+            data={data}
+            theme={activeTheme}
+            onDrop={this.onDrop}
+            onIconClick={this.onIconClick}
+          />
+        </Col>
+      </Row>
     );
   }
 }
 
 MultiDnDWrapper.defaultProps = defaultProps;
 MultiDnDWrapper.propTypes = propTypes;
-const mapStateToProps = ({ global, multiDndFields }) => ({
-  language: global.language,
+const mapStateToProps = ({ multiDndFields }) => ({
   data: multiDndFields.data,
 });
 const mapDispatchToProps = {

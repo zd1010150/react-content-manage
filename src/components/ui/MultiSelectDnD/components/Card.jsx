@@ -11,13 +11,37 @@ const cx = classNames.bind(styles);
 import ItemTypes from './ItemTypes';
 import Enums from 'utils/EnumsManager';
 
+const defaultProps = {
+	canEdit: true,
+	canDelete: true,
+  canDeactivate: true,
+  isDragging: false,
+  isSelected: false,
+};
+const propTypes = {
+	canEdit: PropTypes.bool.isRequired,
+	canDelete: PropTypes.bool.isRequired,
+	canDeactivate: PropTypes.bool.isRequired,
+	connectDragSource: PropTypes.func.isRequired,
+	connectDropTarget: PropTypes.func.isRequired,
+	index: PropTypes.number.isRequired,
+	isDragging: PropTypes.bool.isRequired,
+	id: PropTypes.any.isRequired,
+	text: PropTypes.string.isRequired,
+  moveCard: PropTypes.func.isRequired,
+  isOtherDragging: PropTypes.bool.isRequired,
+  clearDragging: PropTypes.func.isRequired,
+  setDragging: PropTypes.func.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+};
+
 const cardSource = {
 	canDrag({ isSelected }) {
 		return isSelected;
 	},
 	
 	beginDrag({ id, index, setDragging }) {
-		// make all selected in dragging status when one of them is dragging
+		// make all selected cards in dragging status when one of them is dragging
 		setDragging();
 		return { id, index };
 	},
@@ -72,24 +96,6 @@ const cardTarget = {
 		// to avoid expensive index searches.
 		monitor.getItem().index = hoverIndex;
 	},
-};
-
-const defaultProps = {
-	canEdit: true,
-	canDelete: true,
-	canDeactivate: true,
-};
-const propTypes = {
-	canEdit: PropTypes.bool.isRequired,
-	canDelete: PropTypes.bool.isRequired,
-	canDeactivate: PropTypes.bool.isRequired,
-	connectDragSource: PropTypes.func.isRequired,
-	connectDropTarget: PropTypes.func.isRequired,
-	index: PropTypes.number.isRequired,
-	isDragging: PropTypes.bool.isRequired,
-	id: PropTypes.any.isRequired,
-	text: PropTypes.string.isRequired,
-	moveCard: PropTypes.func.isRequired,
 };
 
 class Card extends Component {

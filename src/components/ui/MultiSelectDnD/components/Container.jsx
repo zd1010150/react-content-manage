@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-dnd';
 import classNames from 'classnames/bind';
 import styles from '../index.less';
 const cx = classNames.bind(styles);
 
 import Card from './Card';
+
+const defaultProps = {
+	data: [],
+	theme: 'lead',
+};
+const propTypes = {
+	data: PropTypes.array.isRequired,
+	theme: PropTypes.string.isRequired,
+	onDrop: PropTypes.func.isRequired,
+	onIconClick: PropTypes.func,
+};
 
 class Container extends Component {
 	constructor(props) {
@@ -28,33 +40,8 @@ class Container extends Component {
 		return this.setState({
 			cards: [...nextProps.data],
 		});
-		// add new card
-		// if (nextProps.data.length > this.props.data.length) {
-		// 	console.log('adding new');
-		// 	if (nextProps.data.length === this.props.data.length + 1) {
-		// 		const last = nextProps.data[nextProps.data.length - 1];
-		// 		this.setState({
-		// 			cards: [...cards, last],
-		// 		});
-		// 	} else {
-		// 		this.setState({
-		// 			cards: nextProps.data,
-		// 		});
-		// 	}
-		// }
-		// // remove card
-		// if (nextProps.data.length < this.props.data.length) {
-		// 	console.log('remove exist');
-		// }
 	}
-	// 提权func到这层而不直接使用startindex, endindex来判断isselected状态的原因是让cards component更干净，使用container的状态来作为single source of truth
-	// reset all select to false
-	clearSelectedCards = () => {
-		const { cards } = this.state;
-		return cards.map(card => card.selected = false);
-	}
-
-	// set record selected status
+	
 	setSelectedCards = (start, end) => {
 		const { cards } = this.state;
 		return cards.map((card, i) => {
@@ -65,28 +52,25 @@ class Container extends Component {
 
   handleItemSelection = e => {
     const { index } = e.target.dataset;
-    const { startIndex, endIndex } = this.state;
+    const { startIndex } = this.state;
 
     if (!e.shiftKey) {
-			const newCards = this.setSelectedCards(index, index);
       return this.setState({
-				cards: newCards,
+				cards: this.setSelectedCards(index, index),
         startIndex: index,
         endIndex: index,
       });
     }
 
     if (index < startIndex) {
-			const newCards = this.setSelectedCards(index, startIndex);
       return this.setState({
-				cards: newCards,
+				cards: this.setSelectedCards(index, startIndex),
         startIndex: index,
         endIndex: startIndex,
       });
     } else {
-			const newCards = this.setSelectedCards(startIndex, index);
       return this.setState({
-				cards: newCards,
+				cards: this.setSelectedCards(startIndex, index),
         endIndex: index,
       });
     }
@@ -105,6 +89,15 @@ class Container extends Component {
 		this.setState({ isOtherDragging: false });
 	}
 	
+	// Swap algorithm
+	// According to how the drag function is worked (in other words, when moveCard is being called), we only swap with one adjacent card every time,
+	// either drag upwords or downwords.
+	swapCards = (cards, start, length, newStart) => {		
+		const dragCards = cards.splice(start, length);
+		// Insert all dragged cards into new positions
+		dragCards.forEach((dragCard, i) => cards.splice(newStart + i, 0, dragCard));
+	}
+
 	moveCard = (dragIndex, hoverIndex) => {
 		const { startIndex, endIndex, cards } = this.state;
 		// Don't replace items with other selected items
@@ -112,70 +105,38 @@ class Container extends Component {
 			return;
 		}
 
-		// 1. 以start, end为界分为三部分
-		const frontArray = cards.filter((card, i) => i < startIndex);
-		const backArray = cards.filter((card, i) => i > endIndex);
 		const dragLength = endIndex - startIndex + 1;
-		const dragCards = [...cards].splice(startIndex, dragLength);
-		// 2. if hoverIndex == 0, dragcards, front, back
-		// 3. if hoverIndex == last, front, back, dragcards
-		// 4.1 if hoverIndex in front, then insert dragcards in hoverindex and move hoverindex to back
-		// 4.2 if hoverIndex in back, then push dragcards in hoverindex and move hoverindex in front
-		let newCards;
-		if (hoverIndex == 0) {
-			newCards = [...dragCards, ...frontArray, ...backArray];
-		} else if (hoverIndex == cards.length - 1) {
-			newCards = [...frontArray, ...backArray, ...dragCards];
-		} else {
-			const hoverCard = cards[hoverIndex];
-			// console.log('===hovercard===');
-			// console.log(hoverCard);
-			const isInFront = !!frontArray.find(elem => elem.id === hoverCard.id);
-			if (isInFront) {
-				const newFront = frontArray.filter(elem => elem.id !== hoverCard.id);
-				newCards = [...newFront, ...dragCards, hoverCard, ...backArray];
-			} else {
-				const newBack = backArray.filter(elem => elem.id !== hoverCard.id);
-				newCards = [...frontArray, hoverCard, ...dragCards, ...newBack];
-			}
-		}
-		
-		// update startIndex and endIndex
-		// console.log('---after moving cards----');
-		// console.dir(newCards);
-		const newStartIndex = newCards.findIndex(card => card.id === dragCards[0].id);
-		const newEndIndex = newCards.findIndex(card => card.id === dragCards[dragCards.length - 1].id);
-		// console.log(`new start: ${newStartIndex} and new end: ${newEndIndex}`);
+		const newStartIndex = startIndex > hoverIndex ? hoverIndex : Number(startIndex) + 1;
+		this.swapCards(cards, startIndex, dragLength, newStartIndex);
+
 		this.setState({
 			startIndex: newStartIndex,
-      endIndex: newEndIndex,
-      cards: newCards,
+      endIndex: newStartIndex + dragLength - 1,
+      cards: [...cards],
       isOtherDragging: true,
 		});
 	}
 
 	render() {
+		const { data, ...others } = this.props;
 		const { cards, isOtherDragging, startIndex, endIndex } = this.state;
 		return (
 			<div
 				className={cx('cardContainer')}
-				style={{ width: this.props.width }}
 				onClick={this.handleItemSelection}
 			>
 				{cards && cards.map((card, i) => (
 					<Card
 						key={card.id}
-						index={i}
 						id={card.id}
+						index={i}						
 						text={card.text}
 						moveCard={this.moveCard}
 						isSelected={card.selected}
             isOtherDragging={isOtherDragging}
 						clearDragging={this.clearDragging}
-						setDragging={this.setDragging}
-						theme={this.props.theme}
-						onDrop={this.props.onDrop}
-						onIconClick={this.props.onIconClick}
+						setDragging={this.setDragging}						
+						{...others}
 					/>
 				))}
 			</div>
@@ -183,4 +144,6 @@ class Container extends Component {
 	}
 }
 
+Container.defaultProps = defaultProps;
+Container.propTypes = propTypes;
 export default Container;
