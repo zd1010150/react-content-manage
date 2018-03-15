@@ -33,6 +33,12 @@ const EnumsManager = Object.freeze({
     Text: 'text',
   }),
 
+  FieldOperationTypes: Object.freeze({
+    Edit: 'edit',
+    Delete: 'delete',
+    Deactivate: 'deactivate',
+  }),
+
   ObjectTypes: Object.freeze(['leads', 'accounts', 'opportunities']),
 });
 

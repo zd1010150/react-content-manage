@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
+import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
 import classNames from 'classnames/bind';
 import styles from '../index.less';
 const cx = classNames.bind(styles);
 
 import ItemTypes from './ItemTypes';
+import Enums from 'utils/EnumsManager';
 
 const cardSource = {
 	canDrag({ isSelected }) {
@@ -111,6 +113,8 @@ class Card extends Component {
     const draggingCls = isDragging || (isOtherDragging && isSelected) ? cx('dragging') : '';
 		const selectedCls = isSelected ? cx('selected') : '';
 		const themeCls = theme ? cx(theme) : '';
+
+		const { Edit, Delete, Deactivate } = Enums.FieldOperationTypes;
 		return connectDragSource(
 			connectDropTarget(
         <div
@@ -121,9 +125,9 @@ class Card extends Component {
         >
 					{text}
 					<div style={{ float: 'right' }}>
-						{canEdit && <Icon className={cx('editBtn')} size="small" type="edit" data-type="edit"/>}
-						{canDelete && <Icon size="small" type="delete" data-type="remove"/>}
-						{canDeactivate && <Icon className={cx('deactivateBtn')} size="small" type="close-square" data-type="deactivate"/>}
+						{canEdit && <Link to="/wherever_you_go"><Icon className={cx('editBtn')} size="small" type="edit" data-type={Edit}/></Link>}
+						{canDelete && <Icon size="small" type="delete" data-type={Delete}/>}
+						{canDeactivate && <Icon className={cx('deactivateBtn')} size="small" type="close-square" data-type={Deactivate}/>}
 					</div>
         </div>),
 		);

@@ -23,7 +23,6 @@ export const addNewValue = newValue => dispatch => get(url, {}, dispatch)
           if (json) dispatch(setNewValue(newValue));
         });
 
-// sort
 export const sortValues = ids => dispatch => get(url, {}, dispatch)
         .then(json => {
           console.log('new order has synced');

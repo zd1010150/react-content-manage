@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Input, Button, Radio } from 'antd';
 
 import Container from '../components/Container';
 import RadioGroup from 'views/ui-demo/component/radios';
 import FloatingLabelInput from 'components/ui/FloatingLabelInput/index';
-
+import Enums from 'utils/EnumsManager';
 import {
   fetchFieldValues, addNewValue, sortValues,
   removeValue, deactivateValue,
@@ -73,10 +74,6 @@ class MultiDnDWrapper extends Component {
   }  
 
   handleAdd = value => {
-    console.log(`the new value is -> ${value}`);
-    // dispatch actions to add in backend and update front data
-
-    // the following is mock, the logic should be handled by reducer
     const { data } = this.props;
     const isDuplicated = data.find(record => record.text === value);
     if (!isDuplicated) {
@@ -91,27 +88,24 @@ class MultiDnDWrapper extends Component {
   onIconClick = e => {
     const { id } = e.currentTarget.dataset;
     const { type } = e.target.dataset;
+    const { Edit, Delete, Deactivate } = Enums.FieldOperationTypes;
     switch (type) {
-      case 'edit':
-        // redirect
-        return;
-      case 'remove':
-        console.log('deleting');
+      case Delete:
         this.props.removeValue(id);
         return;
-      case 'deactivate':
-        console.log('deact');
+      case Deactivate:
         this.props.deactivateValue(id);
         return;
+      case Edit:
       default:
         console.log('not found');
+        return;
     }
   }
 
   render() {
     const { data } = this.props;
     const { activeTheme } = this.state;
-    console.log(data);
     return (
       <div>
         <RadioGroup onChange={this.onRadioChange} />
@@ -128,7 +122,6 @@ class MultiDnDWrapper extends Component {
           data={data}
           theme={activeTheme}
           width={400}
-          onOrderChange={this.onChange}
           onDrop={this.onDrop}
           onIconClick={this.onIconClick}
         />
