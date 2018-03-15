@@ -6,10 +6,6 @@ const cx = classNames.bind(styles);
 
 import Card from './Card';
 
-const style = {
-	width: 400,
-}
-
 class Container extends Component {
 	constructor(props) {
 		super(props);
@@ -135,7 +131,7 @@ class Container extends Component {
 		return (
 			<div
 				className={cx('cardContainer')}
-				style={style}
+				style={{ width: this.props.width }}
 				onClick={this.handleItemSelection}
 			>
 				{cards.map((card, i) => (

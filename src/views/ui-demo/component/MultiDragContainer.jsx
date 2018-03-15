@@ -89,7 +89,12 @@ class MultiDnDWrapper extends Component {
         </RadioGroup>
         <Input size="small" style={{ width: 200, margin: '10px 0' }} laceholder="new value"/>
         <Button size="small">Add new value</Button>
-        <Container theme={activeTheme} data={data} onOrderChange={this.onChange}/>
+        <Container
+          data={data}
+          theme={activeTheme}
+          width={400}
+          onOrderChange={this.onChange}
+        />
       </div>
     );
   }
