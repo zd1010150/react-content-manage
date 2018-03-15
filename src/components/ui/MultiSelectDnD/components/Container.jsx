@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DragDropContext } from 'react-dnd';
 import classNames from 'classnames/bind';
-import styles from './index.less';
+import styles from '../index.less';
 const cx = classNames.bind(styles);
 
 import Card from './Card';
@@ -17,6 +17,36 @@ class Container extends Component {
 		};
 	}
 
+	componentWillReceiveProps(nextProps) {
+		const { cards } = this.state;
+		if (nextProps.data.length === this.props.data.length + 1) {
+			const last = nextProps.data[nextProps.data.length - 1];
+			return this.setState({
+				cards: [...cards, last],
+			});
+		}
+		return this.setState({
+			cards: [...nextProps.data],
+		});
+		// add new card
+		// if (nextProps.data.length > this.props.data.length) {
+		// 	console.log('adding new');
+		// 	if (nextProps.data.length === this.props.data.length + 1) {
+		// 		const last = nextProps.data[nextProps.data.length - 1];
+		// 		this.setState({
+		// 			cards: [...cards, last],
+		// 		});
+		// 	} else {
+		// 		this.setState({
+		// 			cards: nextProps.data,
+		// 		});
+		// 	}
+		// }
+		// // remove card
+		// if (nextProps.data.length < this.props.data.length) {
+		// 	console.log('remove exist');
+		// }
+	}
 	// 提权func到这层而不直接使用startindex, endindex来判断isselected状态的原因是让cards component更干净，使用container的状态来作为single source of truth
 	// reset all select to false
 	clearSelectedCards = () => {
@@ -65,13 +95,14 @@ class Container extends Component {
 	setDragging = () => {
 		const { startIndex, endIndex } = this.state;
 		this.setState({
-				isOtherDragging: true,
-				cards: this.setSelectedCards(startIndex, endIndex),
+			isOtherDragging: true,
+			cards: this.setSelectedCards(startIndex, endIndex),
     });
 	}
 
   clearDragging = () => {
-    this.setState({ isOtherDragging: false });
+		this.props.onDrop(this.state.cards);
+		this.setState({ isOtherDragging: false });
 	}
 	
 	moveCard = (dragIndex, hoverIndex) => {
@@ -121,9 +152,6 @@ class Container extends Component {
       cards: newCards,
       isOtherDragging: true,
 		});
-
-		// sync with parent component
-		this.props.onOrderChange(newCards);
 	}
 
 	render() {
@@ -134,7 +162,7 @@ class Container extends Component {
 				style={{ width: this.props.width }}
 				onClick={this.handleItemSelection}
 			>
-				{cards.map((card, i) => (
+				{cards && cards.map((card, i) => (
 					<Card
 						key={card.id}
 						index={i}
@@ -146,6 +174,8 @@ class Container extends Component {
 						clearDragging={this.clearDragging}
 						setDragging={this.setDragging}
 						theme={this.props.theme}
+						onDrop={this.props.onDrop}
+						onIconClick={this.props.onIconClick}
 					/>
 				))}
 			</div>

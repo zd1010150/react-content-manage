@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
+import { Icon } from 'antd';
 import classNames from 'classnames/bind';
-import styles from './index.less';
+import styles from '../index.less';
 const cx = classNames.bind(styles);
 
 import ItemTypes from './ItemTypes';
@@ -68,10 +69,18 @@ const cardTarget = {
 		// but it's good here for the sake of performance
 		// to avoid expensive index searches.
 		monitor.getItem().index = hoverIndex;
-  },
+	},
 };
 
+const defaultProps = {
+	canEdit: true,
+	canDelete: true,
+	canDeactivate: true,
+};
 const propTypes = {
+	canEdit: PropTypes.bool.isRequired,
+	canDelete: PropTypes.bool.isRequired,
+	canDeactivate: PropTypes.bool.isRequired,
 	connectDragSource: PropTypes.func.isRequired,
 	connectDropTarget: PropTypes.func.isRequired,
 	index: PropTypes.number.isRequired,
@@ -87,11 +96,16 @@ class Card extends Component {
 			text,
 			isDragging,
 			connectDragSource,
-      connectDropTarget,
+			connectDropTarget,
+			id,
       index,
 			isSelected,
 			isOtherDragging,
 			theme,
+			canEdit,
+			canDelete,
+			canDeactivate,
+			onIconClick,
     } = this.props;
     
     const draggingCls = isDragging || (isOtherDragging && isSelected) ? cx('dragging') : '';
@@ -102,13 +116,21 @@ class Card extends Component {
         <div
 					className={`${cx('card')} ${selectedCls} ${draggingCls} ${themeCls}`}
 					data-index={index}
+					data-id={id}
+					onClick={onIconClick}
         >
-          {text}
+					{text}
+					<div style={{ float: 'right' }}>
+						{canEdit && <Icon className={cx('editBtn')} size="small" type="edit" data-type="edit"/>}
+						{canDelete && <Icon size="small" type="delete" data-type="remove"/>}
+						{canDeactivate && <Icon className={cx('deactivateBtn')} size="small" type="close-square" data-type="deactivate"/>}
+					</div>
         </div>),
 		);
 	}
 }
 
+Card.defaultProps = defaultProps;
 Card.propTypes = propTypes;
 export default _.flow(
   DragSource(ItemTypes.CARD, cardSource, (connect, monitor) => ({

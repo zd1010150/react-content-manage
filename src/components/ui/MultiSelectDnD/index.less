@@ -4,7 +4,8 @@
   padding: 10px 0;
   border: 1px solid @secondary-dark-color;
   background-color: @crm-hover-color;
-  box-shadow: inset 0 3px 1px -2px rgba(0,0,0,.2), inset 0 2px 2px 0 rgba(0,0,0,.14), inset 0 1px 2px 0 rgba(0,0,0,.12);
+  box-shadow: @box-shadow-inset;
+  min-height: 150px;
 }
 
 .card {
@@ -17,6 +18,15 @@
 
   &:hover {
     background-color: @secondary-dark-color;
+  }
+
+  i {
+    cursor: pointer;
+    margin-left: 5px;
+  }
+
+  .deactivateBtn {
+    color: @crm-red;
   }
 
   &.selected {
@@ -35,6 +45,23 @@
     &.report {
       background-color: @report-theme-color;
     }
+
+    i {
+      color: @brk-text-white-color !important;
+    }
+  }
+
+  &.lead .editBtn {
+    color: @lead-theme-color;
+  }
+  &.account .editBtn {
+    color: @account-theme-color;
+  }
+  &.opport .editBtn {
+    color: @opport-theme-color;
+  }
+  &.report .editBtn {
+    color: @report-theme-color;
   }
 
   &.dragging {

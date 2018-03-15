@@ -3,16 +3,14 @@ import React from 'react';
 import { Radio } from 'antd';
 
 const RadioGroup = Radio.Group;
-const Radios = () => (
-    <div>
-        <RadioGroup>
-            <Radio value={1}>Default</Radio>
-            <Radio className="lead-theme-radio" value={2}>Lead</Radio>
-            <Radio className="account-theme-radio" value={3}>account</Radio>
-            <Radio className="opport-theme-radio" value={4}>opport</Radio>
-            <Radio className="report-theme-radio" value={5}>report</Radio>
-        </RadioGroup>
-    </div>
+const Radios = ({ onChange }) => (
+    <RadioGroup defaultValue={1} onChange={onChange}>
+        <Radio value={1}>Default</Radio>
+        <Radio className="lead-theme-radio" value={2}>Lead</Radio>
+        <Radio className="account-theme-radio" value={3}>Account</Radio>
+        <Radio className="opport-theme-radio" value={4}>Opport</Radio>
+        <Radio className="report-theme-radio" value={5}>Report</Radio>
+    </RadioGroup>
 );
 
 
