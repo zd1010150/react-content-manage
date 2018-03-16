@@ -114,8 +114,8 @@ class MultiDnDWrapper extends Component {
           <RadioGroup onChange={this.onRadioChange} />
           <br /><br />
           <div style={{ width: 500, color: '#FF9800', fontWeight: 700}}>
-            <p>The wrapper component needs to own its own drop handler, icon click handler, theme and picklist values data to the multi selected dnd component.</p>
-            <p>The multi selected dnd component will handle the order and selection internally.</p>
+            <p>The wrapper component needs to own its own drop handler, icon click handler, theme and picklist values data to the multi selected dnd component. Icon click handler is not required, icons will be hidden if no icon click handler is specified.</p>
+            <p>The multi selected dnd component will handle the order and selection internally. Just use the above apis to sync with your redux.</p>
             <p>Add, remove or deactivate picklist value need to handle by redux and return a new picklist data in order to refresh the dnd component.</p>
           </div>          
           <FloatingLabelInput

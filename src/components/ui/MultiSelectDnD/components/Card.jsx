@@ -130,11 +130,11 @@ class Card extends Component {
 					onClick={onIconClick}
         >
 					{text}
-					<div style={{ float: 'right' }}>
+					{onIconClick && <div style={{ float: 'right' }}>
 						{canEdit && <Link to="/wherever_you_go"><Icon className={cx('editBtn')} size="small" type="edit" data-type={Edit}/></Link>}
 						{canDelete && <Icon size="small" type="delete" data-type={Delete}/>}
 						{canDeactivate && <Icon className={cx('deactivateBtn')} size="small" type="close-square" data-type={Deactivate}/>}
-					</div>
+					</div>}
         </div>),
 		);
 	}
