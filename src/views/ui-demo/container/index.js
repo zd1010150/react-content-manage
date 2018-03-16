@@ -12,14 +12,18 @@ import PaginationExample from '../component/Pagination';
 import DateTimePicker from '../component/DateTimePicker';
 import TeamTree from '../component/TeamTree';
 import MultiDnD from '../component/MultiDragContainer';
+import Fields from '../component/Fields';
 
 const AntdPanel = Collapse.Panel;
 const { TabPane } = Tabs;
 
 const UIDemo = () => (
-  <Tabs defaultActiveKey="3">
+  <Tabs defaultActiveKey="1">
     <TabPane tab="Html UI" key="1">
-      <Collapse>
+      <Collapse defaultActiveKey="10">
+        <AntdPanel header="Custom Fields" key="10">
+          <Fields />
+        </AntdPanel>
         <AntdPanel header="panels" key="1">
           <Panels />
         </AntdPanel>
