@@ -21,9 +21,9 @@ const propTypes = {
 
 class MultiDnDWrapper extends Component {
   constructor(props) {
-		super(props);
-		this.state = {
-			themes: [
+    super(props);
+    this.state = {
+      themes: [
         {
           id: 1,
           value: 'default',
@@ -46,7 +46,7 @@ class MultiDnDWrapper extends Component {
         },
       ],
       activeTheme: 'default',
-		};
+    };
   }
   
   componentDidMount() {

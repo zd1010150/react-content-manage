@@ -12,22 +12,22 @@ import ItemTypes from './ItemTypes';
 import Enums from 'utils/EnumsManager';
 
 const defaultProps = {
-	canEdit: true,
-	canDelete: true,
+  canEdit: true,
+  canDelete: true,
   canDeactivate: true,
   isDragging: false,
   isSelected: false,
 };
 const propTypes = {
-	canEdit: PropTypes.bool.isRequired,
-	canDelete: PropTypes.bool.isRequired,
-	canDeactivate: PropTypes.bool.isRequired,
-	connectDragSource: PropTypes.func.isRequired,
-	connectDropTarget: PropTypes.func.isRequired,
-	index: PropTypes.number.isRequired,
-	isDragging: PropTypes.bool.isRequired,
-	id: PropTypes.any.isRequired,
-	text: PropTypes.string.isRequired,
+  canEdit: PropTypes.bool.isRequired,
+  canDelete: PropTypes.bool.isRequired,
+  canDeactivate: PropTypes.bool.isRequired,
+  connectDragSource: PropTypes.func.isRequired,
+  connectDropTarget: PropTypes.func.isRequired,
+  index: PropTypes.number.isRequired,
+  isDragging: PropTypes.bool.isRequired,
+  id: PropTypes.any.isRequired,
+  text: PropTypes.string.isRequired,
   moveCard: PropTypes.func.isRequired,
   isOtherDragging: PropTypes.bool.isRequired,
   clearDragging: PropTypes.func.isRequired,
@@ -36,108 +36,108 @@ const propTypes = {
 };
 
 const cardSource = {
-	canDrag({ isSelected }) {
-		return isSelected;
-	},
-	
-	beginDrag({ id, index, setDragging }) {
-		// make all selected cards in dragging status when one of them is dragging
-		setDragging();
-		return { id, index };
-	},
+  canDrag({ isSelected }) {
+    return isSelected;
+  },
 
-	endDrag({ clearDragging }) {
-		clearDragging();
-	}
+  beginDrag({ id, index, setDragging }) {
+    // set all selected cards in dragging status when one of them is dragging
+    setDragging();
+    return { id, index };
+  },
+
+  endDrag({ clearDragging }) {
+    clearDragging();
+  }
 };
 
 const cardTarget = {
-	hover(props, monitor, component) {
-		const dragIndex = monitor.getItem().index;
-		const hoverIndex = props.index;
+  hover(props, monitor, component) {
+    const dragIndex = monitor.getItem().index;
+    const hoverIndex = props.index;
 
-		// Don't replace items with themselves
-		if (dragIndex === hoverIndex) {
-			return;
-		}
+    // Don't replace items with themselves
+    if (dragIndex === hoverIndex) {
+      return;
+    }
 
-		// Determine rectangle on screen
-		const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+    // Determine rectangle on screen
+    const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
 
-		// Get vertical middle
-		const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+    // Get vertical middle
+    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
-		// Determine mouse position
-		const clientOffset = monitor.getClientOffset();
+    // Determine mouse position
+    const clientOffset = monitor.getClientOffset();
 
-		// Get pixels to the top
-		const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+    // Get pixels to the top
+    const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
-		// Only perform the move when the mouse has crossed half of the items height
-		// When dragging downwards, only move when the cursor is below 50%
-		// When dragging upwards, only move when the cursor is above 50%
+    // Only perform the move when the mouse has crossed half of the items height
+    // When dragging downwards, only move when the cursor is below 50%
+    // When dragging upwards, only move when the cursor is above 50%
 
-		// Dragging downwards
-		if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-			return;
-		}
+    // Dragging downwards
+    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      return;
+    }
 
-		// Dragging upwards
-		if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-			return;
-		}
+    // Dragging upwards
+    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      return;
+    }
 
-		// Time to actually perform the action
-		props.moveCard(dragIndex, hoverIndex);
+    // Time to actually perform the action
+    props.moveCard(dragIndex, hoverIndex);
 
-		// Note: we're mutating the monitor item here!
-		// Generally it's better to avoid mutations,
-		// but it's good here for the sake of performance
-		// to avoid expensive index searches.
-		monitor.getItem().index = hoverIndex;
-	},
+    // Note: we're mutating the monitor item here!
+    // Generally it's better to avoid mutations,
+    // but it's good here for the sake of performance
+    // to avoid expensive index searches.
+    monitor.getItem().index = hoverIndex;
+  },
 };
 
 class Card extends Component {
-	render() {
-		const {
-			text,
-			isDragging,
-			connectDragSource,
-			connectDropTarget,
-			id,
+  render() {
+    const {
+      text,
+      isDragging,
+      connectDragSource,
+      connectDropTarget,
+      id,
       index,
-			isSelected,
-			isOtherDragging,
-			theme,
-			canEdit,
-			canDelete,
-			canDeactivate,
-			onIconClick,
+      isSelected,
+      isOtherDragging,
+      theme,
+      canEdit,
+      canDelete,
+      canDeactivate,
+      onIconClick,
     } = this.props;
-    
-    const draggingCls = isDragging || (isOtherDragging && isSelected) ? cx('dragging') : '';
-		const selectedCls = isSelected ? cx('selected') : '';
-		const themeCls = theme ? cx(theme) : '';
 
-		const { Edit, Delete, Deactivate } = Enums.FieldOperationTypes;
-		return connectDragSource(
-			connectDropTarget(
+    const draggingCls = isDragging || (isOtherDragging && isSelected) ? cx('dragging') : '';
+    const selectedCls = isSelected ? cx('selected') : '';
+    const themeCls = theme ? cx(theme) : '';
+
+    const { Edit, Delete, Deactivate } = Enums.FieldOperationTypes;
+    return connectDragSource(
+      connectDropTarget(
         <div
-					className={`${cx('card')} ${selectedCls} ${draggingCls} ${themeCls}`}
-					data-index={index}
-					data-id={id}
-					onClick={onIconClick}
+          className={`${cx('card')} ${selectedCls} ${draggingCls} ${themeCls}`}
+          data-index={index}
+          data-id={id}
+          onClick={onIconClick}
         >
-					{text}
-					{onIconClick && <div style={{ float: 'right' }}>
-						{canEdit && <Link to="/wherever_you_go"><Icon className={cx('editBtn')} size="small" type="edit" data-type={Edit}/></Link>}
-						{canDelete && <Icon size="small" type="delete" data-type={Delete}/>}
-						{canDeactivate && <Icon className={cx('deactivateBtn')} size="small" type="close-square" data-type={Deactivate}/>}
-					</div>}
-        </div>),
-		);
-	}
+          {text}
+        {onIconClick && <div style={{ float: 'right' }}>
+          {canEdit && <Link to="/wherever_you_go"><Icon className={cx('editBtn')} size="small" type="edit" data-type={Edit}/></Link>}
+          {canDelete && <Icon size="small" type="delete" data-type={Delete}/>}
+          {canDeactivate && <Icon className={cx('deactivateBtn')} size="small" type="close-square" data-type={Deactivate}/>}
+        </div>}
+      </div>),
+    );
+  }
 }
 
 Card.defaultProps = defaultProps;
