@@ -5,6 +5,9 @@ import leads from 'views/Leads/flow/reducer';
 import setupUsers from 'views/Users/flow/reducer';
 import setupCompanyInfo from 'views/CompanyInfo/flow/reducer';
 
+// test
+import multiDndFields from 'components/ui/MultiSelectDnD/flow/reducer';
+// test ends
 export default {
   ddDemo,
   dragPreview,
@@ -12,4 +15,5 @@ export default {
   leads,
   setupUsers,
   setupCompanyInfo,
+  multiDndFields,
 };
