@@ -6,6 +6,9 @@ import setupUsers from 'views/Users/flow/reducer';
 import setupCompanyInfo from 'views/CompanyInfo/flow/reducer';
 import setupOrgChart from 'views/OrganisationChart/flow/reducer';
 
+// test
+import multiDndFields from 'components/ui/MultiSelectDnD/flow/reducer';
+// test ends
 export default {
   ddDemo,
   dragPreview,
@@ -14,4 +17,6 @@ export default {
   setupUsers,
   setupCompanyInfo,
   setupOrgChart,
+  multiDndFields,
+
 };
