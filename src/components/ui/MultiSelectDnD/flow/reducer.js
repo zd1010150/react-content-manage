@@ -1,4 +1,4 @@
-import { SET_NEW_VALUE, SET_FIELD_VALUES, UPDATE_VALUES } from './actionTypes';
+import { SET_NEW_VALUE, SET_FIELD_VALUES, UPDATE_VALUES, SET_NEW_ORDER } from './actionTypes';
 import Enums from 'utils/EnumsManager';
 
 const initialState = {
@@ -60,6 +60,12 @@ const fields = (state = initialState, action) => {
         data: dataAfterRemoval
       };
 
+    case SET_NEW_ORDER:
+      const { array } = action;
+      return {
+        data: array,
+      }
+      
     default:
       return state;
   }

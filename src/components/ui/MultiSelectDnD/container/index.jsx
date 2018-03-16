@@ -70,8 +70,8 @@ class MultiDnDWrapper extends Component {
     // console.log('dropped ----- current order is:');
     // console.log(sortedArray);
     const ids = sortedArray.map(elem => elem.id);
-    this.props.sortValues(ids);
-  }  
+    this.props.sortValues(ids, sortedArray);
+  }
 
   handleAdd = value => {
     const { data } = this.props;

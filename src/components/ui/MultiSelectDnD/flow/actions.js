@@ -1,4 +1,4 @@
-import { SET_NEW_VALUE, SET_FIELD_VALUES, UPDATE_VALUES } from './actionTypes';
+import { SET_NEW_VALUE, SET_FIELD_VALUES, UPDATE_VALUES, SET_NEW_ORDER } from './actionTypes';
 import { get, httpDelete, post } from 'store/http/httpAction';
 
 const url = '/admin/leads';
@@ -23,9 +23,15 @@ export const addNewValue = newValue => dispatch => get(url, {}, dispatch)
           if (json) dispatch(setNewValue(newValue));
         });
 
-export const sortValues = ids => dispatch => get(url, {}, dispatch)
+
+export const setNewOrder = array => ({
+  type: SET_NEW_ORDER,
+  array,
+});
+
+export const sortValues = (ids, array) => dispatch => get(url, {}, dispatch)
         .then(json => {
-          console.log('new order has synced');
+          if (json) dispatch(setNewOrder(array));
         });
 
 
