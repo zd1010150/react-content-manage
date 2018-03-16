@@ -9,6 +9,7 @@ import FloatingLabelInput from './FloatingLabelInput/index';
 import { LeftActions, RightActions } from './ActionButtons/index';
 import Modal from './Modal/index';
 import ListTable from './ListTable/index';
+import DeleteConfirmDialog from './DeleteConfirmDialog';
 
 export {
   Upload,
@@ -22,4 +23,5 @@ export {
   RightActions,
   Modal,
   ListTable,
+  DeleteConfirmDialog,
 };

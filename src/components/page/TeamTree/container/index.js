@@ -29,7 +29,6 @@ class teamTree extends React.Component {
       this.props.onExpand(expandedKeys);
     }
     onCheck(checkedKeys) {
-      console.log('onCheck', checkedKeys);
       this.setState({ checkedKeys });
       this.props.onCheck(checkedKeys);
     }
@@ -38,7 +37,6 @@ class teamTree extends React.Component {
       this.props.onSelect(selectedKeys, this.props.teams);
     }
     onDragEnter({ event, node, expandedKeys }) {
-      console.log('drag enter', event, node, expandedKeys);
       this.props.onDragEnter({ event, node, expandedKeys });
     }
     onDrop(info) {
@@ -124,8 +122,8 @@ class teamTree extends React.Component {
               { canModifyTeamName ? <EditBox type="input" value={item.name} onBlur={newTeamname => modifyTeamName(newTeamname, item.id)} /> : <span>{item.name}</span> }
             </span>
             <div className={cx('tree-node-operate')} span={12} >
-              { canAdd ? <Icon type="plus-square-o " onClick={() => { onAdd(item.id); }} /> : ''}
-              { canDelete ? <Icon type="delete" onClick={() => { onDelete(item.id); }} /> : ''}
+              { canAdd ? <Icon type="plus-square-o " className="pl-lg ok" onClick={(e) => { e.stopPropagation(); onAdd(item.id); }} /> : ''}
+              { canDelete ? <Icon type="delete" className="pl-sm danger" onClick={(e) => {  e.stopPropagation(); onDelete(item.id); }} /> : ''}
             </div>
           </Fragment>
         );

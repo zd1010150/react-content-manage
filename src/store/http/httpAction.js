@@ -27,11 +27,11 @@ const dispatch = (method, url, request, dispatcher = () => {}) => {
     type: HTTP_ACTION_DOING,
     payload: {},
   });
-  return request.then((data) => {
-    if (data.status_code === UNAUTHENTICATION.CODE) { // 如果是401为授权，就跳转到登录界面
-      dispatch(tryLogout());
+  return request.then(({ data, statusCode }) => {
+    if (statusCode === UNAUTHENTICATION.CODE) { // 如果是401为授权，就跳转到登录界面
+      dispatcher(tryLogout());
     }
-    if (data.errors || data.status_code) {
+    if (data && (data.error || data.errors)) {
       let { errors } = data;
       errors = errors || data.status_code;
       if (!_.isEmpty(data.errors)) {
@@ -41,8 +41,8 @@ const dispatch = (method, url, request, dispatcher = () => {}) => {
             dispatcher(addError(msg));
           });
         });
-      } else {
-        dispatcher(addError(data.message));
+      } else if (data.error) {
+        dispatcher(addError(data.error));
       }
     } else {
       dispatcher({

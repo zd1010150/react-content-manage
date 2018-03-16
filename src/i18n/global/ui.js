@@ -19,7 +19,6 @@ export default {
       previous: '上一步',
       detail: '查看详情',
       goBack: '返回',
-      edit: '编辑',
       createNew: '添加',
       update: '更新',
       massUpdate: '批量更新',
@@ -40,6 +39,7 @@ export default {
     },
     dialog: {
       info: '提示',
+      warning: '警告',
       deleteTitle: '确定删除这条记录',
     },
   },
@@ -63,7 +63,6 @@ export default {
       previous: 'Previous',
       detail: 'Detail',
       goBack: 'Go Back',
-      edit: 'Edit',
       createNew: 'Create New ',
       update: 'Update',
       massUpdate: 'Mass Update',
@@ -84,6 +83,7 @@ export default {
     },
     dialog: {
       info: 'Info',
+      warning: 'Warning',
       deleteTitle: 'Are you sure to delete this record?',
     },
   },

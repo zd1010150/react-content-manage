@@ -39,11 +39,7 @@ class usersTableView extends React.Component {
     confirm({
       title: formatMessage({ id: 'global.ui.dialog.deleteTitle' }),
       onOk() {
-        deleteUsers(id, () => {
-          notification.open({
-            message: formatMessage({ id: 'global.info.successDelete' }),
-          });
-        });
+        deleteUsers(id);
       },
       onCancel() {
 

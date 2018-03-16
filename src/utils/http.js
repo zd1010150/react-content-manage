@@ -31,7 +31,7 @@ export default async (type = 'GET', url = '', data = {}, headers = {}, apiDomain
       Accept: 'application/json',
       'Accept-Language': langauge,
       'Content-Type': 'application/json',
-      'Authorization': getAuthorization(),
+      Authorization: getAuthorization(),
       ...headers,
     },
     mode: 'cors',
@@ -47,12 +47,10 @@ export default async (type = 'GET', url = '', data = {}, headers = {}, apiDomain
       dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
       url = `${url}?${dataStr}`;
     }
-  } else {
-    if (!_.isEmpty(data)) {
-      Object.defineProperty(requestConfig, 'body', {
-        value: JSON.stringify(data),
-      });
-    }
+  } else if (!_.isEmpty(data)) {
+    Object.defineProperty(requestConfig, 'body', {
+      value: JSON.stringify(data),
+    });
   }
 
   function _fetch(fetchPromise, timeout) {
@@ -77,10 +75,10 @@ export default async (type = 'GET', url = '', data = {}, headers = {}, apiDomain
   let contentType;
   try {
     response = await _fetch(fetch(url, requestConfig), MAX_FETCH_TIMEOUT);
-    // response = await fetch(url, requestConfig)
     contentType = response.headers.get('content-type');
     if (contentType && contentType.includes('application/json')) {
-      return await response.json();
+      const responseData = await response.json();
+      return Promise.resolve({ data: responseData, statusCode: response.status });
     }
     throw new TypeError('Oops,we haven\'t get JSON! ');
   } catch (error) {

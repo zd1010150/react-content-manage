@@ -54,7 +54,11 @@ export const queryBySearchKey = searchKey => (dispatch, getState) => {
   return fetchUsers(perPage, 1, searchKey, dispatch);
 };
 
-export const updateUsers = form => dispatch => patch(`/admin/users/${form.id}`, { ...form }, dispatch);
+export const updateUsers = (form, cb) => dispatch => patch(`/admin/users/${form.id}`, { ...form }, dispatch).then(() => {
+  if (_.isFunction(cb)) {
+    cb();
+  }
+});
 
 export const addUsers = (form, callback) => dispatch => post('/admin/users', { ...form }, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
@@ -64,7 +68,6 @@ export const addUsers = (form, callback) => dispatch => post('/admin/users', { .
 
 export const deleteUsers = (id, cb) => (dispatch, getState) => httpDelete(`/admin/users/${id}`, {}, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
-    debugger;
     const { usersDataTablePagination, searchKey } = getState().setupUsers;
     const { perPage, currentPage } = usersDataTablePagination;
     dispatch(fetchUsers(perPage, currentPage, searchKey, dispatch));

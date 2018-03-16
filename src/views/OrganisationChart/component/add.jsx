@@ -7,28 +7,35 @@ import { FloatingLabelInput } from 'components/ui/index';
 
 
 class Add extends React.Component {
-  onSearch() {
-
+  add() {
+    const { setAddVisible, resetNewDepartment } = this.props;
+    const { name, parentId } = this.props.newTeam;
+    this.props.addDepartment(name, parentId, () => {
+      setAddVisible(false);
+      resetNewDepartment();
+    });
   }
-  onSearchableInputChange() {
-
+  canceal() {
+    const { setAddVisible, resetNewDepartment } = this.props;
+    setAddVisible(false);
+    resetNewDepartment();
+  }
+  onSearchableInputChange(value) {
+    this.props.setNewDepartName(value);
   }
   render() {
-    const { secondInputText, intl, department } = this.props;
+    const { intl, selectedDepartment } = this.props;
+    const { name } = selectedDepartment;
     const { formatMessage } = intl;
     return (
-        <div>
-          <h4>{formatMessage({ id: 'page.organChart.addNewTip' }, { department })}</h4>
-          <FloatingLabelInput
-            labelText={formatMessage({ id: 'page.organChart.inputDeaprmentPlaceHolder' })}
-            labelColor="#09c"
-            placeholder="Wow, the label is floating too"
-            handleChange={this.onSearchableInputChange}
-            syncWithRedux={this.onSearch}
-            value={secondInputText}
-            addonAfter={<span> <Icon type="save" className="danger pr-sm" onClick={() => { alert('save'); }} /> <Icon type="close" onClick={() => { alert('cencel'); }} /></span>}
-          />
-        </div>
+      <div>
+        <h4>{formatMessage({ id: 'page.organChart.addNewTip' }, { department: name })}</h4>
+        <FloatingLabelInput
+          labelText={formatMessage({ id: 'page.organChart.inputDeaprmentPlaceHolder' })}
+          handleChange={value => this.onSearchableInputChange(value)}
+          addonAfter={<span> <Icon type="save" className="danger pr-sm" onClick={() => { this.add(); }} /> <Icon type="close" onClick={() => { this.canceal(); }} /></span>}
+        />
+      </div>
 
     );
   }
@@ -37,9 +44,13 @@ Add.defaultProps = {
   secondInputText: '',
 };
 Add.propTypes = {
-  secondInputText: PropTypes.string,
   intl: intlShape.isRequired,
-  department: PropTypes.string,
+  selectedDepartment: PropTypes.object.isRequired,
+  newTeam: PropTypes.object.isRequired,
+  setNewDepartName: PropTypes.func.isRequired,
+  addDepartment: PropTypes.func.isRequired,
+  setAddVisible: PropTypes.func.isRequired,
+  resetNewDepartment: PropTypes.func.isRequired,
 };
 
 export default injectIntl(Add);

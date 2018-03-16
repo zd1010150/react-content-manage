@@ -1,52 +1,78 @@
 import { combineReducers } from 'redux';
-import EnumsManager from 'utils/EnumsManager';
-import { TOGGLE_DEPARTMENT_SELECT_DIALOG, SET_DEPARTMENT, SET_USERS, SET_PAGENATIONS, SET_EDIT_USER } from './actionType';
+import { ORGCHART_SET_SORTABLE_VIEW_VISIBLE,
+  ORGCHART_SET_NEW_DEPARTMENT_NAME,
+  ORGCHART_RESET_NEW_DEPARMENT,
+  ORGCHART_SET_SELECTED_DEPARTMENT,
+  ORGCHART_SET_ADD_VISIBLE,
+  ORGCHART_SET_USER,
+  ORGCHART_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
+  ORGCHART_SET_SELECT_USER } from './actionType';
 
-
-const users = (state = {
-  department_id: '',
-  department_text: '',
-  users: [],
-  editUser: {},
-}, action) => {
+const selectedDepartment = (state = { id: '', name: '' }, action) => {
   const { type, ...payload } = action;
   switch (type) {
-    case SET_DEPARTMENT:
+    case ORGCHART_SET_SELECTED_DEPARTMENT:
       return Object.assign({}, state, { ...payload });
-    case SET_USERS:
-      return Object.assign({}, state, { ...payload });
-    case SET_EDIT_USER:
-      return Object.assign({}, state, { editUser: { ...payload }, department_id: payload.team_id, department_text: '主管部门' });
     default:
       return state;
   }
 };
-const usersDataTablePagination = (state = { perPage: EnumsManager.DefaultPageConfigs.PageSize, currentPage: 1, total: 0 }, action) => {
-  switch (action.type) {
-    case SET_PAGENATIONS:
-      return {
-        perPage: action.perPage,
-        currentPage: action.currentPage,
-        total: action.total,
-      };
+const selectedUser = (state = { id: '', name: '' }, action) => {
+  const { type, ...payload } = action;
+  switch (type) {
+    case ORGCHART_SET_SELECT_USER:
+      return payload.user;
+    default:
+      return state;
+  }
+};
+const newTeam = (state = { parentId: '', parentName: '', name: '' }, action) => {
+  const { type, ...payload } = action;
+  switch (type) {
+    case ORGCHART_SET_SELECTED_DEPARTMENT:
+      return Object.assign({}, state, { parentId: payload.id });
+    case ORGCHART_SET_NEW_DEPARTMENT_NAME:
+      return Object.assign({}, state, { name: payload.name });
+    case ORGCHART_RESET_NEW_DEPARMENT:
+      return Object.assign({}, state, { name: '', parentId: '' });
+    default:
+      return state;
+  }
+};
+
+const allUsers = (state = [], action) => {
+  const { type, ...payload } = action;
+  switch (type) {
+    case ORGCHART_SET_USER:
+      return payload.users;
     default:
       return state;
   }
 };
 const ui = (state = {
-  isDisplayDepartmentDialog: false,
+  isSortViewVisible: false,
+  isAddVisible: false,
+  isSelectTeamDialogVisible: false,
 }, action) => {
   const { type, ...payload } = action;
   switch (type) {
-    case TOGGLE_DEPARTMENT_SELECT_DIALOG:
+    case ORGCHART_SET_SORTABLE_VIEW_VISIBLE:
+      return Object.assign({}, state, { ...payload });
+    case ORGCHART_SET_ADD_VISIBLE:
+      return Object.assign({}, state, { ...payload });
+    case ORGCHART_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE:
       return Object.assign({}, state, { ...payload });
     default:
       return state;
   }
 };
+
+
 export default combineReducers({
   ui,
-  users,
-  usersDataTablePagination,
+  newTeam,
+  selectedDepartment,
+  allUsers,
+  selectedUser,
 });
 

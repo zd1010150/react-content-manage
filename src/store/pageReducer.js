@@ -4,6 +4,7 @@ import loginUser from 'views/LoginForm/flow/reducer';
 import leads from 'views/Leads/flow/reducer';
 import setupUsers from 'views/Users/flow/reducer';
 import setupCompanyInfo from 'views/CompanyInfo/flow/reducer';
+import setupOrgChart from 'views/OrganisationChart/flow/reducer';
 
 export default {
   ddDemo,
@@ -12,4 +13,5 @@ export default {
   leads,
   setupUsers,
   setupCompanyInfo,
+  setupOrgChart,
 };

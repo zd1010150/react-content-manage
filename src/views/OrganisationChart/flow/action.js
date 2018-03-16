@@ -1,52 +1,91 @@
-import { get, patch, post } from 'store/http/httpAction';
+import { get, patch, post, httpDelete } from 'store/http/httpAction';
+import { fetchTeams } from 'store/global/action';
 import _ from 'lodash';
-import EnumsManager from 'utils/EnumsManager';
-import { TOGGLE_DEPARTMENT_SELECT_DIALOG, SET_DEPARTMENT, SET_PAGENATIONS, SET_USERS, SET_EDIT_USER } from './actionType';
+import { ORGCHART_SET_SORTABLE_VIEW_VISIBLE,
+  ORGCHART_SET_ADD_VISIBLE,
+  ORGCHART_RESET_NEW_DEPARMENT,
+  ORGCHART_SET_NEW_DEPARTMENT_NAME,
+  ORGCHART_SET_SELECTED_DEPARTMENT,
+  ORGCHART_SET_USER,
+  ORGCHART_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
+  ORGCHART_SET_SELECT_USER } from './actionType';
 
-export const setEditUser = args => ({
-  type: SET_EDIT_USER,
-  ...args,
-});
-export const toggleDepartmentDialog = visible => ({
-  type: TOGGLE_DEPARTMENT_SELECT_DIALOG,
-  isDisplayDepartmentDialog: visible,
-});
 
-export const setDepartment = args => ({
-  type: SET_DEPARTMENT,
-  ...args,
+export const setSortableViewVisible = isSortViewVisible => ({
+  type: ORGCHART_SET_SORTABLE_VIEW_VISIBLE,
+  isSortViewVisible,
 });
-
-export const setUserData = args => ({
-  type: SET_USERS,
-  ...args,
+/* ADD */
+export const setAddVisible = isAddVisible => ({
+  type: ORGCHART_SET_ADD_VISIBLE,
+  isAddVisible,
 });
 
-const setPaginations = (perPage, currentPage, total) => ({
-  type: SET_PAGENATIONS,
-  perPage,
-  currentPage,
-  total,
+
+export const setNewDepartName = name => ({
+  type: ORGCHART_SET_NEW_DEPARTMENT_NAME,
+  name,
+});
+export const resetNewDepartment = () => ({
+  type: ORGCHART_RESET_NEW_DEPARMENT,
+});
+/* Display the user */
+export const setSelectedTeam = (id, name) => ({
+  type: ORGCHART_SET_SELECTED_DEPARTMENT,
+  id,
+  name,
 });
 
-export const fetchUsers = (perPage = EnumsManager.DefaultPageConfigs.PageSize, currentPage = 1) => dispatch => get('/admin/users', { per_page: perPage, page: currentPage }, dispatch).then((data) => {
-  if (data && (!_.isEmpty(data.data)) && (!_.isEmpty(data.meta))) {
-    dispatch(setUserData(data.data));
-    const { pagination } = data.meta;
-    dispatch(setPaginations(pagination.per_page, pagination.current_page, pagination.total));
-  }
+export const setSeleteTeamDialogVisible = isSelectTeamDialogVisible => ({
+  type: ORGCHART_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
+  isSelectTeamDialogVisible,
 });
 
-export const updateUsers = form => dispatch => patch(`/admin/users/${form.id}`, { ...form }, dispatch).then((data) => {
+export const setSelectedUser = user => ({
+  type: ORGCHART_SET_SELECT_USER,
+  user,
+});
+
+export const setAllUser = users => ({
+  type: ORGCHART_SET_USER,
+  users,
+});
+
+export const addDepartment = (name, parentId, cb) => dispatch => post('/admin/teams', { name, parent_id: parentId }, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
-    dispatch(fetchUsers());
+    dispatch(fetchTeams());
+  }
+  if (_.isFunction(cb)) {
+    cb();
   }
 });
 
-export const addUsers = (form, callback) => dispatch => post('/admin/users', { ...form }, dispatch).then((data) => {
+export const deleteDepartment = id => dispatch => httpDelete(`/admin/teams/${id}`, { }, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
-    dispatch(fetchUsers());
-    callback();
+    dispatch(fetchTeams());
   }
 });
 
+export const updateTeam = (id, name, cb) => dispatch => patch(`/admin/teams/${id}`, { name }, dispatch).then((data) => {
+  if (!_.isEmpty(data)) {
+    dispatch(fetchTeams());
+  }
+  if (_.isFunction(cb)) {
+    cb();
+  }
+});
+
+export const sortDepartment = cb => (dispatch, getState) => patch('/admin/teams/', { teams: getState().global.settings.teams }, dispatch).then((data) => {
+  if (!_.isEmpty(data)) {
+    dispatch(fetchTeams());
+  }
+  if (_.isFunction(cb)) {
+    cb();
+  }
+});
+
+export const getAllUser = () => dispatch => get('/admin/users/all', {}, dispatch).then((data) => {
+  if (!_.isEmpty(data.data)) {
+    dispatch(setAllUser(data.data));
+  }
+});
