@@ -55,10 +55,16 @@ class EditBox extends React.Component {
     }
 
     render() {
-      const { spanClasses, type } = this.props;
-      console.log(type, type === 'select' ? this.filterSelectText(this.state.value) : this.state.value, 'test edit--------------------');
+      const { spanClasses, type, onClick } = this.props;
       return (
-        <span onDoubleClick={() => this.onEditing()} className={spanClasses}>
+        <span
+          onDoubleClick={(e) => {
+            e.stopPropagation();
+            this.onEditing();
+            }}
+          className={spanClasses}
+          onClick={e => onClick(e)}
+        >
           { this.state.isEdting ? this.buildElm() : this.buildValue() }
         </span>
       );
@@ -69,6 +75,7 @@ EditBox.defaultProps = {
   onChange: (val) => { console.log('change', val); },
   onBlur: (val) => { console.log('blur', val); },
   onEditing: (val) => { console.log('editing', val); },
+  onClick: () => {},
   value: '',
   options: [],
 };
@@ -78,6 +85,7 @@ EditBox.propTypes = {
   isDisabled: PropTypes.bool,
   onBlur: PropTypes.func,
   onEditing: PropTypes.func,
+  onClick: PropTypes.func,
   onChange: PropTypes.func,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   options: PropTypes.array,

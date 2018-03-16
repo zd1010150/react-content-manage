@@ -24,12 +24,11 @@ class Add extends React.Component {
     this.props.setNewDepartName(value);
   }
   render() {
-    const { intl, selectedDepartment } = this.props;
-    const { name } = selectedDepartment;
+    const { intl, selectedTeamName } = this.props;
     const { formatMessage } = intl;
     return (
       <div>
-        <h4>{formatMessage({ id: 'page.organChart.addNewTip' }, { department: name })}</h4>
+        <h4>{formatMessage({ id: 'page.organChart.addNewTip' }, { department: selectedTeamName })}</h4>
         <FloatingLabelInput
           labelText={formatMessage({ id: 'page.organChart.inputDeaprmentPlaceHolder' })}
           handleChange={value => this.onSearchableInputChange(value)}
@@ -45,12 +44,12 @@ Add.defaultProps = {
 };
 Add.propTypes = {
   intl: intlShape.isRequired,
-  selectedDepartment: PropTypes.object.isRequired,
   newTeam: PropTypes.object.isRequired,
   setNewDepartName: PropTypes.func.isRequired,
   addDepartment: PropTypes.func.isRequired,
   setAddVisible: PropTypes.func.isRequired,
   resetNewDepartment: PropTypes.func.isRequired,
+  selectedTeamName: PropTypes.string.isRequired,
 };
 
 export default injectIntl(Add);

@@ -1,8 +1,25 @@
 import { createSelector } from 'reselect';
 import _ from 'lodash';
+import { DEFAULT_DEPAREMTN } from 'config/app.config';
+import { getTreeItemByKey } from 'utils/treeUtil';
 
-const getSelectedTeamId = setupOrgChart => setupOrgChart.selectedDepartment.id;
-const getAllUsers = setupOrgChart => setupOrgChart.allUsers;
+const getSelectedTeamId = state => state.setupOrgChart.selectedDepartment.id;
+const getAllUsers = state => state.setupOrgChart.allUsers;
+const getAllTeams = state => state.global.settings.teams;
+
+export const getSelectedTeamName = createSelector(
+  [
+    getAllTeams,
+    getSelectedTeamId,
+  ],
+  (teams, teamid) => {
+    if (_.isEmpty(teams) || _.isEmpty(teamid+"") || (Number(teamid) === Number(DEFAULT_DEPAREMTN.id))) {
+      return DEFAULT_DEPAREMTN.name;
+    }
+    const team = getTreeItemByKey(teams, teamid);
+    return _.isEmpty(team) ? DEFAULT_DEPAREMTN.name : team.name;
+  },
+);
 
 export const getTeamUsers = createSelector(
   [
