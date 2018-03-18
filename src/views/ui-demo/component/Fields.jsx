@@ -6,7 +6,7 @@ class FieldsWrapper extends Component {
   render() {
     return (
       <div>
-        {Enums.FieldTypesInArray.map(type => (<CustomField type={type} value={''} />))}
+        {Enums.FieldTypesInArray.map(type => <CustomField key={type} type={type} value={''} />)}
       </div>
     );
   }

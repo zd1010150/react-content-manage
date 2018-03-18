@@ -11,7 +11,7 @@ import Modal from './Modal/index';
 import ListTable from './ListTable/index';
 import DeleteConfirmDialog from './DeleteConfirmDialog';
 import FilterCondition from './FilterCondition/index';
-import CustomField from './CustomField/index';
+import { CustomField } from './CustomField/index';
 
 export {
   Upload,

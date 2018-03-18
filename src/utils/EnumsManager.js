@@ -9,6 +9,8 @@ const BaseEnums = Object.freeze({
     Number: 'number',
     PickList: 'picklist',
     Text: 'text',
+    // for display only field
+    Display: 'display',
   }),
 
 });
@@ -49,6 +51,7 @@ const EnumsManager = Object.freeze({
     BaseEnums.FieldTypes.Number,
     BaseEnums.FieldTypes.PickList,
     BaseEnums.FieldTypes.Text,
+    BaseEnums.FieldTypes.Display,
   ]),
 
   FieldOperationTypes: Object.freeze({
