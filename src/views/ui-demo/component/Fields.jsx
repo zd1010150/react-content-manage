@@ -75,7 +75,7 @@ class FieldsWrapper extends Component {
           "id": 4,
           "model_type": "App\\Model\\Lead",
           "field_name": "longtext",
-          "crm_data_type": "longtext",
+          "crm_data_type": "long_text",
           "field_label": "longtext",
           "notnull": 1,
           "helper_text": null,

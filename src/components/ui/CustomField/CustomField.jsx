@@ -92,7 +92,7 @@ const Fields = ({
       field = (
         <TextArea
           {...others}
-          autosize={{minRows:2, maxRows:4}}
+          autosize={{ minRows: 2, maxRows: 6 }}
           onChange={e => onChange(id, e.target.value)}
         />
       );

@@ -4,7 +4,7 @@ const BaseEnums = Object.freeze({
     Date: 'date',
     DateTime: 'datetime',
     Email: 'email',
-    LongText: 'longtext',
+    LongText: 'long_text',
     Lookup: 'lookup',
     Number: 'number',
     PickList: 'picklist',
