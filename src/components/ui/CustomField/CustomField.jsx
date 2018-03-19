@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import { Select, Input, InputNumber, DatePicker } from 'antd';
 const { TextArea } = Input;
 const Option = Select.Option;
+import moment from 'moment';
 
 import { DisplayField, EmailInput } from './index';
 import Enums from 'utils/EnumsManager';
-
-import moment from 'moment';
 
 const defaultProps = {
   type: '',
@@ -18,12 +17,10 @@ const propTypes = {
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   defaultValue: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.object,
     PropTypes.array,
   ]),
   value: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.object,
     PropTypes.array,
   ]),
   label: PropTypes.string,
@@ -31,8 +28,6 @@ const propTypes = {
   onChange: PropTypes.func,
 };
 
-// all props
-// type, defaultValue, value, label, onChange, size
 const Fields = ({
   id,
   type,
@@ -60,8 +55,11 @@ const Fields = ({
       field = (
         <DatePicker
           format="YYYY-MM-DD"
-          onChange={(date, dateString) => onChange(id, date, dataString)}
+          onChange={(date, dateString) => onChange(id, dateString)}
           {...others}
+          // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
+          // In this way we can use string outside, and only convert to certain time format in reducer.
+          value={moment(others.value)}
         />
       );
       break;
@@ -69,16 +67,20 @@ const Fields = ({
       field = (
         <DatePicker
           format="YYYY-MM-DD HH:mm:ss"
-          onChange={(date, dateString) => onChange(id, date, dataString)}
+          onChange={(date, dateString) => onChange(id, dateString)}
           showTime
           {...others}
+          // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
+          // In this way we can use string outside, and only convert to certain time format in reducer.
+          value={moment(others.value)}
         />
       );
       break;
     case Email:
       field = (
         <EmailInput
-          message="wrong format"
+          id={id}
+          onChange={onChange}
           {...others}
         />
       );
@@ -107,7 +109,7 @@ const Fields = ({
     case Number:
       field = (
         <InputNumber
-          onChange={e => onChange(id, e.target.value)}
+          onChange={value => onChange(id, value)}
           {...others}
         />
       );

@@ -26,7 +26,8 @@ class FieldsWrapper extends Component {
           "lookup_type": null,
           "lookup_model": null,
           "lookup_relation_name": "",
-          "lookup_own_field_name": null
+          "lookup_own_field_name": null,
+          value: '2018-03-16',
         },
         {
           "id": 2,
@@ -46,7 +47,8 @@ class FieldsWrapper extends Component {
           "lookup_type": null,
           "lookup_model": null,
           "lookup_relation_name": "",
-          "lookup_own_field_name": null
+          "lookup_own_field_name": null,
+          value: '2018-03-16 10:20:50',
         },
         {
           "id": 3,
@@ -66,7 +68,8 @@ class FieldsWrapper extends Component {
           "lookup_type": null,
           "lookup_model": null,
           "lookup_relation_name": "",
-          "lookup_own_field_name": null
+          "lookup_own_field_name": null,
+          value: 'admin@zerologix.com',
         },
         {
           "id": 4,
@@ -86,7 +89,8 @@ class FieldsWrapper extends Component {
           "lookup_type": null,
           "lookup_model": null,
           "lookup_relation_name": "",
-          "lookup_own_field_name": null
+          "lookup_own_field_name": null,
+          value: 'testing long text/textare field in crm',
         },
         {
           "id": 5,
@@ -106,7 +110,8 @@ class FieldsWrapper extends Component {
           "lookup_type": "belong",
           "lookup_model": "App\\Model\\User",
           "lookup_relation_name": "created_by_user",
-          "lookup_own_field_name": "name"
+          "lookup_own_field_name": "name",
+          
         },
         {
           "id": 6,
@@ -126,7 +131,8 @@ class FieldsWrapper extends Component {
           "lookup_type": null,
           "lookup_model": null,
           "lookup_relation_name": "",
-          "lookup_own_field_name": null
+          "lookup_own_field_name": null,
+          value: '123.45',
         },        
         {
           "id": 7,
@@ -147,6 +153,7 @@ class FieldsWrapper extends Component {
           "lookup_model": null,
           "lookup_relation_name": "",
           "lookup_own_field_name": null,
+          value: 'US',
           "picklists": [
               {
                   "id": 3,
@@ -186,7 +193,8 @@ class FieldsWrapper extends Component {
           "lookup_type": null,
           "lookup_model": null,
           "lookup_relation_name": "",
-          "lookup_own_field_name": null
+          "lookup_own_field_name": null,
+          value: 'text test'
         },
       ]
     };
@@ -196,12 +204,20 @@ class FieldsWrapper extends Component {
     console.dir('-==--==-');
     console.dir(id);
     console.dir(value);
+    const { data } = this.state;
+    const newData = data.map(record => {
+      if (record.id === id) {
+        record.value = value;
+      }
+      return record;
+    });
+    this.setState({ data: newData });
   }
 
   render() {
     const { data } = this.state;
     const fields = data.map(record => {
-      const value = (record.crm_data_type === 'date' || record.crm_data_type === 'datetime') ? moment() : (record.crm_data_type === 'picklist' ? [] : '');
+      const value = (record.crm_data_type === 'date' || record.crm_data_type === 'datetime') ? moment(record.value) : record.value;
 
       let options = null;
       if (record.crm_data_type === 'picklist') {
@@ -214,14 +230,12 @@ class FieldsWrapper extends Component {
                 id={record.id}
                 type={record.crm_data_type}
                 label={record.field_label}
-                value={value}
+                value={record.value}
                 onChange={this.onChange}
                 options={options}/>;
     });
     return (
-      <div>
-        {fields}
-      </div>
+      <div>{fields}</div>
     );
   }
 }
