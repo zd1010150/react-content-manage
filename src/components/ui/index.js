@@ -5,6 +5,7 @@ import ViewFilter from './ViewFilter';
 import ListTopButtons from './ListTopButton/index';
 import EditBox from './editBox/index';
 import Panel from './panel/index';
+import SectionTitle from './panel/SectionTitle';
 import FloatingLabelInput from './FloatingLabelInput/index';
 import { LeftActions, RightActions } from './ActionButtons/index';
 import Modal from './Modal/index';
@@ -30,4 +31,5 @@ export {
   FilterCondition,
   CustomField,
   DefaultDepartment,
+  SectionTitle,
 };

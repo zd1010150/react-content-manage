@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, Row, Col } from 'antd';
+import { Select, Row, Col, Icon } from 'antd';
 
 import Enums from 'utils/EnumsManager';
 
@@ -43,8 +43,8 @@ const FilterCondition = ({
       <Col {...colLayout}>
         <Select style={{width: '100%'}}/>
       </Col>
-      <Col sm={1}>
-        testing
+      <Col xs={24} sm={1}>
+        <Icon style={{ color: 'red' }} type='delete' />
       </Col>
     </Row>
   );

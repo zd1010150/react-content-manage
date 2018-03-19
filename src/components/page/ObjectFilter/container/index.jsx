@@ -1,30 +1,43 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Enums from 'utils/EnumsManager';
+import { intlShape, injectIntl } from 'react-intl';
 
+import Enums from 'utils/EnumsManager';
+import { Panel, SectionTitle } from 'components/ui/index';
 import { FilterCondition } from '../../../ui/index';
 
+const defaultProps = {
+
+};
+const propTypes = {
+  intl: intlShape.isRequired,
+};
+
 class ObjectFilter extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
   componentDidMount() {
-    
+    // fetch if path id is not phantom
+
+    // otherwise reset all sub store and fetch all fields and selectors
   }
 
   render() {
     const { match } = this.props;
     const { object, viewId } = match.params;
     return (
-      <div>
+      <Panel panelClasses="lead-theme-panel" panelTitle="Edit Views">
+        <SectionTitle title="Step 1. Enter View Name" />
+        <br />
+        <SectionTitle title="Step 2. Specify Filter Criteria" />
+        <FilterCondition/>
         <span>object: {object}</span>
         <br />
         <span>view: {viewId}</span>
-        <FilterCondition/>
-      </div>
+      </Panel>
     );
   }
 }
 
-export default ObjectFilter;
+ObjectFilter.defaultProps = defaultProps;
+ObjectFilter.propTypes = propTypes;
+export default injectIntl(ObjectFilter);
