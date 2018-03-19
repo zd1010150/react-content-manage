@@ -16,12 +16,13 @@ import {
   getAllUser,
   setSelectedTeam,
   deleteDepartment,
-    updateTeam,
+  updateTeam,
   setAddVisible,
   setNewDepartName,
   resetNewDepartment,
-  addDepartment } from '../flow/action';
-import { getTeamUsers } from '../flow/reselect';
+  addDepartment,
+  setSortingTeam } from '../flow/action';
+import { getTeamUsers, getSelectedTeamName } from '../flow/reselect';
 
 
 class EditView extends React.Component {
@@ -36,7 +37,6 @@ class EditView extends React.Component {
       setSelectedTeam,
       setTeams,
       setSortableViewVisible,
-      selectedDepartment,
       teamUsers,
       isSelectTeamDialogVisible,
       selectedUser,
@@ -45,23 +45,25 @@ class EditView extends React.Component {
       getAllUser,
       updateUsers,
       deleteDepartment,
-        updateTeam,
+      updateTeam,
       setAddVisible,
       addDepartment,
       setNewDepartName,
       resetNewDepartment,
+      setSortingTeam,
+      selectedTeamName,
     } = this.props;
     const { formatMessage } = this.props.intl;
-    const actionsRight = <div><Button className="btn-ellipse" size="small" onClick={() => { setSortableViewVisible(true); }}><Icon type="edit" />{ formatMessage({ id: 'page.organChart.editStructure' }) }</Button></div>;
+    const actionsRight = <div><Button className="btn-ellipse" size="small" onClick={() => { setSortableViewVisible(true); setSortingTeam(JSON.parse(JSON.stringify(teams))); }}><Icon type="edit" />{ formatMessage({ id: 'page.organChart.editStructure' }) }</Button></div>;
     return (
       <Panel panelTitle={formatMessage({ id: 'page.organChart.organisitionChart' })} contentClasses="pl-lg pr-lg pt-lg pb-lg" actionsRight={actionsRight}>
         { isAddVisible ? <AddDepartment
-          selectedDepartment={selectedDepartment}
           newTeam={newTeam}
           setNewDepartName={setNewDepartName}
           addDepartment={addDepartment}
           setAddVisible={setAddVisible}
           resetNewDepartment={resetNewDepartment}
+          selectedTeamName={selectedTeamName}
         /> : ''}
 
         <Row className="pt-lg">
@@ -77,7 +79,6 @@ class EditView extends React.Component {
           </Col>
           <Col className="gutter-row field-value" span={12}>
             <User
-              selectedDepartment={selectedDepartment}
               teamUsers={teamUsers}
               isSelectTeamDialogVisible={isSelectTeamDialogVisible}
               teams={teams}
@@ -86,6 +87,7 @@ class EditView extends React.Component {
               setSelectedUser={setSelectedUser}
               getAllUser={getAllUser}
               updateUsers={updateUsers}
+              selectedTeamName={selectedTeamName}
             />
           </Col>
         </Row>
@@ -101,13 +103,12 @@ EditView.propTypes = {
 
 const mapStateToProps = ({ global, setupOrgChart }) => ({
   teams: global.settings.teams,
-  selectedDepartment: setupOrgChart.selectedDepartment,
-  teamUsers: getTeamUsers(setupOrgChart),
+  teamUsers: getTeamUsers({ setupOrgChart }),
   isSelectTeamDialogVisible: setupOrgChart.ui.isSelectTeamDialogVisible,
   isAddVisible: setupOrgChart.ui.isAddVisible,
   selectedUser: setupOrgChart.selectedUser,
   newTeam: setupOrgChart.newTeam,
-
+  selectedTeamName: getSelectedTeamName({ global, setupOrgChart }),
 });
 const mapDispatchToProps = {
   setTeams,
@@ -122,7 +123,8 @@ const mapDispatchToProps = {
   setNewDepartName,
   resetNewDepartment,
   addDepartment,
-    updateTeam,
+  updateTeam,
+  setSortingTeam,
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EditView));

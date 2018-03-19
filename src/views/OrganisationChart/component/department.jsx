@@ -3,8 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, injectIntl } from 'react-intl';
 import { TeamTree } from 'components/page/index';
-import { DeleteConfirmDialog } from 'components/ui/index';
-import { getTreeItemByKey } from 'utils/treeUtil';
+import { DeleteConfirmDialog, DefaultDepartment } from 'components/ui/index';
+
 
 class Department extends React.Component {
   state={
@@ -18,6 +18,7 @@ class Department extends React.Component {
       deleteDialogVisible: false,
     });
   }
+
   delete = (id) => {
     this.setState({
       deleteDialogVisible: true,
@@ -25,22 +26,21 @@ class Department extends React.Component {
     });
   }
   add = (parentId) => {
-    const { teams, setSelectedTeam, setAddVisible } = this.props;
-    const { id, name } = getTreeItemByKey(teams, parentId);
-    setSelectedTeam(id, name);
+    const { setSelectedTeam, setAddVisible } = this.props;
+    setSelectedTeam(parentId);
     setAddVisible(true);
   }
   modifyTeamName = (newTeamName, id) => {
     this.props.updateTeam(id, newTeamName);
   }
   selectDepartment = (selectedKeys) => {
-    const { id, name } = getTreeItemByKey(this.props.teams, selectedKeys[0]);
-    this.props.setSelectedTeam(id, name);
+    this.props.setSelectedTeam(selectedKeys[0]);
   }
   render() {
-    const { teams, setTeams } = this.props;
+    const { teams, setTeams, setSelectedTeam } = this.props;
     return (
       <div>
+        <DefaultDepartment onSelect={(id) => { setSelectedTeam(id); }} />
         <TeamTree
           onSelect={selectedKeys => this.selectDepartment(selectedKeys)}
           canAdd
@@ -53,7 +53,9 @@ class Department extends React.Component {
           setTeams={setTeams}
           defaultExpandAll
         />
-        <DeleteConfirmDialog visible={this.state.deleteDialogVisible} onOk={() => this.confirmDelete()} onCancel={() => this.setState({ deleteDialogVisible: false })} />
+        <DeleteConfirmDialog visible={this.state.deleteDialogVisible} onOk={() => this.confirmDelete()} onCancel={() => this.setState({ deleteDialogVisible: false })} >
+          <h3>一旦删除，就都无法恢复</h3>
+        </DeleteConfirmDialog>
       </div>
 
 

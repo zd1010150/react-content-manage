@@ -6,9 +6,11 @@ import { ORGCHART_SET_SORTABLE_VIEW_VISIBLE,
   ORGCHART_SET_ADD_VISIBLE,
   ORGCHART_SET_USER,
   ORGCHART_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
-  ORGCHART_SET_SELECT_USER } from './actionType';
+  ORGCHART_SET_SELECT_USER,
+  ORGCHART_SET_SORTING_TEAM,
+} from './actionType';
 
-const selectedDepartment = (state = { id: '', name: '' }, action) => {
+const selectedDepartment = (state = { id: '' }, action) => {
   const { type, ...payload } = action;
   switch (type) {
     case ORGCHART_SET_SELECTED_DEPARTMENT:
@@ -67,12 +69,21 @@ const ui = (state = {
   }
 };
 
-
+const sortingTeams = (state = [], action) => {
+  const { type, ...payload } = action;
+  switch (type) {
+    case ORGCHART_SET_SORTING_TEAM:
+      return payload.sortingTeams.slice();
+    default:
+      return state;
+  }
+};
 export default combineReducers({
   ui,
   newTeam,
   selectedDepartment,
   allUsers,
   selectedUser,
+  sortingTeams,
 });
 

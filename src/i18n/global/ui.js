@@ -42,6 +42,9 @@ export default {
       warning: '警告',
       deleteTitle: '确定删除这条记录',
     },
+    tree: {
+      default: '默认部门',
+    },
   },
   en: {
     button: {
@@ -85,6 +88,9 @@ export default {
       info: 'Info',
       warning: 'Warning',
       deleteTitle: 'Are you sure to delete this record?',
+    },
+    tree: {
+      default: 'No Department',
     },
   },
 };
