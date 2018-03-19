@@ -9,6 +9,7 @@ import SetupSider from './Sider/container';
 import AuthMainContent from './AuthMainContent';
 import SetupContent from './SetupContent';
 import TeamTree from './TeamTree';
+import ObjectFilter from './ObjectFilter/index';
 
 export {
   TopPanel,
@@ -22,5 +23,6 @@ export {
   AuthMainContent,
   SetupContent,
   TeamTree,
+  ObjectFilter,
 };
 
