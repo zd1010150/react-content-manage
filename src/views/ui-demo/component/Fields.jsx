@@ -232,6 +232,8 @@ class FieldsWrapper extends Component {
                 label={record.field_label}
                 value={record.value}
                 onChange={this.onChange}
+                precision={record.precision}
+                scale={record.scale}
                 options={options}/>;
     });
     return (

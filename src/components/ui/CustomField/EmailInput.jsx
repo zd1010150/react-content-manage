@@ -7,8 +7,8 @@ const defaultProps = {
   message: 'The input is not valid E-mail',
 };
 const propTypes = {
+  id: PropTypes.number.isRequired,
   size: PropTypes.string.isRequired,
-  label: PropTypes.string,
   message: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   value: PropTypes.string,
