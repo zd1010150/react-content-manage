@@ -217,8 +217,6 @@ class FieldsWrapper extends Component {
   render() {
     const { data } = this.state;
     const fields = data.map(record => {
-      const value = (record.crm_data_type === 'date' || record.crm_data_type === 'datetime') ? moment(record.value) : record.value;
-
       let options = null;
       if (record.crm_data_type === 'picklist') {
         options = record.picklists;

@@ -28,7 +28,7 @@ export const getRange = (precision, scale = 0) => {
   for (let i = 0; i < precision - scale; i++) {
     max += maxNum;
   }
-  if (precision > 0) {
+  if (scale > 0) {
     max += '.';
   }
   for (let j = 0; j < scale; j++) {
