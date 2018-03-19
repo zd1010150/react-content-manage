@@ -1,3 +1,20 @@
+const BaseEnums = Object.freeze({
+  
+  FieldTypes: Object.freeze({
+    Date: 'date',
+    DateTime: 'datetime',
+    Email: 'email',
+    LongText: 'long_text',
+    Lookup: 'lookup',
+    Number: 'number',
+    PickList: 'picklist',
+    Text: 'text',
+    // for display only field
+    Display: 'display',
+  }),
+
+});
+
 const EnumsManager = Object.freeze({
   LocalStorageKey: 'crmLoginUser',
 
@@ -22,16 +39,20 @@ const EnumsManager = Object.freeze({
     descend: 'desc',
   }),
 
-  FieldTypes: Object.freeze({
-    Date: 'date',
-    DateTime: 'datetime',
-    Email: 'email',
-    LongText: 'longtext',
-    Lookup: 'lookup',
-    Number: 'number',
-    PickList: 'picklist',
-    Text: 'text',
-  }),
+  FieldTypes: Object.freeze(BaseEnums.FieldTypes),
+
+  // this will be used in propTypes checking props is one of values
+  FieldTypesInArray: Object.freeze([
+    BaseEnums.FieldTypes.Date,
+    BaseEnums.FieldTypes.DateTime,
+    BaseEnums.FieldTypes.Email,
+    BaseEnums.FieldTypes.LongText,
+    BaseEnums.FieldTypes.Lookup,
+    BaseEnums.FieldTypes.Number,
+    BaseEnums.FieldTypes.PickList,
+    BaseEnums.FieldTypes.Text,
+    BaseEnums.FieldTypes.Display,
+  ]),
 
   FieldOperationTypes: Object.freeze({
     Edit: 'edit',
