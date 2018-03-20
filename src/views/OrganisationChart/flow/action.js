@@ -87,7 +87,7 @@ export const updateTeam = (id, name, cb) => dispatch => patch(`/admin/teams/${id
   }
 });
 
-export const sortDepartment = cb => (dispatch, getState) => patch('/admin/teams/struct/sort', { teams: getState().global.settings.teams }, dispatch).then((data) => {
+export const sortDepartment = (teams, cb) => (dispatch) => patch('/admin/teams/struct/sort', { teams }, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
     dispatch(fetchTeams());
   }

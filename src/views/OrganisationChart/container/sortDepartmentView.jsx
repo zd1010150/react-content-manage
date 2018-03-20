@@ -21,7 +21,7 @@ class SortView extends React.Component {
             <TeamTree draggable teams={sortingTeams} setTeams={setSortingTeam} />
           </Col>
           <Col className="gutter-row field-value" offset={2} span={24}>
-            <Button type="danger" size="small" onClick={() => { sortDepartment(() => { setSortableViewVisible(false); }); }}>
+            <Button type="danger" size="small" onClick={() => { sortDepartment(sortingTeams, () => { setSortableViewVisible(false); }); }}>
               <Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' }) }
             </Button>
             <Button className="ml-lg" size="small" onClick={() => { setSortableViewVisible(false); }}>

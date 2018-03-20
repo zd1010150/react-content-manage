@@ -44,6 +44,10 @@ class MultiDnDWrapper extends Component {
           id: 5,
           value: 'report',
         },
+          {
+              id: 6,
+              value: 'email',
+          },
       ],
       activeTheme: 'default',
     };
