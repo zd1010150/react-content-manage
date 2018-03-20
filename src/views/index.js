@@ -6,6 +6,9 @@ import UIDemo from './ui-demo';
 import CompanyInfo from './CompanyInfo';
 import Users from './Users';
 import OrganisationChart from './OrganisationChart';
+import EmailTemplates from './emailTemplates';
+import EmailTemplatesCreation from './emailTemplatesCreation';
+
 export {
   Leads,
   LoginForm,
@@ -15,4 +18,6 @@ export {
   CompanyInfo,
   Users,
   OrganisationChart,
+  EmailTemplates,
+  EmailTemplatesCreation
 };
