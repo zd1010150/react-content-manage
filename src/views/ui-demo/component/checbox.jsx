@@ -22,6 +22,10 @@ const Checkboxes = () => (
         >
             report
         </Checkbox>
+        <Checkbox className="email-theme-checkbox"
+        >
+            email
+        </Checkbox>
     </div>
 );
 
