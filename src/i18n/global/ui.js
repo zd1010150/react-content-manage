@@ -50,7 +50,12 @@ export default {
     },
     errors: {
       inputRequired: '必填项'
-    }
+    },
+    criteria: {
+      field: '字段',
+      condition: '条件',
+      value: '值',
+    },
   },
   en: {
     button: {
@@ -103,6 +108,11 @@ export default {
     },
     errors: {
       inputRequired: 'The input is required.'
-    }
+    },
+    criteria: {
+      field: 'Field',
+      condition: 'Condition',
+      value: 'Value',
+    },
   },
 };

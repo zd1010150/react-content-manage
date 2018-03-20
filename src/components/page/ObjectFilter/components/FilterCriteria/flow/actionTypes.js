@@ -1,3 +1,4 @@
 import { RESET_VIEW_GLOBAL } from 'store/global/actionType';
-export const SET_VIEW_NAME = 'SET_VIEW_NAME';
+export const SET_CONDITION_LOGIC = 'SET_CONDITION_LOGIC';
+export const ADD_FILTER = 'ADD_FILTER';
 export const RESET_VIEW = RESET_VIEW_GLOBAL;

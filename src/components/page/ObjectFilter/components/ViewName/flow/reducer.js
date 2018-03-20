@@ -1,4 +1,4 @@
-import { SET_VIEW_NAME } from './actionTypes';
+import { SET_VIEW_NAME, RESET_VIEW } from './actionTypes';
 
 const initialState = {
   view_name: '',
@@ -12,6 +12,9 @@ const viewName = (state = initialState, action) => {
         ...state,
         view_name,
       };
+    
+    case RESET_VIEW:
+      return initialState;
       
     default:
       return state;

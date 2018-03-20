@@ -61,6 +61,10 @@ const EnumsManager = Object.freeze({
   }),
 
   ObjectTypes: Object.freeze(['leads', 'accounts', 'opportunities']),
+
+  CriteriaColumns: Object.freeze([
+    'field', 'condition', 'value'
+  ]),
 });
 
 export default EnumsManager;

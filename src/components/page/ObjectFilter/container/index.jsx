@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { intlShape, injectIntl } from 'react-intl';
+import { Button, Icon, Row } from 'antd';
 
 import Enums from 'utils/EnumsManager';
-import { Section } from '../../../ui/index'
+import { Section } from 'components/ui/index'
 import { Panel, FilterCondition } from 'components/ui/index';
-import { ViewName } from '../components/index';
+import { ViewName, FilterCriteria } from '../components/index';
+import { resetView } from '../flow/actions';
 
 const defaultProps = {
 };
@@ -16,22 +18,35 @@ const propTypes = {
 
 class ObjectFilter extends Component {
   componentDidMount() {
-    // fetch if path id is not phantom
-
-    // otherwise reset all sub store and fetch all fields and selectors
+    const { match } = this.props;
+    const { object, viewId } = match.params;    
+    if (viewId !== Enums.PhantomID) {
+      // fetch if path id is not phantom
+      console.log('----fetch exist view data----');
+    } else {
+      // otherwise reset all sub store and fetch all fields and selectors
+      console.log('----reset view substore----');
+      this.props.resetView();
+    }
   }
 
   render() {
-    const { match } = this.props;
-    const { object, viewId } = match.params;
     return (
       <Panel panelClasses="lead-theme-panel" panelTitle="Edit Views">
         <Section title="Step 1. Enter View Name" body={ViewName} collapsible />
-        <Section title="Step 2. Specify Filter Criteria" body={null} />
-        <FilterCondition />
-        <span>object: {object}</span>
-        <br />
-        <span>view: {viewId}</span>
+        <Section title="Step 2. Specify Filter Criteria" body={FilterCriteria} />
+        <Section title="Step 3. Select Fields to Display" body={null} />
+        <Section title="Step 4. Restrict Visibility" body={null} />
+        <Row style={{ margin: '40px 15px 20px' }}>
+          <Button className="ml-sm lead-theme-btn" size="small">
+            <Icon type="save" size="small" />
+            Submit
+          </Button>
+          <Button className="ml-sm" size="small">
+            <Icon type="close" size="small" />
+            Cancel
+          </Button>
+        </Row>
       </Panel>
     );
   }
@@ -39,4 +54,9 @@ class ObjectFilter extends Component {
 
 ObjectFilter.defaultProps = defaultProps;
 ObjectFilter.propTypes = propTypes;
-export default injectIntl(ObjectFilter);
+const mapStateToProps = () => ({
+});
+const mapDispatchToProps = {
+  resetView,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ObjectFilter));

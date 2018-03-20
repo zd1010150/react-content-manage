@@ -14,6 +14,7 @@ import DeleteConfirmDialog from './DeleteConfirmDialog';
 import FilterCondition from './FilterCondition/index';
 import { CustomField } from './CustomField/index';
 import DefaultDepartment from './DefaultDepartment/index';
+import CriteriaHeader from './CriteriaHeader/index';
 
 export {
   Upload,
@@ -32,4 +33,5 @@ export {
   CustomField,
   DefaultDepartment,
   Section,
+  CriteriaHeader,
 };

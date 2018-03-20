@@ -1,0 +1,1 @@
+export const RESET_VIEW = 'RESET_VIEW';
