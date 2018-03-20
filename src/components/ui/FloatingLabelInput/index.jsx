@@ -55,12 +55,15 @@ class FloatingLabelInput extends Component {
       addonAfter,
       handleChange,
       handleSearch,
+      message,
+      required,
     } = this.props;
     const shouldLabelUp = !(!isFocused && isEmpty);
     const shouldShowPlaceholder = isFocused && isEmpty;
 
+    const hasError = required && value === '';
     return (
-      <div className={classNames(cx('floatingInputWrapper'), 'floatingInputWrapper')}>
+      <div className={classNames(cx('floatingInputWrapper'), 'floatingInputWrapper') + (hasError ? ' has-error' : '')}>
         <label
           className={shouldLabelUp ? cx('toTop') : ''}
           style={{ color: labelColor }}
@@ -93,6 +96,7 @@ class FloatingLabelInput extends Component {
           <hr />
           <hr className={cx('default') + (isFocused ? ` ${cx('highlighted')}` : '')} />
         </div>
+        {hasError && <div className="ant-form-explain">{message}</div>}
       </div>
     );
   }

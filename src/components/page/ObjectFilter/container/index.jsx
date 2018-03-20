@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { intlShape, injectIntl } from 'react-intl';
 
 import Enums from 'utils/EnumsManager';
-import { Panel, SectionTitle, FilterCondition } from 'components/ui/index';
+import { Section } from '../../../ui/index'
+import { Panel, FilterCondition } from 'components/ui/index';
 import { ViewName } from '../components/index';
 
 const defaultProps = {
@@ -25,10 +26,8 @@ class ObjectFilter extends Component {
     const { object, viewId } = match.params;
     return (
       <Panel panelClasses="lead-theme-panel" panelTitle="Edit Views">
-        <SectionTitle title="Step 1. Enter View Name" />
-        <ViewName />
-        <br />
-        <SectionTitle title="Step 2. Specify Filter Criteria" />
+        <Section title="Step 1. Enter View Name" body={ViewName} collapsible />
+        <Section title="Step 2. Specify Filter Criteria" body={null} />
         <FilterCondition />
         <span>object: {object}</span>
         <br />
