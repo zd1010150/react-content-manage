@@ -18,7 +18,7 @@ const SectionBody = ({ body }) => {
   const BodyWrapper = body;
   return (
     <div className={cx('body')}>
-      <BodyWrapper />
+      {typeof body === 'object' ? body : <BodyWrapper />}
     </div>
   );
 };

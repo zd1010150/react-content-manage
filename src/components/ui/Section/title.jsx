@@ -16,10 +16,10 @@ const propTypes = {
   collapsible: PropTypes.bool.isRequired,
 };
 
-const SectionTitle = ({ title, onClick, collapsed, collapsible }) => {
+const SectionTitle = ({ title, onClick, collapsed, collapsible, style }) => {
   const caretDirection = collapsed ? 'right' : 'down';
   return (
-    <div className={cx('title')}>
+    <div className={cx('title')} style={style} >
       {collapsible && (
         <Icon
           className={cx('collapseIcon')}

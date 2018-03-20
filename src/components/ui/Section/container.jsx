@@ -29,12 +29,13 @@ class Section extends Component {
 
   render() {
     const { collapsed } = this.state;
-    const { title, body, collapsible } = this.props;
+    const { title, body, collapsible, style, titleStyle } = this.props;
     
     return (
-      <div className={cx('section')}>
+      <div className={cx('section')} style={style}>
         <SectionTitle
           title={title}
+          style={titleStyle}
           onClick={this.handleClick}
           collapsed={collapsed}
           collapsible={collapsible}
