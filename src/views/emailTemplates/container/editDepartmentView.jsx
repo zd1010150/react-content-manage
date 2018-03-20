@@ -11,7 +11,6 @@ import Department from '../component/department';
 import User from '../component/user';
 import {
   setSortableViewVisible,
-  setSeleteTeamDialogVisible,
   setSelectedUser,
   getAllUser,
   setSelectedTeam,
@@ -40,7 +39,6 @@ class EditView extends React.Component {
       teamUsers,
       isSelectTeamDialogVisible,
       selectedUser,
-      setSeleteTeamDialogVisible,
       setSelectedUser,
       getAllUser,
       updateUsers,
@@ -83,7 +81,6 @@ class EditView extends React.Component {
               isSelectTeamDialogVisible={isSelectTeamDialogVisible}
               teams={teams}
               selectedUser={selectedUser}
-              setSeleteTeamDialogVisible={setSeleteTeamDialogVisible}
               setSelectedUser={setSelectedUser}
               getAllUser={getAllUser}
               updateUsers={updateUsers}
@@ -114,7 +111,6 @@ const mapDispatchToProps = {
   setTeams,
   setSortableViewVisible,
   setSelectedUser,
-  setSeleteTeamDialogVisible,
   getAllUser,
   updateUsers,
   setSelectedTeam,
