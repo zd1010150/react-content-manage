@@ -38,8 +38,8 @@ SortView.propTypes = {
   intl: intlShape.isRequired,
 };
 
-const mapStateToProps = ({ setupOrgChart }) => ({
-  sortingTeams: setupOrgChart.sortingTeams,
+const mapStateToProps = ({ setup }) => ({
+  sortingTeams: setup.orgChart.sortingTeams,
 });
 const mapDispatchToProps = {
   setSortableViewVisible,

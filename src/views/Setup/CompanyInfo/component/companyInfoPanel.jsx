@@ -12,7 +12,6 @@ const cx = classNames.bind(styles);
 
 class companyInfoPanel extends React.Component {
   onBlur(fieldName, value) {
-    const { formatMessage } = this.props.intl;
     this.props.updateCompanyInfo({ [fieldName]: value });
   }
   render() {

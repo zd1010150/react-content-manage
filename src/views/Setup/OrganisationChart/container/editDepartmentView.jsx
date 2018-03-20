@@ -5,7 +5,7 @@ import { intlShape, injectIntl } from 'react-intl';
 import { Row, Col, Button, Icon } from 'antd';
 import { Panel } from 'components/ui/index';
 import { setTeams } from 'store/global/action';
-import { updateUsers } from 'views/Users/flow/action';
+import { updateUsers } from 'views/Setup/Users/flow/action';
 import AddDepartment from '../component/add';
 import Department from '../component/department';
 import User from '../component/user';
@@ -101,15 +101,20 @@ EditView.propTypes = {
 };
 
 
-const mapStateToProps = ({ global, setupOrgChart }) => ({
-  teams: global.settings.teams,
-  teamUsers: getTeamUsers({ setupOrgChart }),
-  isSelectTeamDialogVisible: setupOrgChart.ui.isSelectTeamDialogVisible,
-  isAddVisible: setupOrgChart.ui.isAddVisible,
-  selectedUser: setupOrgChart.selectedUser,
-  newTeam: setupOrgChart.newTeam,
-  selectedTeamName: getSelectedTeamName({ global, setupOrgChart }),
-});
+const mapStateToProps = ({ global, setup }) => {
+  const { orgChart } = setup;
+  return {
+    teams: global.settings.teams,
+    teamUsers: getTeamUsers({ orgChart }),
+    isSelectTeamDialogVisible: orgChart.ui.isSelectTeamDialogVisible,
+    isAddVisible: orgChart.ui.isAddVisible,
+    selectedUser: orgChart.selectedUser,
+    newTeam: orgChart.newTeam,
+    selectedTeamName: getSelectedTeamName({ global, orgChart }),
+  };
+};
+
+
 const mapDispatchToProps = {
   setTeams,
   setSortableViewVisible,

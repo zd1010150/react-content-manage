@@ -30,14 +30,14 @@ addEditView.propTypes = {
   actionType: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = ({ setupUsers, global }) => ({
+const mapStateToProps = ({ setup, global }) => ({
   teams: global.settings.teams,
   timeZones: global.settings.timeZones,
   moments: global.settings.moments,
-  editUser: setupUsers.users.editUser,
-  selectedDepartmentId: setupUsers.users.department_id,
-  selectedDepartmentText: setupUsers.users.department_name,
-  isDisplayDepartmentDialog: setupUsers.ui.isDisplayDepartmentDialog,
+  editUser: setup.users.users.editUser,
+  selectedDepartmentId: setup.users.users.department_id,
+  selectedDepartmentText: setup.users.users.department_name,
+  isDisplayDepartmentDialog: setup.users.ui.isDisplayDepartmentDialog,
 });
 const mapDispatchToProps = {
   setDepartment,
