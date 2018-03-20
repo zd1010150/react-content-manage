@@ -10,6 +10,7 @@ const Radios = ({ onChange }) => (
         <Radio className="account-theme-radio" value={3}>Account</Radio>
         <Radio className="opport-theme-radio" value={4}>Opport</Radio>
         <Radio className="report-theme-radio" value={5}>Report</Radio>
+        <Radio className="email-theme-radio" value={6}>email</Radio>
     </RadioGroup>
 );
 
