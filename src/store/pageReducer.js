@@ -5,6 +5,7 @@ import leads from 'views/Leads/flow/reducer';
 import setupUsers from 'views/Users/flow/reducer';
 import setupCompanyInfo from 'views/CompanyInfo/flow/reducer';
 import setupOrgChart from 'views/OrganisationChart/flow/reducer';
+import objectView from 'components/page/ObjectFilter/flow/reducer';
 
 // test
 import multiDndFields from 'components/ui/MultiSelectDnD/flow/reducer';
@@ -18,5 +19,5 @@ export default {
   setupCompanyInfo,
   setupOrgChart,
   multiDndFields,
-
+  objectView
 };

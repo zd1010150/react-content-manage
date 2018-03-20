@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 import { intlShape, injectIntl } from 'react-intl';
 
 import Enums from 'utils/EnumsManager';
-import { Panel, SectionTitle } from 'components/ui/index';
-import { FilterCondition } from '../../../ui/index';
+import { Panel, SectionTitle, FilterCondition } from 'components/ui/index';
+import { ViewName } from '../components/index';
 
 const defaultProps = {
-
 };
 const propTypes = {
   intl: intlShape.isRequired,
@@ -27,9 +26,10 @@ class ObjectFilter extends Component {
     return (
       <Panel panelClasses="lead-theme-panel" panelTitle="Edit Views">
         <SectionTitle title="Step 1. Enter View Name" />
+        <ViewName />
         <br />
         <SectionTitle title="Step 2. Specify Filter Criteria" />
-        <FilterCondition/>
+        <FilterCondition />
         <span>object: {object}</span>
         <br />
         <span>view: {viewId}</span>
