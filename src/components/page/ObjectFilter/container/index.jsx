@@ -7,8 +7,9 @@ import { Button, Icon, Row } from 'antd';
 import Enums from 'utils/EnumsManager';
 import { Section } from 'components/ui/index'
 import { Panel, FilterCondition } from 'components/ui/index';
-import { ViewName, FilterCriteria } from '../components/index';
-import { resetView } from '../flow/actions';
+import { ViewName, FilterCriteria, ViewButtons, FieldsSelection } from '../components/index';
+import { resetView, saveView } from '../flow/actions';
+// import { saveView } from '../components/ViewButtons/flow/actions';
 
 const defaultProps = {
 };
@@ -30,23 +31,19 @@ class ObjectFilter extends Component {
     }
   }
 
+  handleSaveClick = () => {
+    console.log('saving');
+    this.props.saveView();
+  }
+
   render() {
     return (
       <Panel panelClasses="lead-theme-panel" panelTitle="Edit Views">
         <Section title="Step 1. Enter View Name" body={ViewName} collapsible />
         <Section title="Step 2. Specify Filter Criteria" body={FilterCriteria} />
-        <Section title="Step 3. Select Fields to Display" body={null} />
+        <Section title="Step 3. Select Fields to Display" body={FieldsSelection} />
         <Section title="Step 4. Restrict Visibility" body={null} />
-        <Row style={{ margin: '40px 15px 20px' }}>
-          <Button className="ml-sm lead-theme-btn" size="small">
-            <Icon type="save" size="small" />
-            Submit
-          </Button>
-          <Button className="ml-sm" size="small">
-            <Icon type="close" size="small" />
-            Cancel
-          </Button>
-        </Row>
+        <ViewButtons onSaveClick={this.handleSaveClick} />
       </Panel>
     );
   }
@@ -54,9 +51,11 @@ class ObjectFilter extends Component {
 
 ObjectFilter.defaultProps = defaultProps;
 ObjectFilter.propTypes = propTypes;
-const mapStateToProps = () => ({
+const mapStateToProps = ({ objectView }) => ({
+  objectView,
 });
 const mapDispatchToProps = {
   resetView,
+  saveView,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ObjectFilter));

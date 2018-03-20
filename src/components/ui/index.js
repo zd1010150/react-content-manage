@@ -15,6 +15,8 @@ import FilterCondition from './FilterCondition/index';
 import { CustomField } from './CustomField/index';
 import DefaultDepartment from './DefaultDepartment/index';
 import CriteriaHeader from './CriteriaHeader/index';
+import ItemList from './ItemList/index';
+import { Wrapper, CardContainer } from './MultiSelectDnD/index';
 
 export {
   Upload,
@@ -34,4 +36,7 @@ export {
   DefaultDepartment,
   Section,
   CriteriaHeader,
+  ItemList,
+  Wrapper,
+  CardContainer,
 };
