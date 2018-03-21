@@ -11,15 +11,19 @@ import { EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
   EMAIL_TEMPLATES_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
   EMAIL_TEMPLATES_SET_SELECT_USER,
   EMAIL_TEMPLATES_SET_SORTING_TEAM,
+  EMAIL_TEMPLATES_PERMISSION_VIEW_VISIBLE
 } from './actionType';
-
-
-
 
 export const setEditFolderViewVisible = isEditFolderViewVisible => ({
   type: EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
   isEditFolderViewVisible,
 });
+
+export const setPermissionSettingVisible = isPermissionSettingVisible => ({
+    type: EMAIL_TEMPLATES_PERMISSION_VIEW_VISIBLE,
+    isPermissionSettingVisible,
+});
+
 /* ADD */
 export const setAddVisible = isAddVisible => ({
   type: EMAIL_TEMPLATES_SET_ADD_VISIBLE,

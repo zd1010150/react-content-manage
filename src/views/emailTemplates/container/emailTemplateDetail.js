@@ -12,6 +12,7 @@ import Department from '../component/department';
 import User from '../component/user';
 import {
     setEditFolderViewVisible,
+    setPermissionSettingVisible
 } from '../flow/action';
 import { getTeamUsers, getSelectedTeamName } from '../flow/reselect';
 import { Tabs } from 'antd';
@@ -40,34 +41,15 @@ const Folders = () => (
     </div>
 )
 
-const Templates = ({formatMessage}) => (
-
-
-        <Row className="pt-lg">
-            <Tabs type="line" tabBarStyle={{width: '100%'}}>
-                <TabPane tab="Tab Title 1" key="1">
-                    <p>Content of Tab Pane 1</p>
-                    <p>Content of Tab Pane 1</p>
-                    <p>Content of Tab Pane 1</p>
-                </TabPane>
-                <TabPane tab="Tab Title 1" key="2">
-                    <p>Content of Tab Pane 1</p>
-                    <p>Content of Tab Pane 1</p>
-                    <p>Content of Tab Pane 1</p>
-                </TabPane>
-            </Tabs>
-        </Row>
-
-
-
-    // <Row className="pt-lg">
-    //     <Col className="gutter-row field-label" span={12}>
-    //         { formatMessage({ id: 'page.emailTemplates.templates' }) }
-    //     </Col>
-    //     <Col className="gutter-row field-value" span={12}>
-    //         { formatMessage({ id: 'page.emailTemplates.permissionSetting' }) }
-    //     </Col>
-    // </Row>
+const Templates = ({formatMessage, setPermissionSettingVisible, isPermissionSettingVisible}) => (
+    <Row className="pt-lg">
+        <Col className="gutter-row field-label" span={12}>
+            <button onClick={()=>{setPermissionSettingVisible(false)}} className={!isPermissionSettingVisible ? cx('tab-button-active') : cx('tab-button')} style={{width: '100%'}}>{ formatMessage({ id: 'page.emailTemplates.templates' }) }</button>
+        </Col>
+        <Col className="gutter-row field-value" span={12}>
+            <button onClick={()=>{setPermissionSettingVisible(true)}} className={isPermissionSettingVisible ? cx('tab-button-active') : cx('tab-button')}>{ formatMessage({ id: 'page.emailTemplates.permissionSetting' }) }</button>
+        </Col>
+    </Row>
 )
 
 class EmailTemplateDetail extends React.Component {
@@ -75,13 +57,17 @@ class EmailTemplateDetail extends React.Component {
     }
     render() {
         const { formatMessage } = this.props.intl;
-        const {setEditFolderViewVisible} = this.props;
+        const {setEditFolderViewVisible, setPermissionSettingVisible, isPermissionSettingVisible} = this.props;
         const actionsLeft = <div><Radios/></div>;
         const actionsRight = <div><Button className="btn-ellipse" size="small" onClick={() => {setEditFolderViewVisible(true)}}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.editFolders' }) }</Button></div>;
         return (
             <Panel actionsLeft={actionsLeft} contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={actionsRight}>
                 <Folders/>
-                <Templates formatMessage={formatMessage}/>
+                <Templates
+                    setPermissionSettingVisible={setPermissionSettingVisible}
+                    isPermissionSettingVisible={isPermissionSettingVisible}
+                    formatMessage={formatMessage}
+                />
             </Panel>
         );
     }
@@ -98,13 +84,15 @@ const mapStateToProps = ({ global, setup }) => {
         teams: global.settings.teams,
         teamUsers: getTeamUsers({ emailTemplates }),
         isEditFolderViewVisible: emailTemplates.ui.isEditFolderViewVisible,
+        isPermissionSettingVisible: emailTemplates.ui.isPermissionSettingVisible,
     };
 };
 
 const mapDispatchToProps = {
     setTeams,
     updateUsers,
-    setEditFolderViewVisible
+    setEditFolderViewVisible,
+    setPermissionSettingVisible
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateDetail));
