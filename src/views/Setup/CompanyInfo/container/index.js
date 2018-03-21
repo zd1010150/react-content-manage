@@ -20,7 +20,7 @@ class companyInfo extends Component {
     return (
       <Fragment>
         <ComponanyInfoPanel {...this.props} />
-        <CompaneyUserStatic userInfo={userInfo} history={history}/>
+        <CompaneyUserStatic userInfo={userInfo} history={history} />
         <Logo companyLogo={companyLogo} setLogo={setLogo} />
       </Fragment>
     );

@@ -18,7 +18,6 @@ class userForm extends React.Component {
       editObject, addUsers, updateUsers, form, selectedDepartmentId,
     } = this.props;
     form.validateFieldsAndScroll((err, values) => {
-        debugger;
       const submitFormData = Object.assign({}, values, { team_id: selectedDepartmentId });
       if (!err) {
         if (_.isEmpty(editObject)) {
@@ -57,7 +56,6 @@ class userForm extends React.Component {
     </Select>);
     const momentsEl = (<Select>{moments.map(item => <Option value={item} key={item}>{item}</Option>)}</Select>);
 
-    debugger;
     return (
 
       <Form>

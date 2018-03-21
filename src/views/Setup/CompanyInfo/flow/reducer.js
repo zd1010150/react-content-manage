@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { SET_COMPANY_INFO } from './actionType';
+import { SETUP_COMINFO_COMPANY_INFO } from './actionType';
 import _ from 'lodash';
 
 
@@ -45,7 +45,7 @@ const companyinfo = (state = {
 }, action) => {
   const { type, ...payload } = action;
   switch (type) {
-    case SET_COMPANY_INFO:
+    case SETUP_COMINFO_COMPANY_INFO:
       return mapFieldsCompanyInfo(state, payload);
     default:
       return state;
