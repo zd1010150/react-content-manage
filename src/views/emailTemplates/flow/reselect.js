@@ -3,8 +3,8 @@ import _ from 'lodash';
 import { DEFAULT_DEPAREMTN } from 'config/app.config';
 import { getTreeItemByKey } from 'utils/treeUtil';
 
-const getSelectedTeamId = state => state.setupOrgChart.selectedDepartment.id;
-const getAllUsers = state => state.setupOrgChart.allUsers;
+const getSelectedTeamId = state => state.emailTemplates.selectedDepartment.id;
+const getAllUsers = state => state.emailTemplates.allUsers;
 const getAllTeams = state => state.global.settings.teams;
 
 export const getSelectedTeamName = createSelector(

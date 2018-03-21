@@ -5,12 +5,11 @@ import { intlShape, injectIntl } from 'react-intl';
 import { Row, Col, Button, Icon } from 'antd';
 import { Panel } from 'components/ui/index';
 import { setTeams } from 'store/global/action';
-import { updateUsers } from 'views/Users/flow/action';
+import { updateUsers } from 'views/Setup/Users/flow/action';
 import AddDepartment from '../component/add';
 import Department from '../component/department';
 import User from '../component/user';
 import {
-  setSortableViewVisible,
   setSelectedUser,
   getAllUser,
   setSelectedTeam,
@@ -35,7 +34,6 @@ class EditView extends React.Component {
       isAddVisible,
       setSelectedTeam,
       setTeams,
-      setSortableViewVisible,
       teamUsers,
       isSelectTeamDialogVisible,
       selectedUser,
@@ -52,7 +50,7 @@ class EditView extends React.Component {
       selectedTeamName,
     } = this.props;
     const { formatMessage } = this.props.intl;
-    const actionsRight = <div><Button className="btn-ellipse" size="small" onClick={() => { setSortableViewVisible(true); setSortingTeam(JSON.parse(JSON.stringify(teams))); }}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.hideDepartments' }) }</Button></div>;
+    const actionsRight = <div><Button className="btn-ellipse" size="small" onClick={() => { setSortingTeam(JSON.parse(JSON.stringify(teams))); }}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.hideDepartments' }) }</Button></div>;
     return (
       <Panel panelTitle={formatMessage({ id: 'page.emailTemplates.emailTemplates' })} contentClasses="pl-lg pr-lg pt-lg pb-lg" actionsRight={actionsRight}>
         { isAddVisible ? <AddDepartment
@@ -97,19 +95,21 @@ EditView.propTypes = {
   intl: intlShape.isRequired,
 };
 
+const mapStateToProps = ({ global, setup }) => {
+    const { emailTemplates } = setup;
+    return {
+        teams: global.settings.teams,
+        teamUsers: getTeamUsers({ emailTemplates }),
+        isSelectTeamDialogVisible: emailTemplates.ui.isSelectTeamDialogVisible,
+        isAddVisible: emailTemplates.ui.isAddVisible,
+        selectedUser: emailTemplates.selectedUser,
+        newTeam: emailTemplates.newTeam,
+        selectedTeamName: getSelectedTeamName({ global, emailTemplates }),
+    };
+};
 
-const mapStateToProps = ({ global, setupOrgChart }) => ({
-  teams: global.settings.teams,
-  teamUsers: getTeamUsers({ setupOrgChart }),
-  isSelectTeamDialogVisible: setupOrgChart.ui.isSelectTeamDialogVisible,
-  isAddVisible: setupOrgChart.ui.isAddVisible,
-  selectedUser: setupOrgChart.selectedUser,
-  newTeam: setupOrgChart.newTeam,
-  selectedTeamName: getSelectedTeamName({ global, setupOrgChart }),
-});
 const mapDispatchToProps = {
   setTeams,
-  setSortableViewVisible,
   setSelectedUser,
   getAllUser,
   updateUsers,

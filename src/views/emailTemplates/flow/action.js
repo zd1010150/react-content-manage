@@ -2,58 +2,60 @@ import { get, patch, post, httpDelete } from 'store/http/httpAction';
 import { fetchTeams } from 'store/global/action';
 import { DEFAULT_DEPAREMTN } from 'config/app.config';
 import _ from 'lodash';
-import { ORGCHART_SET_SORTABLE_VIEW_VISIBLE,
-  ORGCHART_SET_ADD_VISIBLE,
-  ORGCHART_RESET_NEW_DEPARMENT,
-  ORGCHART_SET_NEW_DEPARTMENT_NAME,
-  ORGCHART_SET_SELECTED_DEPARTMENT,
-  ORGCHART_SET_USER,
-  ORGCHART_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
-  ORGCHART_SET_SELECT_USER,
-  ORGCHART_SET_SORTING_TEAM,
+import { EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
+  EMAIL_TEMPLATES_SET_ADD_VISIBLE,
+  EMAIL_TEMPLATES_RESET_NEW_DEPARMENT,
+  EMAIL_TEMPLATES_SET_NEW_DEPARTMENT_NAME,
+  EMAIL_TEMPLATES_SET_SELECTED_DEPARTMENT,
+  EMAIL_TEMPLATES_SET_USER,
+  EMAIL_TEMPLATES_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
+  EMAIL_TEMPLATES_SET_SELECT_USER,
+  EMAIL_TEMPLATES_SET_SORTING_TEAM,
 } from './actionType';
 
 
-export const setSortableViewVisible = isSortViewVisible => ({
-  type: ORGCHART_SET_SORTABLE_VIEW_VISIBLE,
-  isSortViewVisible,
+
+
+export const setEditFolderViewVisible = isEditFolderViewVisible => ({
+  type: EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
+  isEditFolderViewVisible,
 });
 /* ADD */
 export const setAddVisible = isAddVisible => ({
-  type: ORGCHART_SET_ADD_VISIBLE,
+  type: EMAIL_TEMPLATES_SET_ADD_VISIBLE,
   isAddVisible,
 });
 
 
 export const setNewDepartName = name => ({
-  type: ORGCHART_SET_NEW_DEPARTMENT_NAME,
+  type: EMAIL_TEMPLATES_SET_NEW_DEPARTMENT_NAME,
   name,
 });
 export const resetNewDepartment = () => ({
-  type: ORGCHART_RESET_NEW_DEPARMENT,
+  type: EMAIL_TEMPLATES_RESET_NEW_DEPARMENT,
 });
 /* Display the user */
 export const setSelectedTeam = id => ({
-  type: ORGCHART_SET_SELECTED_DEPARTMENT,
+  type: EMAIL_TEMPLATES_SET_SELECTED_DEPARTMENT,
   id,
 });
 export const setSeleteTeamDialogVisible = isSelectTeamDialogVisible => ({
-  type: ORGCHART_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
+  type: EMAIL_TEMPLATES_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
   isSelectTeamDialogVisible,
 });
 
 export const setSelectedUser = user => ({
-  type: ORGCHART_SET_SELECT_USER,
+  type: EMAIL_TEMPLATES_SET_SELECT_USER,
   user,
 });
 
 export const setAllUser = users => ({
-  type: ORGCHART_SET_USER,
+  type: EMAIL_TEMPLATES_SET_USER,
   users,
 });
 /* Sort teams */
 export const setSortingTeam = sortingTeams => ({
-  type: ORGCHART_SET_SORTING_TEAM,
+  type: EMAIL_TEMPLATES_SET_SORTING_TEAM,
   sortingTeams,
 });
 export const addDepartment = (name, parentId, cb) => dispatch => post('/admin/teams', { name, parent_id: parentId }, dispatch).then((data) => {
