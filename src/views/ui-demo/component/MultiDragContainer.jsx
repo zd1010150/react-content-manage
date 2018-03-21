@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Wrapper from 'components/ui/MultiSelectDnD/index';
+import { Wrapper } from 'components/ui/index';
 class MultiDragContainer extends Component {
   render() {
     return (
