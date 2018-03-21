@@ -13,6 +13,31 @@
   height: 200px;
   overflow-y: auto;
 }
+.theme-multiselect(@theme){
+  @selector : @theme; /*获取selector*/
+  @theme-color-value-name: '@{theme}-theme-color'; /*获取变量名*/
+  @theme-color-value: @@theme-color-value-name; /*获取变量名对应的值*/
+  &.selected {
+      &.@{selector}{
+        background-color: @theme-color-value;
+      }
+
+  }
+  &.@{selector} {
+    .editBtn{
+      color: @theme-color-value;
+    }
+
+  }
+}
+
+.make-theme-multiselect-classes(@i: length(@themes)) when (@i > 0) {
+  .make-theme-multiselect-classes(@i - 1);
+  @theme: extract(@themes, @i);
+  .theme-multiselect(@theme);
+}
+
+
 
 .card {
   padding: 3px 15px;
@@ -39,36 +64,14 @@
     cursor: move;
     background-color: @secondary-dark-color;
     
-    &.lead {
-      background-color: @lead-theme-color;
-    }
-    &.account {
-      background-color: @account-theme-color;
-    }
-    &.opport {
-      background-color: @opport-theme-color;
-    }
-    &.report {
-      background-color: @report-theme-color;
-    }
+
 
     i {
       color: @brk-text-white-color !important;
     }
   }
 
-  &.lead .editBtn {
-    color: @lead-theme-color;
-  }
-  &.account .editBtn {
-    color: @account-theme-color;
-  }
-  &.opport .editBtn {
-    color: @opport-theme-color;
-  }
-  &.report .editBtn {
-    color: @report-theme-color;
-  }
+  .make-theme-multiselect-classes();
 
   &.dragging {
     opacity: .3;
