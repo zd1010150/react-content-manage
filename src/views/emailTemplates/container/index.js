@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { fetchTeams } from 'store/global/action';
 import { connect } from 'react-redux';
 import EditView from './editDepartmentView';
+import EmailTemplateDetail from './emailTemplateDetail';
 
 
 class EmailTemplates extends React.Component {
@@ -15,6 +16,7 @@ class EmailTemplates extends React.Component {
     return (
       <Fragment>
         <EditView />
+        <EmailTemplateDetail/>
       </Fragment>
 
     );
