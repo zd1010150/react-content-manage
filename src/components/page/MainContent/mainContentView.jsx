@@ -11,6 +11,7 @@ import {
   CompanyInfo,
   Users,
   OrganisationChart,
+  PermissionProfile,
 } from 'views/index';
 
 import { ObjectFilter } from '../index';
@@ -25,6 +26,8 @@ const MainContent = () => (
     <Route path="/setup/company-info/company-info" component={CompanyInfo} />
     <Route path="/setup/company-info/users" component={Users} />
     <Route path="/setup/company-info/chart" component={OrganisationChart} />
+    <Route path="/setup/company-info/permissions" component={PermissionProfile} />
+
   </Switch>
 );
 export default MainContent;

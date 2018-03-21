@@ -10,6 +10,7 @@ const defaultProps = {
   labelText: 'Default Label',
   withSearch: false,
   handleChange: () => {},
+  handleFocus: () => {},
 };
 const propTypes = {
   labelText: PropTypes.string.isRequired,
@@ -19,6 +20,7 @@ const propTypes = {
   withSearch: PropTypes.bool,
   handleChange: PropTypes.func,
   handleSearch: PropTypes.func,
+  handleFocus: PropTypes.func,
 };
 
 class FloatingLabelInput extends Component {
@@ -31,7 +33,12 @@ class FloatingLabelInput extends Component {
   }
 
   onBlur = e => this.setState({ isFocused: false })
-  onFocus = e => this.setState({ isFocused: true })
+  onFocus = (e) => {
+    debugger;
+    e.stopPropagation();
+    this.setState({ isFocused: true });
+    this.props.handleFocus();
+  }
   onPressEnter = (e) => {
     this.props.handleSearch(e.target.value);
   }
