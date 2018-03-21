@@ -7,7 +7,7 @@ import { Button, Icon, Row } from 'antd';
 import Enums from 'utils/EnumsManager';
 import { Section } from 'components/ui/index'
 import { Panel, FilterCondition } from 'components/ui/index';
-import { ViewName, FilterCriteria, ViewButtons, FieldsSelection } from '../components/index';
+import { ViewName, FilterCriteria, ViewButtons, FieldsSelection, ViewVisibility } from '../components/index';
 import { resetView, saveView, fetchViewById } from '../flow/actions';
 // import { saveView } from '../components/ViewButtons/flow/actions';
 
@@ -43,7 +43,7 @@ class ObjectFilter extends Component {
         <Section title="Step 1. Enter View Name" body={ViewName} collapsible />
         <Section title="Step 2. Specify Filter Criteria" body={FilterCriteria} />
         <Section title="Step 3. Select Fields to Display" body={FieldsSelection} />
-        <Section title="Step 4. Restrict Visibility" body={null} />
+        <Section title="Step 4. Restrict Visibility" body={ViewVisibility} />
         <ViewButtons onSaveClick={this.handleSaveClick} />
       </Panel>
     );

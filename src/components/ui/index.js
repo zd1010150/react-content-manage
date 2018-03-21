@@ -16,6 +16,7 @@ import { CustomField } from './CustomField/index';
 import DefaultDepartment from './DefaultDepartment/index';
 import CriteriaHeader from './CriteriaHeader/index';
 import { Wrapper, CardContainer } from './MultiSelectDnD/index';
+import UsersList from './UsersList/index';
 
 export {
   Upload,
@@ -37,4 +38,5 @@ export {
   CriteriaHeader,
   Wrapper,
   CardContainer,
+  UsersList,
 };

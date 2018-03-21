@@ -70,6 +70,11 @@ const EnumsManager = Object.freeze({
   ReduxActionTypePrefix: Object.freeze({
     VIEWFILTER: 'VIEW_FILTER_',
   }),
+
+  ViewVisibilityIds: Object.freeze({
+    Me: 1,
+    GroupsAndUsers: 3,
+  }),
 });
 
 export default EnumsManager;
