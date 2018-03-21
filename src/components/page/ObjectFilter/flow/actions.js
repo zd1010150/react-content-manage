@@ -28,7 +28,6 @@ export const fetchViewById = (
   if (json
       && !_.isEmpty(json.all_field)
       && !_.isEmpty(json.all_field.data)) {
-    debugger;
     dispatch(setAvailableFields(json.all_field.data));
   }
 });

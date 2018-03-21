@@ -21,7 +21,6 @@ class ObjectFilter extends Component {
   componentDidMount() {
     const { match } = this.props;
     const { object, viewId } = match.params;
-    debugger;
     this.props.fetchViewById(viewId, object);
     if (viewId !== Enums.PhantomID) {
       // fetch if path id is not phantom

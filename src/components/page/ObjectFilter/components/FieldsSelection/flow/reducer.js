@@ -15,7 +15,6 @@ const initialState = {
 const fields = (state = initialState, action) => {
   switch (action.type) {
     case SET_AVAILABLE_FIELDS:
-      debugger;
       const { data } = action.payload;
       return {
         ...state,
