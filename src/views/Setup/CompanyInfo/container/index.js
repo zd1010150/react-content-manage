@@ -29,7 +29,7 @@ class companyInfo extends Component {
 companyInfo.propTypes = {
   getCompanyInfo: PropTypes.func.isRequired,
 };
-const mapStateToProps = ({ global, setupCompanyInfo }) => {
+const mapStateToProps = ({ global, setup }) => {
   const {
     timeZones, languages, countries, moments, years,
   } = global.settings;
@@ -40,7 +40,7 @@ const mapStateToProps = ({ global, setupCompanyInfo }) => {
     countries,
     moments,
     years,
-    ...setupCompanyInfo.companyinfo,
+    ...setup.companyInfo.companyinfo,
   };
 };
 const mapDispatchToProps = {

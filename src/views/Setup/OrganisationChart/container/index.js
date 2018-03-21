@@ -22,8 +22,8 @@ class organizationChartIndexView extends React.Component {
   }
 }
 
-const mapStateToProps = ({ global, setupOrgChart }) => ({
-  isSortViewVisible: setupOrgChart.ui.isSortViewVisible,
+const mapStateToProps = ({ global, setup }) => ({
+  isSortViewVisible: setup.orgChart.ui.isSortViewVisible,
   teams: global.settings.teams,
 });
 const mapDispatchToProps = {

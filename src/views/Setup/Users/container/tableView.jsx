@@ -127,8 +127,8 @@ usersTableView.propTypes = {
   queryBySearchKey: PropTypes.func,
   fetchEditUser: PropTypes.func.isRequired,
 };
-const mapStateToProps = ({ setupUsers, global }) => {
-  const { users, usersDataTablePagination } = setupUsers;
+const mapStateToProps = ({ setup, global }) => {
+  const { users, usersDataTablePagination } = setup.users;
   return {
     teams: global.settings.teams,
     users: users.users,

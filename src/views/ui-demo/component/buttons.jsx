@@ -17,6 +17,7 @@ const Buttons = () => (
       <Button className="ml-sm account-theme-btn" >account</Button>
       <Button className="ml-sm opport-theme-btn" >opport</Button>
       <Button className="ml-sm report-theme-btn" >report</Button>
+      <Button className="ml-sm email-theme-btn" >email</Button>
       <h2> eillipse buttons</h2>
       <Button className="btn-ellipse ml-sm lead-theme-btn" size="small">lead ellipse</Button>
       <Button className="btn-ellipse ml-sm account-theme-btn" size="small">account ellipse</Button>

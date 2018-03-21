@@ -18,7 +18,9 @@ export const getCompanyInfo = () => dispatch => get('/admin/companies/me', {}, d
 export const updateCompanyInfo = (form, callback) => dispatch => patch('/admin/companies/me', { ...form }, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
     dispatch(getCompanyInfo({ company: data }));
-    callback();
+    if (_.isFunction(callback)) {
+      callback();
+    }
   }
 });
 

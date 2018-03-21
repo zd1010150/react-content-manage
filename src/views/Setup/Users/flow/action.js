@@ -45,11 +45,11 @@ export const fetchUsers = (perPage = EnumsManager.DefaultPageConfigs.PageSize, c
 
 export const queryByPaging = (perPage, currentPage) => (dispatch, getState) => {
   const state = getState();
-  const { searchKey } = state.setupUsers.searchKey;
+  const { searchKey } = state.setup.users.searchKey;
   return fetchUsers(perPage, currentPage, searchKey, dispatch);
 };
 export const queryBySearchKey = searchKey => (dispatch, getState) => {
-  const { perPage } = getState().setupUsers.usersDataTablePagination;
+  const { perPage } = getState().setup.users.usersDataTablePagination;
   dispatch(setSearchKey(searchKey));
   return fetchUsers(perPage, 1, searchKey, dispatch);
 };
@@ -68,7 +68,7 @@ export const addUsers = (form, callback) => dispatch => post('/admin/users', { .
 
 export const deleteUsers = (id, cb) => (dispatch, getState) => httpDelete(`/admin/users/${id}`, {}, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
-    const { usersDataTablePagination, searchKey } = getState().setupUsers;
+    const { usersDataTablePagination, searchKey } = getState().setup.users;
     const { perPage, currentPage } = usersDataTablePagination;
     dispatch(fetchUsers(perPage, currentPage, searchKey, dispatch));
     if (_.isFunction(cb)) {

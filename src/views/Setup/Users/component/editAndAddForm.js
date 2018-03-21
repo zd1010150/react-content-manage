@@ -56,7 +56,7 @@ class userForm extends React.Component {
     </Select>);
     const momentsEl = (<Select>{moments.map(item => <Option value={item} key={item}>{item}</Option>)}</Select>);
 
-
+    debugger;
     return (
 
       <Form>
