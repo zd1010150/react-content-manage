@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Button, Row, Col } from 'antd';
 
 import { FloatingLabelInput, FilterCondition, CriteriaHeader } from 'components/ui/index';
-import { addFilter, setConditionLogic } from './flow/actions';
+import { addFilter, removeFilter, setConditionLogic } from './flow/actions';
 
 const defaultProps = {};
 const propTypes = {};
@@ -18,13 +18,19 @@ class FilterCriteria extends Component {
     this.props.addFilter();
   }
 
+  onRemoveFilter = e => {
+    const { displayNum } = e.target.dataset;
+    console.log(e.target.dataset.displayNum);
+    this.props.removeFilter(displayNum);
+  }
+
   render() {
     const { filters } = this.props;
     return (
       <Fragment>
         <CriteriaHeader />
-        {filters.map((filter, index) => <FilterCondition key={index} />)}
-        <Row style={{ textAlign: 'center' }}>
+        {filters.map((filter, index) => <FilterCondition key={index} displayNum={filter.display_num} onRemoveFilter={this.onRemoveFilter} />)}
+        <Row style={{ textAlign: 'center', margin: '10px 0' }}>
           <Button
             onClick={this.addFilter}
             className="ml-sm lead-theme-btn"
@@ -51,6 +57,7 @@ const mapStateToProps = ({ global, objectView }) => ({
 });
 const mapDispatchToProps = {
   addFilter,
+  removeFilter,
   setConditionLogic,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FilterCriteria);

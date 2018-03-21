@@ -8,7 +8,7 @@ import Enums from 'utils/EnumsManager';
 import { Section } from 'components/ui/index'
 import { Panel, FilterCondition } from 'components/ui/index';
 import { ViewName, FilterCriteria, ViewButtons, FieldsSelection } from '../components/index';
-import { resetView, saveView } from '../flow/actions';
+import { resetView, saveView, fetchViewById } from '../flow/actions';
 // import { saveView } from '../components/ViewButtons/flow/actions';
 
 const defaultProps = {
@@ -20,7 +20,9 @@ const propTypes = {
 class ObjectFilter extends Component {
   componentDidMount() {
     const { match } = this.props;
-    const { object, viewId } = match.params;    
+    const { object, viewId } = match.params;
+    debugger;
+    this.props.fetchViewById(viewId, object);
     if (viewId !== Enums.PhantomID) {
       // fetch if path id is not phantom
       console.log('----fetch exist view data----');
@@ -57,5 +59,6 @@ const mapStateToProps = ({ objectView }) => ({
 const mapDispatchToProps = {
   resetView,
   saveView,
+  fetchViewById,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ObjectFilter));

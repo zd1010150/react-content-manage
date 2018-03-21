@@ -65,6 +65,11 @@ const EnumsManager = Object.freeze({
   CriteriaColumns: Object.freeze([
     'field', 'condition', 'value'
   ]),
+
+  // This is used to avoid conflicts and make each one become unique in global action types pool
+  ReduxActionTypePrefix: Object.freeze({
+    VIEWFILTER: 'VIEW_FILTER_',
+  }),
 });
 
 export default EnumsManager;
