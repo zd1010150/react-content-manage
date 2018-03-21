@@ -30,9 +30,9 @@ export const getRange = (precision, scale = 0) => {
   }
   if (scale > 0) {
     max += '.';
-  }
-  for (let j = 0; j < scale; j++) {
-    max += maxNum;
+    for (let j = 0; j < scale; j++) {
+      max += maxNum;
+    }
   }
   return {
     min: Number(`-${max}`),

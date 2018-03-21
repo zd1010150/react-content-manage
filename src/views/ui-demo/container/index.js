@@ -13,6 +13,7 @@ import DateTimePicker from '../component/DateTimePicker';
 import TeamTree from '../component/TeamTree';
 import MultiDnD from '../component/MultiDragContainer';
 import Fields from '../component/Fields';
+import Sections from '../component/Sections';
 
 const AntdPanel = Collapse.Panel;
 const { TabPane } = Tabs;
@@ -20,10 +21,7 @@ const { TabPane } = Tabs;
 const UIDemo = () => (
   <Tabs defaultActiveKey="1">
     <TabPane tab="Html UI" key="1">
-      <Collapse defaultActiveKey="10">
-        <AntdPanel header="Custom Fields" key="10">
-          <Fields />
-        </AntdPanel>
+      <Collapse defaultActiveKey="11">
         <AntdPanel header="panels" key="1">
           <Panels />
         </AntdPanel>
@@ -51,6 +49,12 @@ const UIDemo = () => (
         <AntdPanel header="Pagination" key="9">
           <PaginationExample />
         </AntdPanel>
+        <AntdPanel header="Custom Fields" key="10">
+          <Fields />
+        </AntdPanel>
+        <AntdPanel header="Sections" key="11">
+          <Sections />
+        </AntdPanel>
       </Collapse>
     </TabPane>
     <TabPane tab="Page UI" key="2">
@@ -58,7 +62,6 @@ const UIDemo = () => (
         <AntdPanel header="Team Tree" key="1">
           <TeamTree />
         </AntdPanel>
-
       </Collapse>
     </TabPane>
     <TabPane tab="DnD UI" key="3">

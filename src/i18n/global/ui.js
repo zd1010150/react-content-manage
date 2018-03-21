@@ -45,6 +45,17 @@ export default {
     tree: {
       default: '默认部门',
     },
+    labels: {
+      viewName: '视图名称'
+    },
+    errors: {
+      inputRequired: '必填项'
+    },
+    criteria: {
+      field: '字段',
+      condition: '条件',
+      value: '值',
+    },
   },
   en: {
     button: {
@@ -91,6 +102,17 @@ export default {
     },
     tree: {
       default: 'No Department',
+    },
+    labels: {
+      viewName: 'View Name',
+    },
+    errors: {
+      inputRequired: 'The input is required.'
+    },
+    criteria: {
+      field: 'Field',
+      condition: 'Condition',
+      value: 'Value',
     },
   },
 };

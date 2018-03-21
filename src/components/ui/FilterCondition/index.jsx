@@ -1,28 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, Row, Col } from 'antd';
+import { Select, Row, Col, Icon } from 'antd';
 
 import Enums from 'utils/EnumsManager';
 
 const defaultProps = {
-  display_num: 1,
-  field_label: '',
-  crm_data_type: 'text',
+  displayNum: 1,
+  label: '',
+  fieldType: 'text',
 };
 const propTypes = {
-  display_num: PropTypes.number.isRequired,
-  field_label: PropTypes.string.isRequired,
-  crm_data_type: PropTypes.oneOf(Enums.FieldTypesInArray).isRequired,
+  displayNum: PropTypes.number.isRequired,
+  label: PropTypes.string.isRequired,
+  fieldType: PropTypes.oneOf(Enums.FieldTypesInArray).isRequired,
   condition: PropTypes.string,
   value: PropTypes.string,
 };
 
 const FilterCondition = ({
-  display_num,
-  field_label,
-  crm_data_type,
+  displayNum,
+  label,
+  fieldType,
   condition,
-  value
+  value,
+  onRemoveFilter,
 }) => {
 
   const colLayout = {
@@ -31,8 +32,8 @@ const FilterCondition = ({
   }
   return (
     <Row gutter={16}>
-      <Col xs={24} sm={2} >
-        {display_num}
+      <Col xs={24} sm={2} style={{ textAlign: 'center' }} >
+        {displayNum}
       </Col>
       <Col {...colLayout}>
         <Select style={{width: '100%'}}/>
@@ -43,8 +44,8 @@ const FilterCondition = ({
       <Col {...colLayout}>
         <Select style={{width: '100%'}}/>
       </Col>
-      <Col sm={1}>
-        testing
+      <Col xs={24} sm={1}>
+        <Icon style={{ color: 'red', lineHeight: '30px', cursor: 'pointer' }} type='delete' data-display-num={displayNum} onClick={onRemoveFilter} />
       </Col>
     </Row>
   );
