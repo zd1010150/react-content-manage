@@ -9,6 +9,7 @@ import OrganisationChart from './Setup/OrganisationChart';
 import EmailTemplates from './emailTemplates';
 import EmailTemplatesCreation from './emailTemplatesCreation';
 import PermissionProfile from './Setup/PermissionProfile';
+import LeadsFields from './Setup/LeadsFields';
 
 export {
   Leads,
@@ -21,5 +22,6 @@ export {
   OrganisationChart,
   EmailTemplates,
   EmailTemplatesCreation,
-  PermissionProfile
+  PermissionProfile,
+  LeadsFields
 };

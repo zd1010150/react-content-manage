@@ -1,24 +1,23 @@
 import React from 'react';
 import { Layout } from 'antd';
+import { RightSider } from 'components/page/index';
+
 import {
   MainContent,
-  CopyRight,
 } from '../page/index';
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 const SubMainLayout = () => (
   <Layout>
-    <Layout>
-      <Content style={{
+    <Content
+      style={{
                 background: '#fff', padding: 24, margin: 0, minHeight: 280,
             }}
-      >
-        <MainContent />
-      </Content>
-
-      <Footer><CopyRight /></Footer>
-    </Layout>
-
+      className="main-content-body"
+    >
+      <MainContent />
+    </Content>
+    {/*<RightSider />*/}
   </Layout>
 );
 

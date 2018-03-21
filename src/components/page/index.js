@@ -10,6 +10,7 @@ import AuthMainContent from './AuthMainContent';
 import SetupContent from './SetupContent';
 import TeamTree from './TeamTree';
 import ObjectFilter from './ObjectFilter/index';
+import RightSider from './RightSider/index';
 
 export {
   TopPanel,
@@ -24,5 +25,6 @@ export {
   SetupContent,
   TeamTree,
   ObjectFilter,
+  RightSider,
 };
 

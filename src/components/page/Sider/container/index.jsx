@@ -65,12 +65,12 @@ const menuItems = [
       {
         id: 'fields',
         path: `${pathPrefix}/leads/fields`,
-        icon: 'setting',
+        icon: 'profile',
       },
       {
         id: 'pageLayout',
         path: `${pathPrefix}/leads/pageLayout`,
-        icon: 'setting',
+        icon: 'table',
       },
     ],
   },
