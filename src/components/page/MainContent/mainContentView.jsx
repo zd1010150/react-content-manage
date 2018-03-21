@@ -12,7 +12,8 @@ import {
   Users,
   OrganisationChart,
   EmailTemplates,
-  EmailTemplatesCreation
+  EmailTemplatesCreation,
+  PermissionProfile
 } from 'views/index';
 
 import { ObjectFilter } from '../index';
@@ -29,6 +30,8 @@ const MainContent = () => (
     <Route path="/setup/company-info/chart" component={OrganisationChart} />
     <Route path="/setup/email/templates/" component={EmailTemplates} />
     <Route path="/setup/email/templates-creation/" component={EmailTemplatesCreation} />
+    <Route path="/setup/company-info/permissions" component={PermissionProfile} />
   </Switch>
-);
+)
+
 export default MainContent;

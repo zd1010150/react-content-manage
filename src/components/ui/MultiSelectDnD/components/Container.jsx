@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-dnd';
 import classNames from 'classnames/bind';
@@ -10,11 +10,14 @@ import Card from './Card';
 const defaultProps = {
   data: [],
   theme: 'lead',
+  cardDisplayField: 'id',
 };
 const propTypes = {
   data: PropTypes.array.isRequired,
   theme: PropTypes.string.isRequired,
+  cardDisplayField: PropTypes.string.isRequired,
   onDrop: PropTypes.func.isRequired,
+  onSelect: PropTypes.func,
   onIconClick: PropTypes.func,
 };
 
@@ -44,10 +47,16 @@ class Container extends Component {
 	
   setSelectedCards = (start, end) => {
     const { cards } = this.state;
-    return cards.map((card, i) => {
+    const selectedCards = cards.map((card, i) => {
       card.selected = i >= start && i <= end;
       return card;
     });
+
+    const { onSelect } = this.props;
+    if (onSelect && typeof onSelect === 'function') {
+      onSelect(selectedCards.filter(card => card.selected));
+    }
+    return selectedCards;
   }
 
   handleItemSelection = e => {
@@ -92,10 +101,12 @@ class Container extends Component {
   // Swap algorithm
   // According to how the drag function is worked (in other words, when moveCard is being called), we only swap with one adjacent card every time,
   // either drag upwords or downwords.
-  swapCards = (cards, start, length, newStart) => {		
-    const dragCards = cards.splice(start, length);
+  swapCards = (cards, start, length, newStart) => {
+    const cardsCopy = _.cloneDeep(cards);
+    const dragCards = cardsCopy.splice(start, length);
     // Insert all dragged cards into new positions
-    dragCards.forEach((dragCard, i) => cards.splice(newStart + i, 0, dragCard));
+    dragCards.forEach((dragCard, i) => cardsCopy.splice(newStart + i, 0, dragCard));
+    return cardsCopy;
   }
 
   moveCard = (dragIndex, hoverIndex) => {
@@ -107,39 +118,42 @@ class Container extends Component {
 
     const dragLength = endIndex - startIndex + 1;
     const newStartIndex = startIndex > hoverIndex ? hoverIndex : Number(startIndex) + 1;
-    this.swapCards(cards, startIndex, dragLength, newStartIndex);
+    const newCards = this.swapCards(cards, startIndex, dragLength, newStartIndex);
 
     this.setState({
       startIndex: newStartIndex,
       endIndex: newStartIndex + dragLength - 1,
-      cards: [...cards],
+      cards: newCards,
       isOtherDragging: true,
     });
   }
 
   render() {
-    const { data, ...others } = this.props;
+    const { data, cardDisplayField, title, ...others } = this.props;
     const { cards, isOtherDragging, startIndex, endIndex } = this.state;
     return (
-      <div
-        className={cx('cardContainer')}
-        onClick={this.handleItemSelection}
-      >
-        {cards && cards.map((card, i) => (
-          <Card
-            key={card.id}
-            id={card.id}
-            index={i}						
-            text={card.text}
-            moveCard={this.moveCard}
-            isSelected={card.selected}
-            isOtherDragging={isOtherDragging}
-            clearDragging={this.clearDragging}
-            setDragging={this.setDragging}						
-            {...others}
-          />
-        ))}
-      </div>
+      <Fragment>
+        <h3 className={cx('title')}>{title}</h3>
+        <div
+          className={cx('cardContainer')}
+          onClick={this.handleItemSelection}
+        >
+          {cards && cards.map((card, i) => (
+            <Card
+              key={card.id}
+              id={card.id}
+              index={i}
+              text={card[cardDisplayField]}
+              moveCard={this.moveCard}
+              isSelected={card.selected}
+              isOtherDragging={isOtherDragging}
+              clearDragging={this.clearDragging}
+              setDragging={this.setDragging}			
+              {...others}
+            />
+          ))}
+        </div>
+      </Fragment>
     )
   }
 }

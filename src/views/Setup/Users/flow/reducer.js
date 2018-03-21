@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import EnumsManager from 'utils/EnumsManager';
-import { TOGGLE_DEPARTMENT_SELECT_DIALOG, SET_DEPARTMENT, SET_USERS, SET_PAGENATIONS, SET_EDIT_USER, SET_SEARCHKEY } from './actionType';
+import { SETUP_USERS_TOGGLE_DEPARTMENT_SELECT_DIALOG, SETUP_USERS_DEPARTMENT, SETUP_USERS_USERS, SETUP_USERS_PAGENATIONS, SETUP_USERS_EDIT_USER, SETUP_USERS_SEARCHKEY } from './actionType';
 
 
 const users = (state = {
@@ -11,11 +11,11 @@ const users = (state = {
 }, action) => {
   const { type, ...payload } = action;
   switch (type) {
-    case SET_DEPARTMENT:
+    case SETUP_USERS_DEPARTMENT:
       return Object.assign({}, state, { ...payload });
-    case SET_USERS:
+    case SETUP_USERS_USERS:
       return Object.assign({}, state, { ...payload });
-    case SET_EDIT_USER:
+    case SETUP_USERS_EDIT_USER:
       return Object.assign({}, state, { editUser: payload.user });
     default:
       return state;
@@ -23,7 +23,7 @@ const users = (state = {
 };
 const usersDataTablePagination = (state = { perPage: EnumsManager.DefaultPageConfigs.PageSize, currentPage: 1, total: 0 }, action) => {
   switch (action.type) {
-    case SET_PAGENATIONS:
+    case SETUP_USERS_PAGENATIONS:
       return {
         perPage: action.perPage,
         currentPage: action.currentPage,
@@ -36,7 +36,7 @@ const usersDataTablePagination = (state = { perPage: EnumsManager.DefaultPageCon
 const searchKey = (state = { searchKey: '' }, action) => {
   const { type, ...payload } = action;
   switch (type) {
-    case SET_SEARCHKEY:
+    case SETUP_USERS_SEARCHKEY:
       return Object.assign({}, state, { searchKey: payload.searchKey });
     default:
       return state;
@@ -47,7 +47,7 @@ const ui = (state = {
 }, action) => {
   const { type, ...payload } = action;
   switch (type) {
-    case TOGGLE_DEPARTMENT_SELECT_DIALOG:
+    case SETUP_USERS_TOGGLE_DEPARTMENT_SELECT_DIALOG:
       return Object.assign({}, state, { ...payload });
     default:
       return state;

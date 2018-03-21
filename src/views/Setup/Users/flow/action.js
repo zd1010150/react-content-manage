@@ -1,36 +1,36 @@
 import { get, patch, post, httpDelete } from 'store/http/httpAction';
 import _ from 'lodash';
 import EnumsManager from 'utils/EnumsManager';
-import { TOGGLE_DEPARTMENT_SELECT_DIALOG, SET_DEPARTMENT, SET_PAGENATIONS, SET_USERS, SET_EDIT_USER, SET_SEARCHKEY } from './actionType';
+import { SETUP_USERS_TOGGLE_DEPARTMENT_SELECT_DIALOG, SETUP_USERS_DEPARTMENT, SETUP_USERS_PAGENATIONS, SETUP_USERS_USERS, SETUP_USERS_EDIT_USER, SETUP_USERS_SEARCHKEY } from './actionType';
 
 export const setEditUser = user => ({
-  type: SET_EDIT_USER,
+  type: SETUP_USERS_EDIT_USER,
   user,
 });
 export const toggleDepartmentDialog = visible => ({
-  type: TOGGLE_DEPARTMENT_SELECT_DIALOG,
+  type: SETUP_USERS_TOGGLE_DEPARTMENT_SELECT_DIALOG,
   isDisplayDepartmentDialog: visible,
 });
 
 export const setDepartment = args => ({
-  type: SET_DEPARTMENT,
+  type: SETUP_USERS_DEPARTMENT,
   ...args,
 });
 
 export const setUserData = users => ({
-  type: SET_USERS,
+  type: SETUP_USERS_USERS,
   users,
 });
 
 const setPaginations = (perPage, currentPage, total) => ({
-  type: SET_PAGENATIONS,
+  type: SETUP_USERS_PAGENATIONS,
   perPage,
   currentPage,
   total,
 });
 
 export const setSearchKey = searchKey => ({
-  type: SET_SEARCHKEY,
+  type: SETUP_USERS_SEARCHKEY,
   searchKey,
 });
 

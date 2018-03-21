@@ -1,3 +1,7 @@
 import Wrapper from './container/index';
+import CardContainer from './components/Container';
 
-export default Wrapper;
+export {
+  CardContainer,
+  Wrapper,
+};

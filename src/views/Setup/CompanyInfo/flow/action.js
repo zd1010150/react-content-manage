@@ -1,10 +1,10 @@
 import { get, patch } from 'store/http/httpAction';
 import _ from 'lodash';
 
-import { SET_COMPANY_INFO } from './actionType';
+import { SETUP_COMINFO_COMPANY_INFO } from './actionType';
 
 export const setCompanyInfo = args => ({
-  type: SET_COMPANY_INFO,
+  type: SETUP_COMINFO_COMPANY_INFO,
   ...args,
 });
 

@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import { Modal } from 'antd';
 import { intlShape, injectIntl } from 'react-intl';
 import { TeamTree } from 'components/page/index';
-
+import { DefaultDepartment } from 'components/ui/index';
 import { getTreeItemByKey } from 'utils/treeUtil';
 
 class DepartmentDialog extends React.Component {
-  selectDepartment(selectedKeys, treeData) {
+  selectDepartment(isDefault, selectedKeys, treeData) {
     const { toggleDepartmentDialog, setDepartment } = this.props;
-    const { id, name } = getTreeItemByKey(treeData, selectedKeys[0]);
+    const { id, name } = isDefault ? selectedKeys : getTreeItemByKey(treeData, selectedKeys[0]);
     toggleDepartmentDialog(false);
     setDepartment({
       department_id: id,
@@ -26,7 +26,9 @@ class DepartmentDialog extends React.Component {
         footer={[]}
         onCancel={() => this.props.toggleDepartmentDialog(false)}
       >
-        <TeamTree onSelect={(selectedKeys, treeData) => this.selectDepartment(selectedKeys, treeData)} teams={teams} defaultExpandAll />
+        <DefaultDepartment onSelect={(id, name) => { this.selectDepartment(true, { id, name }); }} />
+
+        <TeamTree onSelect={(selectedKeys, treeData) => this.selectDepartment(false, selectedKeys, treeData)} teams={teams} defaultExpandAll />
       </Modal>
     );
   }

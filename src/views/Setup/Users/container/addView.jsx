@@ -10,8 +10,6 @@ import EditAndAddForm from '../component/editAndAddForm';
 import DepartmentDialog from '../component/departmentDialog';
 
 class addEditView extends React.Component {
-
-
   render() {
     const {
       timeZones, moments, editUser, selectedDepartmentId, selectedDepartmentText, isDisplayDepartmentDialog, setDepartment, toggleDepartmentDialog, addUsers, updateUsers, teams,
@@ -19,7 +17,16 @@ class addEditView extends React.Component {
     const { formatMessage } = this.props.intl;
     return (
       <Panel contentClasses="pl-lg pr-lg" panelTitle={_.isEmpty(editUser) ? formatMessage({ id: 'page.users.addUser' }) : formatMessage({ id: 'page.users.editUser' })} >
-        <EditAndAddForm editObject={editUser} addUsers={addUsers} updateUsers={updateUsers} toggleDepartmentDialog={toggleDepartmentDialog} timeZones={timeZones} moments={moments} selectedDepartmentId={selectedDepartmentId} selectedDepartmentText={selectedDepartmentText} key={Math.random()} />
+        <EditAndAddForm
+          editObject={editUser}
+          addUsers={addUsers}
+          updateUsers={updateUsers}
+          toggleDepartmentDialog={toggleDepartmentDialog}
+          timeZones={timeZones}
+          moments={moments}
+          selectedDepartmentId={selectedDepartmentId}
+          selectedDepartmentText={selectedDepartmentText}
+        />
         <DepartmentDialog isDisplayDepartmentDialog={isDisplayDepartmentDialog} toggleDepartmentDialog={toggleDepartmentDialog} setDepartment={setDepartment} teams={teams} />
       </Panel>
     );

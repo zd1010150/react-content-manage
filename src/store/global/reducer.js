@@ -53,6 +53,8 @@ const mapSettingData = (state, data) => Object.assign({}, state, {
   countries: data.countries,
   fields: data.fields,
   model: data.model,
+  conditions: data.list_view.conditions,
+  assignOptions: data.list_view.assign_options,
 });
 const settings = (state = {
   timeZones: [],
@@ -63,6 +65,8 @@ const settings = (state = {
   moments,
   years,
   teams: [],
+  conditions: [],
+  assignOptions: [],
 }, action) => {
   switch (action.type) {
     case SET_GLOBAL_SETTING:

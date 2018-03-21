@@ -8,6 +8,7 @@ import Users from './Setup/Users';
 import OrganisationChart from './Setup/OrganisationChart';
 import EmailTemplates from './emailTemplates';
 import EmailTemplatesCreation from './emailTemplatesCreation';
+import PermissionProfile from './Setup/PermissionProfile';
 
 export {
   Leads,
@@ -19,5 +20,6 @@ export {
   Users,
   OrganisationChart,
   EmailTemplates,
-  EmailTemplatesCreation
+  EmailTemplatesCreation,
+  PermissionProfile
 };
