@@ -1,6 +1,7 @@
 import { get, patch, post, httpDelete } from 'store/http/httpAction';
 import { fetchTeams } from 'store/global/action';
 import { DEFAULT_DEPAREMTN } from 'config/app.config';
+import EnumsManager from 'utils/EnumsManager';
 import _ from 'lodash';
 import { EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
   EMAIL_TEMPLATES_SET_ADD_VISIBLE,
@@ -11,7 +12,9 @@ import { EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
   EMAIL_TEMPLATES_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
   EMAIL_TEMPLATES_SET_SELECT_USER,
   EMAIL_TEMPLATES_SET_SORTING_TEAM,
-  EMAIL_TEMPLATES_PERMISSION_VIEW_VISIBLE
+  EMAIL_TEMPLATES_PERMISSION_VIEW_VISIBLE,
+  EMAIL_TEMPLATES_SET_TEMPLATES,
+  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS
 } from './actionType';
 
 export const setEditFolderViewVisible = isEditFolderViewVisible => ({
@@ -29,6 +32,34 @@ export const setAddVisible = isAddVisible => ({
   type: EMAIL_TEMPLATES_SET_ADD_VISIBLE,
   isAddVisible,
 });
+
+//Set Templates
+export const setTemplatesData = templates => ({
+    type: EMAIL_TEMPLATES_SET_TEMPLATES,
+    templates,
+});
+const setPaginations = (perPage, currentPage, total) => ({
+    type: EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS,
+    perPage,
+    currentPage,
+    total,
+});
+
+// TODO The url will change to /templates/list
+export const fetchTemplates = (perPage = EnumsManager.DefaultPageConfigs.PageSize, currentPage = 1, search, dispatch) => get('/admin/users/list', { per_page: perPage, page: currentPage, search }, dispatch).then((data) => {
+    console.log('123', data)
+    if (data && (!_.isEmpty(data.data)) && (!_.isEmpty(data.meta))) {
+        dispatch(setTemplatesData(data.data));
+        const { pagination } = data.meta;
+
+        dispatch(setPaginations(pagination.per_page, pagination.current_page, pagination.total));
+    }
+});
+export const queryByPaging = (perPage, currentPage) => (dispatch, getState) => {
+    const state = getState();
+    const { searchKey } = state.setup.users.searchKey;
+    return fetchTemplates(perPage, currentPage, searchKey, dispatch);
+};
 
 
 export const setNewDepartName = name => ({

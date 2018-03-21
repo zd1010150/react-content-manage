@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import EnumsManager from 'utils/EnumsManager';
 import { EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
   EMAIL_TEMPLATES_SET_NEW_DEPARTMENT_NAME,
   EMAIL_TEMPLATES_RESET_NEW_DEPARMENT,
@@ -8,8 +9,37 @@ import { EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
   EMAIL_TEMPLATES_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
   EMAIL_TEMPLATES_SET_SELECT_USER,
   EMAIL_TEMPLATES_SET_SORTING_TEAM,
-  EMAIL_TEMPLATES_PERMISSION_VIEW_VISIBLE
+  EMAIL_TEMPLATES_PERMISSION_VIEW_VISIBLE,
+  EMAIL_TEMPLATES_SET_TEMPLATES,
+  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS
 } from './actionType';
+
+const templates = (state = {
+    department_id: '',
+    department_text: '',
+    templates: [],
+    editTemplates: {},
+}, action) => {
+    const { type, ...payload } = action;
+    switch (type) {
+        case EMAIL_TEMPLATES_SET_TEMPLATES:
+            return Object.assign({}, state, { ...payload });
+        default:
+            return state;
+    }
+};
+const templatesDataTablePagination = (state = { perPage: EnumsManager.DefaultPageConfigs.PageSize, currentPage: 1, total: 0 }, action) => {
+    switch (action.type) {
+        case EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS:
+            return {
+                perPage: action.perPage,
+                currentPage: action.currentPage,
+                total: action.total,
+            };
+        default:
+            return state;
+    }
+};
 
 const selectedDepartment = (state = { id: '' }, action) => {
   const { type, ...payload } = action;
@@ -88,5 +118,7 @@ export default combineReducers({
   allUsers,
   selectedUser,
   sortingTeams,
+  templates,
+  templatesDataTablePagination
 });
 
