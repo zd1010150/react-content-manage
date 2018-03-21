@@ -8,13 +8,13 @@ import EnumsManager from 'utils/EnumsManager';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { loginSuccess } from 'views/LoginForm/flow/actions.js';
 
-import { TopPanel } from '../page/index';
+import { TopPanel, CopyRight, } from '../page/index';
 
 
 import SubMainLayout from './subMainLayout';
 import SetupLayout from './setupLayout';
 
-
+const { Footer } = Layout;
 class MainLayout extends React.Component {
     hasLoggedIn = () => {
       // we'll check the login status in localstorage instead of redux/session storage
@@ -43,6 +43,7 @@ class MainLayout extends React.Component {
                       <Route path="/setup" component={SetupLayout} />
                       <Route path="/" component={SubMainLayout} />
                     </Switch>
+                    <Footer ><CopyRight /></Footer>
                   </Layout>
             )}
         </div>

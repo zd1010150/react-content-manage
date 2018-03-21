@@ -7,6 +7,7 @@ import CompanyInfo from './Setup/CompanyInfo';
 import Users from './Setup/Users';
 import OrganisationChart from './Setup/OrganisationChart';
 import PermissionProfile from './Setup/PermissionProfile';
+import LeadsFields from './Setup/LeadsFields';
 
 export {
   Leads,
@@ -18,4 +19,5 @@ export {
   Users,
   OrganisationChart,
   PermissionProfile,
+  LeadsFields,
 };
