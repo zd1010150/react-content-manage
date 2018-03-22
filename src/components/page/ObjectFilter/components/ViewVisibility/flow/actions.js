@@ -24,7 +24,7 @@ export const setUsers = users => ({
 });
 
 export const fetchUsers = () => dispatch => get('/admin/users/all', {}, dispatch).then((data) => {
-  if (!_.isEmpty(data.data)) {
+  if (data && !_.isEmpty(data.data)) {
     dispatch(setUsers(data.data));
   }
 });

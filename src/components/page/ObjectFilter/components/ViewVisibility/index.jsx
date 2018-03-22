@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Row, Col, Radio, Icon } from 'antd';
+import { Row, Col, Radio, Icon, Button, Checkbox } from 'antd';
 const RadioGroup = Radio.Group;
+const CheckboxGroup = Checkbox.Group;
 
-import { UsersList } from 'components/ui/index';
+import { UsersList, Modal } from 'components/ui/index';
 import { TeamTree } from 'components/page/index';
 import Enums from 'utils/EnumsManager';
 import { setVisibilityOption, selectTeam, fetchUsers, addEntityToSelection } from './flow/actions';
@@ -22,6 +23,12 @@ const propTypes = {
 };
 
 class ViewVisibility extends Component {
+  state = {
+    showModal: false,
+    showTreeSection: false,
+    checkedValues: [],
+  }
+
   componentDidMount() {
     this.props.fetchTeams();
     this.props.fetchUsers();
@@ -49,11 +56,48 @@ class ViewVisibility extends Component {
     this.props.addEntityToSelection(id);
   }
 
+  handleUserOrTeamBtnClick = e => {
+    this.setState({
+      showTreeSection: !this.state.showTreeSection,
+    });
+  }
+
+  handleUserBtnClick = e => {
+    this.setState({
+      showModal: !this.state.showModal,
+    });
+  }
+
+  handleModalSave = e => {
+    // sync checkboxes to redux
+    const { checkedValues } = this.state;
+    console.log('on modal save');
+    console.log(checkedValues);
+    // this.props.addEntityToSelection(checkedValues);
+    this.setState({
+      checkedValues,
+      showModal: !this.state.showModal,
+    });
+  }
+
+  handleModalCancel = e => {
+    this.setState({
+      showModal: !this.state.showModal,
+    });
+  }
+
+  handleCheckboxChange = checkedValues => {
+    console.log(checkedValues);
+  }
+
   render() {
+    const { showModal, showTreeSection, checkedValues } = this.state;
+
     const {
       assignOptions,
       theme,
       teams,
+      users,
       selectedOption,
       selectedTeamId,
       selectedUsers,
@@ -62,6 +106,22 @@ class ViewVisibility extends Component {
       title,
     } = this.props;
 
+    //test
+    const usersTest = [
+      {
+        id: 1,
+        name: 'test1',
+      },
+      {
+        id: 2,
+        name: 'test2',
+      },
+      {
+        id: 3,
+        name: 'test3',
+      },
+    ]
+    // ends
     return (
       <Fragment>
         <RadioGroup onChange={this.onOptionChange} value={selectedOption} >
@@ -86,6 +146,32 @@ class ViewVisibility extends Component {
           teamAddonBefore={<Icon type="team" size="small"/>}
         />
         {selectedOption !== Enums.ViewVisibilityIds.GroupsAndUsers && (
+          <Row>
+            <Button size="small" onClick={this.handleUserBtnClick}>
+              Add User to Share
+            </Button>
+            <Modal
+              visible={showModal}
+              onOk={this.handleModalSave}
+              onCancel={this.handleModalCancel}
+            >
+              <CheckboxGroup onChange={this.handleCheckboxChange}>
+                <Row>
+                  {usersTest.map(user => (
+                    <Col xs={12}>
+                      <Checkbox key={user.id} value={user.id}>{user.name}</Checkbox>
+                    </Col>
+                  ))}
+                </Row>
+              </CheckboxGroup>
+            </Modal>
+            <Button size="small" onClick={this.handleUserOrTeamBtnClick}>
+              Add User or Team to Share
+              <Icon size="small" type={showTreeSection ? 'caret-up' : 'caret-down'} />
+            </Button>
+          </Row>
+        )}
+        {showTreeSection && (
           <Row>
             <div style={{ color: 'red' }}>Click on a team name to show team members on the right section. Double click will select a specific user or team to share.</div>
             <Col xs={24} sm={8}>
@@ -125,6 +211,7 @@ const mapStateToProps = ({ global, objectView }) => ({
   selectedUsers: objectView.visibilities.selectedUsers,
   selectedTeams: objectView.visibilities.selectedTeams,
   teams: objectView.visibilities.teams,
+  users: objectView.visibilities.users,
   title: objectView.visibilities.title,
   usersInTeam: objectView.visibilities.usersInTeam,
 });

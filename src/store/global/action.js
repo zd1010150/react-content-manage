@@ -49,7 +49,7 @@ export const fetchAccountInfo = () => dispatch => post('/affiliate/me').then((da
 
 
 export const fetchTeams = () => dispatch => get('/admin/teams/struct/info').then((data) => {
-  if (!_.isEmpty(data.teams)) {
+  if (data && !_.isEmpty(data.teams)) {
     const params = setTeams(data.teams);
     dispatch(params);
   }
