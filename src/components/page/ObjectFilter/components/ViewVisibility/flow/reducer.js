@@ -4,6 +4,7 @@ import {
   SET_TEAMS,
   SELECT_TEAM,
   SET_USERS,
+  ADD_ENTITY_TO_SELECTION,
 } from './actionTypes';
 import Enums from 'utils/EnumsManager';
 
@@ -29,6 +30,15 @@ const flattenTree = (tree, newTree) => {
   });
 };
 
+// add to selection without duplication
+const addToSelection = (entity, selection) => {
+  const isAddedBefore = selection.find(item => item.id === entity.id);
+  if (isAddedBefore) {
+    return selection;
+  }
+  return [...selection, entity];
+};
+
 const visibilities = (state = initialState, action) => {
   switch (action.type) {
     case SET_VISIBILITY_OPTION:
@@ -37,6 +47,7 @@ const visibilities = (state = initialState, action) => {
         ...state,
         selectedOption,
       };
+
     
     case SET_USERS:
       const { users } = action.payload;
@@ -45,8 +56,14 @@ const visibilities = (state = initialState, action) => {
         users,
       };
 
+
     case SET_TEAMS:
       const { teams } = action;
+      teams.unshift({
+        id: -1,
+        name: 'No department',
+        parent_id: Enums.RootTeamId,
+      });
       // Flatten teams tree here to avoid search performance impact when find a specific team info by id,
       // because that is a recursive process.
       // Only flat tree once when component mounted, node order is not valued.
@@ -58,6 +75,7 @@ const visibilities = (state = initialState, action) => {
         teams,
         flatTeams: processedTeams,
       };
+
 
     case SELECT_TEAM:
       let { teamId } = action.payload;
@@ -72,8 +90,27 @@ const visibilities = (state = initialState, action) => {
         title,
       };
 
+
+    case ADD_ENTITY_TO_SELECTION:
+      let { entityId, isTeam } = action.payload;
+      entityId = Number(entityId);
+      if (entityId === Enums.NoTeamId) return state;
+
+      const entities = isTeam ? state.flatTeams : state.users;
+      const entity = entities.find(entity => entity.id === entityId);
+      if (!entity) return state;
+      
+      const targetKey = isTeam ? 'selectedTeams' : 'selectedUsers';
+      const selectionAfterAdd = addToSelection(entity, state[targetKey]);
+      return {
+        ...state,
+        [targetKey]: selectionAfterAdd,
+      };
+
+
     case RESET_VIEW:
       return initialState;
+
 
     default:
       return state;

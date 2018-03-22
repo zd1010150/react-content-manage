@@ -7,7 +7,7 @@ const RadioGroup = Radio.Group;
 import { UsersList } from 'components/ui/index';
 import { TeamTree } from 'components/page/index';
 import Enums from 'utils/EnumsManager';
-import { setVisibilityOption, selectTeam, fetchUsers } from './flow/actions';
+import { setVisibilityOption, selectTeam, fetchUsers, addEntityToSelection } from './flow/actions';
 import { fetchTeams } from 'store/global/action';
 
 const defaultProps = {
@@ -37,6 +37,18 @@ class ViewVisibility extends Component {
     // this.props.removeItemFromSelection(itemId, teamId);
   }
 
+  handleTeamSelection = id => {
+    // id = Number(id);
+    // if (id === Enums.NoTeamId) return;
+    console.log(`--===team:${id}===--`);
+    this.props.addEntityToSelection(id, true);
+  }
+
+  handleUserSelection = id => {
+    console.log(`--===user:${id}===--`);
+    this.props.addEntityToSelection(id);
+  }
+
   render() {
     const {
       assignOptions,
@@ -44,6 +56,8 @@ class ViewVisibility extends Component {
       teams,
       selectedOption,
       selectedTeamId,
+      selectedUsers,
+      selectedTeams,
       usersInTeam,
       title,
     } = this.props;
@@ -63,8 +77,8 @@ class ViewVisibility extends Component {
           ))}
         </RadioGroup>
         <UsersList
-          users={[{ id:1, name:'testuser1', team_id:1}]}
-          teams={[{ id:1, name:'team1' }]}
+          users={selectedUsers}
+          teams={selectedTeams}
           showTeams
           canRemoveItem
           onRemoveItem={this.handleRemoveItem}
@@ -75,7 +89,11 @@ class ViewVisibility extends Component {
           <Row>
             <div style={{ color: 'red' }}>Click on a team name to show team members on the right section. Double click will select a specific user or team to share.</div>
             <Col xs={24} sm={8}>
-              <TeamTree teams={teams} onSelect={this.handleSelect} />
+              <TeamTree
+                teams={teams}
+                onSelect={this.handleSelect}
+                onDbClick={this.handleTeamSelection}
+              />
             </Col>
             <Col xs={24} sm={16}>
               <UsersList
@@ -87,6 +105,7 @@ class ViewVisibility extends Component {
                 teamId={selectedTeamId}
                 userAddonBefore={<Icon className="mr-sm" type="user" size="small"/>}
                 teamAddonBefore={<Icon type="team" size="small"/>}
+                onDoubleClick={this.handleUserSelection}
               />
             </Col>
           </Row>
@@ -103,7 +122,8 @@ const mapStateToProps = ({ global, objectView }) => ({
   assignOptions: global.settings.assignOptions,
   selectedOption: objectView.visibilities.selectedOption,
   selectedTeamId: objectView.visibilities.selectedTeamId,
-  // users: objectView.visibilities.users,
+  selectedUsers: objectView.visibilities.selectedUsers,
+  selectedTeams: objectView.visibilities.selectedTeams,
   teams: objectView.visibilities.teams,
   title: objectView.visibilities.title,
   usersInTeam: objectView.visibilities.usersInTeam,
@@ -113,5 +133,6 @@ const mapDispatchToProps = {
   fetchTeams,
   selectTeam,
   fetchUsers,
+  addEntityToSelection,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ViewVisibility);

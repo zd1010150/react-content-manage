@@ -77,6 +77,8 @@ const EnumsManager = Object.freeze({
   }),
 
   RootTeamId: 0,
+
+  NoTeamId: -1,
 });
 
 export default EnumsManager;
