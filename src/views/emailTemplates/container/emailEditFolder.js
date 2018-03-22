@@ -9,7 +9,9 @@ import { updateUsers } from 'views/Setup/Users/flow/action';
 import classNames from 'classnames/bind';
 import styles from '../emailTemplates.less';
 import {
-    setEditFolderViewVisible
+    setEditFolderViewVisible,
+    setEditFolderData,
+    deleteUserFolderData
 } from '../flow/action';
 import { getTeamUsers, getSelectedTeamName } from '../flow/reselect';
 const cx = classNames.bind(styles);
@@ -50,12 +52,18 @@ const foldersData = {
         }]
     }]
 }
-const FolderInput = ({item})=>{
+const FolderInput = ({item, editFolders, setEditFolderData, deleteUserFolderData})=>{
+    let canEdit = false;
+    editFolders.forEach((folder)=>{
+        if(folder.id === item.id){
+            canEdit = true;
+        }
+    })
    return <Col className="pl-lg gutter-row field-label" span={6}>
-       <div>
+       <div onClick={()=>{deleteUserFolderData(item.id)}}>
            <Icon className={cx('folder-icon')} type="folder" /><span className="pl-sm"><Icon type="delete"/></span>
        </div>
-       <Input size="small" disabled={true} addonAfter={<Icon onClick={() => {}} type="edit" />} defaultValue="mysite" />
+       <Input size="small" disabled={!canEdit} addonAfter={!canEdit && <Icon onClick={() => {setEditFolderData(item)}} type="edit" />} defaultValue={item.name} />
    </Col>
 }
 
@@ -71,13 +79,18 @@ class EmailTemplateEditFolder extends React.Component {
     }
     render() {
         const { formatMessage } = this.props.intl;
-        const {setEditFolderViewVisible} = this.props;
+        const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteUserFolderData} = this.props;
         const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {}}><Icon type="plus" />{ formatMessage({ id: 'page.emailTemplates.newFolder' }) }</Button></div>;
         return (
             <Panel panelTitle={formatMessage({ id: 'page.emailTemplates.editFolderTitle' })} contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={actionsRight}>
                 <Row className={cx('folders')}>
-                    {foldersData.userFolders.map((item)=>
-                        <FolderInput key={item.id} item={item}/>
+                    {userFolders.map((item)=>
+                        <FolderInput
+                            key={item.id}
+                            item={item}
+                            editFolders={editFolders}
+                            setEditFolderData={setEditFolderData}
+                            deleteUserFolderData={deleteUserFolderData}/>
                     )}
                 </Row>
                 <ActionButtonGroup setEditFolderViewVisible={setEditFolderViewVisible} formatMessage={formatMessage}/>
@@ -97,13 +110,17 @@ const mapStateToProps = ({ global, setup }) => {
         teams: global.settings.teams,
         teamUsers: getTeamUsers({ emailTemplates }),
         isEditFolderViewVisible: emailTemplates.ui.isEditFolderViewVisible,
+        editFolders: emailTemplates.editFolders,
+        userFolders:emailTemplates.userFolders
     };
 };
 
 const mapDispatchToProps = {
     setTeams,
     updateUsers,
-    setEditFolderViewVisible
+    setEditFolderViewVisible,
+    setEditFolderData,
+    deleteUserFolderData
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateEditFolder));

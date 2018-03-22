@@ -1,9 +1,10 @@
-import { get, patch, post, httpDelete } from 'store/http/httpAction';
-import { fetchTeams } from 'store/global/action';
-import { DEFAULT_DEPAREMTN } from 'config/app.config';
-import EnumsManager from 'utils/EnumsManager';
-import _ from 'lodash';
-import { EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
+import { get, patch, post, httpDelete } from "store/http/httpAction";
+import { fetchTeams } from "store/global/action";
+import { DEFAULT_DEPAREMTN } from "config/app.config";
+import EnumsManager from "utils/EnumsManager";
+import _ from "lodash";
+import {
+  EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
   EMAIL_TEMPLATES_SET_ADD_VISIBLE,
   EMAIL_TEMPLATES_RESET_NEW_DEPARMENT,
   EMAIL_TEMPLATES_SET_NEW_DEPARTMENT_NAME,
@@ -19,150 +20,187 @@ import { EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
   EMAIL_TEMPLATES_DEPARTMENT_VISIBLE,
   EMAIL_TEMPLATES_SET_USER_FOLDERS,
   EMAIL_TEMPLATES_SET_SHARED_FOLDERS,
-  EMAIL_TEMPLATES_SET_SELECTED_FOLDER
-} from './actionType';
+  EMAIL_TEMPLATES_SET_SELECTED_FOLDER,
+  EMAIL_TEMPLATES_SET_EDIT_FOLDERS,
+  EMAIL_TEMPLATES_DELETE_USER_FOLDERS
+} from "./actionType";
 
 //Set User Folders
 export const setUserFolderData = userFolders => ({
-    type: EMAIL_TEMPLATES_SET_USER_FOLDERS,
-    userFolders,
+  type: EMAIL_TEMPLATES_SET_USER_FOLDERS,
+  userFolders
+});
+
+//Delete User Folders
+export const deleteUserFolderData = id => ({
+    type: EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
+    id
 });
 
 //Set Shared Folders
 export const setSharedFolderData = sharedFolders => ({
-    type: EMAIL_TEMPLATES_SET_SHARED_FOLDERS,
-    sharedFolders,
+  type: EMAIL_TEMPLATES_SET_SHARED_FOLDERS,
+  sharedFolders
+});
+
+//Set edited Folders
+export const setEditFolderData = editFolders => ({
+  type: EMAIL_TEMPLATES_SET_EDIT_FOLDERS,
+  editFolders
 });
 
 //Set Selected Folder
 export const setSelectedFolderData = selectedFolder => ({
-    type: EMAIL_TEMPLATES_SET_SELECTED_FOLDER,
-    selectedFolder,
+  type: EMAIL_TEMPLATES_SET_SELECTED_FOLDER,
+  selectedFolder
 });
 
 export const setDepartmentVisible = isDepartmentVisible => ({
-    type: EMAIL_TEMPLATES_DEPARTMENT_VISIBLE,
-    isDepartmentVisible,
+  type: EMAIL_TEMPLATES_DEPARTMENT_VISIBLE,
+  isDepartmentVisible
 });
 
 export const setSharedByVisible = isSharedByVisible => ({
-    type: EMAIL_TEMPLATES_SHARED_BY_VISIBLE,
-    isSharedByVisible,
+  type: EMAIL_TEMPLATES_SHARED_BY_VISIBLE,
+  isSharedByVisible
 });
 
 export const setEditFolderViewVisible = isEditFolderViewVisible => ({
   type: EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
-  isEditFolderViewVisible,
+  isEditFolderViewVisible
 });
 
 export const setPermissionSettingVisible = isPermissionSettingVisible => ({
-    type: EMAIL_TEMPLATES_PERMISSION_VIEW_VISIBLE,
-    isPermissionSettingVisible,
+  type: EMAIL_TEMPLATES_PERMISSION_VIEW_VISIBLE,
+  isPermissionSettingVisible
 });
 
 /* ADD */
 export const setAddVisible = isAddVisible => ({
   type: EMAIL_TEMPLATES_SET_ADD_VISIBLE,
-  isAddVisible,
+  isAddVisible
 });
 
 //Set Templates
 export const setTemplatesData = templates => ({
-    type: EMAIL_TEMPLATES_SET_TEMPLATES,
-    templates,
+  type: EMAIL_TEMPLATES_SET_TEMPLATES,
+  templates
 });
 const setPaginations = (perPage, currentPage, total) => ({
-    type: EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS,
-    perPage,
-    currentPage,
-    total,
+  type: EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS,
+  perPage,
+  currentPage,
+  total
 });
 
 // TODO The url will change to /templates/list
-export const fetchTemplates = (perPage = EnumsManager.DefaultPageConfigs.PageSize, currentPage = 1, search, dispatch) => get('/admin/users/list', { per_page: perPage, page: currentPage, search }, dispatch).then((data) => {
-    console.log('123', data)
-    if (data && (!_.isEmpty(data.data)) && (!_.isEmpty(data.meta))) {
-        dispatch(setTemplatesData(data.data));
-        const { pagination } = data.meta;
+export const fetchTemplates = (
+  perPage = EnumsManager.DefaultPageConfigs.PageSize,
+  currentPage = 1,
+  search,
+  dispatch
+) =>
+  get(
+    "/admin/users/list",
+    { per_page: perPage, page: currentPage, search },
+    dispatch
+  ).then(data => {
+    console.log("123", data);
+    if (data && !_.isEmpty(data.data) && !_.isEmpty(data.meta)) {
+      dispatch(setTemplatesData(data.data));
+      const { pagination } = data.meta;
 
-        dispatch(setPaginations(pagination.per_page, pagination.current_page, pagination.total));
+      dispatch(
+        setPaginations(
+          pagination.per_page,
+          pagination.current_page,
+          pagination.total
+        )
+      );
     }
-});
+  });
 export const queryByPaging = (perPage, currentPage) => (dispatch, getState) => {
-    const state = getState();
-    const { searchKey } = state.setup.users.searchKey;
-    return fetchTemplates(perPage, currentPage, searchKey, dispatch);
+  const state = getState();
+  const { searchKey } = state.setup.users.searchKey;
+  return fetchTemplates(perPage, currentPage, searchKey, dispatch);
 };
-
 
 export const setNewDepartName = name => ({
   type: EMAIL_TEMPLATES_SET_NEW_DEPARTMENT_NAME,
-  name,
+  name
 });
 export const resetNewDepartment = () => ({
-  type: EMAIL_TEMPLATES_RESET_NEW_DEPARMENT,
+  type: EMAIL_TEMPLATES_RESET_NEW_DEPARMENT
 });
 /* Display the user */
 export const setSelectedTeam = id => ({
   type: EMAIL_TEMPLATES_SET_SELECTED_DEPARTMENT,
-  id,
+  id
 });
 export const setSeleteTeamDialogVisible = isSelectTeamDialogVisible => ({
   type: EMAIL_TEMPLATES_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
-  isSelectTeamDialogVisible,
+  isSelectTeamDialogVisible
 });
 
 export const setSelectedUser = user => ({
   type: EMAIL_TEMPLATES_SET_SELECT_USER,
-  user,
+  user
 });
 
 export const setAllUser = users => ({
   type: EMAIL_TEMPLATES_SET_USER,
-  users,
+  users
 });
 /* Sort teams */
 export const setSortingTeam = sortingTeams => ({
   type: EMAIL_TEMPLATES_SET_SORTING_TEAM,
-  sortingTeams,
+  sortingTeams
 });
-export const addDepartment = (name, parentId, cb) => dispatch => post('/admin/teams', { name, parent_id: parentId }, dispatch).then((data) => {
-  if (!_.isEmpty(data)) {
-    dispatch(fetchTeams());
-  }
-  if (_.isFunction(cb)) {
-    cb();
-  }
-});
+export const addDepartment = (name, parentId, cb) => dispatch =>
+  post("/admin/teams", { name, parent_id: parentId }, dispatch).then(data => {
+    if (!_.isEmpty(data)) {
+      dispatch(fetchTeams());
+    }
+    if (_.isFunction(cb)) {
+      cb();
+    }
+  });
 
-export const getAllUser = () => dispatch => get('/admin/users/all', {}, dispatch).then((data) => {
-  if (!_.isEmpty(data.data)) {
-    dispatch(setAllUser(data.data));
-  }
-});
-export const deleteDepartment = id => dispatch => httpDelete(`/admin/teams/${id}`, { }, dispatch).then((data) => {
-  if (!_.isEmpty(data)) {
-    dispatch(fetchTeams());
-    dispatch(getAllUser());
-    dispatch(setSelectedTeam(DEFAULT_DEPAREMTN.id));
-  }
-});
+export const getAllUser = () => dispatch =>
+  get("/admin/users/all", {}, dispatch).then(data => {
+    if (!_.isEmpty(data.data)) {
+      dispatch(setAllUser(data.data));
+    }
+  });
+export const deleteDepartment = id => dispatch =>
+  httpDelete(`/admin/teams/${id}`, {}, dispatch).then(data => {
+    if (!_.isEmpty(data)) {
+      dispatch(fetchTeams());
+      dispatch(getAllUser());
+      dispatch(setSelectedTeam(DEFAULT_DEPAREMTN.id));
+    }
+  });
 
-export const updateTeam = (id, name, cb) => dispatch => patch(`/admin/teams/${id}`, { name }, dispatch).then((data) => {
-  if (!_.isEmpty(data)) {
-    dispatch(fetchTeams());
-  }
-  if (_.isFunction(cb)) {
-    cb();
-  }
-});
+export const updateTeam = (id, name, cb) => dispatch =>
+  patch(`/admin/teams/${id}`, { name }, dispatch).then(data => {
+    if (!_.isEmpty(data)) {
+      dispatch(fetchTeams());
+    }
+    if (_.isFunction(cb)) {
+      cb();
+    }
+  });
 
-export const sortDepartment = cb => (dispatch, getState) => patch('/admin/teams/struct/sort', { teams: getState().global.settings.teams }, dispatch).then((data) => {
-  if (!_.isEmpty(data)) {
-    dispatch(fetchTeams());
-  }
-  if (_.isFunction(cb)) {
-    cb();
-  }
-});
-
+export const sortDepartment = cb => (dispatch, getState) =>
+  patch(
+    "/admin/teams/struct/sort",
+    { teams: getState().global.settings.teams },
+    dispatch
+  ).then(data => {
+    if (!_.isEmpty(data)) {
+      dispatch(fetchTeams());
+    }
+    if (_.isFunction(cb)) {
+      cb();
+    }
+  });

@@ -24,45 +24,6 @@ const cx = classNames.bind(styles);
 const RadioGroup = Radio.Group;
 const TabPane = Tabs.TabPane;
 
-const foldersData = {
-    userFolders: [{
-        id: 0,
-        name: 'genaral folder',
-        isShared: true,
-        templates: [{
-            name: 'market',
-            createdAt: '2018-01-02',
-            modifiedDate: '2018-03-02',
-            createBy: 'Jimmy',
-            Description: 'for markdet use'
-        }]
-    },
-        {
-            id: 1,
-            name: 'private folder',
-            isShared: false,
-            templates: [{
-                name: 'sales',
-                createdAt: '2018-01-02',
-                modifiedDate: '2018-03-02',
-                createBy: 'Jimmy',
-                Description: 'for sales use'
-            }]
-        }],
-    sharedFolders: [{
-        name: 'ACY folder',
-        sharedBy: 'Jimmy',
-        templates: [{
-            name: 'ACY',
-            createdAt: '2018-01-02',
-            modifiedDate: '2018-03-02',
-            createBy: 'Jimmy',
-            Description: 'for ACY use'
-        }]
-    }]
-}
-
-
 const Radios = ({ setSharedByVisible }) => (
     <RadioGroup defaultValue={1} onChange={e => {e.target.value === 1 ? setSharedByVisible(false) : setSharedByVisible(true)}}>
         <Radio className="email-theme-radio" value={1}>J's Folder</Radio>
@@ -72,14 +33,17 @@ const Radios = ({ setSharedByVisible }) => (
 
 
 /**
- * Todo add selectedFolder reducer
- * @param onChange
+ *
+ * @param setSelectedFolderData
  * @param selectedFolder
+ * @param userFolders
+ * @param sharedFolders
+ * @param isSharedByVisible
+ * @returns {XML}
  * @constructor
  */
-const Folders = ({ setSelectedFolderData, selectedFolder, isSharedByVisible }) => {
-    console.log('isSharedByVisible', foldersData.sharedFolders)
-    const folders = isSharedByVisible ? foldersData.sharedFolders : foldersData.userFolders;
+const Folders = ({ setSelectedFolderData, selectedFolder, userFolders, sharedFolders, isSharedByVisible}) => {
+    const folders = isSharedByVisible ? sharedFolders : userFolders;
     return <div className={cx('folders')}>
         {folders.map((item, index)=>
             <div key={index} className={cx('folder')} style={{marginLeft: index > 0 ? 40 : 10}}>
@@ -133,8 +97,7 @@ class EmailTemplateDetail extends React.Component {
         const { formatMessage } = this.props.intl;
         const {setEditFolderViewVisible, setPermissionSettingVisible, isPermissionSettingVisible,
             isSharedByVisible, templates, templatesDataTablePagination, queryByPaging, setSharedByVisible,
-            setSelectedFolderData, selectedFolder} = this.props;
-        console.log('templates', templates)
+            setSelectedFolderData, selectedFolder, userFolders, sharedFolders} = this.props;
         const actionsLeft = <div><Radios setSharedByVisible={setSharedByVisible}/></div>;
         const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {setEditFolderViewVisible(true)}}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.editFolders' }) }</Button></div>;
         const pagination = {
@@ -178,7 +141,12 @@ class EmailTemplateDetail extends React.Component {
         ];
         return (
             <Panel panelClasses="email-theme-panel" actionsLeft={actionsLeft} contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={isSharedByVisible ? null : actionsRight}>
-                <Folders setSelectedFolderData={setSelectedFolderData} selectedFolder={selectedFolder} isSharedByVisible={isSharedByVisible}/>
+                <Folders
+                    setSelectedFolderData={setSelectedFolderData}
+                    selectedFolder={selectedFolder}
+                    userFolders={userFolders}
+                    sharedFolders={sharedFolders}
+                    isSharedByVisible={isSharedByVisible}/>
                 <TabSwitcher
                     setPermissionSettingVisible={setPermissionSettingVisible}
                     isPermissionSettingVisible={isPermissionSettingVisible}
