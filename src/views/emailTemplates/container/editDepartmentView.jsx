@@ -55,7 +55,7 @@ class EditView extends React.Component {
     const { formatMessage } = this.props.intl;
     const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {setDepartmentVisible(!isDepartmentVisible)}}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.hideDepartments' }) }</Button></div>;
     return (
-      <Panel panelTitle={formatMessage({ id: 'page.emailTemplates.emailTemplates' })} contentClasses="pl-lg pr-lg" actionsRight={actionsRight}>
+      <Panel panelTitle={formatMessage({ id: 'page.emailTemplates.emailTemplates' })} panelClasses="email-theme-panel" contentClasses="pl-lg pr-lg" actionsRight={actionsRight}>
         { isAddVisible ? <AddDepartment
           newTeam={newTeam}
           setNewDepartName={setNewDepartName}
@@ -66,7 +66,7 @@ class EditView extends React.Component {
         /> : ''}
 
         {
-          isDepartmentVisible && <Row className="pt-lg">
+          isDepartmentVisible && <Row className="pt-lg pb-lg">
             <Col className="gutter-row field-label" span={12}>
               <Department
                   teams={teams}

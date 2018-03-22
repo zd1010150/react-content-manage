@@ -16,8 +16,29 @@ import { EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
   EMAIL_TEMPLATES_SET_TEMPLATES,
   EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS,
   EMAIL_TEMPLATES_SHARED_BY_VISIBLE,
-  EMAIL_TEMPLATES_DEPARTMENT_VISIBLE
+  EMAIL_TEMPLATES_DEPARTMENT_VISIBLE,
+  EMAIL_TEMPLATES_SET_USER_FOLDERS,
+  EMAIL_TEMPLATES_SET_SHARED_FOLDERS,
+  EMAIL_TEMPLATES_SET_SELECTED_FOLDER
 } from './actionType';
+
+//Set User Folders
+export const setUserFolderData = userFolders => ({
+    type: EMAIL_TEMPLATES_SET_USER_FOLDERS,
+    userFolders,
+});
+
+//Set Shared Folders
+export const setSharedFolderData = sharedFolders => ({
+    type: EMAIL_TEMPLATES_SET_SHARED_FOLDERS,
+    sharedFolders,
+});
+
+//Set Selected Folder
+export const setSelectedFolderData = selectedFolder => ({
+    type: EMAIL_TEMPLATES_SET_SELECTED_FOLDER,
+    selectedFolder,
+});
 
 export const setDepartmentVisible = isDepartmentVisible => ({
     type: EMAIL_TEMPLATES_DEPARTMENT_VISIBLE,

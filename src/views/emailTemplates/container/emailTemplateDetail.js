@@ -14,7 +14,8 @@ import {
     setEditFolderViewVisible,
     setPermissionSettingVisible,
     setSharedByVisible,
-    queryByPaging
+    queryByPaging,
+    setSelectedFolderData
 } from '../flow/action';
 import { getTeamUsers, getSelectedTeamName } from '../flow/reselect';
 import { Tabs } from 'antd';
@@ -76,16 +77,16 @@ const Radios = ({ setSharedByVisible }) => (
  * @param selectedFolder
  * @constructor
  */
-const Folders = ({ onChange, selectedFolder, isSharedByVisible }) => {
+const Folders = ({ setSelectedFolderData, selectedFolder, isSharedByVisible }) => {
     console.log('isSharedByVisible', foldersData.sharedFolders)
     const folders = isSharedByVisible ? foldersData.sharedFolders : foldersData.userFolders;
     return <div className={cx('folders')}>
         {folders.map((item, index)=>
             <div key={index} className={cx('folder')} style={{marginLeft: index > 0 ? 40 : 10}}>
-                <input onChange={onChange} checked={selectedFolder === index} id={index} value={index}  type="radio" style={{visibility: 'hidden'}} />
+                <input onChange={()=> {setSelectedFolderData(item)}} checked={selectedFolder && selectedFolder.id === item.id} id={index} value={item}  type="radio" style={{visibility: 'hidden'}} />
                 <label htmlFor={index}>
                     <div>
-                        {selectedFolder === index ? <Icon className={cx('folder-icon')} type="folder-open" /> : <Icon className={cx('folder-icon')} type="folder" />}
+                        {selectedFolder && selectedFolder.id === item.id ? <Icon className={cx('folder-icon')} type="folder-open" /> : <Icon className={cx('folder-icon')} type="folder" />}
                     </div>
                     <div>{item.name}</div>
                 </label>
@@ -130,7 +131,9 @@ class EmailTemplateDetail extends React.Component {
     }
     render() {
         const { formatMessage } = this.props.intl;
-        const {setEditFolderViewVisible, setPermissionSettingVisible, isPermissionSettingVisible, isSharedByVisible, templates, templatesDataTablePagination, queryByPaging, setSharedByVisible} = this.props;
+        const {setEditFolderViewVisible, setPermissionSettingVisible, isPermissionSettingVisible,
+            isSharedByVisible, templates, templatesDataTablePagination, queryByPaging, setSharedByVisible,
+            setSelectedFolderData, selectedFolder} = this.props;
         console.log('templates', templates)
         const actionsLeft = <div><Radios setSharedByVisible={setSharedByVisible}/></div>;
         const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {setEditFolderViewVisible(true)}}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.editFolders' }) }</Button></div>;
@@ -147,7 +150,6 @@ class EmailTemplateDetail extends React.Component {
         };
         const columns = [
             {
-                title: formatMessage({ id: 'global.ui.table.action' }),
                 key: 'id',
                 render: record => (
                     <span>
@@ -175,8 +177,8 @@ class EmailTemplateDetail extends React.Component {
             }
         ];
         return (
-            <Panel actionsLeft={actionsLeft} contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={isSharedByVisible ? null : actionsRight}>
-                <Folders isSharedByVisible={isSharedByVisible}/>
+            <Panel panelClasses="email-theme-panel" actionsLeft={actionsLeft} contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={isSharedByVisible ? null : actionsRight}>
+                <Folders setSelectedFolderData={setSelectedFolderData} selectedFolder={selectedFolder} isSharedByVisible={isSharedByVisible}/>
                 <TabSwitcher
                     setPermissionSettingVisible={setPermissionSettingVisible}
                     isPermissionSettingVisible={isPermissionSettingVisible}
@@ -204,7 +206,10 @@ const mapStateToProps = ({ global, setup }) => {
         isPermissionSettingVisible: emailTemplates.ui.isPermissionSettingVisible,
         isSharedByVisible: emailTemplates.ui.isSharedByVisible,
         templates: emailTemplates.templates.templates,
-        templatesDataTablePagination: emailTemplates.templatesDataTablePagination
+        templatesDataTablePagination: emailTemplates.templatesDataTablePagination,
+        userFolders:emailTemplates.userFolders,
+        sharedFolders:emailTemplates.sharedFolders,
+        selectedFolder:emailTemplates.selectedFolder
     };
 };
 
@@ -214,7 +219,8 @@ const mapDispatchToProps = {
     setEditFolderViewVisible,
     setPermissionSettingVisible,
     setSharedByVisible,
-    queryByPaging
+    queryByPaging,
+    setSelectedFolderData
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateDetail));
