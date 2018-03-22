@@ -19,7 +19,8 @@ import {
   setNewDepartName,
   resetNewDepartment,
   addDepartment,
-  setSortingTeam } from '../flow/action';
+  setSortingTeam,
+  setDepartmentVisible} from '../flow/action';
 import { getTeamUsers, getSelectedTeamName } from '../flow/reselect';
 
 
@@ -48,11 +49,13 @@ class EditView extends React.Component {
       resetNewDepartment,
       setSortingTeam,
       selectedTeamName,
+      isDepartmentVisible,
+      setDepartmentVisible
     } = this.props;
     const { formatMessage } = this.props.intl;
-    const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => { setSortingTeam(JSON.parse(JSON.stringify(teams))); }}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.hideDepartments' }) }</Button></div>;
+    const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {setDepartmentVisible(!isDepartmentVisible)}}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.hideDepartments' }) }</Button></div>;
     return (
-      <Panel panelTitle={formatMessage({ id: 'page.emailTemplates.emailTemplates' })} contentClasses="pl-lg pr-lg pt-lg pb-lg" actionsRight={actionsRight}>
+      <Panel panelTitle={formatMessage({ id: 'page.emailTemplates.emailTemplates' })} contentClasses="pl-lg pr-lg" actionsRight={actionsRight}>
         { isAddVisible ? <AddDepartment
           newTeam={newTeam}
           setNewDepartName={setNewDepartName}
@@ -62,30 +65,32 @@ class EditView extends React.Component {
           selectedTeamName={selectedTeamName}
         /> : ''}
 
-        <Row className="pt-lg">
-          <Col className="gutter-row field-label" span={12}>
-            <Department
-              teams={teams}
-              setTeams={setTeams}
-              setSelectedTeam={setSelectedTeam}
-              setAddVisible={setAddVisible}
-              deleteDepartment={deleteDepartment}
-              updateTeam={updateTeam}
-            />
-          </Col>
-          <Col className="gutter-row field-value" span={12}>
-            <User
-              teamUsers={teamUsers}
-              isSelectTeamDialogVisible={isSelectTeamDialogVisible}
-              teams={teams}
-              selectedUser={selectedUser}
-              setSelectedUser={setSelectedUser}
-              getAllUser={getAllUser}
-              updateUsers={updateUsers}
-              selectedTeamName={selectedTeamName}
-            />
-          </Col>
-        </Row>
+        {
+          isDepartmentVisible && <Row className="pt-lg">
+            <Col className="gutter-row field-label" span={12}>
+              <Department
+                  teams={teams}
+                  setTeams={setTeams}
+                  setSelectedTeam={setSelectedTeam}
+                  setAddVisible={setAddVisible}
+                  deleteDepartment={deleteDepartment}
+                  updateTeam={updateTeam}
+              />
+            </Col>
+            <Col className="gutter-row field-value" span={12}>
+              <User
+                  teamUsers={teamUsers}
+                  isSelectTeamDialogVisible={isSelectTeamDialogVisible}
+                  teams={teams}
+                  selectedUser={selectedUser}
+                  setSelectedUser={setSelectedUser}
+                  getAllUser={getAllUser}
+                  updateUsers={updateUsers}
+                  selectedTeamName={selectedTeamName}
+              />
+            </Col>
+          </Row>
+        }
       </Panel>
     );
   }
@@ -102,6 +107,7 @@ const mapStateToProps = ({ global, setup }) => {
         teamUsers: getTeamUsers({ emailTemplates }),
         isSelectTeamDialogVisible: emailTemplates.ui.isSelectTeamDialogVisible,
         isAddVisible: emailTemplates.ui.isAddVisible,
+        isDepartmentVisible: emailTemplates.ui.isDepartmentVisible,
         selectedUser: emailTemplates.selectedUser,
         newTeam: emailTemplates.newTeam,
         selectedTeamName: getSelectedTeamName({ global, emailTemplates }),
@@ -121,6 +127,7 @@ const mapDispatchToProps = {
   addDepartment,
   updateTeam,
   setSortingTeam,
+  setDepartmentVisible
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EditView));

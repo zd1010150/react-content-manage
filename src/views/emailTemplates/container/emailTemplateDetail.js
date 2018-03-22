@@ -109,9 +109,11 @@ const TabSwitcher = ({formatMessage, setPermissionSettingVisible, isPermissionSe
 const Templates = ({templates, pagination, columns, formatMessage, isSharedByVisible}) => (
     <Fragment>
         {!isSharedByVisible &&
-            <Button style={{float: 'right', margin: '10px 15px'}} className="btn-ellipse email-theme-btn" size="small" onClick={()=>{setPermissionSettingVisible(false)}}><Icon type="plus" />
-                { formatMessage({ id: 'page.emailTemplates.templates' }) }
-            </Button>
+            <div style={{textAlign: 'right', height: 30, margin: '10px 15px'}}>
+                <Button className="btn-ellipse email-theme-btn" size="small" onClick={()=>{setPermissionSettingVisible(false)}}><Icon type="plus" />
+                    { formatMessage({ id: 'page.emailTemplates.addTemplate' }) }
+                </Button>
+            </div>
         }
         <Table dataSource={templates} columns={columns} pagination={pagination} className="mt-lg" rowKey="id" />
     </Fragment>
