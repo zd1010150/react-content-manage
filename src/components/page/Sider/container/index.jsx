@@ -116,8 +116,8 @@ const menuItems = [
               icon: 'setting',
           },
           {
-              id: 'templatesCreate',
-              path: `${pathPrefix}/email/templates-creation`,
+              id: 'Campaign',
+              path: `${pathPrefix}/email/campaign`,
               icon: 'setting',
           },
       ]

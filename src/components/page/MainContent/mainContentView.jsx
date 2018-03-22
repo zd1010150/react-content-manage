@@ -13,6 +13,7 @@ import {
   OrganisationChart,
   EmailTemplates,
   EmailTemplatesCreation,
+  EmailTemplatesCampaign,
   PermissionProfile,
   LeadsFields
 } from 'views/index';
@@ -31,6 +32,7 @@ const MainContent = () => (
     <Route path="/setup/company-info/chart" component={OrganisationChart} />
     <Route path="/setup/email/templates/" component={EmailTemplates} />
     <Route path="/setup/email/templates-creation/" component={EmailTemplatesCreation} />
+    <Route path="/setup/email/campaign/" component={EmailTemplatesCampaign} />
     <Route path="/setup/company-info/permissions" component={PermissionProfile} />
     <Route path="/setup/leads/fields" component={LeadsFields} />
   </Switch>

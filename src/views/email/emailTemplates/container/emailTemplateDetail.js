@@ -7,6 +7,7 @@ import { Panel } from 'components/ui/index';
 import { setTeams } from 'store/global/action';
 import { updateUsers } from 'views/Setup/Users/flow/action';
 import classNames from 'classnames/bind';
+import { NavLink } from 'react-router-dom';
 import AddDepartment from '../component/add';
 import Department from '../component/department';
 import User from '../component/user';
@@ -75,9 +76,12 @@ const Templates = ({templates, pagination, columns, formatMessage, isSharedByVis
     <Fragment>
         {!isSharedByVisible &&
             <div style={{textAlign: 'right', height: 30, margin: '10px 15px'}}>
-                <Button className="btn-ellipse email-theme-btn" size="small" onClick={()=>{setPermissionSettingVisible(false)}}><Icon type="plus" />
-                    { formatMessage({ id: 'page.emailTemplates.addTemplate' }) }
-                </Button>
+                <NavLink to='/setup/email/templates-creation'>
+                    <Button className="btn-ellipse email-theme-btn" size="small" onClick={()=>{setPermissionSettingVisible(false)}}><Icon type="plus" />
+                        { formatMessage({ id: 'page.emailTemplates.addTemplate' }) }
+                    </Button>
+                </NavLink>
+
             </div>
         }
         <Table dataSource={templates} columns={columns} pagination={pagination} className="mt-lg" rowKey="id" />
