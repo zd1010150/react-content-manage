@@ -11,7 +11,8 @@ import { EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
   EMAIL_TEMPLATES_SET_SORTING_TEAM,
   EMAIL_TEMPLATES_PERMISSION_VIEW_VISIBLE,
   EMAIL_TEMPLATES_SET_TEMPLATES,
-  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS
+  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS,
+  EMAIL_TEMPLATES_SHARED_BY_VISIBLE
 } from './actionType';
 
 const templates = (state = {
@@ -86,6 +87,7 @@ const ui = (state = {
   isEditFolderViewVisible: false,
   isAddVisible: false,
   isSelectTeamDialogVisible: false,
+  isSharedByVisible: false
 }, action) => {
   const { type, ...payload } = action;
   switch (type) {
@@ -96,6 +98,8 @@ const ui = (state = {
     case EMAIL_TEMPLATES_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE:
       return Object.assign({}, state, { ...payload });
     case EMAIL_TEMPLATES_PERMISSION_VIEW_VISIBLE:
+        return Object.assign({}, state, { ...payload });
+    case EMAIL_TEMPLATES_SHARED_BY_VISIBLE:
         return Object.assign({}, state, { ...payload });
     default:
       return state;

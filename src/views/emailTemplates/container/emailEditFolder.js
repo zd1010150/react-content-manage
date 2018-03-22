@@ -18,7 +18,7 @@ class EmailTemplateDetail extends React.Component {
     render() {
         const { formatMessage } = this.props.intl;
         const {} = this.props;
-        const actionsRight = <div><Button className="btn-ellipse" size="small" onClick={() => {}}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.newFolder' }) }</Button></div>;
+        const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {}}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.newFolder' }) }</Button></div>;
         return (
             <Panel panelTitle={formatMessage({ id: 'page.emailTemplates.editFolderTitle' })} contentClasses="pl-lg pr-lg pt-lg pb-lg" actionsRight={actionsRight}>
                 <Row className="pt-lg">

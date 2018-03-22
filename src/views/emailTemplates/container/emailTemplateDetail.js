@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types,no-shadow */
-import React from 'react';
+import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
 import { intlShape, injectIntl } from 'react-intl';
 import { Row, Col, Button, Icon, Radio, Table } from 'antd';
@@ -13,6 +13,7 @@ import User from '../component/user';
 import {
     setEditFolderViewVisible,
     setPermissionSettingVisible,
+    setSharedByVisible,
     queryByPaging
 } from '../flow/action';
 import { getTeamUsers, getSelectedTeamName } from '../flow/reselect';
@@ -22,25 +23,77 @@ const cx = classNames.bind(styles);
 const RadioGroup = Radio.Group;
 const TabPane = Tabs.TabPane;
 
-const folders = [{name: 'Private Template'}, {name: 'Shared Folder'}, {name: 'Genaral Folder'}, {name: 'd'}, {name: 'e'}, {name: 'f'}, {name: 'g'}, {name: 'h'}, {name: 'h'}, {name: 'h'}, {name: 'h'},];
+const foldersData = {
+    userFolders: [{
+        id: 0,
+        name: 'genaral folder',
+        isShared: true,
+        templates: [{
+            name: 'market',
+            createdAt: '2018-01-02',
+            modifiedDate: '2018-03-02',
+            createBy: 'Jimmy',
+            Description: 'for markdet use'
+        }]
+    },
+        {
+            id: 1,
+            name: 'private folder',
+            isShared: false,
+            templates: [{
+                name: 'sales',
+                createdAt: '2018-01-02',
+                modifiedDate: '2018-03-02',
+                createBy: 'Jimmy',
+                Description: 'for sales use'
+            }]
+        }],
+    sharedFolders: [{
+        name: 'ACY folder',
+        sharedBy: 'Jimmy',
+        templates: [{
+            name: 'ACY',
+            createdAt: '2018-01-02',
+            modifiedDate: '2018-03-02',
+            createBy: 'Jimmy',
+            Description: 'for ACY use'
+        }]
+    }]
+}
 
 
-const Radios = ({ onChange }) => (
-    <RadioGroup defaultValue={1} onChange={onChange}>
+const Radios = ({ setSharedByVisible }) => (
+    <RadioGroup defaultValue={1} onChange={e => {e.target.value === 1 ? setSharedByVisible(false) : setSharedByVisible(true)}}>
         <Radio className="email-theme-radio" value={1}>J's Folder</Radio>
         <Radio className="email-theme-radio" value={2}>Shared By</Radio>
     </RadioGroup>
 );
 
-const Folders = () => (
-    <div className={cx('folders')}>{folders.map((item, index)=>
-        <div key={index} className={cx('folder')} style={{marginLeft: index > 0 ? 40 : 10}}>
-            <div><Icon className={cx('folder-icon')} type="folder" /></div>
-            <div>{item.name}</div>
-        </div>
-    )}
+
+/**
+ * Todo add selectedFolder reducer
+ * @param onChange
+ * @param selectedFolder
+ * @constructor
+ */
+const Folders = ({ onChange, selectedFolder, isSharedByVisible }) => {
+    console.log('isSharedByVisible', foldersData.sharedFolders)
+    const folders = isSharedByVisible ? foldersData.sharedFolders : foldersData.userFolders;
+    return <div className={cx('folders')}>
+        {folders.map((item, index)=>
+            <div key={index} className={cx('folder')} style={{marginLeft: index > 0 ? 40 : 10}}>
+                <input onChange={onChange} checked={selectedFolder === index} id={index} value={index}  type="radio" style={{visibility: 'hidden'}} />
+                <label htmlFor={index}>
+                    <div>
+                        {selectedFolder === index ? <Icon className={cx('folder-icon')} type="folder-open" /> : <Icon className={cx('folder-icon')} type="folder" />}
+                    </div>
+                    <div>{item.name}</div>
+                </label>
+            </div>
+
+        )}
     </div>
-)
+}
 
 const TabSwitcher = ({formatMessage, setPermissionSettingVisible, isPermissionSettingVisible}) => (
     <Row className="pt-lg">
@@ -53,8 +106,15 @@ const TabSwitcher = ({formatMessage, setPermissionSettingVisible, isPermissionSe
     </Row>
 )
 
-const Templates = ({templates, pagination, columns}) => (
-    <Table dataSource={templates} columns={columns} pagination={pagination} className="mt-lg" rowKey="id" />
+const Templates = ({templates, pagination, columns, formatMessage, isSharedByVisible}) => (
+    <Fragment>
+        {!isSharedByVisible &&
+            <Button style={{float: 'right', margin: '10px 15px'}} className="btn-ellipse email-theme-btn" size="small" onClick={()=>{setPermissionSettingVisible(false)}}><Icon type="plus" />
+                { formatMessage({ id: 'page.emailTemplates.templates' }) }
+            </Button>
+        }
+        <Table dataSource={templates} columns={columns} pagination={pagination} className="mt-lg" rowKey="id" />
+    </Fragment>
 )
 
 const TemplatePermission = () => (
@@ -68,10 +128,10 @@ class EmailTemplateDetail extends React.Component {
     }
     render() {
         const { formatMessage } = this.props.intl;
-        const {setEditFolderViewVisible, setPermissionSettingVisible, isPermissionSettingVisible, templates, templatesDataTablePagination, queryByPaging} = this.props;
+        const {setEditFolderViewVisible, setPermissionSettingVisible, isPermissionSettingVisible, isSharedByVisible, templates, templatesDataTablePagination, queryByPaging, setSharedByVisible} = this.props;
         console.log('templates', templates)
-        const actionsLeft = <div><Radios/></div>;
-        const actionsRight = <div><Button className="btn-ellipse" size="small" onClick={() => {setEditFolderViewVisible(true)}}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.editFolders' }) }</Button></div>;
+        const actionsLeft = <div><Radios setSharedByVisible={setSharedByVisible}/></div>;
+        const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {setEditFolderViewVisible(true)}}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.editFolders' }) }</Button></div>;
         const pagination = {
             defaultCurrent: templatesDataTablePagination.currentPage,
             current: templatesDataTablePagination.currentPage,
@@ -113,15 +173,15 @@ class EmailTemplateDetail extends React.Component {
             }
         ];
         return (
-            <Panel actionsLeft={actionsLeft} contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={actionsRight}>
-                <Folders/>
+            <Panel actionsLeft={actionsLeft} contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={isSharedByVisible ? null : actionsRight}>
+                <Folders isSharedByVisible={isSharedByVisible}/>
                 <TabSwitcher
                     setPermissionSettingVisible={setPermissionSettingVisible}
                     isPermissionSettingVisible={isPermissionSettingVisible}
                     formatMessage={formatMessage}
                 />
                 {
-                    !isPermissionSettingVisible ? <Templates templates={templates} pagination={pagination} columns={columns}/> : <TemplatePermission />
+                    !isPermissionSettingVisible ? <Templates templates={templates} pagination={pagination} columns={columns} formatMessage={formatMessage} isSharedByVisible={isSharedByVisible}/> : <TemplatePermission />
                 }
             </Panel>
         );
@@ -140,6 +200,7 @@ const mapStateToProps = ({ global, setup }) => {
         teamUsers: getTeamUsers({ emailTemplates }),
         isEditFolderViewVisible: emailTemplates.ui.isEditFolderViewVisible,
         isPermissionSettingVisible: emailTemplates.ui.isPermissionSettingVisible,
+        isSharedByVisible: emailTemplates.ui.isSharedByVisible,
         templates: emailTemplates.templates.templates,
         templatesDataTablePagination: emailTemplates.templatesDataTablePagination
     };
@@ -150,6 +211,7 @@ const mapDispatchToProps = {
     updateUsers,
     setEditFolderViewVisible,
     setPermissionSettingVisible,
+    setSharedByVisible,
     queryByPaging
 };
 

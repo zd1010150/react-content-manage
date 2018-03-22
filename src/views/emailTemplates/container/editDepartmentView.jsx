@@ -50,7 +50,7 @@ class EditView extends React.Component {
       selectedTeamName,
     } = this.props;
     const { formatMessage } = this.props.intl;
-    const actionsRight = <div><Button className="btn-ellipse" size="small" onClick={() => { setSortingTeam(JSON.parse(JSON.stringify(teams))); }}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.hideDepartments' }) }</Button></div>;
+    const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => { setSortingTeam(JSON.parse(JSON.stringify(teams))); }}><Icon type="edit" />{ formatMessage({ id: 'page.emailTemplates.hideDepartments' }) }</Button></div>;
     return (
       <Panel panelTitle={formatMessage({ id: 'page.emailTemplates.emailTemplates' })} contentClasses="pl-lg pr-lg pt-lg pb-lg" actionsRight={actionsRight}>
         { isAddVisible ? <AddDepartment
