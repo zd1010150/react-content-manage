@@ -32,7 +32,7 @@ const EnumsManager = Object.freeze({
     'picklist',
   ]),
 
-  ThemeTypes: Object.freeze(['lead', 'account', 'opport']),
+  ThemeTypes: Object.freeze(['lead', 'account', 'opport', 'report', 'email']),
 
   SortOrders: Object.freeze({
     ascend: 'asc',
@@ -75,6 +75,8 @@ const EnumsManager = Object.freeze({
     Me: 1,
     GroupsAndUsers: 3,
   }),
+
+  RootTeamId: 0,
 });
 
 export default EnumsManager;

@@ -1,66 +1,137 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Input } from 'antd';
+import { injectIntl, intlShape } from 'react-intl';
+import { Input, Row, Col, Icon, Tag } from 'antd';
 const Search = Input.Search;
 import classNames from 'classnames/bind';
 import styles from './index.less';
 const cx = classNames.bind(styles);
 
+import Enums from 'utils/EnumsManager';
+
 const defaultProps = {
+  theme: 'lead',
   withFilter: false,
+  showHeader: false,
+  showTeams: false,
   canRemoveItem: false,
   users: [],
-  departments: [],
+  teams: [],
+  teamId: Enums.PhantomID,
 };
 const propTypes = {
+  intl: intlShape.isRequired,
+  theme: PropTypes.oneOf(Enums.ThemeTypes).isRequired,
+  // props for header
+  defaultTitle: PropTypes.string,
   title: PropTypes.string,
   withFilter: PropTypes.bool.isRequired,
+  showHeader: PropTypes.bool.isRequired,
+  // props for body
+  onRemoveItem: PropTypes.func,
   canRemoveItem: PropTypes.bool.isRequired,
   users: PropTypes.array.isRequired,
-  departments: PropTypes.array.isRequired,
+  teams: PropTypes.array.isRequired,
+  showTeams: PropTypes.bool.isRequired,
+  tagAddonBefore: PropTypes.element,
+  teamId: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]).isRequired,
 };
 
 class UsersList extends Component {
   state = {
-    filter: '',
+    searchText: '',
   }
 
-  handleSearch = value => this.setState({ filter: value })
+  handleSearch = value => this.setState({ searchText: value })
 
-  applyFilter = (filter, targetArray) => {
-    return targetArray.filter(elem => elem.value.indexOf(filter) !== -1);
+  // TODO1: expose filters to outside and refine the results
+  // TODO2: combined the filters to get the final result
+  applyFilters = (targetArray) => {
+    const { searchText } = this.state;
+    let { showTeams, teamId } = this.props;
+    teamId = _.toNumber(teamId);
+
+    let results = targetArray;
+    if (searchText) {
+      results = results.filter(elem => elem.name.indexOf(searchText) !== -1);
+    }
+    if (!showTeams) {
+      results = results.filter(elem => elem.team_id === teamId);
+    }
+    return results;
   }
 
   onRemoveItem = e => {
-    // this.props.handleRemoveItem(itemId);
+    const { id, teamId } = e.target.parentNode.dataset;
+    const { onRemoveItem } = this.props;
+    if (onRemoveItem && typeof onRemoveItem === 'function') {
+      onRemoveItem(id, teamId);
+    }
   }
 
   render() {
     const {
+      intl,
+      theme,
+      defaultTitle,
       title,
       withFilter,
+      showHeader,
+      showTeams,
       canRemoveItem,
       users,
-      departments,
+      teams,
+      userAddonBefore,
+      teamAddonBefore,
     } = this.props;
 
-    const { filter } = this.state;
-    const filteredUsers = this.applyFilter(filter, users);
-    const filteredDepartments = this.applyFilter(filter, departments);
+    const { formatMessage } = intl;
 
-    return (
-      <div>
-        <div>
-          <span>{title}</span>
+    const header = (
+      <Row className={cx('header')}>
+        <Col xs={24} sm={20} className={cx('title')}>
+          <span>{title || defaultTitle}</span>
+        </Col>
+        <Col xs={24} sm={4}>
           {withFilter && (
             <Search
               onSearch={this.handleSearch}
-              placeholder="input search text"
-              enterButton
+              placeholder={formatMessage({ id: 'global.ui.input.searchUser'})}
               size="small"
             />
           )}
-        </div>
+        </Col>
+      </Row>
+    );
+
+    const { searchText } = this.state;
+    const allTags = showTeams ? [...users, ...teams] : [...users];
+    const filteredResults = this.applyFilters(allTags);
+    const body = filteredResults.map(tag => {
+      const key = `${tag.id}-${tag.team_id ? tag.team_id : 'team'}`;
+      const cls = `pl-md pr-md ${tag.team_id ? `${theme}-theme-tag` : ''}`;
+      return (
+        <Tag
+          key={key}
+          className={cls}
+          data-team-id={tag.team_id}
+          data-id={tag.id}
+          closable={canRemoveItem}
+          onClose={this.onRemoveItem}
+        >
+          {tag.team_id !== undefined ? userAddonBefore : teamAddonBefore}
+          {tag.name}
+        </Tag>
+      )
+    });
+
+    return (
+      <div className={cx('usersList')}>
+        {showHeader && header}
+        <div className={cx('body')}>{body}</div>
       </div>
     );
   }
@@ -68,4 +139,4 @@ class UsersList extends Component {
 
 UsersList.defaultProps = defaultProps;
 UsersList.propTypes = propTypes;
-export default UsersList;
+export default injectIntl(UsersList);
