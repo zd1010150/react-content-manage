@@ -4,8 +4,6 @@ import _ from 'lodash';
 import { fetchTeams } from 'store/global/action';
 import { connect } from 'react-redux';
 import TemplateInformation from './templateInformation';
-import TemplateContent from './templateContent';
-
 
 
 class EmailTemplatesCreation extends React.Component {
@@ -16,7 +14,6 @@ class EmailTemplatesCreation extends React.Component {
     return (
       <Fragment>
           <TemplateInformation/>
-          <TemplateContent/>
       </Fragment>
 
     );

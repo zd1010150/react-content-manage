@@ -6,6 +6,7 @@ import {fetchTeams} from 'store/global/action';
 import {connect} from 'react-redux';
 import {Panel} from 'components/ui/index';
 import classNames from 'classnames/bind';
+import TemplateContent from './templateContent';
 import styles from '../emailTemplatesCreation.less';
 const cx = classNames.bind(styles);
 const Option = Select.Option;
@@ -83,6 +84,7 @@ class TemplateInformation extends React.Component {
                    contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('new-email-panel-content')}`}>
                 <BasicInfo formatMessage={formatMessage}/>
                 <FieldInfo formatMessage={formatMessage}/>
+                <TemplateContent />
             </Panel>
 
         );
