@@ -16,6 +16,7 @@ import { CustomField } from './CustomField/index';
 import DefaultDepartment from './DefaultDepartment/index';
 import CriteriaHeader from './CriteriaHeader/index';
 import { Wrapper, CardContainer } from './MultiSelectDnD/index';
+import RichEditor from './RichEditor/index';
 
 
 export {
@@ -38,4 +39,5 @@ export {
   CriteriaHeader,
   Wrapper,
   CardContainer,
+  RichEditor
 };
