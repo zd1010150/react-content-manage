@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { injectIntl, intlShape } from 'react-intl';
 import { Row, Col, Radio, Icon, Button, Checkbox } from 'antd';
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
@@ -8,7 +9,13 @@ const CheckboxGroup = Checkbox.Group;
 import { UsersList, Modal } from 'components/ui/index';
 import { TeamTree } from 'components/page/index';
 import Enums from 'utils/EnumsManager';
-import { setVisibilityOption, selectTeam, fetchUsers, addEntityToSelection } from './flow/actions';
+import {
+  setVisibilityOption,
+  selectTeam,
+  fetchUsers,
+  addEntityToSelection,
+  removeEntityFromSelection,
+} from './flow/actions';
 import { fetchTeams } from 'store/global/action';
 
 const defaultProps = {
@@ -17,6 +24,7 @@ const defaultProps = {
   selectedOption: Enums.ViewVisibilityIds.Me,
 };
 const propTypes = {
+  intl: intlShape.isRequired,
   theme: PropTypes.string.isRequired,
   assignOptions: PropTypes.array.isRequired,
   selectedOption: PropTypes.number.isRequired,
@@ -40,8 +48,8 @@ class ViewVisibility extends Component {
 
   handleRemoveItem = (itemId, teamId) => {
     if (!itemId) return;
-    
-    // this.props.removeItemFromSelection(itemId, teamId);
+    const isTeam = teamId === undefined ? true : false;
+    this.props.removeEntityFromSelection(itemId, isTeam);
   }
 
   handleTeamSelection = id => {
@@ -94,6 +102,7 @@ class ViewVisibility extends Component {
     const { showModal, showTreeSection, checkedValues } = this.state;
 
     const {
+      intl,
       assignOptions,
       theme,
       teams,
@@ -105,7 +114,8 @@ class ViewVisibility extends Component {
       usersInTeam,
       title,
     } = this.props;
-
+    const { formatMessage } = intl;
+    const visibilityI18n = 'page.objectFilter.visibility';
     //test
     const usersTest = [
       {
@@ -146,19 +156,20 @@ class ViewVisibility extends Component {
           teamAddonBefore={<Icon type="team" size="small"/>}
         />
         {selectedOption !== Enums.ViewVisibilityIds.GroupsAndUsers && (
-          <Row>
+          <Row style={{ margin: '10px 0' }}>
             <Button size="small" onClick={this.handleUserBtnClick}>
-              Add User to Share
+              {formatMessage({ id: `${visibilityI18n}.buttons.addUserToShare` })}
             </Button>
             <Modal
+              title={formatMessage({ id: `${visibilityI18n}.buttons.addUserToShare` })}
               visible={showModal}
               onOk={this.handleModalSave}
               onCancel={this.handleModalCancel}
             >
               <CheckboxGroup onChange={this.handleCheckboxChange}>
                 <Row>
-                  {usersTest.map(user => (
-                    <Col xs={12}>
+                  {users.map(user => (
+                    <Col xs={12} key={user.id}>
                       <Checkbox key={user.id} value={user.id}>{user.name}</Checkbox>
                     </Col>
                   ))}
@@ -166,14 +177,14 @@ class ViewVisibility extends Component {
               </CheckboxGroup>
             </Modal>
             <Button size="small" onClick={this.handleUserOrTeamBtnClick}>
-              Add User or Team to Share
-              <Icon size="small" type={showTreeSection ? 'caret-up' : 'caret-down'} />
+              {formatMessage({ id: `${visibilityI18n}.buttons.addUserOrTeamToShare` })}
+              <Icon size="small" style={{ fontSize: 11 }} type={showTreeSection ? 'caret-up' : 'caret-down'} />
             </Button>
           </Row>
         )}
-        {showTreeSection && (
+        {!showTreeSection && (
           <Row>
-            <div style={{ color: 'red' }}>Click on a team name to show team members on the right section. Double click will select a specific user or team to share.</div>
+            <div style={{ color: 'red' }}>{formatMessage({ id: `${visibilityI18n}.treeHelpText` })}</div>
             <Col xs={24} sm={8}>
               <TeamTree
                 teams={teams}
@@ -183,7 +194,8 @@ class ViewVisibility extends Component {
             </Col>
             <Col xs={24} sm={16}>
               <UsersList
-                defaultTitle="Click Chart to Choose Department"
+                defaultTitle={formatMessage({ id: `${visibilityI18n}.defaultTitle` })}
+                // defaultTitle="Click Chart to Choose Department"
                 title={title}
                 withFilter
                 showHeader
@@ -221,5 +233,6 @@ const mapDispatchToProps = {
   selectTeam,
   fetchUsers,
   addEntityToSelection,
+  removeEntityFromSelection,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(ViewVisibility);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ViewVisibility));

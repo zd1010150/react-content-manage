@@ -38,6 +38,8 @@ const propTypes = {
     PropTypes.number,
     PropTypes.string,
   ]).isRequired,
+  onClick: PropTypes.func,
+  onDoubleClick: PropTypes.func,
 };
 
 class UsersList extends Component {
@@ -49,7 +51,7 @@ class UsersList extends Component {
 
   // TODO1: expose filters to outside and refine the results
   // TODO2: combined the filters to get the final result
-  applyFilters = (targetArray) => {
+  applyFilters = targetArray => {
     const { searchText } = this.state;
     let { showTeams, teamId } = this.props;
     teamId = _.toNumber(teamId);
@@ -72,6 +74,24 @@ class UsersList extends Component {
     }
   }
 
+  onClick = e => {
+    const { id, teamId } = e.target.dataset;
+    const { onClick } = this.props;
+    if (onClick && typeof onClick === 'function') {
+      onClick(id, teamId);
+    }
+  }
+
+  onDoubleClick = e => {
+    // If click on addon icon of a tag/btn, we need to use currentTarget in delegation
+    const target = e.target.dataset.id ? e.target.dataset : e.currentTarget.dataset;
+    const { id, teamId } = target;
+    const { onDoubleClick } = this.props;
+    if (onDoubleClick && typeof onDoubleClick === 'function') {
+      onDoubleClick(id, teamId);
+    }
+  }
+
   render() {
     const {
       intl,
@@ -86,6 +106,8 @@ class UsersList extends Component {
       teams,
       userAddonBefore,
       teamAddonBefore,
+      onClick,
+      onDoubleClick,
     } = this.props;
 
     const { formatMessage } = intl;
@@ -117,10 +139,12 @@ class UsersList extends Component {
         <Tag
           key={key}
           className={cls}
-          data-team-id={tag.team_id}
           data-id={tag.id}
+          data-team-id={tag.team_id}
           closable={canRemoveItem}
           onClose={this.onRemoveItem}
+          onClick={this.onClick}
+          onDoubleClick={this.onDoubleClick}
         >
           {tag.team_id !== undefined ? userAddonBefore : teamAddonBefore}
           {tag.name}

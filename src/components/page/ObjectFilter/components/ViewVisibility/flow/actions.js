@@ -3,6 +3,7 @@ import {
   SELECT_TEAM,
   SET_USERS,
   ADD_ENTITY_TO_SELECTION,
+  REMOVE_ENTITY_FROM_SELECTION,
 } from './actionTypes';
 import { get } from 'store/http/httpAction';
 
@@ -31,5 +32,10 @@ export const fetchUsers = () => dispatch => get('/admin/users/all', {}, dispatch
 
 export const addEntityToSelection = (entityId, isTeam) => ({
   type: ADD_ENTITY_TO_SELECTION,
+  payload: { entityId, isTeam },
+});
+
+export const removeEntityFromSelection = (entityId, isTeam) => ({
+  type: REMOVE_ENTITY_FROM_SELECTION,
   payload: { entityId, isTeam },
 });

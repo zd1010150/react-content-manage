@@ -5,6 +5,7 @@ import {
   SELECT_TEAM,
   SET_USERS,
   ADD_ENTITY_TO_SELECTION,
+  REMOVE_ENTITY_FROM_SELECTION,
 } from './actionTypes';
 import Enums from 'utils/EnumsManager';
 
@@ -105,6 +106,18 @@ const visibilities = (state = initialState, action) => {
       return {
         ...state,
         [targetKey]: selectionAfterAdd,
+      };
+
+
+    case REMOVE_ENTITY_FROM_SELECTION:
+      const removedId = Number(action.payload.entityId);
+      const isRemoveTeam = action.payload.isTeam;
+      if (removedId === Enums.NoTeamId) return state;
+
+      const removeSource = isRemoveTeam ? 'selectedTeams' : 'selectedUsers';
+      return {
+        ...state,
+        [removeSource]: state[removeSource].filter(entity => entity.id !== removedId),
       };
 
 
