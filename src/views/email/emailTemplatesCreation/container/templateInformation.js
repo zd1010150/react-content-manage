@@ -71,6 +71,13 @@ const FieldInfo = ({formatMessage, onChange})=> {
     </Row>
 }
 
+const ActionButtonGroup = ({cancel, formatMessage}) => {
+    return <div className="pt-md pl-md pb-md">
+        <Button className="email-theme-btn mr-md" onClick={() => {cancel(false)}}><Icon type="save" />{ formatMessage({ id: 'page.emailTemplates.save' }) }</Button>
+        <Button onClick={() => {cancel(false)}}><Icon type="close" />{ formatMessage({ id: 'page.emailTemplates.cancel' }) }</Button>
+    </div>
+}
+
 class TemplateInformation extends React.Component {
     componentDidMount() {
 
@@ -85,6 +92,7 @@ class TemplateInformation extends React.Component {
                 <BasicInfo formatMessage={formatMessage}/>
                 <FieldInfo formatMessage={formatMessage}/>
                 <TemplateContent />
+                <ActionButtonGroup formatMessage={formatMessage}/>
             </Panel>
 
         );
