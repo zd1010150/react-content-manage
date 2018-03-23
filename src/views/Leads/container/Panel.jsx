@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Row, Col, Select, Input } from 'antd';
 const Option = Select.Option;
 const { TextArea } = Input;
-import { Panel, LeftActions, RightActions, Modal } from 'components/ui/index';
+import { Panel, LeftActions, RightActions, StyledModal } from 'components/ui/index';
 import TableWrapper from '../components/Table/index';
 import { massUpdate, massDelete } from '../components/Table/flow/actions';
 import Enums from 'utils/EnumsManager';
@@ -134,7 +134,7 @@ class LeadPanel extends Component {
             onSelectChange={this.onSelectChange}
           />
         </Panel>
-        <Modal
+        <StyledModal
           title="Mass Update"
           visible={visible}
           onOk={this.onModalSaveClick}
@@ -163,7 +163,7 @@ class LeadPanel extends Component {
             <Col sm={6} xs={24}><label>{valueFieldName}</label></Col>
             <Col sm={18} xs={24}>{valueField}</Col>
           </Row>) : null}
-        </Modal>
+        </StyledModal>
       </Fragment>
     );
   }

@@ -41,7 +41,7 @@ class FilterCriteria extends Component {
         </Row>
         <FloatingLabelInput
           labelText="Condition Logic"
-          labelColor="#09c"
+          labelColor="#4e4e4e"
           handleChange={this.handleLogicChange}
         />
       </Fragment>

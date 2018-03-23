@@ -12,7 +12,7 @@ const propTypes = {
 const ViewButtons = ({ intl, onSaveClick }) => {
   const { formatMessage } = intl;
   return (
-    <Row style={{ margin: '40px 15px 20px' }}>
+    <Row style={{ margin: '30px 15px 20px' }}>
       <Button
         className="ml-sm lead-theme-btn"
         size="small"
