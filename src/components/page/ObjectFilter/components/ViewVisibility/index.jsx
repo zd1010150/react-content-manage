@@ -6,7 +6,7 @@ import { Row, Col, Radio, Icon, Button, Checkbox } from 'antd';
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 
-import { UsersList, Modal } from 'components/ui/index';
+import { UsersList, StyledModal, SelectionModal } from 'components/ui/index';
 import { TeamTree } from 'components/page/index';
 import Enums from 'utils/EnumsManager';
 import {
@@ -15,6 +15,7 @@ import {
   fetchUsers,
   addEntityToSelection,
   removeEntityFromSelection,
+  changeSelections,
 } from './flow/actions';
 import { fetchTeams } from 'store/global/action';
 
@@ -52,42 +53,21 @@ class ViewVisibility extends Component {
     this.props.removeEntityFromSelection(itemId, isTeam);
   }
 
-  handleTeamSelection = id => {
-    // id = Number(id);
-    // if (id === Enums.NoTeamId) return;
-    console.log(`--===team:${id}===--`);
-    this.props.addEntityToSelection(id, true);
-  }
+  handleTeamSelection = id => this.props.addEntityToSelection(id, true)
 
-  handleUserSelection = id => {
-    console.log(`--===user:${id}===--`);
-    this.props.addEntityToSelection(id);
-  }
+  handleUserSelection = id => this.props.addEntityToSelection(id)
 
-  handleUserOrTeamBtnClick = e => {
-    this.setState({
-      showTreeSection: !this.state.showTreeSection,
-    });
-  }
+  handleUserOrTeamBtnClick = e => this.setState({ showTreeSection: !this.state.showTreeSection })
 
   handleUserBtnClick = e => this.setState({ showModal: !this.state.showModal })
 
   handleModalCancel = e => this.setState({ showModal: !this.state.showModal })
 
-  handleModalSave = e => {
-    // sync checkboxes to redux
-    const { checkedValues } = this.state;
+  handleModalSave = checkedValues => {
     console.log('on modal save');
     console.log(checkedValues);
-    // this.props.addEntityToSelection(checkedValues);
-    this.setState({
-      checkedValues,
-      showModal: !this.state.showModal,
-    });
-  }
-
-  handleCheckboxChange = checkedValues => {
-    
+    this.setState({ showModal: !this.state.showModal });
+    this.props.changeSelections(checkedValues);
   }
 
   render() {
@@ -106,24 +86,10 @@ class ViewVisibility extends Component {
       usersInTeam,
       title,
     } = this.props;
+
     const { formatMessage } = intl;
     const visibilityI18n = 'page.objectFilter.visibility';
-    //test
-    const usersTest = [
-      {
-        id: 1,
-        name: 'test1',
-      },
-      {
-        id: 2,
-        name: 'test2',
-      },
-      {
-        id: 3,
-        name: 'test3',
-      },
-    ]
-    // ends
+    
     return (
       <Fragment>
         <RadioGroup onChange={this.onOptionChange} value={selectedOption} >
@@ -153,29 +119,14 @@ class ViewVisibility extends Component {
               <Button size="small" onClick={this.handleUserBtnClick}>
                 {formatMessage({ id: `${visibilityI18n}.buttons.addUserToShare` })}
               </Button>
-              <Modal
+              <SelectionModal
+                data={users}
+                selectedData={selectedUsers}
                 title={formatMessage({ id: `${visibilityI18n}.buttons.addUserToShare` })}
                 visible={showModal}
                 onOk={this.handleModalSave}
                 onCancel={this.handleModalCancel}
-              >
-                <CheckboxGroup onChange={this.handleCheckboxChange} value={selectedUsers.map(user => user.id)}>
-                  <Row>
-                    {users.map(user => {
-                      return (
-                        <Col xs={12} key={user.id}>
-                          <Checkbox
-                            key={user.id}
-                            value={user.id}
-                          >
-                            {user.name}
-                          </Checkbox>
-                        </Col>
-                      );
-                    })}
-                  </Row>
-                </CheckboxGroup>
-              </Modal>
+              />
               <Button size="small" onClick={this.handleUserOrTeamBtnClick}>
                 {formatMessage({ id: `${visibilityI18n}.buttons.addUserOrTeamToShare` })}
                 <Icon size="small" style={{ fontSize: 11 }} type={showTreeSection ? 'caret-up' : 'caret-down'} />
@@ -235,5 +186,6 @@ const mapDispatchToProps = {
   fetchUsers,
   addEntityToSelection,
   removeEntityFromSelection,
+  changeSelections,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ViewVisibility));

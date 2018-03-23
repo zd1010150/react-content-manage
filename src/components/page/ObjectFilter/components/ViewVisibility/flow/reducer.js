@@ -6,6 +6,7 @@ import {
   SET_USERS,
   ADD_ENTITY_TO_SELECTION,
   REMOVE_ENTITY_FROM_SELECTION,
+  CHANGE_SELECTION,
 } from './actionTypes';
 import Enums from 'utils/EnumsManager';
 
@@ -119,6 +120,14 @@ const visibilities = (state = initialState, action) => {
         ...state,
         [removeSource]: state[removeSource].filter(entity => entity.id !== removedId),
       };
+
+    case CHANGE_SELECTION:
+      const { entityIds } = action.payload;
+      const changedSelection = state.users.filter(user => entityIds.indexOf(user.id) !== -1);
+      return {
+        ...state,
+        selectedUsers: changedSelection,
+      }  
 
 
     case RESET_VIEW:

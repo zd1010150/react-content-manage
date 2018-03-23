@@ -4,6 +4,7 @@ import {
   SET_USERS,
   ADD_ENTITY_TO_SELECTION,
   REMOVE_ENTITY_FROM_SELECTION,
+  CHANGE_SELECTION,
 } from './actionTypes';
 import { get } from 'store/http/httpAction';
 
@@ -38,4 +39,9 @@ export const addEntityToSelection = (entityId, isTeam) => ({
 export const removeEntityFromSelection = (entityId, isTeam) => ({
   type: REMOVE_ENTITY_FROM_SELECTION,
   payload: { entityId, isTeam },
+});
+
+export const changeSelections = entityIds => ({
+  type: CHANGE_SELECTION,
+  payload: { entityIds },
 });

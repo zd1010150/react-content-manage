@@ -8,7 +8,7 @@ import Panel from './panel/index';
 import { Section } from './Section/index';
 import FloatingLabelInput from './FloatingLabelInput/index';
 import { LeftActions, RightActions } from './ActionButtons/index';
-import Modal from './Modal/index';
+import StyledModal from './StyledModal/index';
 import ListTable from './ListTable/index';
 import DeleteConfirmDialog from './DeleteConfirmDialog';
 import FilterCondition from './FilterCondition/index';
@@ -17,6 +17,7 @@ import DefaultDepartment from './DefaultDepartment/index';
 import CriteriaHeader from './CriteriaHeader/index';
 import { Wrapper, CardContainer } from './MultiSelectDnD/index';
 import UsersList from './UsersList/index';
+import SelectionModal from './SelectionModal/index';
 
 export {
   Upload,
@@ -28,7 +29,7 @@ export {
   EditBox,
   LeftActions,
   RightActions,
-  Modal,
+  StyledModal,
   ListTable,
   DeleteConfirmDialog,
   FilterCondition,
@@ -39,4 +40,5 @@ export {
   Wrapper,
   CardContainer,
   UsersList,
+  SelectionModal,
 };
