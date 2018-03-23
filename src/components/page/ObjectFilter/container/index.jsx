@@ -2,20 +2,36 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { intlShape, injectIntl } from 'react-intl';
-import { Button, Icon, Row } from 'antd';
 
 import Enums from 'utils/EnumsManager';
-import { Section } from 'components/ui/index'
-import { Panel, FilterCondition } from 'components/ui/index';
+import { Section, Panel, FilterCondition } from 'components/ui/index';
 import { ViewName, FilterCriteria, ViewButtons, FieldsSelection, ViewVisibility } from '../components/index';
 import { resetView, saveView, fetchViewById } from '../flow/actions';
-// import { saveView } from '../components/ViewButtons/flow/actions';
 
 const defaultProps = {
 };
 const propTypes = {
   intl: intlShape.isRequired,
 };
+
+const sections = [
+  {
+    titleI18n: 'viewName',
+    bodyComponent: ViewName,
+  },
+  {
+    titleI18n: 'criteria',
+    bodyComponent: FilterCriteria,
+  },
+  {
+    titleI18n: 'selectors',
+    bodyComponent: FieldsSelection,
+  },
+  {
+    titleI18n: 'visibility',
+    bodyComponent: ViewVisibility,
+  },
+];
 
 class ObjectFilter extends Component {
   componentDidMount() {
@@ -38,12 +54,26 @@ class ObjectFilter extends Component {
   }
 
   render() {
+    const { match, intl } = this.props;
+    const { formatMessage } = intl;
+    const i18nPrefix = 'page.objectFilter';
+
+    const { object, viewId } = match.params;
+    const panelTitleI18nId = viewId === Enums.PhantomID ? 'general.newTitle' : 'general.existTitle';
+
     return (
-      <Panel panelClasses="lead-theme-panel" panelTitle="Edit Views">
-        <Section title="Step 1. Enter View Name" body={ViewName} collapsible />
-        <Section title="Step 2. Specify Filter Criteria" body={FilterCriteria} />
-        <Section title="Step 3. Select Fields to Display" body={FieldsSelection} />
-        <Section title="Step 4. Restrict Visibility" body={ViewVisibility} />
+      <Panel panelClasses="lead-theme-panel" panelTitle={formatMessage({ id: `${i18nPrefix}.${panelTitleI18nId}` })}>
+        {sections.map((section, i) => {
+          const id = `${i18nPrefix}.${section.titleI18n}.stepName`;
+          const stepName = formatMessage({ id });
+          return (
+            <Section
+              key={i}
+              title={`${i + 1}. ${stepName}`}
+              body={section.bodyComponent}
+            />
+          );
+        })}
         <ViewButtons onSaveClick={this.handleSaveClick} />
       </Panel>
     );

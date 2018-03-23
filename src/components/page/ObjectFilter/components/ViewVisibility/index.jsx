@@ -70,11 +70,9 @@ class ViewVisibility extends Component {
     });
   }
 
-  handleUserBtnClick = e => {
-    this.setState({
-      showModal: !this.state.showModal,
-    });
-  }
+  handleUserBtnClick = e => this.setState({ showModal: !this.state.showModal })
+
+  handleModalCancel = e => this.setState({ showModal: !this.state.showModal })
 
   handleModalSave = e => {
     // sync checkboxes to redux
@@ -88,14 +86,8 @@ class ViewVisibility extends Component {
     });
   }
 
-  handleModalCancel = e => {
-    this.setState({
-      showModal: !this.state.showModal,
-    });
-  }
-
   handleCheckboxChange = checkedValues => {
-    console.log(checkedValues);
+    
   }
 
   render() {
@@ -146,67 +138,76 @@ class ViewVisibility extends Component {
             </Radio>
           ))}
         </RadioGroup>
-        <UsersList
-          users={selectedUsers}
-          teams={selectedTeams}
-          showTeams
-          canRemoveItem
-          onRemoveItem={this.handleRemoveItem}
-          userAddonBefore={<Icon className="mr-sm" type="user" size="small"/>}
-          teamAddonBefore={<Icon type="team" size="small"/>}
-        />
-        {selectedOption !== Enums.ViewVisibilityIds.GroupsAndUsers && (
-          <Row style={{ margin: '10px 0' }}>
-            <Button size="small" onClick={this.handleUserBtnClick}>
-              {formatMessage({ id: `${visibilityI18n}.buttons.addUserToShare` })}
-            </Button>
-            <Modal
-              title={formatMessage({ id: `${visibilityI18n}.buttons.addUserToShare` })}
-              visible={showModal}
-              onOk={this.handleModalSave}
-              onCancel={this.handleModalCancel}
-            >
-              <CheckboxGroup onChange={this.handleCheckboxChange}>
-                <Row>
-                  {users.map(user => (
-                    <Col xs={12} key={user.id}>
-                      <Checkbox key={user.id} value={user.id}>{user.name}</Checkbox>
-                    </Col>
-                  ))}
-                </Row>
-              </CheckboxGroup>
-            </Modal>
-            <Button size="small" onClick={this.handleUserOrTeamBtnClick}>
-              {formatMessage({ id: `${visibilityI18n}.buttons.addUserOrTeamToShare` })}
-              <Icon size="small" style={{ fontSize: 11 }} type={showTreeSection ? 'caret-up' : 'caret-down'} />
-            </Button>
-          </Row>
-        )}
-        {!showTreeSection && (
-          <Row>
-            <div style={{ color: 'red' }}>{formatMessage({ id: `${visibilityI18n}.treeHelpText` })}</div>
-            <Col xs={24} sm={8}>
-              <TeamTree
-                teams={teams}
-                onSelect={this.handleSelect}
-                onDbClick={this.handleTeamSelection}
-              />
-            </Col>
-            <Col xs={24} sm={16}>
-              <UsersList
-                defaultTitle={formatMessage({ id: `${visibilityI18n}.defaultTitle` })}
-                // defaultTitle="Click Chart to Choose Department"
-                title={title}
-                withFilter
-                showHeader
-                users={usersInTeam}
-                teamId={selectedTeamId}
-                userAddonBefore={<Icon className="mr-sm" type="user" size="small"/>}
-                teamAddonBefore={<Icon type="team" size="small"/>}
-                onDoubleClick={this.handleUserSelection}
-              />
-            </Col>
-          </Row>
+        {selectedOption === Enums.ViewVisibilityIds.GroupsAndUsers && (
+          <Fragment>
+            <UsersList
+              users={selectedUsers}
+              teams={selectedTeams}
+              showTeams
+              canRemoveItem
+              onRemoveItem={this.handleRemoveItem}
+              userAddonBefore={<Icon className="mr-sm" type="user" size="small"/>}
+              teamAddonBefore={<Icon type="team" size="small"/>}
+            />
+            <Row style={{ margin: '10px 0' }}>
+              <Button size="small" onClick={this.handleUserBtnClick}>
+                {formatMessage({ id: `${visibilityI18n}.buttons.addUserToShare` })}
+              </Button>
+              <Modal
+                title={formatMessage({ id: `${visibilityI18n}.buttons.addUserToShare` })}
+                visible={showModal}
+                onOk={this.handleModalSave}
+                onCancel={this.handleModalCancel}
+              >
+                <CheckboxGroup onChange={this.handleCheckboxChange} value={selectedUsers.map(user => user.id)}>
+                  <Row>
+                    {users.map(user => {
+                      return (
+                        <Col xs={12} key={user.id}>
+                          <Checkbox
+                            key={user.id}
+                            value={user.id}
+                          >
+                            {user.name}
+                          </Checkbox>
+                        </Col>
+                      );
+                    })}
+                  </Row>
+                </CheckboxGroup>
+              </Modal>
+              <Button size="small" onClick={this.handleUserOrTeamBtnClick}>
+                {formatMessage({ id: `${visibilityI18n}.buttons.addUserOrTeamToShare` })}
+                <Icon size="small" style={{ fontSize: 11 }} type={showTreeSection ? 'caret-up' : 'caret-down'} />
+              </Button>
+            </Row>
+            {showTreeSection && (
+              <Row>
+                <div style={{ color: 'red' }}>{formatMessage({ id: `${visibilityI18n}.treeHelpText` })}</div>
+                <Col xs={24} sm={8}>
+                  <TeamTree
+                    teams={teams}
+                    onSelect={this.handleSelect}
+                    onDbClick={this.handleTeamSelection}
+                  />
+                </Col>
+                <Col xs={24} sm={16}>
+                  <UsersList
+                    defaultTitle={formatMessage({ id: `${visibilityI18n}.defaultTitle` })}
+                    // defaultTitle="Click Chart to Choose Department"
+                    title={title}
+                    withFilter
+                    showHeader
+                    users={usersInTeam}
+                    teamId={selectedTeamId}
+                    userAddonBefore={<Icon className="mr-sm" type="user" size="small"/>}
+                    teamAddonBefore={<Icon type="team" size="small"/>}
+                    onDoubleClick={this.handleUserSelection}
+                  />
+                </Col>
+              </Row>
+            )}
+          </Fragment>
         )}
       </Fragment>
     );

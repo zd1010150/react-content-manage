@@ -1,5 +1,29 @@
 export default {
   zh: {
+    general: {
+      newTitle: '添加视图',
+      existTitle: '编辑视图',
+    },
+    viewName: {
+      stepName: '输入视图名称',
+      inputs: {
+        viewName: '视图名称',
+      },
+    },
+    criteria: {
+      stepName: '筛选条件设置',
+      columns: {
+        field: '字段',
+        condition: '条件',
+        value: '值',
+      },
+      buttons: {
+        newFilter: '新筛选条件',
+      },
+      inputs: {
+        condition: '筛选条件逻辑',
+      },
+    },
     selectors: {
       stepName: '显示字段设置',
       sectionTitles: {
@@ -18,6 +42,30 @@ export default {
     },
   },
   en: {
+    general: {
+      newTitle: 'New View',
+      existTitle: 'Edit View',
+    },
+    viewName: {
+      stepName: 'Enter View Name',
+      inputs: {
+        viewName: 'View Name',
+      },
+    },
+    criteria: {
+      stepName: 'Specify Filter Criteria',
+      columns: {
+        field: 'Field',
+        condition: 'Condition',
+        value: 'Value',
+      },
+      buttons: {
+        newFilter: 'New Filter',
+      },
+      inputs: {
+        condition: 'Condition Logic',
+      },
+    },
     selectors: {
       stepName: 'Select Fields to Display',
       sectionTitles: {
