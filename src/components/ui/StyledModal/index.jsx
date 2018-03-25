@@ -4,7 +4,6 @@ import { intlShape, injectIntl } from 'react-intl';
 import { Modal } from 'antd';
 
 const defaultProps = {
-
 };
 const propTypes = {
   intl: intlShape.isRequired,
@@ -14,7 +13,7 @@ const propTypes = {
   onCancel: PropTypes.func.isRequired,
 };
 
-const CustomizedModal = ({ intl, children, ...other }) => {
+const StyledModal = ({ intl, children, ...other }) => {
   const { formatMessage } = intl;
   return (
     <Modal
@@ -26,6 +25,6 @@ const CustomizedModal = ({ intl, children, ...other }) => {
   );
 };
 
-CustomizedModal.defaultProps = defaultProps;
-CustomizedModal.propTypes = propTypes;
-export default injectIntl(CustomizedModal);
+StyledModal.defaultProps = defaultProps;
+StyledModal.propTypes = propTypes;
+export default injectIntl(StyledModal);

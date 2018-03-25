@@ -26,7 +26,7 @@ class ViewName extends Component {
     return (
       <FloatingLabelInput
         labelText={labelText}
-        labelColor="#09c"
+        labelColor="#4e4e4e"
         handleChange={this.handleChange}
         value={view_name}
         message={message}
