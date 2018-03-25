@@ -15,7 +15,7 @@ export default {
       columns: {
         field: '字段',
         condition: '条件',
-        value: '值',
+        value: '字段值',
       },
       buttons: {
         newFilter: '新筛选条件',
