@@ -17,7 +17,7 @@ const InputComponent = ({label}) => {
             {label}
         </Col>
         <Col className="gutter-row field-value" span={20}>
-            <Input placeholder="Basic usage"/>
+            <Input />
         </Col>
     </Row>
 }
