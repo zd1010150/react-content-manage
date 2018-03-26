@@ -1,16 +1,11 @@
 import { RESET_VIEW, SAVE_VIEW } from './actionTypes';
 import { setAvailableFields } from '../components/FieldsSelection/flow/actions';
-import { post, patch, get } from 'store/http/httpAction';
+import { get } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
 
 export const resetView = () => ({
   type: RESET_VIEW,
 });
-
-export const saveView = () => ({
-  type: SAVE_VIEW,
-});
-
 
 const getFetchUrlById = (id, objectType) => {
   const baseUrl = '/admin/list_views';

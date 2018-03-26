@@ -1,2 +1,3 @@
-export const RESET_VIEW = 'RESET_VIEW';
-export const SAVE_VIEW = 'SAVE_VIEW';
+import { RESET_VIEW_GLOBAL } from 'store/global/actionType';
+
+export const RESET_VIEW = RESET_VIEW_GLOBAL;

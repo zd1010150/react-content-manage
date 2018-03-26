@@ -19,7 +19,7 @@ import { Wrapper, CardContainer } from './MultiSelectDnD/index';
 import RichEditor from './RichEditor/index';
 import UsersList from './UsersList/index';
 import SelectionModal from './SelectionModal/index';
-
+import SubmitButtons from './SubmitButtons/index';
 
 export {
   Upload,
@@ -44,4 +44,5 @@ export {
   RichEditor,
   UsersList,
   SelectionModal,
+  SubmitButtons,
 };

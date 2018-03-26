@@ -41,8 +41,7 @@ class FieldsSelection extends Component {
     };
 
     const { availableFields, selectedFields } = this.props;
-    console.log('-====selected fs====-');
-    console.dir(this.state.selectedFields);
+    
     return (
       <Row>
         <Col {...colLayout}>
