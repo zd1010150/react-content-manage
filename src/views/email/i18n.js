@@ -27,7 +27,17 @@ export default {
       selectField: '选择领域',
       fieldValue: '领域值',
       importHtmlTemplate: '导入HTML模板',
-      preview:'预览'
+      preview:'预览',
+      newEmail: '新邮件',
+      send: '发送',
+      discard: '取消',
+      to: '收件人:',
+      cc: '抄送:',
+      bcc: '密送:',
+      subject: '主题:',
+      selectTemplate: '选择模板',
+      cloudAttachment: '云附件',
+      localAttachment: '本地附件'
 
 
   },
@@ -58,7 +68,19 @@ export default {
       selectField: 'Select Field',
       fieldValue: 'Field Value',
       importHtmlTemplate: 'Import HTML Template',
-      preview:'Preview'
+      preview:'Preview',
+
+      newEmail: 'New Email',
+      send: 'Send',
+      discard: 'Discard',
+      to: 'To:',
+      cc: 'Cc:',
+      bcc: 'Bcc:',
+      subject: 'Subject:',
+      selectTemplate: 'Select Template',
+      cloudAttachment: 'Cloud Attachment',
+      localAttachment: 'Local Attachment'
+
 
   },
 };
