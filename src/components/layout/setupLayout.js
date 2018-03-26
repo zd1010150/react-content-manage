@@ -2,8 +2,6 @@
 import React from 'react';
 import { Layout } from 'antd';
 import PropTypes from 'prop-types';
-import { RightSider } from 'components/page/index';
-import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
 import {
   MainContent,
@@ -16,14 +14,12 @@ const SetupLayout = ({ rightSiderCollapsed, rightSiderWidth }) => (
     <SetupSider />
     <Layout>
       <Content
-        className={classNames(rightSiderCollapsed ? 'right-side-collapsed' : '')}
         style={{
             transition: 'margin-right 0.5s', background: '#fff', padding: 24, margin: 0, minHeight: 400, maxHeight: 1000, overflow: 'auto', marginRight: rightSiderCollapsed ? 0 : rightSiderWidth,
                 }}
       >
         <MainContent />
       </Content>
-      {/* <RightSider /> */}
     </Layout>
 
 

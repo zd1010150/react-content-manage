@@ -1,24 +1,36 @@
 import React from 'react';
 import { Layout } from 'antd';
-import { RightSider } from 'components/page/index';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import {
   MainContent,
 } from '../page/index';
 
 const { Content } = Layout;
-const SubMainLayout = () => (
+const SubMainLayout = ({ rightSiderCollapsed, rightSiderWidth }) => (
   <Layout>
     <Content
       style={{
-                background: '#fff', padding: 24, margin: 0, minHeight: 280,
+                background: '#fff', padding: 24, margin: 0, minHeight: 280, transition: 'margin-right 0.5s', marginRight: rightSiderCollapsed ? 0 : rightSiderWidth,
             }}
       className="main-content-body"
     >
       <MainContent />
     </Content>
-    {/*<RightSider />*/}
   </Layout>
 );
 
-export default SubMainLayout;
+SubMainLayout.propTypes = {
+  rightSiderCollapsed: PropTypes.bool.isRequired,
+  rightSiderWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+};
+const mapStateToProps = ({ ui }) => {
+  const { rightSider } = ui;
+  return {
+    rightSiderCollapsed: rightSider.collapsed,
+    rightSiderWidth: rightSider.width,
+  };
+};
+export default connect(mapStateToProps)(SubMainLayout);
+

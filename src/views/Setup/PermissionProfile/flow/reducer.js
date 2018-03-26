@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
-import { SETUP_PERPRO_SET_SELECTED_DEPARTMENT, SETUP_PERPRO_TOGGLE_DEPARTMENT_DIALOG } from './actionType';
+import { SETUP_PERPRO_SET_SELECTED_DEPARTMENT, SETUP_PERPRO_TOGGLE_DEPARTMENT_DIALOG, SETUP_PERPRO_SET_SELECTED_PERMISSION } from './actionType';
 import allPermissions from './permissions';
 
 const permissions = (state = allPermissions) => state;
-const selectedDepartment = (state = { department_name: '', department_id: '' }, action) => {
+const selectedDepartment = (state = { department_name: '', department_id: '', permissions: [] }, action) => {
   const { type, ...payload } = action;
   switch (type) {
     case SETUP_PERPRO_SET_SELECTED_DEPARTMENT:
+      return Object.assign({}, state, { ...payload });
+    case SETUP_PERPRO_SET_SELECTED_PERMISSION:
       return Object.assign({}, state, { ...payload });
     default:
       return state;
