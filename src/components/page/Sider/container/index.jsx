@@ -109,6 +109,18 @@ const menuItems = [
   {
     id: 'email',
     path: `${pathPrefix}/email`,
+      children: [
+          {
+              id: 'templates',
+              path: `${pathPrefix}/email/templates`,
+              icon: 'setting',
+          },
+          {
+              id: 'Campaign',
+              path: `${pathPrefix}/email/campaign`,
+              icon: 'setting',
+          },
+      ]
   },
   {
     id: 'workflow',

@@ -6,6 +6,9 @@ import UIDemo from './ui-demo';
 import CompanyInfo from './Setup/CompanyInfo';
 import Users from './Setup/Users';
 import OrganisationChart from './Setup/OrganisationChart';
+import EmailTemplates from './email/emailTemplates';
+import EmailTemplatesCreation from './email/emailTemplatesCreation';
+import EmailTemplatesCampaign from './email/emailTemplatesCampaign';
 import PermissionProfile from './Setup/PermissionProfile';
 import LeadsFields from './Setup/LeadsFields';
 
@@ -18,6 +21,9 @@ export {
   CompanyInfo,
   Users,
   OrganisationChart,
+  EmailTemplates,
+  EmailTemplatesCreation,
+  EmailTemplatesCampaign,
   PermissionProfile,
-  LeadsFields,
+  LeadsFields
 };

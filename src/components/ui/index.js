@@ -16,6 +16,7 @@ import { CustomField } from './CustomField/index';
 import DefaultDepartment from './DefaultDepartment/index';
 import CriteriaHeader from './CriteriaHeader/index';
 import { Wrapper, CardContainer } from './MultiSelectDnD/index';
+import RichEditor from './RichEditor/index';
 import UsersList from './UsersList/index';
 import SelectionModal from './SelectionModal/index';
 
@@ -40,6 +41,7 @@ export {
   CriteriaHeader,
   Wrapper,
   CardContainer,
+  RichEditor,
   UsersList,
   SelectionModal,
 };
