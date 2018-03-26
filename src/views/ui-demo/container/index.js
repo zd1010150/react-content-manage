@@ -14,6 +14,7 @@ import TeamTree from '../component/TeamTree';
 import MultiDnD from '../component/MultiDragContainer';
 import Fields from '../component/Fields';
 import Sections from '../component/Sections';
+import RightSideBar from '../component/rightSideBar';
 
 const AntdPanel = Collapse.Panel;
 const { TabPane } = Tabs;
@@ -61,6 +62,11 @@ const UIDemo = () => (
       <Collapse >
         <AntdPanel header="Team Tree" key="1">
           <TeamTree />
+        </AntdPanel>
+      </Collapse>
+      <Collapse >
+        <AntdPanel header="RightSideBar" key="2">
+          <RightSideBar />
         </AntdPanel>
       </Collapse>
     </TabPane>

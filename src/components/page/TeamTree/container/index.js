@@ -133,9 +133,7 @@ class teamTree extends React.Component {
     const {
       checkable, draggable, teams, defaultExpandAll, defaultSelectedKeys, defaultExpandedKeys, autoExpandParent, defaultCheckedKeys,
     } = this.props;
-
     return (
-
       <Tree
         defaultExpandAll={defaultExpandAll}
         draggable={draggable}
