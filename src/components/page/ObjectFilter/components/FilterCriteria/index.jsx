@@ -21,7 +21,7 @@ class FilterCriteria extends Component {
 
   render() {
     const i18n = 'page.objectFilter.criteria';
-    const { filters, intl } = this.props;
+    const { condition_logic, filters, intl } = this.props;
     const { formatMessage } = intl;
 
     return (
@@ -41,6 +41,7 @@ class FilterCriteria extends Component {
           labelText={formatMessage({ id: `${i18n}.inputs.condition`})}
           labelColor="#4e4e4e"
           handleChange={this.handleLogicChange}
+          value={condition_logic}
         />
       </Fragment>
     );
@@ -51,6 +52,7 @@ FilterCriteria.defaultProps = defaultProps;
 FilterCriteria.propTypes = propTypes;
 const mapStateToProps = ({ global, objectView }) => ({
   language: global.language,
+  condition_logic: objectView.filterCriteria.condition_logic,
   filters: objectView.filterCriteria.filters,
 });
 const mapDispatchToProps = {

@@ -29,7 +29,7 @@ class ViewActions extends Component {
     const { object, viewId } = match.params;
     const objectType = model[object];
     const funcKey = viewId === Enums.PhantomID ? 'trySaveNew' : 'trySave';
-    this.props[funcKey](objectType, objectView);
+    this.props[funcKey](objectType, objectView, viewId);
   }
 
   render () {

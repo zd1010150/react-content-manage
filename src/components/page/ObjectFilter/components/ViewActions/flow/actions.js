@@ -20,7 +20,7 @@ const mapDataToAPI = (object_type, data) => {
   const assign_to_users = selectedUsers.map(user => user.id);
   const assign_to_teams = selectedTeams.map(team => team.id);
 
-  const testData = {
+  return {
     view_name,
     object_type,
     condition_logic,
@@ -30,7 +30,6 @@ const mapDataToAPI = (object_type, data) => {
     assign_to_users,
     assign_to_teams,
   };
-  return testData;
 };
 
 export const saveSuccess = _ => ({
@@ -44,8 +43,7 @@ export const trySaveNew = (objectType, viewData) => dispatch => post('/admin/lis
 });
 
 export const trySave = (objectType, viewData, id) => dispatch => patch(`/admin/list_views/${id}`, mapDataToAPI(objectType, viewData), dispatch).then((data) => {
-  if (data) {
-    debugger;
-    // dispatch(setUsers(data.data));
+  if (data && !_.isEmpty(data.data)) {
+    dispatch(saveSuccess());
   }
 });

@@ -31,22 +31,25 @@ class FloatingLabelInput extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value) {
+      this.setState({ isEmpty: nextProps.value.length === 0 });
+    }
+  }
+
   onBlur = e => this.setState({ isFocused: false })
-  onFocus = (e) => {
+
+  onFocus = e => {
     e.stopPropagation();
     this.setState({ isFocused: true });
     this.props.handleFocus();
   }
   
-  onPressEnter = (e) => {
-    this.props.handleSearch(e.target.value);
-  }
+  onPressEnter = e => this.props.handleSearch(e.target.value)
 
-  onChange = (e) => {
+  onChange = e => {
     const { value } = e.target;
-    this.setState({
-      isEmpty: value.length === 0,
-    });
+    this.setState({ isEmpty: value.length === 0 });
     this.props.handleChange(value);
   }
 
@@ -91,7 +94,7 @@ class FloatingLabelInput extends Component {
           />
         ) : (
           <Input
-            defaultValue={value}
+            value={value}
             onBlur={this.onBlur}
             onChange={this.onChange}
             onFocus={this.onFocus}
