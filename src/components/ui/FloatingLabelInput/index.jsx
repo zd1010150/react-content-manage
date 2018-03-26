@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Input } from 'antd';
 import classNames from 'classnames/bind';
 import styles from './index.less';
-
 const cx = classNames.bind(styles);
 
 const defaultProps = {
@@ -34,11 +33,11 @@ class FloatingLabelInput extends Component {
 
   onBlur = e => this.setState({ isFocused: false })
   onFocus = (e) => {
-    debugger;
     e.stopPropagation();
     this.setState({ isFocused: true });
     this.props.handleFocus();
   }
+  
   onPressEnter = (e) => {
     this.props.handleSearch(e.target.value);
   }
