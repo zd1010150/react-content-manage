@@ -11,7 +11,7 @@ import { LeftActions, RightActions } from './ActionButtons/index';
 import StyledModal from './StyledModal/index';
 import ListTable from './ListTable/index';
 import DeleteConfirmDialog from './DeleteConfirmDialog';
-import FilterCondition from './FilterCondition/index';
+import Criterion from './Criterion/index';
 import { CustomField } from './CustomField/index';
 import DefaultDepartment from './DefaultDepartment/index';
 import CriteriaHeader from './CriteriaHeader/index';
@@ -34,7 +34,7 @@ export {
   StyledModal,
   ListTable,
   DeleteConfirmDialog,
-  FilterCondition,
+  Criterion,
   CustomField,
   DefaultDepartment,
   Section,

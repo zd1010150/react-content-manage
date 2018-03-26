@@ -10,15 +10,18 @@ import Enums from 'utils/EnumsManager';
 const initialState = {
   availableFields: [],
   selectedFields: [],
+  allFields: [],
 };
 
 const fields = (state = initialState, action) => {
   switch (action.type) {
     case SET_AVAILABLE_FIELDS:
       const { data } = action.payload;
+      const dataCopy = _.cloneDeep(data);
       return {
         ...state,
-        availableFields: data,
+        allFields: data,  // this was used by criteria section, without affecting original order.
+        availableFields: dataCopy,
       };
 
     case ADD_TO_SELECTION:

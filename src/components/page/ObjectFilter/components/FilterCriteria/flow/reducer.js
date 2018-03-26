@@ -1,4 +1,10 @@
-import { ADD_FILTER, SET_CONDITION_LOGIC, RESET_VIEW, REMOVE_FILTER } from './actionTypes';
+import {
+  ADD_FILTER,
+  SET_CONDITION_LOGIC,
+  RESET_VIEW,
+  REMOVE_FILTER,
+  CHANGE_FIELD,
+} from './actionTypes';
 import Enums from 'utils/EnumsManager';
 
 const initialState = {
@@ -15,6 +21,7 @@ const filterCriteria = (state = initialState, action) => {
         condition_logic,
       };
     
+
     case ADD_FILTER:
       const { filters } = state;
       const lastItem = filters[filters.length - 1];
@@ -25,22 +32,42 @@ const filterCriteria = (state = initialState, action) => {
         display_num,
         condition: '',
         value: '',
+        type: '',
       };
       return {
         ...state,
         filters: [...filters, newFilter]
       };
 
+      
     case REMOVE_FILTER:
       const { displayNum } = action.payload;
       const arrayAfterRemove = state.filters.filter(filter => filter.display_num != displayNum);
       return {
         ...state,
-        filters: arrayAfterRemove
+        filters: arrayAfterRemove,
       };
+    
+
+    case CHANGE_FIELD:
+      const { fieldId, fieldType } = action.payload;
+      const filterDisplayNum = action.payload.displayNum;
+      const arrayAfterChangeField = state.filters.map(filter => {
+        if (filter.display_num === filterDisplayNum) {
+          filter.type = fieldType;
+        }
+        return filter;
+      });
+
+      return {
+        ...state,
+        filters: arrayAfterChangeField,
+      };
+
 
     case RESET_VIEW:
       return initialState;
+
 
     default:
       return state;

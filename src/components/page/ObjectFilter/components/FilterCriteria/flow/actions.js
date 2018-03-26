@@ -1,4 +1,9 @@
-import { SET_CONDITION_LOGIC, ADD_FILTER, REMOVE_FILTER } from './actionTypes';
+import { 
+  SET_CONDITION_LOGIC,
+  ADD_FILTER,
+  REMOVE_FILTER,
+  CHANGE_FIELD,
+} from './actionTypes';
 
 export const setConditionLogic = condition_logic => ({
   type: SET_CONDITION_LOGIC,
@@ -12,4 +17,9 @@ export const addFilter = () => ({
 export const removeFilter = displayNum => ({
   type: REMOVE_FILTER,
   payload: { displayNum },
+});
+
+export const changeField = (fieldId, displayNum, fieldType) => ({
+  type: CHANGE_FIELD,
+  payload: { fieldId, displayNum, fieldType },
 });

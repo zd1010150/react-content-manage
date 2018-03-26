@@ -162,7 +162,7 @@ const Fields = ({
       );
       break;
     default:
-      throw new Error('Type is not found.');
+      // throw new Error('Type is not found.');
   }
 
   return (
