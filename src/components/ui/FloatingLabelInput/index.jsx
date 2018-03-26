@@ -66,6 +66,7 @@ class FloatingLabelInput extends Component {
       handleSearch,
       message,
       required,
+      noLabel
     } = this.props;
     const shouldLabelUp = !(!isFocused && isEmpty);
     const shouldShowPlaceholder = isFocused && isEmpty;
@@ -75,7 +76,7 @@ class FloatingLabelInput extends Component {
       <div className={classNames(cx('floatingInputWrapper'), 'floatingInputWrapper') + (hasError ? ' has-error' : '')}>
         <label
           className={shouldLabelUp ? cx('toTop') : ''}
-          style={{ color: labelColor }}
+          style={{ color: labelColor, display: noLabel ? 'none' : '' }}
         >
           {labelText}
         </label>

@@ -23,13 +23,12 @@ const initialState = {
 };
 
 const flattenTree = (tree, newTree) => {
-  tree.forEach(node => {
+  tree.forEach((node) => {
     if (_.isEmpty(node.child_team_rec)) {
       return newTree.push(node);
-    } else {
-      newTree.push(node);
-      return flattenTree(node.child_team_rec, newTree);
     }
+    newTree.push(node);
+    return flattenTree(node.child_team_rec, newTree);
   });
 };
 
@@ -55,7 +54,7 @@ const visibilities = (state = initialState, action) => {
         selectedOption,
       };
 
-    
+
     case SET_USERS:
       const { users } = action.payload;
       return {
@@ -64,8 +63,8 @@ const visibilities = (state = initialState, action) => {
       };
 
 
-    case SET_TEAMS:
-      const { teams } = action;
+      case SET_TEAMS:
+      const teams = [...action.teams];
       teams.unshift({
         id: -1,
         name: 'No department',
@@ -102,9 +101,9 @@ const visibilities = (state = initialState, action) => {
       let { selectedUserIds, selectedTeamIds } = action.payload;      
       const selectedUsers = batchAddToSelection(selectedUserIds, state.users);
       const selectedTeams = batchAddToSelection(selectedTeamIds, state.flatTeams);
-      console.log('batch adding');
-      console.dir(selectedUsers);
-      console.dir(selectedTeams);
+      // console.log('batch adding');
+      // console.dir(selectedUsers);
+      // console.dir(selectedTeams);
 
       return {
         ...state,
@@ -121,7 +120,7 @@ const visibilities = (state = initialState, action) => {
       const entities = isTeam ? state.flatTeams : state.users;
       const entity = entities.find(entity => entity.id === entityId);
       if (!entity) return state;
-      
+
       const targetKey = isTeam ? 'selectedTeams' : 'selectedUsers';
       const selectionAfterAdd = addToSelection(entity, state[targetKey]);
       return {

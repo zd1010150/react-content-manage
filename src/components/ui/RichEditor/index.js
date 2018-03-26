@@ -91,7 +91,9 @@ class RichEditor extends React.Component {
                     onToggle={this.toggleBlockType}
                     formatMessage={formatMessage}
                     getLocalHtml={this.getLocalHtml}
-                />
+                >
+                    {this.props.additionalCtrl}
+                </ActionControls>
                 <BlockStyleControls
                     editorState={editorState}
                     onToggle={this.toggleBlockType}
@@ -155,20 +157,14 @@ class StyleButton extends React.Component {
 }
 
 const ActionControls = (props) => {
-    const {editorState, formatMessage, getLocalHtml} = props;
+    const {editorState, formatMessage, getLocalHtml, children} = props;
     const selection = editorState.getSelection();
     return (
         <div className="RichEditor-controls">
-            <label>
-                <input type="file" id="uploadFile" onChange={getLocalHtml} style={{display: 'none'}}/>
-                <a size="small" className={`mr-md ${cx('rich-editor-link-button')}`}><Icon className={cx('rich-editor-import-icon')} type="download" />
-                    {formatMessage({id: 'page.emailTemplates.importHtmlTemplate'})}
-                </a>
-            </label>
+            {
+                children
+            }
 
-            <Button size="small" className="email-theme-btn mr-md" onClick={this.onToggle}><Icon type="eye-o" />
-                {formatMessage({id: 'page.emailTemplates.preview'})}
-            </Button>
         </div>
     );
 };

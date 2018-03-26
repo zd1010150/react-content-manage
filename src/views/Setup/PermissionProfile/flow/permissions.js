@@ -1,5 +1,9 @@
 
 const permissions = {
+  superAdmin: {
+    label: '',
+    value: 'Super-Admin',
+  },
   tabs: [{
     label: 'Dashboard',
     value: 'Tab-Dashboard',
@@ -98,4 +102,4 @@ const permissions = {
 
 };
 
-export default  permissions;
+export default permissions;

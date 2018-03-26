@@ -145,8 +145,8 @@ class userForm extends React.Component {
               })(momentsEl)}
         </FormItem>
         <FormItem {...FORM_FOOTER_CONFIG}>
-          <Button type="primary" htmlType="submit" onClick={() => { this.onSubmit(); }}><Icon type="save" />save</Button>
-          <Button type="danger" className="ml-sm"><Icon type="close" />cancel</Button>
+            <Button type="primary" htmlType="submit" onClick={() => { this.onSubmit(); }}><Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' })}</Button>
+            <Button type="danger" className="ml-sm"><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
         </FormItem>
       </Form>
     );
