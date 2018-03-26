@@ -9,7 +9,15 @@ const selectedDepartment = (state = { department_name: '', department_id: '', pe
     case SETUP_PERPRO_SET_SELECTED_DEPARTMENT:
       return Object.assign({}, state, { ...payload });
     case SETUP_PERPRO_SET_SELECTED_PERMISSION:
-      return Object.assign({}, state, { ...payload });
+      const isSuperAdmin = payload.permissions.indexOf(allPermissions.superAdmin.value) > -1;
+      let ps = [];
+      if (isSuperAdmin) {
+        const { tabs, pages } = allPermissions;
+        ps = tabs.map(t => t.value).concat(Object.keys(pages).reduce((values, key) => values.concat(pages[key].map(t => t.value)), []));
+      }else {
+        ps = payload.permissions;
+      }
+      return Object.assign({}, state, { permissions: ps });
     default:
       return state;
   }

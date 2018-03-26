@@ -14,6 +14,8 @@ export default {
     pageLayout: '自定义页面结构',
     email: '电子邮件设置',
     workflow: '业务流程设置',
+    templates: '邮件模版',
+    Campaign: '营销邮件',
   },
   en: {
     uiDemo: 'UI Demo',
@@ -30,5 +32,7 @@ export default {
     pageLayout: 'page layout',
     email: 'email communications',
     workflow: 'workflow automation',
+    templates: 'Email Template',
+    Campaign: 'Email Campaign',
   },
 };

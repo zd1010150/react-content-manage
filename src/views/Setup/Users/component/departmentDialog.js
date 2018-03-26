@@ -27,7 +27,6 @@ class DepartmentDialog extends React.Component {
         onCancel={() => this.props.toggleDepartmentDialog(false)}
       >
         <DefaultDepartment onSelect={(id, name) => { this.selectDepartment(true, { id, name }); }} />
-
         <TeamTree onSelect={(selectedKeys, treeData) => this.selectDepartment(false, selectedKeys, treeData)} teams={teams} defaultExpandAll />
       </Modal>
     );
