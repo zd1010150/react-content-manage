@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 const Option = Select.Option;
 
 const InputComponent = ({label}) => {
-    return <Row className={`pt-lg ${cx('new-email-input-row')}`}>
+    return <Row className={`pt-lg ${cx('new-template-input-row')}`}>
         <Col className="gutter-row field-label" span={4}>
             {label}
         </Col>
@@ -23,7 +23,7 @@ const InputComponent = ({label}) => {
 }
 
 const SelectComponent = ({label, onChange}) => {
-    return <Row className={`pt-lg ${cx('new-email-input-row')}`}>
+    return <Row className={`pt-lg ${cx('new-template-input-row')}`}>
         <Col className="gutter-row field-label" span={4}>
             {label}
         </Col>
@@ -58,7 +58,7 @@ const BasicInfo = ({formatMessage}) => {
 }
 
 const FieldInfo = ({formatMessage, onChange})=> {
-    return <Row className={`pt-lg ${cx(['new-email-input-row', 'new-email-folder-information'])}`}>
+    return <Row className={`pt-lg ${cx(['new-template-input-row', 'new-template-folder-information'])}`}>
         <Col className="gutter-row field-label" span={7}>
             <SelectComponentVertical label={formatMessage({id: 'page.emailTemplates.fieldInfo'})} onChange={onChange}/>
         </Col>
@@ -88,7 +88,7 @@ class TemplateInformation extends React.Component {
         return (
             <Panel panelTitle={formatMessage({id: 'page.emailTemplates.newEmailTemplate'})}
                    panelClasses="email-theme-panel"
-                   contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('new-email-panel-content')}`}>
+                   contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('new-template-panel-content')}`}>
                 <BasicInfo formatMessage={formatMessage}/>
                 <FieldInfo formatMessage={formatMessage}/>
                 <TemplateContent />

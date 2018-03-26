@@ -148,7 +148,7 @@ class Container extends Component {
               isSelected={card.selected}
               isOtherDragging={isOtherDragging}
               clearDragging={this.clearDragging}
-              setDragging={this.setDragging}			
+              setDragging={this.setDragging}
               {...others}
             />
           ))}

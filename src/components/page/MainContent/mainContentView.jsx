@@ -13,6 +13,7 @@ import {
   OrganisationChart,
   EmailTemplates,
   EmailTemplatesCreation,
+  NewEmail,
   EmailTemplatesCampaign,
   PermissionProfile,
   LeadsFields
@@ -30,8 +31,9 @@ const MainContent = () => (
     <Route path="/setup/company-info/company-info" component={CompanyInfo} />
     <Route path="/setup/company-info/users" component={Users} />
     <Route path="/setup/company-info/chart" component={OrganisationChart} />
-    <Route path="/setup/email/templates/" component={EmailTemplates} />
-    <Route path="/setup/email/templates-creation/" component={EmailTemplatesCreation} />
+    <Route path="/setup/email/templates" component={EmailTemplates} />
+    <Route path="/setup/email/templates-creation" component={EmailTemplatesCreation} />
+    <Route path="/email/new" component={NewEmail} />
     <Route path="/setup/email/campaign/" component={EmailTemplatesCampaign} />
     <Route path="/setup/company-info/permissions" component={PermissionProfile} />
     <Route path="/setup/leads/fields" component={LeadsFields} />
