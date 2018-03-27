@@ -5,34 +5,48 @@ import { withRouter } from 'react-router-dom';
 import { Row } from 'antd';
 
 import Enums from 'utils/EnumsManager';
-import { Buttons, ConditionLogic } from './components/index';
+import { Buttons, ConditionLogic, Filters } from './components/index';
 
 const defaultProps = {};
 const propTypes = {
 };
 
 class FilterCriteria extends Component {
-  _handleAddNewClick = e => {
+  _handleAddNewClick = $ => {
     const { handleAddNewClick } = this.props;
     if (_.isFunction(handleAddNewClick)) {
-      handleAddNewClick();
+      return handleAddNewClick();
     }
   }
 
   _handleLogicChange = value => {
     const { handleLogicChange } = this.props;
     if (_.isFunction(handleLogicChange)) {
-      handleLogicChange(value);
+      return handleLogicChange(value);
+    }
+  }
+
+  _handleFilterRemove = e => {
+    const { handleFilterRemove } = this.props;
+    if (_.isFunction(handleFilterRemove)) {
+      const { displayNum } = e.target.dataset;
+      return handleFilterRemove(displayNum);
     }
   }
 
   render() {
-    const { match, logicText } = this.props;
+    const { match, logicText, fields, filters, conditions } = this.props;
     const { object } = match.params;
 
     return (
       <Fragment>
         <Row>
+          <Filters
+            fields={fields}
+            conditions={conditions}
+            filters={filters}
+            handleFilterRemove={this._handleFilterRemove}
+          />
         </Row>
         <Row style={{ textAlign: 'center', margin: '10px 0' }}>
           <Buttons objectType={object} handleAddClick={this._handleAddNewClick} />
