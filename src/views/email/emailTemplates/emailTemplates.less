@@ -17,6 +17,16 @@
 .folder-icon{
   color: @email-theme-color;
   font-size: 30px;
+  cursor: move;
+  margin-left: 5px;
+
+  &.selected {
+    cursor: move;
+  }
+
+  &.dragging {
+    opacity: .3;
+  }
 }
 
 .tab-button{
@@ -47,21 +57,4 @@
   background: #fff;
   padding: 6px 15px;
   text-align: center;
-}
-
-
-.card {
-
-  i {
-    cursor: move;
-    margin-left: 5px;
-  }
-
-  &.selected {
-    cursor: move;
-  }
-
-  &.dragging {
-    opacity: .3;
-  }
 }

@@ -47,8 +47,7 @@ class EmailTemplateEditFolder extends React.Component {
         super(props);
         this.state = {
             cards: props.userFolders,
-            startIndex: -1,
-            endIndex: -1,
+            selectIndex: -1,
             isOtherDragging: false,
         };
     }
@@ -65,13 +64,12 @@ class EmailTemplateEditFolder extends React.Component {
         });
     }
 
-    setSelectedCards = (start, end) => {
+    setSelectedCards = (index) => {
         const { cards } = this.state;
         const selectedCards = cards.map((card, i) => {
-            card.selected = i >= start && i <= end;
+            card.selected = i === Number(index);
             return card;
         });
-
         const { onSelect } = this.props;
         if (onSelect && typeof onSelect === 'function') {
             onSelect(selectedCards.filter(card => card.selected));
@@ -81,35 +79,20 @@ class EmailTemplateEditFolder extends React.Component {
 
     handleItemSelection = e => {
         const { index } = e.target.dataset;
-        const { startIndex } = this.state;
 
         if (!e.shiftKey) {
             return this.setState({
-                cards: this.setSelectedCards(index, index),
-                startIndex: index,
-                endIndex: index,
-            });
-        }
-
-        if (index < startIndex) {
-            return this.setState({
-                cards: this.setSelectedCards(index, startIndex),
-                startIndex: index,
-                endIndex: startIndex,
-            });
-        } else {
-            return this.setState({
-                cards: this.setSelectedCards(startIndex, index),
-                endIndex: index,
+                cards: this.setSelectedCards(index),
+                selectIndex: index
             });
         }
     }
 
     setDragging = () => {
-        const { startIndex, endIndex } = this.state;
+        const { selectIndex } = this.state;
         this.setState({
             isOtherDragging: true,
-            cards: this.setSelectedCards(startIndex, endIndex),
+            cards: this.setSelectedCards(selectIndex),
         });
     }
 
@@ -127,29 +110,26 @@ class EmailTemplateEditFolder extends React.Component {
 
     // Swap algorithm
     // According to how the drag function is worked (in other words, when moveCard is being called), we only swap with one adjacent card every time,
-    // either drag upwords or downwords.
-    swapCards = (cards, start, length, newStart) => {
+    swapCards = (cards, start, newStart) => {
         const cardsCopy = _.cloneDeep(cards);
-        const dragCards = cardsCopy.splice(start, length);
-        // Insert all dragged cards into new positions
-        dragCards.forEach((dragCard, i) => cardsCopy.splice(newStart + i, 0, dragCard));
+        const dragCards = cardsCopy.splice(start, 1);
+        // Insert dragged card into new positions
+        cardsCopy.splice(newStart, 0, dragCards[0]);
         return cardsCopy;
     }
 
     moveCard = (dragIndex, hoverIndex) => {
-        const { startIndex, endIndex, cards } = this.state;
+        const { selectIndex, cards } = this.state;
         // Don't replace items with other selected items
-        if (hoverIndex >= startIndex && hoverIndex <= endIndex) {
+        if (hoverIndex === selectIndex) {
             return;
         }
 
-        const dragLength = endIndex - startIndex + 1;
-        const newStartIndex = startIndex > hoverIndex ? hoverIndex : Number(startIndex) + 1;
-        const newCards = this.swapCards(cards, startIndex, dragLength, newStartIndex);
+        const newStartIndex = hoverIndex;
+        const newCards = this.swapCards(cards, selectIndex, newStartIndex);
 
         this.setState({
-            startIndex: newStartIndex,
-            endIndex: newStartIndex + dragLength - 1,
+            selectIndex: newStartIndex,
             cards: newCards,
             isOtherDragging: true,
         });
@@ -161,12 +141,15 @@ class EmailTemplateEditFolder extends React.Component {
         const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteUserFolderData, ...others} = this.props;
         const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {}}><Icon type="plus" />{ formatMessage({ id: 'page.emailTemplates.newFolder' }) }</Button></div>;
         return (
-            <Panel panelTitle={formatMessage({ id: 'page.emailTemplates.editFolderTitle' })} contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={actionsRight}>
+            <Panel panelTitle={formatMessage({ id: 'page.emailTemplates.editFolderTitle' })} panelClasses="email-theme-panel" contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={actionsRight}>
                 <Row onMouseDown={this.handleItemSelection} className={cx('folders')}>
                     {userFolders.map((item, key)=>
-                        <Col data-index={key}
-                             data-id={item.id}
-                             className="pl-lg gutter-row field-label" span={6}>
+                        <Col
+                            key={key}
+                            data-index={key}
+                            data-id={item.id}
+                            className="pl-lg mb-md gutter-row field-label"
+                            span={6}>
                             <Folder
                                 key={item.id}
                                 item={item}

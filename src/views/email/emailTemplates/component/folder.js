@@ -27,7 +27,6 @@ const propTypes = {
     index: PropTypes.number.isRequired,
     isDragging: PropTypes.bool.isRequired,
     id: PropTypes.any.isRequired,
-    text: PropTypes.string.isRequired,
     moveCard: PropTypes.func.isRequired,
     isOtherDragging: PropTypes.bool.isRequired,
     clearDragging: PropTypes.func.isRequired,
@@ -54,9 +53,7 @@ const cardSource = {
 const cardTarget = {
     hover(props, monitor, component) {
         const dragIndex = monitor.getItem().index;
-        console.log('dragIndex', monitor.getItem())
         const hoverIndex = props.index;
-        console.log('hoverIndex', hoverIndex)
 
         // Don't replace items with themselves
         if (dragIndex === hoverIndex) {
@@ -103,8 +100,8 @@ const cardTarget = {
 class Card extends Component {
     render() {
         const {
-            text,
             isDragging,
+            isOver,
             connectDragSource,
             connectDropTarget,
             id,
@@ -123,9 +120,7 @@ class Card extends Component {
         const { Edit, Delete, Deactivate } = Enums.FieldOperationTypes;
         return connectDragSource(
             connectDropTarget(
-                <div
-                    className={`${cx('card')}`}
-                >
+                <div>
                     {/*<div onClick={()=>{deleteUserFolderData(item.id)}}>*/}
                     <div>
                         <Icon
@@ -136,6 +131,18 @@ class Card extends Component {
                         />
                         <span className="pl-sm"><Icon type="delete"/></span>
                     </div>
+                    {isOver &&
+                    <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 5,
+                        height: '90%',
+                        width: '3px',
+                        zIndex: 1,
+                        opacity: 1,
+                        backgroundColor: '#FB8C00',
+                    }} />
+                    }
                     <Input size="small" disabled={!canEdit} addonAfter={!canEdit && <Icon onClick={() => {setEditFolderData(item)}} type="edit" />} defaultValue={item.name} />
                 </div>),
         );
@@ -149,7 +156,8 @@ export default _.flow(
         connectDragSource: connect.dragSource(),
         isDragging: monitor.isDragging(),
     })),
-    DropTarget(ItemTypes.FOLDER, cardTarget, connect => ({
+    DropTarget(ItemTypes.FOLDER, cardTarget, (connect, monitor) => ({
         connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver()
     }))
 )(Card);
