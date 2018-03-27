@@ -2,7 +2,7 @@ import {
   SET_CONDITION_LOGIC,
   ADD_FILTER,
   REMOVE_FILTER,
-  CHANGE_FIELD,
+  CHANGE_FILTER,
 } from './actionTypes';
 
 export const setConditionLogic = condition_logic => ({
@@ -19,7 +19,7 @@ export const removeFilter = displayNum => ({
   payload: { displayNum },
 });
 
-export const changeField = (fieldId, displayNum, fieldType) => ({
-  type: CHANGE_FIELD,
-  payload: { fieldId, displayNum, fieldType },
+export const changeFilter = (displayNum, key, value, fieldId) => ({
+  type: CHANGE_FILTER,
+  payload: { displayNum, key, value, fieldId },
 });

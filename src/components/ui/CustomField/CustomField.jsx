@@ -4,6 +4,9 @@ import { Select, Input, InputNumber, DatePicker } from 'antd';
 const { TextArea } = Input;
 const Option = Select.Option;
 import moment from 'moment';
+import classNames from 'classnames/bind';
+import styles from './index.less';
+const cx = classNames.bind(styles);
 
 import { DisplayField, EmailInput } from './index';
 import { getRange } from 'utils/common';
@@ -12,6 +15,7 @@ import Enums from 'utils/EnumsManager';
 const defaultProps = {
   type: '',
   size: 'small',
+  options: [],
 };
 const propTypes = {
   type: PropTypes.oneOf(Enums.FieldTypesInArray).isRequired,
@@ -58,6 +62,7 @@ const Fields = ({
       field = (
         <DatePicker
           {...others}
+          className={cx('customField')}
           format="YYYY-MM-DD"
           onChange={(date, dateString) => onChange(id, dateString)}
           // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
@@ -70,6 +75,7 @@ const Fields = ({
       field = (
         <DatePicker
           {...others}
+          className={cx('customField')}
           format="YYYY-MM-DD HH:mm:ss"
           onChange={(date, dateString) => onChange(id, dateString)}
           showTime
@@ -83,6 +89,7 @@ const Fields = ({
       field = (
         <EmailInput
           {...others}
+          className={cx('customField')}
           id={id}
           onChange={onChange}
         />
@@ -92,6 +99,7 @@ const Fields = ({
       field = (
         <TextArea
           {...others}
+          className={cx('customField')}
           autosize={{ minRows: 2, maxRows: 6 }}
           onChange={e => onChange(id, e.target.value)}
         />
@@ -101,8 +109,8 @@ const Fields = ({
       field = (
         <Select
           {...others}
+          className={cx('customField')}
           mode="combobox"
-          style={{ width: '100%' }}
           onChange={values => onChange(id, values)}
         >
           {options.map(option => <Option key={option.id}>{option.value}</Option>)}
@@ -120,6 +128,7 @@ const Fields = ({
         //          we need to use scale to set InputNumber's precision
         <InputNumber
           {...others}
+          className={cx('customField')}
           precision={scale}
           {...numRange}
           style={{ minWidth: 200 }}
@@ -131,6 +140,7 @@ const Fields = ({
       field = (
         <Select
           {...others}
+          className={cx('customField')}
           mode="tags"
           style={{ width: '100%' }}
           onChange={values => onChange(id, values)}
@@ -143,6 +153,7 @@ const Fields = ({
       field = (
         <Input
           {...others}
+          className={cx('customField')}
           onChange={e => onChange(id, e.target.value)}
         />
       );
@@ -151,6 +162,7 @@ const Fields = ({
       field = (
         <DisplayField
           {...others}
+          className={cx('customField')}
           label={'testabc'}
           helpText={'tooltip of test'}
           value={'test value'}
@@ -162,7 +174,7 @@ const Fields = ({
       );
       break;
     default:
-      // throw new Error('Type is not found.');
+      throw new Error('Type is not found.');
   }
 
   return (

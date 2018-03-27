@@ -8,8 +8,6 @@ const cx = classNames.bind(styles);
 const defaultProps = {
   labelText: 'Default Label',
   withSearch: false,
-  handleChange: () => {},
-  handleFocus: () => {},
 };
 const propTypes = {
   labelText: PropTypes.string.isRequired,
@@ -42,15 +40,28 @@ class FloatingLabelInput extends Component {
   onFocus = e => {
     e.stopPropagation();
     this.setState({ isFocused: true });
-    this.props.handleFocus();
+
+    const { handleFocus } = this.props;
+    if (_.isFunction(handleFocus)) {
+      handleFocus(e.target.value);
+    }
   }
   
-  onPressEnter = e => this.props.handleSearch(e.target.value)
+  onPressEnter = e => {
+    const { handleSearch } = this.props;
+    if (_.isFunction(handleSearch)) {
+      handleSearch(e.target.value);
+    }
+  }
 
   onChange = e => {
     const { value } = e.target;
     this.setState({ isEmpty: value.length === 0 });
-    this.props.handleChange(value);
+
+    const { handleChange } = this.props;
+    if (_.isFunction(handleChange)) {
+      handleChange(value);
+    }
   }
 
   render() {

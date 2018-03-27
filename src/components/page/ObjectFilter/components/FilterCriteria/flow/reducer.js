@@ -3,7 +3,7 @@ import {
   SET_CONDITION_LOGIC,
   RESET_VIEW,
   REMOVE_FILTER,
-  CHANGE_FIELD,
+  CHANGE_FILTER,
 } from './actionTypes';
 import Enums from 'utils/EnumsManager';
 
@@ -49,19 +49,22 @@ const filterCriteria = (state = initialState, action) => {
       };
     
 
-    case CHANGE_FIELD:
-      const { fieldId, fieldType } = action.payload;
+    case CHANGE_FILTER:
+      const { key, value, fieldId } = action.payload;
       const filterDisplayNum = action.payload.displayNum;
-      const arrayAfterChangeField = state.filters.map(filter => {
+      const filtersAfterChange = state.filters.map(filter => {
         if (filter.display_num === filterDisplayNum) {
-          filter.type = fieldType;
+          if (fieldId) {
+            filter.id = fieldId;
+          }
+          filter[key] = value;
         }
         return filter;
       });
 
       return {
         ...state,
-        filters: arrayAfterChangeField,
+        filters: filtersAfterChange,
       };
 
 

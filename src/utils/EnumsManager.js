@@ -13,6 +13,22 @@ const BaseEnums = Object.freeze({
     Display: 'display',
   }),
 
+  ObjectTypes: Object.freeze({
+    Leads: 'leads',
+    Accounts: 'accounts',
+    Opportunities: 'opportunities',
+    Report: 'report',
+    Email: 'email',
+  }),
+
+  ThemeTypes: Object.freeze({
+    Leads: 'lead',
+    Accounts: 'account',
+    Opportunities: 'opport',
+    Report: 'report',
+    Email: 'email',
+  }),
+
 });
 
 const EnumsManager = Object.freeze({
@@ -32,7 +48,7 @@ const EnumsManager = Object.freeze({
     'picklist',
   ]),
 
-  ThemeTypes: Object.freeze(['lead', 'account', 'opport', 'report', 'email']),
+  ThemeTypes: Object.freeze(BaseEnums.ThemeTypes),
 
   SortOrders: Object.freeze({
     ascend: 'asc',
@@ -60,7 +76,15 @@ const EnumsManager = Object.freeze({
     Deactivate: 'deactivate',
   }),
 
-  ObjectTypes: Object.freeze(['leads', 'accounts', 'opportunities']),
+  ObjectTypes: Object.freeze(BaseEnums.ObjectTypes),
+
+  ObjectTypesThemesMapping: Object.freeze({
+    [BaseEnums.ObjectTypes.Leads]: BaseEnums.ThemeTypes.Leads,
+    [BaseEnums.ObjectTypes.Accounts]: BaseEnums.ThemeTypes.Accounts,
+    [BaseEnums.ObjectTypes.Opportunities]: BaseEnums.ThemeTypes.Opportunities,
+    [BaseEnums.ObjectTypes.Report]: BaseEnums.ThemeTypes.Report,
+    [BaseEnums.ObjectTypes.Email]: BaseEnums.ThemeTypes.Email,
+  }),
 
   CriteriaColumns: Object.freeze([
     'field', 'condition', 'value'

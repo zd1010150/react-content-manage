@@ -13,7 +13,7 @@ const CriteriaHeader = ({ intl, }) => {
   const colLayout = {
     xs: 24,
     sm: 7,
-    push: 2,
+    push: 1,
   }
 
   return (
