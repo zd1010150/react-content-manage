@@ -15,15 +15,17 @@
 }
 
 .folder-icon{
+  cursor: pointer;
   color: @email-theme-color;
   font-size: 30px;
-  cursor: move;
   margin-left: 5px;
+}
 
+.folder-move{
+  cursor: move;
   &.selected {
     cursor: move;
   }
-
   &.dragging {
     opacity: .3;
   }

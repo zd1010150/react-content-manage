@@ -128,7 +128,7 @@ class Card extends Component {
                         <Icon
                             data-index={index}
                             data-id={id}
-                            className={cx('folder-icon')}
+                            className={cx(['folder-icon', 'folder-move'])}
                             type="folder"
                         />
                         <span className="pl-sm"><Icon type="delete"/></span>
