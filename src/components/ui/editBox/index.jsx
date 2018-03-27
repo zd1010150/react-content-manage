@@ -71,7 +71,9 @@ class EditBox extends React.Component {
       }
     }
     buildValue() {
-      const { type, isShowStatuLabel, isDisabled, inputClasses } = this.props;
+      const {
+        type, isShowStatuLabel, isDisabled, inputClasses,
+      } = this.props;
       let valueEl;
       let iconEl;
       if (type === 'select') {
