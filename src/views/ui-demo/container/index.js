@@ -15,6 +15,7 @@ import MultiDnD from '../component/MultiDragContainer';
 import Fields from '../component/Fields';
 import Sections from '../component/Sections';
 import RightSideBar from '../component/rightSideBar';
+import EditBoxes from '../component/editBox';
 
 const AntdPanel = Collapse.Panel;
 const { TabPane } = Tabs;
@@ -40,6 +41,7 @@ const UIDemo = () => (
         </AntdPanel>
         <AntdPanel header="Edit Field" key="6">
                 参见<Link to="/setup/company-info/company-info">公司信息的修改  click me! </Link>
+          <EditBoxes />
         </AntdPanel>
         <AntdPanel header="Inputs" key="7">
           <Inputs />

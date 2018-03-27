@@ -64,7 +64,7 @@ class FloatingLabelInput extends Component {
       handleSearch,
       message,
       required,
-      noLabel
+      noLabel,
     } = this.props;
     const shouldLabelUp = !(!isFocused && isEmpty);
     const shouldShowPlaceholder = isFocused && isEmpty;
