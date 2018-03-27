@@ -20,7 +20,8 @@ import {
   EMAIL_TEMPLATES_SET_SELECTED_FOLDER,
   EMAIL_TEMPLATES_SET_EDIT_FOLDERS,
   EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
-  EMAIL_TEMPLATES_SET_NEW_ORDER
+  EMAIL_TEMPLATES_SET_NEW_ORDER,
+  EMAIL_TEMPLATES_UPDATE_FOLDER_NAME
 } from "./actionType";
 
 const templates = (
@@ -201,7 +202,7 @@ const mockSelectedFolder = {
 // }
 
 const userFolders = (state = mockFolders, action) => {
-  const { type, ...payload } = action;
+  const { type, payload } = action;
   switch (type) {
     case EMAIL_TEMPLATES_SET_USER_FOLDERS:
       return action.userFolders;
@@ -209,6 +210,8 @@ const userFolders = (state = mockFolders, action) => {
       return state.filter(item => item.id !== action.id);
     case EMAIL_TEMPLATES_SET_NEW_ORDER:
       return action.userFolders;
+    case EMAIL_TEMPLATES_UPDATE_FOLDER_NAME:
+        return _.update(_.find(state, { 'id': payload.id }), 'name', ()=> (payload.name));
     default:
       return state;
   }

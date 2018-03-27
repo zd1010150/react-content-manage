@@ -134,6 +134,16 @@ class EmailTemplateEditFolder extends React.Component {
             isOtherDragging: true,
         });
     }
+
+    editFolderName = (e, item) => {
+        // this.state.cards.map((card)=>{
+        //     if(card.id === item.id){
+        //         card.userName = e.target.value
+        //     }
+        // })
+        // this.setState({ userName: e.target.value });
+
+    }
     render() {
         const { formatMessage } = this.props.intl;
         const { isOtherDragging } = this.state;
@@ -156,7 +166,7 @@ class EmailTemplateEditFolder extends React.Component {
                                 deleteUserFolderData={deleteUserFolderData}
                                 setEditFolderData={setEditFolderData}
 
-
+                                editFolderName={this.editFolderName}
                                 id={item.id}
                                 index={key}
                                 moveCard={this.moveCard}

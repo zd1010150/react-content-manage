@@ -32,6 +32,7 @@ const propTypes = {
     clearDragging: PropTypes.func.isRequired,
     setDragging: PropTypes.func.isRequired,
     isSelected: PropTypes.bool.isRequired,
+    editFolderName: PropTypes.func.isRequired
 };
 
 const cardSource = {
@@ -114,7 +115,8 @@ class Card extends Component {
             canDeactivate,
             onIconClick,
             item,
-            deleteUserFolderData
+            deleteUserFolderData,
+            editFolderName
         } = this.props;
 
         const { Edit, Delete, Deactivate } = Enums.FieldOperationTypes;
@@ -143,7 +145,7 @@ class Card extends Component {
                         backgroundColor: '#FB8C00',
                     }} />
                     }
-                    <Input size="small" disabled={!canEdit} addonAfter={!canEdit && <Icon onClick={() => {setEditFolderData(item)}} type="edit" />} defaultValue={item.name} />
+                    <Input onChange={(e)=>{this.editFolderName(e, item)}} size="small" disabled={!canEdit} addonAfter={!canEdit && <Icon onClick={() => {setEditFolderData(item)}} type="edit" />} defaultValue={item.name} />
                 </div>),
         );
     }

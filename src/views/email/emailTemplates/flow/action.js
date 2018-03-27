@@ -23,18 +23,23 @@ import {
   EMAIL_TEMPLATES_SET_SELECTED_FOLDER,
   EMAIL_TEMPLATES_SET_EDIT_FOLDERS,
   EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
-  EMAIL_TEMPLATES_SET_NEW_ORDER
+  EMAIL_TEMPLATES_SET_NEW_ORDER,
+  EMAIL_TEMPLATES_UPDATE_FOLDER_NAME
 } from "./actionType";
 
 const url = "/";
+
+export const updateFolderName = ({id, name}) => ({
+  type: EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
+  payload: {id, name}
+});
 
 export const setNewOrder = userFolders => ({
   type: EMAIL_TEMPLATES_SET_NEW_ORDER,
   userFolders
 });
 
-export const sortValues = (array) => dispatch =>
-    dispatch(setNewOrder(array));
+export const sortValues = array => dispatch => dispatch(setNewOrder(array));
 
 //Set User Folders
 export const setUserFolderData = userFolders => ({
