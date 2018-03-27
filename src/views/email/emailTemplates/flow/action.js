@@ -22,8 +22,19 @@ import {
   EMAIL_TEMPLATES_SET_SHARED_FOLDERS,
   EMAIL_TEMPLATES_SET_SELECTED_FOLDER,
   EMAIL_TEMPLATES_SET_EDIT_FOLDERS,
-  EMAIL_TEMPLATES_DELETE_USER_FOLDERS
+  EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
+  EMAIL_TEMPLATES_SET_NEW_ORDER
 } from "./actionType";
+
+const url = "/";
+
+export const setNewOrder = userFolders => ({
+  type: EMAIL_TEMPLATES_SET_NEW_ORDER,
+  userFolders
+});
+
+export const sortValues = (array) => dispatch =>
+    dispatch(setNewOrder(array));
 
 //Set User Folders
 export const setUserFolderData = userFolders => ({
@@ -33,8 +44,8 @@ export const setUserFolderData = userFolders => ({
 
 //Delete User Folders
 export const deleteUserFolderData = id => ({
-    type: EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
-    id
+  type: EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
+  id
 });
 
 //Set Shared Folders

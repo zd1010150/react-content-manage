@@ -7,51 +7,19 @@ import { Panel } from 'components/ui/index';
 import { setTeams } from 'store/global/action';
 import { updateUsers } from 'views/Setup/Users/flow/action';
 import classNames from 'classnames/bind';
+import Folder from '../component/folder';
 import styles from '../emailTemplates.less';
 import {
     setEditFolderViewVisible,
     setEditFolderData,
-    deleteUserFolderData
+    deleteUserFolderData,
+    sortValues
 } from '../flow/action';
+
+
 import { getTeamUsers, getSelectedTeamName } from '../flow/reselect';
 const cx = classNames.bind(styles);
-const foldersData = {
-    userFolders: [{
-        id: 0,
-        name: 'genaral folder',
-        isShared: true,
-        templates: [{
-            name: 'market',
-            createdAt: '2018-01-02',
-            modifiedDate: '2018-03-02',
-            createBy: 'Jimmy',
-            Description: 'for markdet use'
-        }]
-    },
-        {
-            id: 1,
-            name: 'private folder',
-            isShared: false,
-            templates: [{
-                name: 'sales',
-                createdAt: '2018-01-02',
-                modifiedDate: '2018-03-02',
-                createBy: 'Jimmy',
-                Description: 'for sales use'
-            }]
-        }],
-    sharedFolders: [{
-        name: 'ACY folder',
-        sharedBy: 'Jimmy',
-        templates: [{
-            name: 'ACY',
-            createdAt: '2018-01-02',
-            modifiedDate: '2018-03-02',
-            createBy: 'Jimmy',
-            Description: 'for ACY use'
-        }]
-    }]
-}
+
 const FolderInput = ({item, editFolders, setEditFolderData, deleteUserFolderData})=>{
     let canEdit = false;
     editFolders.forEach((folder)=>{
@@ -75,22 +43,147 @@ const ActionButtonGroup = ({setEditFolderViewVisible, formatMessage}) => {
 }
 
 class EmailTemplateEditFolder extends React.Component {
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            cards: props.userFolders,
+            startIndex: -1,
+            endIndex: -1,
+            isOtherDragging: false,
+        };
+    }
+    componentWillReceiveProps(nextProps) {
+        const { cards } = this.state;
+        if (nextProps.userFolders.length === this.props.userFolders.length + 1) {
+            const last = nextProps.userFolders[nextProps.userFolders.length - 1];
+            return this.setState({
+                cards: [...cards, last],
+            });
+        }
+        return this.setState({
+            cards: [...nextProps.userFolders],
+        });
+    }
+
+    setSelectedCards = (start, end) => {
+        const { cards } = this.state;
+        const selectedCards = cards.map((card, i) => {
+            card.selected = i >= start && i <= end;
+            return card;
+        });
+
+        const { onSelect } = this.props;
+        if (onSelect && typeof onSelect === 'function') {
+            onSelect(selectedCards.filter(card => card.selected));
+        }
+        return selectedCards;
+    }
+
+    handleItemSelection = e => {
+        const { index } = e.target.dataset;
+        const { startIndex } = this.state;
+
+        if (!e.shiftKey) {
+            return this.setState({
+                cards: this.setSelectedCards(index, index),
+                startIndex: index,
+                endIndex: index,
+            });
+        }
+
+        if (index < startIndex) {
+            return this.setState({
+                cards: this.setSelectedCards(index, startIndex),
+                startIndex: index,
+                endIndex: startIndex,
+            });
+        } else {
+            return this.setState({
+                cards: this.setSelectedCards(startIndex, index),
+                endIndex: index,
+            });
+        }
+    }
+
+    setDragging = () => {
+        const { startIndex, endIndex } = this.state;
+        this.setState({
+            isOtherDragging: true,
+            cards: this.setSelectedCards(startIndex, endIndex),
+        });
+    }
+
+    onDrop = sortedArray => {
+        // console.log('dropped ----- current order is:');
+        // console.log(sortedArray);
+        // const ids = sortedArray.map(elem => elem.id);
+        this.props.sortValues(sortedArray);
+    }
+
+    clearDragging = () => {
+        this.onDrop(this.state.cards);
+        this.setState({ isOtherDragging: false });
+    }
+
+    // Swap algorithm
+    // According to how the drag function is worked (in other words, when moveCard is being called), we only swap with one adjacent card every time,
+    // either drag upwords or downwords.
+    swapCards = (cards, start, length, newStart) => {
+        const cardsCopy = _.cloneDeep(cards);
+        const dragCards = cardsCopy.splice(start, length);
+        // Insert all dragged cards into new positions
+        dragCards.forEach((dragCard, i) => cardsCopy.splice(newStart + i, 0, dragCard));
+        return cardsCopy;
+    }
+
+    moveCard = (dragIndex, hoverIndex) => {
+        const { startIndex, endIndex, cards } = this.state;
+        // Don't replace items with other selected items
+        if (hoverIndex >= startIndex && hoverIndex <= endIndex) {
+            return;
+        }
+
+        const dragLength = endIndex - startIndex + 1;
+        const newStartIndex = startIndex > hoverIndex ? hoverIndex : Number(startIndex) + 1;
+        const newCards = this.swapCards(cards, startIndex, dragLength, newStartIndex);
+
+        this.setState({
+            startIndex: newStartIndex,
+            endIndex: newStartIndex + dragLength - 1,
+            cards: newCards,
+            isOtherDragging: true,
+        });
     }
     render() {
         const { formatMessage } = this.props.intl;
-        const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteUserFolderData} = this.props;
+        const { isOtherDragging } = this.state;
+
+        const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteUserFolderData, ...others} = this.props;
         const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {}}><Icon type="plus" />{ formatMessage({ id: 'page.emailTemplates.newFolder' }) }</Button></div>;
         return (
             <Panel panelTitle={formatMessage({ id: 'page.emailTemplates.editFolderTitle' })} contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={actionsRight}>
-                <Row className={cx('folders')}>
-                    {userFolders.map((item)=>
-                        <FolderInput
-                            key={item.id}
-                            item={item}
-                            editFolders={editFolders}
-                            setEditFolderData={setEditFolderData}
-                            deleteUserFolderData={deleteUserFolderData}/>
+                <Row onMouseDown={this.handleItemSelection} className={cx('folders')}>
+                    {userFolders.map((item, key)=>
+                        <Col data-index={key}
+                             data-id={item.id}
+                             className="pl-lg gutter-row field-label" span={6}>
+                            <Folder
+                                key={item.id}
+                                item={item}
+                                deleteUserFolderData={deleteUserFolderData}
+                                setEditFolderData={setEditFolderData}
+
+
+                                id={item.id}
+                                index={key}
+                                moveCard={this.moveCard}
+                                isSelected={item.selected}
+                                isOtherDragging={isOtherDragging}
+                                clearDragging={this.clearDragging}
+                                setDragging={this.setDragging}
+                                {...others}
+                            />
+                        </Col>
                     )}
                 </Row>
                 <ActionButtonGroup setEditFolderViewVisible={setEditFolderViewVisible} formatMessage={formatMessage}/>
@@ -98,6 +191,16 @@ class EmailTemplateEditFolder extends React.Component {
         );
     }
 }
+
+{/*
+ <FolderInput
+ key={item.id}
+ item={item}
+ editFolders={editFolders}
+ setEditFolderData={setEditFolderData}
+ deleteUserFolderData={deleteUserFolderData}/>
+*/}
+
 
 EmailTemplateEditFolder.propTypes = {
     intl: intlShape.isRequired,
@@ -120,7 +223,8 @@ const mapDispatchToProps = {
     updateUsers,
     setEditFolderViewVisible,
     setEditFolderData,
-    deleteUserFolderData
+    deleteUserFolderData,
+    sortValues
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateEditFolder));

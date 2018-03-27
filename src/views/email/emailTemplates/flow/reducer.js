@@ -19,7 +19,8 @@ import {
   EMAIL_TEMPLATES_SET_SHARED_FOLDERS,
   EMAIL_TEMPLATES_SET_SELECTED_FOLDER,
   EMAIL_TEMPLATES_SET_EDIT_FOLDERS,
-  EMAIL_TEMPLATES_DELETE_USER_FOLDERS
+  EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
+  EMAIL_TEMPLATES_SET_NEW_ORDER
 } from "./actionType";
 
 const templates = (
@@ -62,6 +63,86 @@ const mockFolders = [
     userId: 0,
     owner: "Jimmy",
     name: "private folder",
+    isShared: false,
+    templates: [
+      {
+        name: "sales",
+        createdAt: "2018-01-02",
+        modifiedDate: "2018-03-02",
+        createBy: "Jimmy",
+        Description: "for sales use"
+      }
+    ]
+  },
+  {
+    id: 2,
+    userId: 0,
+    owner: "Jimmy",
+    name: "a",
+    isShared: false,
+    templates: [
+      {
+        name: "sales",
+        createdAt: "2018-01-02",
+        modifiedDate: "2018-03-02",
+        createBy: "Jimmy",
+        Description: "for sales use"
+      }
+    ]
+  },
+  {
+    id: 3,
+    userId: 0,
+    owner: "Jimmy",
+    name: "b",
+    isShared: false,
+    templates: [
+      {
+        name: "sales",
+        createdAt: "2018-01-02",
+        modifiedDate: "2018-03-02",
+        createBy: "Jimmy",
+        Description: "for sales use"
+      }
+    ]
+  },
+  {
+    id: 4,
+    userId: 0,
+    owner: "Jimmy",
+    name: "c",
+    isShared: false,
+    templates: [
+      {
+        name: "sales",
+        createdAt: "2018-01-02",
+        modifiedDate: "2018-03-02",
+        createBy: "Jimmy",
+        Description: "for sales use"
+      }
+    ]
+  },
+  {
+    id: 5,
+    userId: 0,
+    owner: "Jimmy",
+    name: "d",
+    isShared: false,
+    templates: [
+      {
+        name: "sales",
+        createdAt: "2018-01-02",
+        modifiedDate: "2018-03-02",
+        createBy: "Jimmy",
+        Description: "for sales use"
+      }
+    ]
+  },
+  {
+    id: 6,
+    userId: 0,
+    owner: "Jimmy",
+    name: "e",
     isShared: false,
     templates: [
       {
@@ -123,9 +204,11 @@ const userFolders = (state = mockFolders, action) => {
   const { type, ...payload } = action;
   switch (type) {
     case EMAIL_TEMPLATES_SET_USER_FOLDERS:
-      return [...payload];
+      return action.userFolders;
     case EMAIL_TEMPLATES_DELETE_USER_FOLDERS:
       return state.filter(item => item.id !== action.id);
+    case EMAIL_TEMPLATES_SET_NEW_ORDER:
+      return action.userFolders;
     default:
       return state;
   }
