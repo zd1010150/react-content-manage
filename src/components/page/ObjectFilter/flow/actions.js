@@ -3,11 +3,11 @@ import Enums from 'utils/EnumsManager';
 
 import { RESET_VIEW, SAVE_VIEW } from './actionTypes';
 import { setViewName } from '../components/ViewName/flow/actions';
-import { setConditionLogic } from '../components/FilterCriteria/flow/actions';
+import { setFilters, setConditionLogic } from '../components/FilterCriteria/flow/actions';
 import { setAvailableFields, addToSelection } from '../components/FieldsSelection/flow/actions';
 import { setVisibilityOption, batchAddToSelection } from '../components/ViewVisibility/flow/actions';
 
-export const resetView = _ => ({
+export const resetView = $ => ({
   type: RESET_VIEW,
 });
 
@@ -36,16 +36,18 @@ export const fetchViewById = (
       const allFieldData = all_field.data;
       const {
         view_name,
+        filters,
         condition_logic,
         selectors,
         assign_option,
         assign_to_users,
-        assign_to_teams
+        assign_to_teams,
       } = list_view.data;
       // set section 1
       dispatch(setViewName(view_name));
       // set section 2
       dispatch(setConditionLogic(condition_logic));
+      dispatch(setFilters(filters.data));
       // set section 3
       dispatch(setAvailableFields(allFieldData));
       dispatch(addToSelection(selectors.data));

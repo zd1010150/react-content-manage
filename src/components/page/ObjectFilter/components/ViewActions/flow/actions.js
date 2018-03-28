@@ -1,5 +1,6 @@
 import { post, patch } from 'store/http/httpAction';
-
+import { toUtc } from 'utils/dateTimeUtils';
+import Enums from 'utils/EnumsManager';
 import { SAVE_FAILED, SAVE_SUCCESS } from './actionTypes';
 
 // Format redux to cater for API data format requirement
@@ -9,6 +10,25 @@ const mapDataToAPI = (object_type, data) => {
   const { view_name } = name;
   
   const { condition_logic, filters } = filterCriteria;
+  const formattedFilter = filters.map(filter => {
+
+    const { displayNum, fieldId, conditionId, value } = filter;
+    
+    let newValue = filter.value;
+    // TODO: replace the format with the value from backend
+    // TODO: replace offset with user info timezone, need to consider undefined
+    if (filter.type === Enums.FieldTypes.Date
+        || filter.type === Enums.FieldTypes.DateTime) {
+      newValue = toUtc(value, '+1100', filter.type === Enums.FieldTypes.Date ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss');
+    }
+
+    return {
+      id: fieldId,
+      display_num: displayNum,
+      condition: conditionId,
+      value: newValue,
+    };
+  });
 
   const { selectedFields } = fields;
   const selectors = selectedFields.map((field, i) => ({
@@ -24,7 +44,7 @@ const mapDataToAPI = (object_type, data) => {
     view_name,
     object_type,
     condition_logic,
-    filters,
+    filters: formattedFilter,
     selectors,
     assign_option: selectedOption,
     assign_to_users,

@@ -1,11 +1,37 @@
 import {
+  SET_FILTERS,
   ADD_FILTER,
   SET_CONDITION_LOGIC,
   RESET_VIEW,
   REMOVE_FILTER,
   CHANGE_FILTER,
 } from './actionTypes';
+import { toTimezone } from 'utils/dateTimeUtils';
 import Enums from 'utils/EnumsManager';
+
+const formatData = data => {
+  if (!_.isArray(data)) return [];
+
+  return data.map(record => {
+    const { display_num, id, condition, value, crm_data_type } = record;
+
+    let newValue = value;
+    // TODO: replace the format with the value from backend
+    // TODO: replace offset with user info timezone, need to consider undefined
+    if (crm_data_type === Enums.FieldTypes.Date
+        || crm_data_type === Enums.FieldTypes.DateTime) {
+      newValue = toTimezone(value, '+1100', crm_data_type === Enums.FieldTypes.Date ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss');
+    }
+
+    return {
+      displayNum: display_num,
+      fieldId: id,
+      conditionId: condition,
+      value: newValue,
+      type: crm_data_type,
+    };
+  });
+};
 
 const initialState = {
   condition_logic: '',
@@ -14,6 +40,14 @@ const initialState = {
 
 const filterCriteria = (state = initialState, action) => {
   switch (action.type) {
+    case SET_FILTERS:
+      const { data } = action.payload;      
+      return {
+        ...state,
+        filters: formatData(data),
+      };
+
+
     case SET_CONDITION_LOGIC:
       const { condition_logic } = action.payload;
       return {

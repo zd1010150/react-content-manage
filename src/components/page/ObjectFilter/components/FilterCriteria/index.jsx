@@ -7,10 +7,10 @@ import { FilterCriteria } from 'components/page/index';
 import { getThemeByType } from 'utils/common';
 import Enums from 'utils/EnumsManager';
 import {
-  addFilter,
-  removeFilter,
   setConditionLogic,
+  addFilter,
   changeFilterByColumn,
+  removeFilter,
 } from './flow/actions';
 
 const defaultProps = {};
@@ -75,9 +75,9 @@ const mapStateToProps = ({ global, objectView }) => ({
   fields: objectView.fields.allFields,
 });
 const mapDispatchToProps = {
-  addFilter,
-  removeFilter,
   setConditionLogic,
+  addFilter,
   changeFilterByColumn,
+  removeFilter,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(FilterCriteriaWrapper));
