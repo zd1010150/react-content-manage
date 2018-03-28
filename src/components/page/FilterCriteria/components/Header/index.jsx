@@ -9,22 +9,25 @@ const propTypes = {
   intl: intlShape.isRequired,
 };
 
-const CriteriaHeader = ({ intl, }) => {
-  const colLayout = {
-    xs: 24,
-    sm: 7,
-    push: 1,
-  }
+const colLayout = {
+  xs: 24,
+  sm: 7,
+  push: 1,
+}
 
+const Header = ({ intl }) => {
+
+  const { formatMessage } = intl;
   return (
     <Row gutter={16}>
       {Enums.CriteriaColumns.map((col, i) => (
         <Col key={i} {...colLayout}>
-          {intl.formatMessage({ id: `global.ui.criteria.${col}` })}
+          {formatMessage({ id: `global.ui.criteria.${col}` })}
         </Col>
       ))}
     </Row>
   );
 };
 
-export default injectIntl(CriteriaHeader);
+Header.propTypes = propTypes;
+export default injectIntl(Header);

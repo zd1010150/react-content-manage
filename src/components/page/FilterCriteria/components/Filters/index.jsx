@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
 
-import { CriteriaHeader, Criterion } from 'components/ui/index';
+import { Header, Criterion } from '../index';
 import Enums from 'utils/EnumsManager';
 
 const getOptionsByType = (type, targetId, collection) => {
@@ -18,7 +18,7 @@ const getOptionsByType = (type, targetId, collection) => {
 const Filters = ({ filters, fields, conditions, handleFilterRemove }) => {
   return (
     <Fragment>
-      <CriteriaHeader />
+      <Header />
       {filters.map(filter => {
         const { id, display_num, type } = filter;
         return (

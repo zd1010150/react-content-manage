@@ -38,7 +38,7 @@ const EnumsManager = Object.freeze({
 
   DefaultPageConfigs: Object.freeze({
     PageSizeSmall: 10,
-    PageSize: 5,
+    PageSize: 25,
     Options: ['10', '25', '50', '100', '200', '300'],
   }),
 
@@ -48,7 +48,15 @@ const EnumsManager = Object.freeze({
     'picklist',
   ]),
 
-  ThemeTypes: Object.freeze(BaseEnums.ThemeTypes),
+  ThemeTypes: BaseEnums.ThemeTypes,
+
+  ThemeTypesInArray: Object.freeze([
+    BaseEnums.ThemeTypes.Leads,
+    BaseEnums.ThemeTypes.Accounts,
+    BaseEnums.ThemeTypes.Opportunities,
+    BaseEnums.ThemeTypes.Report,
+    BaseEnums.ThemeTypes.Email,
+  ]),
 
   SortOrders: Object.freeze({
     ascend: 'asc',
@@ -76,7 +84,15 @@ const EnumsManager = Object.freeze({
     Deactivate: 'deactivate',
   }),
 
-  ObjectTypes: Object.freeze(BaseEnums.ObjectTypes),
+  ObjectTypes: BaseEnums.ObjectTypes,
+  
+  ObjectTypesInArray: Object.freeze([
+    BaseEnums.ObjectTypes.Leads,
+    BaseEnums.ObjectTypes.Accounts,
+    BaseEnums.ObjectTypes.Opportunities,
+    BaseEnums.ObjectTypes.Email,
+    BaseEnums.ObjectTypes.Report,
+  ]),
 
   ObjectTypesThemesMapping: Object.freeze({
     [BaseEnums.ObjectTypes.Leads]: BaseEnums.ThemeTypes.Leads,

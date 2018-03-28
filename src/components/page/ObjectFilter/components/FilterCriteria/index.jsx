@@ -2,8 +2,10 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { intlShape, injectIntl } from 'react-intl';
+import { withRouter } from 'react-router-dom';
 import { Button, Row, Col } from 'antd';
 
+import { getThemeByType } from 'utils/common';
 import Enums from 'utils/EnumsManager';
 import { FilterCriteria } from 'components/page/index';
 import { FloatingLabelInput, Criterion } from 'components/ui/index';
@@ -43,6 +45,7 @@ class FilterCriteriaWrapper extends Component {
   render() {
     const {
       intl,
+      match,
       logicText,
       filters,
       fields,
@@ -52,8 +55,12 @@ class FilterCriteriaWrapper extends Component {
     const { formatMessage } = intl;
     const i18nPrefix = 'page.objectFilter.criteria';
 
+    const { object } = match.params;
+    const theme = getThemeByType(object);
+
     return (
       <FilterCriteria
+        theme={theme}
         fields={fields}
         conditions={conditions}
         filters={filters}
@@ -81,4 +88,4 @@ const mapDispatchToProps = {
   setConditionLogic,
   changeFilter,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(FilterCriteriaWrapper));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withRouter(FilterCriteriaWrapper)));
