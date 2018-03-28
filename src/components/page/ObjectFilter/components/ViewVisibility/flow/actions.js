@@ -5,6 +5,7 @@ import {
   ADD_ENTITY_TO_SELECTION,
   REMOVE_ENTITY_FROM_SELECTION,
   CHANGE_SELECTION,
+  BATCH_ADD_TO_SELECTION,
 } from './actionTypes';
 import { get } from 'store/http/httpAction';
 
@@ -44,4 +45,9 @@ export const removeEntityFromSelection = (entityId, isTeam) => ({
 export const changeSelections = entityIds => ({
   type: CHANGE_SELECTION,
   payload: { entityIds },
+});
+
+export const batchAddToSelection = (selectedUserIds = [], selectedTeamIds = []) => ({
+  type: BATCH_ADD_TO_SELECTION,
+  payload: { selectedUserIds, selectedTeamIds },
 });

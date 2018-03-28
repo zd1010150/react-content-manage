@@ -39,3 +39,13 @@ export const getRange = (precision, scale = 0) => {
     max: Number(max),
   };
 };
+
+/**
+ * Find matched theme by object type, otherwise return empty string
+ * @param {string} type 
+ */
+export const getThemeByType = type => {
+  return Enums.ObjectTypesThemesMapping[type]
+          ? Enums.ObjectTypesThemesMapping[type]
+          : '';
+};

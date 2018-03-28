@@ -11,6 +11,7 @@ import SetupContent from './SetupContent';
 import TeamTree from './TeamTree';
 import ObjectFilter from './ObjectFilter/index';
 import RightSider from './RightSider/index';
+import FilterCriteria from './FilterCriteria/index';
 
 export {
   TopPanel,
@@ -26,5 +27,6 @@ export {
   TeamTree,
   ObjectFilter,
   RightSider,
+  FilterCriteria,
 };
 

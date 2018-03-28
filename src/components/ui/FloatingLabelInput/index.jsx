@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 import { Input } from 'antd';
 import classNames from 'classnames/bind';
 import styles from './index.less';
-
 const cx = classNames.bind(styles);
 
 const defaultProps = {
   labelText: 'Default Label',
   withSearch: false,
-  handleChange: () => {},
-  handleFocus: () => {},
 };
 const propTypes = {
   labelText: PropTypes.string.isRequired,
@@ -32,23 +29,39 @@ class FloatingLabelInput extends Component {
     };
   }
 
-  onBlur = e => this.setState({ isFocused: false })
-  onFocus = (e) => {
-    // debugger;
-    e.stopPropagation();
-    this.setState({ isFocused: true });
-    this.props.handleFocus();
-  }
-  onPressEnter = (e) => {
-    this.props.handleSearch(e.target.value);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value) {
+      this.setState({ isEmpty: nextProps.value.length === 0 });
+    }
   }
 
-  onChange = (e) => {
+  onBlur = e => this.setState({ isFocused: false })
+
+  onFocus = e => {
+    e.stopPropagation();
+    this.setState({ isFocused: true });
+
+    const { handleFocus } = this.props;
+    if (_.isFunction(handleFocus)) {
+      handleFocus(e.target.value);
+    }
+  }
+  
+  onPressEnter = e => {
+    const { handleSearch } = this.props;
+    if (_.isFunction(handleSearch)) {
+      handleSearch(e.target.value);
+    }
+  }
+
+  onChange = e => {
     const { value } = e.target;
-    this.setState({
-      isEmpty: value.length === 0,
-    });
-    this.props.handleChange(value);
+    this.setState({ isEmpty: value.length === 0 });
+
+    const { handleChange } = this.props;
+    if (_.isFunction(handleChange)) {
+      handleChange(value);
+    }
   }
 
   render() {
@@ -93,7 +106,7 @@ class FloatingLabelInput extends Component {
           />
         ) : (
           <Input
-            defaultValue={value}
+            value={value}
             onBlur={this.onBlur}
             onChange={this.onChange}
             onFocus={this.onFocus}

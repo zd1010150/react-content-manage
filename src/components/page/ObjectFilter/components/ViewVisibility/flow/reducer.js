@@ -7,6 +7,7 @@ import {
   ADD_ENTITY_TO_SELECTION,
   REMOVE_ENTITY_FROM_SELECTION,
   CHANGE_SELECTION,
+  BATCH_ADD_TO_SELECTION,
 } from './actionTypes';
 import Enums from 'utils/EnumsManager';
 
@@ -38,6 +39,10 @@ const addToSelection = (entity, selection) => {
     return selection;
   }
   return [...selection, entity];
+};
+
+const batchAddToSelection = (ids, collection) => {
+  return collection.filter(entity => ids.indexOf(entity.id) !== -1);
 };
 
 const visibilities = (state = initialState, action) => {
@@ -91,6 +96,21 @@ const visibilities = (state = initialState, action) => {
         title,
       };
 
+    
+    case BATCH_ADD_TO_SELECTION:
+      let { selectedUserIds, selectedTeamIds } = action.payload;      
+      const selectedUsers = batchAddToSelection(selectedUserIds, state.users);
+      const selectedTeams = batchAddToSelection(selectedTeamIds, state.flatTeams);
+      // console.log('batch adding');
+      // console.dir(selectedUsers);
+      // console.dir(selectedTeams);
+
+      return {
+        ...state,
+        selectedUsers,
+        selectedTeams,
+      };
+      
 
     case ADD_ENTITY_TO_SELECTION:
       let { entityId, isTeam } = action.payload;
@@ -128,7 +148,7 @@ const visibilities = (state = initialState, action) => {
         selectedUsers: changedSelection,
       };
 
-
+    
     case RESET_VIEW:
       return initialState;
 
