@@ -35,11 +35,9 @@ const cx = classNames.bind(styles);
 //    </Col>
 // }
 
-const ActionButtonGroup = ({setEditFolderViewVisible, formatMessage}) => {
+const ActionButtonGroup = ({saveEditFolder, setEditFolderViewVisible, formatMessage}) => {
     return <div className="pt-md pl-md pb-md">
-        <Button className="email-theme-btn mr-md" onClick={() => {
-            setEditFolderViewVisible(false)
-        }}><Icon type="save"/>{ formatMessage({id: 'page.emailTemplates.save'}) }</Button>
+        <Button className="email-theme-btn mr-md" onClick={saveEditFolder}><Icon type="save"/>{ formatMessage({id: 'page.emailTemplates.save'}) }</Button>
         <Button onClick={() => {
             setEditFolderViewVisible(false)
         }}><Icon type="close"/>{ formatMessage({id: 'page.emailTemplates.cancel'}) }</Button>
@@ -151,12 +149,33 @@ class EmailTemplateEditFolder extends React.Component {
         // this.setState({ userName: e.target.value });
     }
 
+    saveEditFolder = () => {
+        const {setEditFolderViewVisible, userFolders} = this.props;
+        let canSave = true;
+        console.log('123', _.uniqBy(userFolders, [name]).length)
+        if(_.uniqBy(userFolders, 'name').length !== userFolders.length){
+            alert('same file name')
+            return false
+        }
+        userFolders.map((item, key) => {
+            if(item.name === ''){
+                alert('empty file name exist')
+                canSave = false;
+                return true
+            }
+        })
+        if(canSave){
+            //Todo implement save
+            setEditFolderViewVisible(false)
+        }
+    }
+
     render() {
         const {formatMessage} = this.props.intl;
         const {isOtherDragging} = this.state;
 
         const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteUserFolderData, createUserFolder, ...others} = this.props;
-        const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {createUserFolder({"name": "???", id: this.state.tempId}); this.setState((prevState)=>{prevState.tempId-=1})
+        const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {createUserFolder({"name": "", id: this.state.tempId}); this.setState((prevState)=>{prevState.tempId-=1})
         }}><Icon type="plus"/>{ formatMessage({id: 'page.emailTemplates.newFolder'}) }</Button></div>;
         return (
             <Panel panelTitle={formatMessage({id: 'page.emailTemplates.editFolderTitle'})}
@@ -189,7 +208,7 @@ class EmailTemplateEditFolder extends React.Component {
                         </Col>
                     )}
                 </Row>
-                <ActionButtonGroup setEditFolderViewVisible={setEditFolderViewVisible} formatMessage={formatMessage}/>
+                <ActionButtonGroup saveEditFolder={this.saveEditFolder} setEditFolderViewVisible={setEditFolderViewVisible} formatMessage={formatMessage}/>
             </Panel>
         );
     }

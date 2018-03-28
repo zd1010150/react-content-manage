@@ -25,11 +25,11 @@ const cx = classNames.bind(styles);
 const RadioGroup = Radio.Group;
 const TabPane = Tabs.TabPane;
 
-const Radios = ({setSharedByVisible}) => (
+const Radios = ({selectedUser, setSharedByVisible}) => (
     <RadioGroup defaultValue={1} onChange={e => {
         e.target.value === 1 ? setSharedByVisible(false) : setSharedByVisible(true)
     }}>
-        <Radio className="email-theme-radio" value={1}>J's Folder</Radio>
+        <Radio className="email-theme-radio" value={1}>{selectedUser.name}</Radio>
         <Radio className="email-theme-radio" value={2}>Shared By</Radio>
     </RadioGroup>
 );
@@ -89,9 +89,9 @@ const TabSwitcher = ({formatMessage, setPermissionSettingVisible, isPermissionSe
     </Row>
 )
 
-const Templates = ({templates, pagination, columns, formatMessage, isSharedByVisible}) => (
+const Templates = ({templates, pagination, columns, formatMessage, isSharedByVisible, loginUser, selectedUser}) => (
     <Fragment>
-        {!isSharedByVisible &&
+        {!isSharedByVisible && loginUser.id === selectedUser.id &&
         <div style={{textAlign: 'right', height: 30, margin: '10px 15px'}}>
             <NavLink to='/setup/email/templates-creation'>
                 <Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {
@@ -120,9 +120,9 @@ class EmailTemplateDetail extends React.Component {
         const {
             setEditFolderViewVisible, setPermissionSettingVisible, isPermissionSettingVisible,
             isSharedByVisible, templates, templatesDataTablePagination, queryByPaging, setSharedByVisible,
-            setSelectedFolderData, selectedFolder, userFolders, sharedFolders
+            setSelectedFolderData, selectedFolder, userFolders, sharedFolders, selectedUser, loginUser
         } = this.props;
-        const actionsLeft = <div><Radios setSharedByVisible={setSharedByVisible}/></div>;
+        const actionsLeft = <div><Radios selectedUser={selectedUser} setSharedByVisible={setSharedByVisible}/></div>;
         const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {
             setEditFolderViewVisible(true)
         }}><Icon type="edit"/>{ formatMessage({id: 'page.emailTemplates.editFolders'}) }</Button></div>;
@@ -152,23 +152,23 @@ class EmailTemplateDetail extends React.Component {
                 key: 'name',
             }, {
                 title: formatMessage({id: 'page.emailTemplates.templateCreatedDate'}),
-                dataIndex: 'join_date',
-                key: 'join_date',
+                dataIndex: 'created_at',
+                key: 'created_at',
             }, {
                 title: formatMessage({id: 'page.emailTemplates.templateModifiedDate'}),
-                dataIndex: 'team.name',
+                dataIndex: 'updated_at',
             }, {
                 title: formatMessage({id: 'page.emailTemplates.templateCreatedBy'}),
                 dataIndex: 'page_layouts.data.leads.name',
             }, {
                 title: formatMessage({id: 'page.emailTemplates.templateDescription'}),
-                dataIndex: 'page_layouts.data.accounts.name',
+                dataIndex: 'description',
             }
         ];
         return (
             <Panel panelClasses="email-theme-panel" actionsLeft={actionsLeft}
                    contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`}
-                   actionsRight={isSharedByVisible ? null : actionsRight}>
+                   actionsRight={(isSharedByVisible || loginUser.id !== selectedUser.id) ? null : actionsRight}>
                 <Folders
                     formatMessage={formatMessage}
                     setSelectedFolderData={setSelectedFolderData}
@@ -184,8 +184,13 @@ class EmailTemplateDetail extends React.Component {
                 />
                 {
                     !isPermissionSettingVisible ?
-                        <Templates templates={templates} pagination={pagination} columns={columns}
-                                   formatMessage={formatMessage} isSharedByVisible={isSharedByVisible}/> :
+                        <Templates templates={templates}
+                                   pagination={pagination}
+                                   columns={columns}
+                                   formatMessage={formatMessage}
+                                   isSharedByVisible={isSharedByVisible}
+                                   loginUser={loginUser}
+                                   selectedUser={selectedUser}/> :
                         <TemplatePermission />
                 }
             </Panel>
@@ -198,11 +203,12 @@ EmailTemplateDetail.propTypes = {
 };
 
 
-const mapStateToProps = ({global, setup}) => {
+const mapStateToProps = ({global, setup, loginUser}) => {
     const {emailTemplates} = setup;
     return {
         teams: global.settings.teams,
         teamUsers: getTeamUsers({emailTemplates}),
+        loginUser: loginUser,
         isEditFolderViewVisible: emailTemplates.ui.isEditFolderViewVisible,
         isPermissionSettingVisible: emailTemplates.ui.isPermissionSettingVisible,
         isSharedByVisible: emailTemplates.ui.isSharedByVisible,
@@ -210,7 +216,8 @@ const mapStateToProps = ({global, setup}) => {
         templatesDataTablePagination: emailTemplates.templatesDataTablePagination,
         userFolders: emailTemplates.userFolders,
         sharedFolders: emailTemplates.sharedFolders,
-        selectedFolder: emailTemplates.selectedFolder
+        selectedFolder: emailTemplates.selectedFolder,
+        selectedUser: emailTemplates.selectedUser,
     };
 };
 
