@@ -12,6 +12,7 @@ import {
   changeFilterByColumn,
   removeFilter,
 } from './flow/actions';
+import { toggleRightSider, settingRightSider } from 'components/page/RightSider/flow/action';
 
 const defaultProps = {};
 const propTypes = {};
@@ -35,6 +36,15 @@ class FilterCriteriaWrapper extends Component {
 
   handleLogicChange = value => this.props.setConditionLogic(value)
 
+  handleAddonClick = () => {
+    console.log('toggle right sider');
+    this.props.toggleRightSider(false);
+  }
+
+  handleSiderClose = () => {
+    this.props.toggleRightSider(true);
+  }
+
   render() {
     const {
       match,
@@ -42,6 +52,7 @@ class FilterCriteriaWrapper extends Component {
       filters,
       fields,
       conditions,
+      collapsed,
     } = this.props;
 
     const { object } = match.params;
@@ -57,8 +68,10 @@ class FilterCriteriaWrapper extends Component {
         handleConditionChange={this.onConditionChange}
         handleValueChange={this.onFilterValueChange}
         handleFilterRemove={this.onRemoveFilter}
-
+        handleAddonClick={this.handleAddonClick}
+        handleSiderClose={this.handleSiderClose}
         handleAddNewClick={this.addFilter}
+        collapsed={collapsed}
         logicText={logicText}
         handleLogicChange={this.handleLogicChange}
       />
@@ -68,16 +81,18 @@ class FilterCriteriaWrapper extends Component {
 
 FilterCriteriaWrapper.defaultProps = defaultProps;
 FilterCriteriaWrapper.propTypes = propTypes;
-const mapStateToProps = ({ global, objectView }) => ({
+const mapStateToProps = ({ global, objectView, ui }) => ({
   conditions: global.settings.conditions,
   logicText: objectView.filterCriteria.condition_logic,
   filters: objectView.filterCriteria.filters,
   fields: objectView.fields.allFields,
+  collapsed: ui.rightSider.collapsed,
 });
 const mapDispatchToProps = {
   setConditionLogic,
   addFilter,
   changeFilterByColumn,
   removeFilter,
+  toggleRightSider,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(FilterCriteriaWrapper));

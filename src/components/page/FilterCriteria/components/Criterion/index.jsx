@@ -48,12 +48,19 @@ const Criterion = ({
   handleFieldChange,
   handleConditionChange,
   handleValueChange,
+  handleAddonClick,
   handleFilterRemove,
 }) => {
 
   const globalI18nPrefix = 'global.ui';
   const { formatMessage } = intl;
-
+  const valueCriteriaFieldProps = {
+    displayNum,
+    type,
+    handleValueChange,
+    handleAddonClick,
+    value,
+  };
   return (
     <Row gutter={16} style={{ marginBottom: 10 }}>
       <Col {...sideColLayout} className={cx('displayNumCol')}>
@@ -84,9 +91,8 @@ const Criterion = ({
         </Select>
       </Col>
       <Col {...colLayout}>
-        {type
-          ? <ValueCriteriaField displayNum={displayNum} type={type} handleValueChange={handleValueChange} value={value} />
-          : <span className={cx('message')}>{formatMessage({ id: 'page.customField.message'})}</span>}
+        {type ? <ValueCriteriaField {...valueCriteriaFieldProps} />
+              : <span className={cx('message')}>{formatMessage({ id: 'page.customField.message'})}</span>}
       </Col>
       <Col {...sideColLayout}>
         <Popconfirm

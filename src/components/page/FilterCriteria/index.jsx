@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Row, Select, Checkbox } from 'antd';
+import { Row, Select, Checkbox, Button, Icon } from 'antd';
 const Option = Select.Option;
 
 import Enums from 'utils/EnumsManager';
 import { Buttons, ConditionLogic, Filters } from './components/index';
+import { RightSider } from 'components/page/index';
 
 const ClientTypes = [
   Enums.ObjectTypes.Leads,
@@ -84,6 +85,20 @@ class FilterCriteria extends Component {
     }
   }
 
+  _handleAddonClick = displayNum => {
+    const { handleAddonClick } = this.props;
+    if (_.isFunction(handleAddonClick)) {
+      return handleAddonClick(displayNum);
+    }
+  }
+  
+  _handleSiderClose = e => {
+    const { handleSiderClose } = this.props;
+    if (_.isFunction(handleSiderClose)) {
+      return handleSiderClose();
+    }
+  }
+
   _handleFilterRemove = displayNum => {
     const { handleFilterRemove } = this.props;
     if (_.isFunction(handleFilterRemove)) {
@@ -99,7 +114,8 @@ class FilterCriteria extends Component {
       filters,
       conditions,
       enableTopSelection,
-      enableCheckbox
+      enableCheckbox,
+      collapsed,
     } = this.props;
     
     return (
@@ -118,6 +134,7 @@ class FilterCriteria extends Component {
             handleFieldChange={this._handleFieldChange}
             handleConditionChange={this._handleConditionChange}
             handleValueChange={this._handleValueChange}
+            handleAddonClick={this._handleAddonClick}
             handleFilterRemove={this._handleFilterRemove}
           />
         </Row>
@@ -133,6 +150,13 @@ class FilterCriteria extends Component {
             className={`${theme}-theme-checkbox`}
             onChange={this._handleCheckboxChange}>Opt-out Unsubscribers</Checkbox>
         </Row>}
+        <RightSider collapsed={collapsed}>
+          <Button>Add</Button>
+          <Button onClick={this._handleSiderClose}>
+            <Icon size="small" type="close" />
+            Cancel
+          </Button>
+        </RightSider>
       </Fragment>
     );
   }
