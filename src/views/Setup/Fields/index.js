@@ -1,3 +1,3 @@
-import LeadsFields from './container/index';
+import Fields from './container/index';
 
-export default LeadsFields;
+export default Fields;

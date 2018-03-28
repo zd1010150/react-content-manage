@@ -1,15 +1,18 @@
-export const LEADS = 'leads';
-export const ACCOUNTS = 'accounts';
-export const OPPORTUNITIES = 'opportunities';
-export const objectTypeRelations = { // define the mapping
-  [LEADS]: {
-    to: [ACCOUNTS, OPPORTUNITIES],
+import { OBJECT_TYPES } from 'config/app.config';
+
+const { leads, accounts, opportunities } = OBJECT_TYPES;
+
+export const objectTypeRelations = { // define the relationship
+  [leads]: {
+    to: [accounts, opportunities],
+    from: [],
   },
-  [ACCOUNTS]: {
-    from: [LEADS],
-    to: [OPPORTUNITIES],
+  [accounts]: {
+    from: [leads],
+    to: [opportunities],
   },
-  [OPPORTUNITIES]: {
-    from: [LEADS, ACCOUNTS],
+  [opportunities]: {
+    from: [leads, accounts],
+    to: [],
   },
 };

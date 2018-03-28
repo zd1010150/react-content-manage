@@ -7,7 +7,7 @@ import { Layout, Menu, Icon } from 'antd';
 import classNames from 'classnames/bind';
 import { getParentUrl } from 'utils/url';
 import styles from '../Sider.less';
-
+import { OBJECT_TYPES } from 'config/app.config';
 
 const { SubMenu } = Menu;
 const { Sider } = Layout;
@@ -64,12 +64,12 @@ const menuItems = [
     children: [
       {
         id: 'fields',
-        path: `${pathPrefix}/leads/fields`,
+        path: `${pathPrefix}/fields?objectType=${OBJECT_TYPES.leads}`,
         icon: 'profile',
       },
       {
         id: 'pageLayout',
-        path: `${pathPrefix}/leads/pageLayout`,
+        path: `${pathPrefix}/pageLayout?objectType=${OBJECT_TYPES.leads}`,
         icon: 'table',
       },
     ],
@@ -77,15 +77,15 @@ const menuItems = [
   {
     id: 'accounts',
     path: `${pathPrefix}/accounts`,
-    items: [
+    children: [
       {
         id: 'fields',
-        path: `${pathPrefix}/accounts/fields`,
+        path: `${pathPrefix}/fields?objectType=${OBJECT_TYPES.accounts}`,
         icon: 'setting',
       },
       {
         id: 'pageLayout',
-        path: `${pathPrefix}/accounts/pageLayout`,
+        path: `${pathPrefix}/pageLayout?objectType=${OBJECT_TYPES.accounts}`,
         icon: 'setting',
       },
     ],
@@ -93,15 +93,15 @@ const menuItems = [
   {
     id: 'opportunities',
     path: `${pathPrefix}/opportunities`,
-    items: [
+    children: [
       {
         id: 'fields',
-        path: `${pathPrefix}/opportunities/fields`,
+        path: `${pathPrefix}/fields?objectType=${OBJECT_TYPES.opportunities}`,
         icon: 'setting',
       },
       {
         id: 'pageLayout',
-        path: `${pathPrefix}/opportunities/pageLayout`,
+        path: `${pathPrefix}/pageLayout?objectType=${OBJECT_TYPES.opportunities}`,
         icon: 'setting',
       },
     ],
@@ -109,18 +109,18 @@ const menuItems = [
   {
     id: 'email',
     path: `${pathPrefix}/email`,
-      children: [
-          {
-              id: 'templates',
-              path: `${pathPrefix}/email/templates`,
-              icon: 'setting',
-          },
-          {
-              id: 'Campaign',
-              path: `${pathPrefix}/email/campaign`,
-              icon: 'setting',
-          },
-      ]
+    children: [
+      {
+        id: 'templates',
+        path: `${pathPrefix}/email/templates`,
+        icon: 'setting',
+      },
+      {
+        id: 'Campaign',
+        path: `${pathPrefix}/email/campaign`,
+        icon: 'setting',
+      },
+    ],
   },
   {
     id: 'workflow',

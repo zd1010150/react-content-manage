@@ -11,7 +11,7 @@ import EmailTemplatesCreation from './email/emailTemplatesCreation';
 import EmailTemplatesCampaign from './email/emailTemplatesCampaign';
 import NewEmail from './email/newEmail';
 import PermissionProfile from './Setup/PermissionProfile';
-import LeadsFields from './Setup/LeadsFields';
+import Fields from './Setup/Fields';
 
 export {
   Leads,
@@ -27,5 +27,5 @@ export {
   EmailTemplatesCampaign,
   NewEmail,
   PermissionProfile,
-  LeadsFields
+  Fields,
 };

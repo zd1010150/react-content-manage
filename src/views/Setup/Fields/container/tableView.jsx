@@ -1,143 +1,193 @@
 /* eslint-disable no-shadow */
-import React from 'react';
+import React, { Fragment } from 'react';
 import _ from 'lodash';
+import classNames from 'classnames/bind';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
-import { Table, Button, Icon, Modal, notification } from 'antd';
-import { PAGE_ACTION } from 'config/app.config';
+import { Button, Icon } from 'antd';
 import { connect } from 'react-redux';
+import { RightSider } from 'components/page/index';
 import { Panel } from 'components/ui/index';
 import { intlShape, injectIntl } from 'react-intl';
+import { toggleRightSider } from 'components/page/RightSider/flow/action';
+import { fetchFields, toggleEditingStatus, setSelectedFields, changeMapping, saveFieldsMapping } from '../flow/action';
+import { getToFieldsStatus } from '../flow/reselect';
+import { FIELD_TYPE_SELECT, FIELD_EDIT, FIELD_ADD, PICKLIST_OPTION_EDIT } from '../flow/pageAction';
+import FieldMappingInput from '../component/tableView/fieldMappingInput';
+import RightSiderFields from '../component/tableView/rightSiderFields';
 
+class FieldsTableView extends React.Component {
+  componentDidMount() {
+    this.props.fetchFields(this.props.objectType);
+  }
+  mappingField() {
+    const { toggleRightSider, toggleEditingStatus } = this.props;
+    toggleRightSider(false);
+    toggleEditingStatus(true);
+  }
+  editField(field) {
+    console.log(field.id, '---');
+  }
+  mapField(fromField, mapToOfFromField, fieldCategory, toObjectType, fromObjectType) {
+    this.props.setSelectedFields({
+      fromField, mapToOfFromField, fieldCategory, toObjectType, fromObjectType,
+    });
+  }
 
-
-const { confirm } = Modal;
-
-class FieldTableView extends React.Component {
-    componentDidMount() {
-        this.props.queryByPaging();
-    }
-    searchUser(value) {
-        this.props.queryBySearchKey(value);
-    }
-    edit(id) {
-        const self = this;
-        this.props.fetchEditUser(id, (user) => {
-            const { id, name } = getTreeItemByKey(self.props.teams, user.team_id);
-            self.props.setDepartment({
-                department_id: id,
-                department_name: name,
-            });
-            self.props.history.push(`/setup/company-info/users?action=${PAGE_ACTION.EDIT}`);
+  render() {
+    const { formatMessage } = this.props.intl;
+    const {
+      history,
+      objectType,
+      mainFields,
+      cstmFields,
+      fromFields,
+      toFields,
+      toFieldsStatus,
+      isEditing,
+      selectedField,
+      changeMapping,
+      saveFieldsMapping,
+      mappings,
+      fetchFields,
+      allFields,
+    } = this.props;
+    const rightActions = (() => {
+      const actions = [];
+      actions.push(<Button key="save" className={classNames('btn-ellipse', 'ml-sm', 'lead-theme-btn', isEditing ? '' : 'no-display')} size="small" icon="save" onClick={() => this.saveFieldsMapping(mappings)}>{ formatMessage({ id: 'global.ui.button.save' })}</Button>);
+      actions.push(<Button key="cancel" className={classNames('btn-ellipse', 'ml-sm', 'lead-theme-btn', isEditing ? '' : 'no-display')} size="small" icon="close" onClick={() => fetchFields()}>{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>);
+      actions.push(<Button key="addBtn" className={classNames('btn-ellipse', 'ml-sm', 'lead-theme-btn', !isEditing ? '' : 'no-display')} size="small" icon="plus" onClick={() => history.push(`/setup/fields?objectType=${objectType}&action=${FIELD_TYPE_SELECT}`)}>
+        { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}
+      </Button>);
+      actions.push(<Button key="viewAll" className={classNames('btn-ellipse', 'ml-sm', 'lead-theme-btn', !isEditing ? '' : 'no-display')} size="small" icon="eye" onClick={() => this.mappingField()}>{ formatMessage({ id: 'global.ui.button.edit' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}</Button>);
+      return actions;
+    })();
+    const getMappingTd = (field, fieldProp, mappingFields, fieldCategory) => {
+      if (!_.isEmpty(mappingFields)) {
+        return Object.keys(mappingFields).map((objType) => {
+          if (!field.can_be_mapped) return <td> Cannot be mapped</td>;
+          const fields = _.isEmpty(field[fieldProp][objType]) ? [] : field[fieldProp][objType];
+          return (
+            <td key={objType}>
+              <FieldMappingInput disabled={fieldProp === 'map_from'} fields={fields} field={field} isEditing={isEditing} onSearch={(field, Fields) => this.mapField(field, Fields, fieldCategory, objType, objectType)} onClick={(field, Fields) => this.mapField(field, Fields, fieldCategory, objType, objectType)} />
+            </td>
+          );
         });
-    }
-    delete(id) {
-        const { deleteUsers } = this.props;
-        const { formatMessage } = this.props.intl;
-        confirm({
-            title: formatMessage({ id: 'global.ui.dialog.deleteTitle' }),
-            onOk() {
-                deleteUsers(id);
-            },
-            onCancel() {
-
-            },
-        });
-    }
-    render() {
-        const {
-            usersDataTablePagination, users, queryByPaging, history,
-        } = this.props;
-        const { formatMessage } = this.props.intl;
-        const rightActions = (<Button
-            key="addBtn"
-            className="btn-ellipse ml-sm"
-            size="small"
-            icon="user-add"
-            onClick={() => {
-                history.push('/setup/company-info/users?action=add');
-            }}
-        >
-            { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}
-        </Button>);
-        const columns = [
-            {
-                title: formatMessage({ id: 'global.ui.table.action' }),
-                key: 'id',
-                render: record => (
-                    <span>
-            <Icon type="edit" onClick={() => this.edit(record.id)} />
-            <Icon type="delete" className="danger pl-lg" onClick={() => this.delete(record.id)} />
-          </span>
-                ),
-            }, {
-                title: formatMessage({ id: 'global.properNouns.users' }),
-                dataIndex: 'name',
-                key: 'name',
-            }, {
-                title: formatMessage({ id: 'global.properNouns.joinDate' }),
-                dataIndex: 'join_date',
-                key: 'join_date',
-            }, {
-                title: formatMessage({ id: 'global.properNouns.department' }),
-                dataIndex: 'team.name',
-            }, {
-                title: formatMessage({ id: 'global.properNouns.leadPageLayout' }),
-                dataIndex: 'page_layouts.data.leads.name',
-            }, {
-                title: formatMessage({ id: 'global.properNouns.accountPageLayout' }),
-                dataIndex: 'page_layouts.data.accounts.name',
-            },
-            {
-                title: formatMessage({ id: 'global.properNouns.opportunitiesPageLayout' }),
-                dataIndex: 'page_layouts.data.opportunities.name',
-            },
-        ];
-
-        const pagination = {
-            defaultCurrent: usersDataTablePagination.currentPage,
-            current: usersDataTablePagination.currentPage,
-            defaultPageSize: usersDataTablePagination.perPage,
-            pageSize: usersDataTablePagination.perPage,
-            total: usersDataTablePagination.total,
-            size: 'small',
-            onChange(page, pageSize) {
-                queryByPaging(pageSize, page);
-            },
-        };
-        return (
-            <Panel panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions} contentClasses="pl-lg pr-lg pt-lg pb-lg">
-                <FloatingLabelInput
-                    labelText={formatMessage({ id: 'page.users.searchUser' })}
-                    handleSearch={(value) => {
-                        this.searchUser(value);
-                    }}
-                    withSearch
-                />
-                <Table dataSource={users} columns={columns} pagination={pagination} className="mt-lg" rowKey="id" />
-            </Panel>
-        );
-    }
-}
-usersTableView.propTypes = {
-    intl: intlShape.isRequired,
-    queryByPaging: PropTypes.func,
-    queryBySearchKey: PropTypes.func,
-    fetchEditUser: PropTypes.func.isRequired,
-};
-const mapStateToProps = ({ setup, global }) => {
-    const { users, usersDataTablePagination } = setup.users;
-    return {
-        teams: global.settings.teams,
-        users: users.users,
-        usersDataTablePagination,
+      }
     };
+    const getFieldEl = (fields, fieldCategory) => fields.map(f => (
+      <tr key={f.id}>
+        <td><Icon type="edit" className="ok" onClick={() => this.editField(f)} /></td>
+        <td>{f.field_label}</td>
+        {
+            getMappingTd(f, 'map_to', toFields, fieldCategory)
+        }
+        {
+            getMappingTd(f, 'map_from', fromFields, fieldCategory)
+        }
+        <td>{f.crm_data_type}</td>
+
+      </tr>
+    ));
+    return (
+      <Fragment>
+        <Panel panelClasses="lead-theme-panel" panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions} contentClasses="pl-lg pr-lg pt-lg pb-lg" >
+          <div className="panel-section">
+            <div className="section-header">Default Fields</div>
+            <div className="section-content  mt-lg mb-lg">
+              <table style={{ width: '100%' }}>
+                <thead className="ant-table-thead">
+                  <tr>
+                    <th>Action</th>
+                    <th >Field Label</th>
+                    {
+                        Object.keys(fromFields).map(objType => <th key={objType}>Map from {objType}</th>)
+                      }
+                    {
+                          Object.keys(toFields).map(objType => <th key={objType}>Map to {objType}</th>)
+                      }
+                    <th>Date Type</th>
+                  </tr>
+                </thead>
+                <tbody className="ant-table-tbody">
+                  {
+                      getFieldEl(mainFields, 'main')
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="panel-section">
+            <div className="section-header">Customer Fields</div>
+            <div className="section-content  mt-lg mb-lg">
+              <table style={{ width: '100%' }}>
+                <thead className="ant-table-thead">
+                  <tr>
+                    <th>Action</th>
+                    <th >Field Label</th>
+                    {
+                        Object.keys(fromFields).map(objType => <th key={objType}>Map from {objType}</th>)
+                    }
+                    {
+                        Object.keys(toFields).map(objType => <th key={objType}>Map to {objType}</th>)
+                    }
+                    <th>Date Type</th>
+                  </tr>
+                </thead>
+                <tbody className="ant-table-tbody">
+                  {
+                    getFieldEl(cstmFields, 'cstm')
+                }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </Panel>
+        <RightSider>
+          <RightSiderFields
+            fromField={selectedField.fromField}
+            allFields={allFields}
+            fieldCategory={selectedField.fieldCategory}
+            fromObjectType={objectType}
+            toObjectType={selectedField.toObjectType}
+            fields={toFieldsStatus[selectedField.toObjectType] || []}
+            onChange={args => changeMapping(Object.assign({}, { fieldCategory: selectedField.fieldCategory }, args))}
+          />
+        </RightSider>
+      </Fragment>
+    );
+  }
+}
+FieldsTableView.propTypes = {
+  intl: intlShape.isRequired,
+  objectType: PropTypes.string.isRequired,
+
+};
+const mapStateToProps = ({ setup }) => {
+  const {
+    currentObject, relativeFields, ui, selectedField,
+  } = setup.fields.tableView;
+  const { main, cstm, mappings } = currentObject.fields;
+  const { from, to } = relativeFields;
+  return {
+    mappings,
+    allFields: currentObject.fields,
+    objectType: currentObject.objType,
+    mainFields: main,
+    cstmFields: cstm,
+    fromFields: from,
+    toFields: to,
+    toFieldsStatus: getToFieldsStatus(setup),
+    isEditing: ui.isEditing,
+    selectedField,
+  };
 };
 const mapDispatchToProps = {
-    queryByPaging,
-    queryBySearchKey,
-    deleteUsers,
-    fetchEditUser,
-    setDepartment,
+  fetchFields,
+  toggleRightSider,
+  toggleEditingStatus,
+  setSelectedFields,
+  changeMapping,
+  saveFieldsMapping,
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldTableView)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldsTableView)));

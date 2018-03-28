@@ -16,7 +16,7 @@ import {
   NewEmail,
   EmailTemplatesCampaign,
   PermissionProfile,
-  LeadsFields
+  Fields,
 } from 'views/index';
 
 import { ObjectFilter } from '../index';
@@ -36,8 +36,8 @@ const MainContent = () => (
     <Route path="/email/new" component={NewEmail} />
     <Route path="/setup/email/campaign/" component={EmailTemplatesCampaign} />
     <Route path="/setup/company-info/permissions" component={PermissionProfile} />
-    <Route path="/setup/leads/fields" component={LeadsFields} />
+    <Route path="/setup/fields" component={Fields} />
   </Switch>
-)
+);
 
 export default MainContent;
