@@ -13,6 +13,7 @@ export default {
     leadPageLayout: 'Lead Page Layout',
     accountPageLayout: 'Account Page Layout',
     opportunitiesPageLayout: 'Opportunity Page Layout',
+    field: '字段',
   },
   en: {
     lead: 'Lead',
@@ -27,5 +28,6 @@ export default {
     leadPageLayout: 'Lead Page Layout',
     accountPageLayout: 'Account Page Layout',
     opportunitiesPageLayout: 'Opportunity Page Layout',
+    field: 'Field',
   },
 };

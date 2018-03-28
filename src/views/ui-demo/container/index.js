@@ -16,6 +16,7 @@ import Fields from '../component/Fields';
 import Sections from '../component/Sections';
 import RightSideBar from '../component/rightSideBar';
 import EditBoxes from '../component/editBox';
+import FilterCriteria from '../component/FilterCriteria';
 
 const AntdPanel = Collapse.Panel;
 const { TabPane } = Tabs;
@@ -69,6 +70,11 @@ const UIDemo = () => (
       <Collapse >
         <AntdPanel header="RightSideBar" key="2">
           <RightSideBar />
+        </AntdPanel>
+      </Collapse>
+      <Collapse >
+        <AntdPanel header="Filter Criteria Component" key="3">
+          <FilterCriteria />
         </AntdPanel>
       </Collapse>
     </TabPane>

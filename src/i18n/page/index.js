@@ -4,6 +4,8 @@ import organChart from 'views/Setup/OrganisationChart/i18n';
 import permissionProfile from 'views/Setup/PermissionProfile/i18n';
 import emailTemplates from 'views/email/i18n';
 import objectFilter from 'components/page/ObjectFilter/i18n';
+import customField from 'components/ui/CustomField/i18n';
+import filterCriteria from 'components/page/FilterCriteria/i18n';
 
 export default {
   comInfo,
@@ -12,4 +14,6 @@ export default {
   emailTemplates,
   permissionProfile,
   objectFilter,
+  customField,
+  filterCriteria,
 };

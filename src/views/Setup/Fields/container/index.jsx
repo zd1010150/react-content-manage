@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types,no-shadow */
 import React from 'react';
 import _ from 'lodash';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import queryString from 'query-string';
+import { setCurrentObject } from '../flow/action';
 import { FIELD_TYPE_SELECT, FIELD_EDIT, FIELD_ADD, PICKLIST_OPTION_EDIT } from '../flow/pageAction';
 import FieldAddContainer from './fieldAddContainer';
 import FieldEditContaienr from './fieldEditContainer';
@@ -13,10 +15,15 @@ import TableView from './tableView';
 class FieldsIndexView extends React.Component {
   constructor(props) {
     super();
-    // this.resetState(props);
+    this.setObjectType(props);
   }
   componentWillReceiveProps(nextProps) {
-    // this.resetState(nextProps);
+    this.setObjectType(nextProps);
+  }
+  setObjectType(props) {
+    const { location, setCurrentObject } = props;
+    const pairs = queryString.parse(location.search);
+    setCurrentObject({ objType: pairs.objectType });
   }
   getView(props) {
     const { location } = props;
@@ -32,7 +39,7 @@ class FieldsIndexView extends React.Component {
       case PICKLIST_OPTION_EDIT:
         return <PickListOptionEditContainer />;
       default:
-        return <TableView />;
+        return <TableView objectType={pairs.objectType} />;
     }
   }
   render() {
@@ -40,5 +47,8 @@ class FieldsIndexView extends React.Component {
   }
 }
 
+const mapDispatchToProps = {
+  setCurrentObject,
+};
 
-export default withRouter(FieldsIndexView);
+export default withRouter(connect(null, mapDispatchToProps)(FieldsIndexView));

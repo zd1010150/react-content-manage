@@ -9,8 +9,10 @@ const propTypes = {
   intl: intlShape.isRequired,
 };
 
-const ViewButtons = ({ intl, onSaveClick }) => {
+const SubmitButtons = ({ intl, onSaveClick }) => {
   const { formatMessage } = intl;
+  const i18nPrefix = 'global.ui.button';
+  
   return (
     <Row style={{ margin: '30px 15px 20px' }}>
       <Button
@@ -19,7 +21,7 @@ const ViewButtons = ({ intl, onSaveClick }) => {
         onClick={onSaveClick}
       >
         <Icon type="save" size="small" />
-        {formatMessage({ id: 'global.ui.button.save' })}
+        {formatMessage({ id: `${i18nPrefix}.save` })}
       </Button>
       <Button
         className="ml-sm"
@@ -27,12 +29,12 @@ const ViewButtons = ({ intl, onSaveClick }) => {
       >
         <Link to="/leads">
           <Icon type="close" size="small" />
-          {formatMessage({ id: 'global.ui.button.cancel' })}
+          {formatMessage({ id: `${i18nPrefix}.cancel` })}
         </Link>
       </Button>
     </Row>
   );
 };
 
-ViewButtons.propTypes = propTypes;
-export default injectIntl(ViewButtons);
+SubmitButtons.propTypes = propTypes;
+export default injectIntl(SubmitButtons);
