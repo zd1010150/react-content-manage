@@ -20,6 +20,11 @@ class FieldsTableView extends React.Component {
   componentDidMount() {
     this.props.fetchFields(this.props.objectType);
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.objectType !== this.props.objectType) {
+      this.props.fetchFields(nextProps.objectType);
+    }
+  }
   mappingField() {
     const { toggleRightSider, toggleEditingStatus } = this.props;
     toggleRightSider(false);
