@@ -130,7 +130,7 @@ class Card extends Component {
                             className={cx(['folder-icon', 'folder-move'])}
                             type="folder"
                         />
-                        <span onClick={()=>{deleteUserFolderData(item.id)}} className="pl-sm"><Icon type="delete"/></span>
+                        <span onClick={()=>{deleteUserFolderData(item.id)}} className="pl-sm"><Icon className={cx('delete-icon')} type="delete"/></span>
                     </div>
                     {isOver &&
                     <div style={{
