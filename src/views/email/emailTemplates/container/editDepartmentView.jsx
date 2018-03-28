@@ -10,7 +10,7 @@ import AddDepartment from '../component/add';
 import Department from '../component/department';
 import User from '../component/user';
 import {
-  setSelectedUser,
+  getUserFolderData,
   getAllUser,
   setSelectedTeam,
   deleteDepartment,
@@ -38,7 +38,7 @@ class EditView extends React.Component {
       teamUsers,
       isSelectTeamDialogVisible,
       selectedUser,
-      setSelectedUser,
+      getUserFolderData,
       getAllUser,
       updateUsers,
       deleteDepartment,
@@ -83,7 +83,7 @@ class EditView extends React.Component {
                   isSelectTeamDialogVisible={isSelectTeamDialogVisible}
                   teams={teams}
                   selectedUser={selectedUser}
-                  setSelectedUser={setSelectedUser}
+                  getUserFolderData={getUserFolderData}
                   getAllUser={getAllUser}
                   updateUsers={updateUsers}
                   selectedTeamName={selectedTeamName}
@@ -116,7 +116,7 @@ const mapStateToProps = ({ global, setup }) => {
 
 const mapDispatchToProps = {
   setTeams,
-  setSelectedUser,
+  getUserFolderData,
   getAllUser,
   updateUsers,
   setSelectedTeam,

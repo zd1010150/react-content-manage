@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import _ from "lodash";
 import EnumsManager from "utils/EnumsManager";
 import {
   EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
@@ -21,7 +22,8 @@ import {
   EMAIL_TEMPLATES_SET_EDIT_FOLDERS,
   EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
   EMAIL_TEMPLATES_SET_NEW_ORDER,
-  EMAIL_TEMPLATES_UPDATE_FOLDER_NAME
+  EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
+  EMAIL_TEMPLATES_CREATE_USER_FOLDERS
 } from "./actionType";
 
 const templates = (
@@ -45,19 +47,26 @@ const templates = (
 const mockFolders = [
   {
     id: 0,
-    userId: 0,
-    owner: "Jimmy",
-    name: "genaral folder",
-    isShared: true,
-    templates: [
-      {
-        name: "market",
-        createdAt: "2018-01-02",
-        modifiedDate: "2018-03-02",
-        createBy: "Jimmy",
-        Description: "for market use"
-      }
-    ]
+    belonged_user_id: 2,
+    name: "user2_folder1",
+    description: null,
+    comment: "seeder",
+    created_at: "2018-03-27 04:44:55",
+    updated_at: "2018-03-27 04:44:55",
+    belonged_user: {
+      id: 2,
+      name: "u2-t2",
+      email: "admin2@acy.com",
+      team_id: 2,
+      time_zone: null,
+      start_work_time: null,
+      end_work_time: null,
+      created_at: "2018-03-27 04:44:49",
+      updated_at: "2018-03-27 04:44:49",
+      deleted_at: null
+    },
+    shared_to_users: [],
+    shared_to_teams: []
   },
   {
     id: 1,
@@ -201,7 +210,7 @@ const mockSelectedFolder = {
 //
 // }
 
-const userFolders = (state = mockFolders, action) => {
+const userFolders = (state = [], action) => {
   const { type, payload } = action;
   switch (type) {
     case EMAIL_TEMPLATES_SET_USER_FOLDERS:
@@ -211,7 +220,25 @@ const userFolders = (state = mockFolders, action) => {
     case EMAIL_TEMPLATES_SET_NEW_ORDER:
       return action.userFolders;
     case EMAIL_TEMPLATES_UPDATE_FOLDER_NAME:
-        return _.update(_.find(state, { 'id': payload.id }), 'name', ()=> (payload.name));
+      const cloneState = _.cloneDeep(state);
+      _.update(
+        _.find(cloneState, { id: payload.id }),
+        "name",
+        () => payload.name
+      );
+      return cloneState;
+    case EMAIL_TEMPLATES_CREATE_USER_FOLDERS:
+      return [...state, payload];
+    default:
+      return state;
+  }
+};
+
+const deletedFolders = (state = [], action) => {
+  const { type, id } = action;
+  switch (type) {
+    case EMAIL_TEMPLATES_DELETE_USER_FOLDERS:
+      return id > 0 ? [...state, id] : [...state];
     default:
       return state;
   }
@@ -221,7 +248,7 @@ const sharedFolders = (state = mockSharedFolders, action) => {
   const { type, ...payload } = action;
   switch (type) {
     case EMAIL_TEMPLATES_SET_SHARED_FOLDERS:
-      return [...payload];
+      return action.sharedFolders;
     default:
       return state;
   }
@@ -361,5 +388,6 @@ export default combineReducers({
   userFolders,
   sharedFolders,
   selectedFolder,
-  editFolders
+  editFolders,
+  deletedFolders
 });

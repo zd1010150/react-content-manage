@@ -26,7 +26,6 @@ const propTypes = {
     connectDropTarget: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
     isDragging: PropTypes.bool.isRequired,
-    id: PropTypes.any.isRequired,
     moveCard: PropTypes.func.isRequired,
     isOtherDragging: PropTypes.bool.isRequired,
     clearDragging: PropTypes.func.isRequired,
@@ -131,7 +130,7 @@ class Card extends Component {
                             className={cx(['folder-icon', 'folder-move'])}
                             type="folder"
                         />
-                        <span className="pl-sm"><Icon type="delete"/></span>
+                        <span onClick={()=>{deleteUserFolderData(item.id)}} className="pl-sm"><Icon type="delete"/></span>
                     </div>
                     {isOver &&
                     <div style={{
@@ -145,7 +144,7 @@ class Card extends Component {
                         backgroundColor: '#FB8C00',
                     }} />
                     }
-                    <Input onChange={(e)=>{this.editFolderName(e, item)}} size="small" disabled={!canEdit} addonAfter={!canEdit && <Icon onClick={() => {setEditFolderData(item)}} type="edit" />} defaultValue={item.name} />
+                    <Input onChange={(e)=>{editFolderName(e, item)}} size="small" disabled={!canEdit} addonAfter={!canEdit && <Icon onClick={() => {setEditFolderData(item)}} type="edit" />} defaultValue={item.name} />
                 </div>),
         );
     }

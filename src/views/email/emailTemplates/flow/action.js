@@ -24,14 +24,20 @@ import {
   EMAIL_TEMPLATES_SET_EDIT_FOLDERS,
   EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
   EMAIL_TEMPLATES_SET_NEW_ORDER,
-  EMAIL_TEMPLATES_UPDATE_FOLDER_NAME
+  EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
+  EMAIL_TEMPLATES_CREATE_USER_FOLDERS
 } from "./actionType";
 
 const url = "/";
 
-export const updateFolderName = ({id, name}) => ({
+export const createUserFolder = payload => ({
+  type: EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
+  payload
+});
+
+export const updateFolderName = ({ id, name }) => ({
   type: EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
-  payload: {id, name}
+  payload: { id, name }
 });
 
 export const setNewOrder = userFolders => ({
@@ -40,6 +46,22 @@ export const setNewOrder = userFolders => ({
 });
 
 export const sortValues = array => dispatch => dispatch(setNewOrder(array));
+
+export const getUserFolderData = userId => dispatch =>
+  get(`/admin/email_folders/user/${userId}`, {}, dispatch).then(data => {
+      //data will be {own: {data: []}, shared_by: {data: []}}
+      console.log('1111', data)
+    if (data.own && !_.isEmpty(data.own.data)) {
+      dispatch(setUserFolderData(data.own.data));
+    } else {
+      dispatch(setUserFolderData([]));
+    }
+    if(data.shared_by && !_.isEmpty(data.shared_by.data)){
+        dispatch(setSharedFolderData(data.shared_by.data));
+    }else {
+        dispatch(setSharedFolderData([]));
+    }
+  });
 
 //Set User Folders
 export const setUserFolderData = userFolders => ({
@@ -110,35 +132,50 @@ const setPaginations = (perPage, currentPage, total) => ({
 });
 
 // TODO The url will change to /templates/list
-export const fetchTemplates = (
+export const fetchTemplates = ({
   perPage = EnumsManager.DefaultPageConfigs.PageSize,
   currentPage = 1,
   search,
+  folderId,
   dispatch
-) =>
-  get(
-    "/admin/users/list",
-    { per_page: perPage, page: currentPage, search },
-    dispatch
-  ).then(data => {
-    console.log("123", data);
-    if (data && !_.isEmpty(data.data) && !_.isEmpty(data.meta)) {
-      dispatch(setTemplatesData(data.data));
-      const { pagination } = data.meta;
-
-      dispatch(
-        setPaginations(
-          pagination.per_page,
-          pagination.current_page,
-          pagination.total
-        )
-      );
+}) => {
+    //folderId undefined means the folder is just created and has not been saved yet!!!
+    if(!folderId){
+        return dispatch(setTemplatesData([]));
     }
-  });
-export const queryByPaging = (perPage, currentPage) => (dispatch, getState) => {
+    get(
+        `/admin/email_templates/email_folders/${folderId}`,
+        { per_page: perPage, page: currentPage, search },
+        dispatch
+    ).then(data => {
+        if (data && !_.isEmpty(data.data) && !_.isEmpty(data.meta)) {
+            dispatch(setTemplatesData(data.data));
+            const { pagination } = data.meta;
+
+            dispatch(
+                setPaginations(
+                    pagination.per_page,
+                    pagination.current_page,
+                    pagination.total
+                )
+            );
+        }
+    });
+}
+
+export const queryByPaging = ({ perPage, currentPage, folderId }) => (
+  dispatch,
+  getState
+) => {
   const state = getState();
   const { searchKey } = state.setup.users.searchKey;
-  return fetchTemplates(perPage, currentPage, searchKey, dispatch);
+  return fetchTemplates({
+    perPage,
+    currentPage,
+    searchKey,
+    folderId,
+    dispatch
+  });
 };
 
 export const setNewDepartName = name => ({

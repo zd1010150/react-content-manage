@@ -43,12 +43,12 @@ const Radios = ({ setSharedByVisible }) => (
  * @returns {XML}
  * @constructor
  */
-const Folders = ({ setSelectedFolderData, selectedFolder, userFolders, sharedFolders, isSharedByVisible}) => {
+const Folders = ({ setSelectedFolderData, selectedFolder, userFolders, sharedFolders, isSharedByVisible, queryByPaging}) => {
     const folders = isSharedByVisible ? sharedFolders : userFolders;
     return <div className={cx('folders')}>
         {folders.map((item, index)=>
             <div key={index} className={cx('folder')} style={{marginLeft: index > 0 ? 40 : 10}}>
-                <input onChange={()=> {setSelectedFolderData(item)}} checked={selectedFolder && selectedFolder.id === item.id} id={index} value={item}  type="radio" style={{visibility: 'hidden'}} />
+                <input onChange={()=> {setSelectedFolderData(item); queryByPaging({folderId: item.id})}} checked={selectedFolder && selectedFolder.id === item.id} id={index} value={item}  type="radio" style={{visibility: 'hidden'}} />
                 <label htmlFor={index}>
                     <div>
                         {selectedFolder && selectedFolder.id === item.id ? <Icon className={cx('folder-icon')} type="folder-open" /> : <Icon className={cx('folder-icon')} type="folder" />}
@@ -94,8 +94,6 @@ const TemplatePermission = () => (
 
 class EmailTemplateDetail extends React.Component {
     componentDidMount() {
-        //TODO This will move to onclick of folder
-        this.props.queryByPaging();
     }
     render() {
         const { formatMessage } = this.props.intl;
@@ -112,7 +110,7 @@ class EmailTemplateDetail extends React.Component {
             total: templatesDataTablePagination.total,
             size: 'small',
             onChange(page, pageSize) {
-                queryByPaging(pageSize, page);
+                queryByPaging({pageSize, page});
             },
         };
         const columns = [
@@ -150,7 +148,8 @@ class EmailTemplateDetail extends React.Component {
                     selectedFolder={selectedFolder}
                     userFolders={userFolders}
                     sharedFolders={sharedFolders}
-                    isSharedByVisible={isSharedByVisible}/>
+                    isSharedByVisible={isSharedByVisible}
+                    queryByPaging={queryByPaging}/>
                 <TabSwitcher
                     setPermissionSettingVisible={setPermissionSettingVisible}
                     isPermissionSettingVisible={isPermissionSettingVisible}

@@ -1,11 +1,9 @@
 /* eslint-disable react/prop-types,no-shadow */
 import React, {Fragment} from 'react';
-import { connect } from 'react-redux';
-import { intlShape, injectIntl } from 'react-intl';
-import { Row, Col, Button, Icon, Radio, Input } from 'antd';
-import { Panel } from 'components/ui/index';
-import { setTeams } from 'store/global/action';
-import { updateUsers } from 'views/Setup/Users/flow/action';
+import {connect} from 'react-redux';
+import {intlShape, injectIntl} from 'react-intl';
+import {Row, Col, Button, Icon, Radio, Input} from 'antd';
+import {Panel} from 'components/ui/index';
 import classNames from 'classnames/bind';
 import Folder from '../component/folder';
 import styles from '../emailTemplates.less';
@@ -13,11 +11,13 @@ import {
     setEditFolderViewVisible,
     setEditFolderData,
     deleteUserFolderData,
-    sortValues
+    sortValues,
+    updateFolderName,
+    createUserFolder
 } from '../flow/action';
 
 
-import { getTeamUsers, getSelectedTeamName } from '../flow/reselect';
+import {getTeamUsers, getSelectedTeamName} from '../flow/reselect';
 const cx = classNames.bind(styles);
 
 // const FolderInput = ({item, editFolders, setEditFolderData, deleteUserFolderData})=>{
@@ -37,8 +37,12 @@ const cx = classNames.bind(styles);
 
 const ActionButtonGroup = ({setEditFolderViewVisible, formatMessage}) => {
     return <div className="pt-md pl-md pb-md">
-        <Button className="email-theme-btn mr-md" onClick={() => {setEditFolderViewVisible(false)}}><Icon type="save" />{ formatMessage({ id: 'page.emailTemplates.save' }) }</Button>
-        <Button onClick={() => {setEditFolderViewVisible(false)}}><Icon type="close" />{ formatMessage({ id: 'page.emailTemplates.cancel' }) }</Button>
+        <Button className="email-theme-btn mr-md" onClick={() => {
+            setEditFolderViewVisible(false)
+        }}><Icon type="save"/>{ formatMessage({id: 'page.emailTemplates.save'}) }</Button>
+        <Button onClick={() => {
+            setEditFolderViewVisible(false)
+        }}><Icon type="close"/>{ formatMessage({id: 'page.emailTemplates.cancel'}) }</Button>
     </div>
 }
 
@@ -49,10 +53,12 @@ class EmailTemplateEditFolder extends React.Component {
             cards: props.userFolders,
             selectIndex: -1,
             isOtherDragging: false,
+            tempId: -1
         };
     }
+
     componentWillReceiveProps(nextProps) {
-        const { cards } = this.state;
+        const {cards} = this.state;
         if (nextProps.userFolders.length === this.props.userFolders.length + 1) {
             const last = nextProps.userFolders[nextProps.userFolders.length - 1];
             return this.setState({
@@ -65,12 +71,12 @@ class EmailTemplateEditFolder extends React.Component {
     }
 
     setSelectedCards = (index) => {
-        const { cards } = this.state;
+        const {cards} = this.state;
         const selectedCards = cards.map((card, i) => {
             card.selected = i === Number(index);
             return card;
         });
-        const { onSelect } = this.props;
+        const {onSelect} = this.props;
         if (onSelect && typeof onSelect === 'function') {
             onSelect(selectedCards.filter(card => card.selected));
         }
@@ -78,7 +84,7 @@ class EmailTemplateEditFolder extends React.Component {
     }
 
     handleItemSelection = e => {
-        const { index } = e.target.dataset;
+        const {index} = e.target.dataset;
 
         if (!e.shiftKey) {
             return this.setState({
@@ -89,7 +95,7 @@ class EmailTemplateEditFolder extends React.Component {
     }
 
     setDragging = () => {
-        const { selectIndex } = this.state;
+        const {selectIndex} = this.state;
         this.setState({
             isOtherDragging: true,
             cards: this.setSelectedCards(selectIndex),
@@ -105,7 +111,7 @@ class EmailTemplateEditFolder extends React.Component {
 
     clearDragging = () => {
         this.onDrop(this.state.cards);
-        this.setState({ isOtherDragging: false });
+        this.setState({isOtherDragging: false});
     }
 
     // Swap algorithm
@@ -119,7 +125,7 @@ class EmailTemplateEditFolder extends React.Component {
     }
 
     moveCard = (dragIndex, hoverIndex) => {
-        const { selectIndex, cards } = this.state;
+        const {selectIndex, cards} = this.state;
         // Don't replace items with other selected items
         if (hoverIndex === selectIndex) {
             return;
@@ -136,24 +142,28 @@ class EmailTemplateEditFolder extends React.Component {
     }
 
     editFolderName = (e, item) => {
+        this.props.updateFolderName({id: item.id, name: e.target.value})
         // this.state.cards.map((card)=>{
         //     if(card.id === item.id){
         //         card.userName = e.target.value
         //     }
         // })
         // this.setState({ userName: e.target.value });
-
     }
-    render() {
-        const { formatMessage } = this.props.intl;
-        const { isOtherDragging } = this.state;
 
-        const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteUserFolderData, ...others} = this.props;
-        const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {}}><Icon type="plus" />{ formatMessage({ id: 'page.emailTemplates.newFolder' }) }</Button></div>;
+    render() {
+        const {formatMessage} = this.props.intl;
+        const {isOtherDragging} = this.state;
+
+        const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteUserFolderData, createUserFolder, ...others} = this.props;
+        const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {createUserFolder({"name": "???", id: this.state.tempId}); this.setState((prevState)=>{prevState.tempId-=1})
+        }}><Icon type="plus"/>{ formatMessage({id: 'page.emailTemplates.newFolder'}) }</Button></div>;
         return (
-            <Panel panelTitle={formatMessage({ id: 'page.emailTemplates.editFolderTitle' })} panelClasses="email-theme-panel" contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={actionsRight}>
+            <Panel panelTitle={formatMessage({id: 'page.emailTemplates.editFolderTitle'})}
+                   panelClasses="email-theme-panel"
+                   contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={actionsRight}>
                 <Row onMouseDown={this.handleItemSelection} className={cx('folders')}>
-                    {userFolders.map((item, key)=>
+                    {userFolders.map((item, key) =>
                         <Col
                             key={key}
                             data-index={key}
@@ -192,7 +202,8 @@ class EmailTemplateEditFolder extends React.Component {
  editFolders={editFolders}
  setEditFolderData={setEditFolderData}
  deleteUserFolderData={deleteUserFolderData}/>
-*/}
+ */
+}
 
 
 EmailTemplateEditFolder.propTypes = {
@@ -200,24 +211,23 @@ EmailTemplateEditFolder.propTypes = {
 };
 
 
-const mapStateToProps = ({ global, setup }) => {
-    const { emailTemplates } = setup;
+const mapStateToProps = ({global, setup}) => {
+    const {emailTemplates} = setup;
     return {
-        teams: global.settings.teams,
-        teamUsers: getTeamUsers({ emailTemplates }),
+        teamUsers: getTeamUsers({emailTemplates}),
         isEditFolderViewVisible: emailTemplates.ui.isEditFolderViewVisible,
         editFolders: emailTemplates.editFolders,
-        userFolders:emailTemplates.userFolders
+        userFolders: emailTemplates.userFolders
     };
 };
 
 const mapDispatchToProps = {
-    setTeams,
-    updateUsers,
     setEditFolderViewVisible,
     setEditFolderData,
     deleteUserFolderData,
-    sortValues
+    sortValues,
+    updateFolderName,
+    createUserFolder
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateEditFolder));

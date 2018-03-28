@@ -7,9 +7,9 @@ import { TeamTree } from 'components/page/index';
 import { DefaultDepartment } from 'components/ui/index';
 
 class User extends React.Component {
-  selectUser(user) {
-    const { setSelectedUser } = this.props;
-    setSelectedUser(user);
+  selectUser(userId) {
+    const { getUserFolderData } = this.props;
+    getUserFolderData(userId);
   }
   // selectDepartment(teamId) {
   //   const {
@@ -41,7 +41,7 @@ class User extends React.Component {
       <div >
         <Card title={selectedTeamName} bordered={false} style={{ width: '100%' }} bodyStyle={{ minHeight: '150px' }}>
           {
-                    teamUsers.map(user => <Button key={user.id} className="ml-sm btn-ellipse " onClick={() => this.selectUser(user)}>{user.name}<Icon type="swap" /></Button>)
+                    teamUsers.map(user => <Button key={user.id} className="ml-sm btn-ellipse " onClick={() => this.selectUser(user.id)}>{user.name}<Icon type="swap" /></Button>)
                 }
         </Card>
       </div>
@@ -59,7 +59,7 @@ User.propTypes = {
   isSelectTeamDialogVisible: PropTypes.bool.isRequired,
   teams: PropTypes.array.isRequired,
   selectedUser: PropTypes.object.isRequired,
-  setSelectedUser: PropTypes.func.isRequired,
+  getUserFolderData: PropTypes.func.isRequired,
   getAllUser: PropTypes.func.isRequired,
   updateUsers: PropTypes.func.isRequired,
 };
