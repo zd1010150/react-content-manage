@@ -84,10 +84,9 @@ class FilterCriteria extends Component {
     }
   }
 
-  _handleFilterRemove = e => {
+  _handleFilterRemove = displayNum => {
     const { handleFilterRemove } = this.props;
     if (_.isFunction(handleFilterRemove)) {
-      const { displayNum } = e.target.dataset;
       return handleFilterRemove(displayNum);
     }
   }
