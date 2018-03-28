@@ -93,6 +93,20 @@ export const setSelectedFolderData = selectedFolder => ({
   selectedFolder
 });
 
+export const uploadFolders = (cb) => (dispatch, getState) =>{
+    const state = getState();
+    const {setup} = state;
+    post("/admin/email_folders/mass_cud/me", { current: setup.emailTemplates.userFolders, delete: setup.emailTemplates.deletedFolders }, dispatch).then(data => {
+        if (!_.isEmpty(data)) {
+            console.log('data', data)
+        }
+        if (_.isFunction(cb)) {
+            cb();
+        }
+    });
+}
+
+
 export const setDepartmentVisible = isDepartmentVisible => ({
   type: EMAIL_TEMPLATES_DEPARTMENT_VISIBLE,
   isDepartmentVisible

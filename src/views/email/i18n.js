@@ -38,6 +38,7 @@ export default {
       selectTemplate: '选择模板',
       cloudAttachment: '云附件',
       localAttachment: '本地附件',
+      attachment: '附件',
       sharedBy: '共享者：'
 
 
@@ -81,6 +82,7 @@ export default {
       selectTemplate: 'Select Template',
       cloudAttachment: 'Cloud Attachment',
       localAttachment: 'Local Attachment',
+      attachment: 'Attachment',
       sharedBy: 'By: '
 
 

@@ -25,12 +25,11 @@ class TemplateContent extends React.Component {
                 {formatMessage({id: 'page.emailTemplates.importHtmlTemplate'})}
             </a>
         </label>;
-        const localAttachment = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {}}><Icon type="link" />{ formatMessage({ id: 'page.emailTemplates.localAttachment' }) }</Button>
-        const cloudAttachment = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {}}><Icon type="file" />{ formatMessage({ id: 'page.emailTemplates.cloudAttachment' }) }</Button>
-        const preview = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {}}><Icon type="eye-o" />
+        const attachment = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {}}><Icon type="link" />{ formatMessage({ id: 'page.emailTemplates.attachment' }) }</Button>
+       const preview = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {}}><Icon type="eye-o" />
             {formatMessage({id: 'page.emailTemplates.preview'})}
         </Button>
-        const additionalCtrl = <Fragment>{selectTemplate}{cloudAttachment}{localAttachment}{preview}</Fragment>
+        const additionalCtrl = <Fragment>{selectTemplate}{attachment}{preview}</Fragment>
         return (
             <RichEditor additionalCtrl={additionalCtrl}/>
         );

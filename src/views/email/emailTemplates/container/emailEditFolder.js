@@ -13,7 +13,8 @@ import {
     deleteUserFolderData,
     sortValues,
     updateFolderName,
-    createUserFolder
+    createUserFolder,
+    uploadFolders
 } from '../../flow/action';
 
 
@@ -150,7 +151,7 @@ class EmailTemplateEditFolder extends React.Component {
     }
 
     saveEditFolder = () => {
-        const {setEditFolderViewVisible, userFolders} = this.props;
+        const {setEditFolderViewVisible, userFolders, uploadFolders} = this.props;
         let canSave = true;
         console.log('123', _.uniqBy(userFolders, [name]).length)
         if(_.uniqBy(userFolders, 'name').length !== userFolders.length){
@@ -166,7 +167,7 @@ class EmailTemplateEditFolder extends React.Component {
         })
         if(canSave){
             //Todo implement save
-            setEditFolderViewVisible(false)
+            uploadFolders(()=>{setEditFolderViewVisible(false)});
         }
     }
 
@@ -246,7 +247,8 @@ const mapDispatchToProps = {
     deleteUserFolderData,
     sortValues,
     updateFolderName,
-    createUserFolder
+    createUserFolder,
+    uploadFolders
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateEditFolder));
