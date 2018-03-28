@@ -54,8 +54,8 @@ class FieldsTableView extends React.Component {
     } = this.props;
     const rightActions = (() => {
       const actions = [];
-      actions.push(<Button key="save" className={classNames('btn-ellipse', 'ml-sm', 'lead-theme-btn', isEditing ? '' : 'no-display')} size="small" icon="save" onClick={() => this.saveFieldsMapping(mappings)}>{ formatMessage({ id: 'global.ui.button.save' })}</Button>);
-      actions.push(<Button key="cancel" className={classNames('btn-ellipse', 'ml-sm', 'lead-theme-btn', isEditing ? '' : 'no-display')} size="small" icon="close" onClick={() => fetchFields()}>{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>);
+      actions.push(<Button key="save" className={classNames('btn-ellipse', 'ml-sm', 'lead-theme-btn', isEditing ? '' : 'no-display')} size="small" icon="save" onClick={() => saveFieldsMapping(mappings)}>{ formatMessage({ id: 'global.ui.button.save' })}</Button>);
+      actions.push(<Button key="cancel" className={classNames('btn-ellipse', 'ml-sm', 'lead-theme-btn', isEditing ? '' : 'no-display')} size="small" icon="close" onClick={() => fetchFields(objectType)}>{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>);
       actions.push(<Button key="addBtn" className={classNames('btn-ellipse', 'ml-sm', 'lead-theme-btn', !isEditing ? '' : 'no-display')} size="small" icon="plus" onClick={() => history.push(`/setup/fields?objectType=${objectType}&action=${FIELD_TYPE_SELECT}`)}>
         { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}
       </Button>);
