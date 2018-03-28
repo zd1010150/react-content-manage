@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { fetchTeams } from 'store/global/action';
 import {
     setEditFolderViewVisible,
-} from '../flow/action';
+} from '../../flow/action';
 import { connect } from 'react-redux';
 import EditView from './editDepartmentView';
 import EmailTemplateDetail from './emailTemplateDetail';

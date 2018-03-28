@@ -131,7 +131,6 @@ const setPaginations = (perPage, currentPage, total) => ({
   total
 });
 
-// TODO The url will change to /templates/list
 export const fetchTemplates = ({
   perPage = EnumsManager.DefaultPageConfigs.PageSize,
   currentPage = 1,

@@ -22,8 +22,8 @@ import {
     setSortingTeam,
     setDepartmentVisible,
     setSelectedUser
-} from '../flow/action';
-import {getTeamUsers, getSelectedTeamName} from '../flow/reselect';
+} from '../../flow/action';
+import {getTeamUsers, getSelectedTeamName} from '../../flow/reselect';
 
 
 class EditView extends React.Component {

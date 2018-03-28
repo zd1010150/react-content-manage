@@ -17,8 +17,8 @@ import {
     setSharedByVisible,
     queryByPaging,
     setSelectedFolderData
-} from '../flow/action';
-import {getTeamUsers, getSelectedTeamName} from '../flow/reselect';
+} from '../../flow/action';
+import {getTeamUsers, getSelectedTeamName} from '../../flow/reselect';
 import {Tabs} from 'antd';
 import styles from '../emailTemplates.less';
 const cx = classNames.bind(styles);

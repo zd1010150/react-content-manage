@@ -14,10 +14,10 @@ import {
     sortValues,
     updateFolderName,
     createUserFolder
-} from '../flow/action';
+} from '../../flow/action';
 
 
-import {getTeamUsers, getSelectedTeamName} from '../flow/reselect';
+import {getTeamUsers, getSelectedTeamName} from '../../flow/reselect';
 const cx = classNames.bind(styles);
 
 // const FolderInput = ({item, editFolders, setEditFolderData, deleteUserFolderData})=>{
