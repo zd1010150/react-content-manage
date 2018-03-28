@@ -11,15 +11,13 @@ import { LeftActions, RightActions } from './ActionButtons/index';
 import StyledModal from './StyledModal/index';
 import ListTable from './ListTable/index';
 import DeleteConfirmDialog from './DeleteConfirmDialog';
-import FilterCondition from './FilterCondition/index';
 import { CustomField } from './CustomField/index';
 import DefaultDepartment from './DefaultDepartment/index';
-import CriteriaHeader from './CriteriaHeader/index';
 import { Wrapper, CardContainer } from './MultiSelectDnD/index';
 import RichEditor from './RichEditor/index';
 import UsersList from './UsersList/index';
 import SelectionModal from './SelectionModal/index';
-
+import SubmitButtons from './SubmitButtons/index';
 
 export {
   Upload,
@@ -34,14 +32,13 @@ export {
   StyledModal,
   ListTable,
   DeleteConfirmDialog,
-  FilterCondition,
   CustomField,
   DefaultDepartment,
   Section,
-  CriteriaHeader,
   Wrapper,
   CardContainer,
   RichEditor,
   UsersList,
   SelectionModal,
+  SubmitButtons,
 };

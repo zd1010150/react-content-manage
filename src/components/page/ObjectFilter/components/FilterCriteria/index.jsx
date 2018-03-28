@@ -1,63 +1,83 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Row, Col } from 'antd';
+import { withRouter } from 'react-router-dom';
 
-import { FloatingLabelInput, FilterCondition, CriteriaHeader } from 'components/ui/index';
-import { addFilter, removeFilter, setConditionLogic } from './flow/actions';
+import { FilterCriteria } from 'components/page/index';
+import { getThemeByType } from 'utils/common';
+import Enums from 'utils/EnumsManager';
+import {
+  setConditionLogic,
+  addFilter,
+  changeFilterByColumn,
+  removeFilter,
+} from './flow/actions';
 
 const defaultProps = {};
 const propTypes = {};
 
-class FilterCriteria extends Component {
-  handleLogicChange = value => {
-    this.props.setConditionLogic(value);
+class FilterCriteriaWrapper extends Component {
+  onFieldChange = (fieldId, displayNum) => {
+    const { fields, changeFilterByColumn } = this.props;
+    const field = fields.find(field => field.id === fieldId);
+    if (field) {
+      return changeFilterByColumn(displayNum, 'type', field.crm_data_type, fieldId);
+    }
   }
 
-  addFilter = e => {
-    this.props.addFilter();
-  }
+  onConditionChange = (conditionId, displayNum) => this.props.changeFilterByColumn(displayNum, 'conditionId', conditionId)
 
-  onRemoveFilter = e => {
-    const { displayNum } = e.target.dataset;
-    console.log(e.target.dataset.displayNum);
-    this.props.removeFilter(displayNum);
-  }
+  onFilterValueChange = (displayNum, value) => this.props.changeFilterByColumn(displayNum, 'value', value)
+
+  onRemoveFilter = displayNum => this.props.removeFilter(displayNum)
+
+  addFilter = $ => this.props.addFilter()
+
+  handleLogicChange = value => this.props.setConditionLogic(value)
 
   render() {
-    const { filters } = this.props;
+    const {
+      match,
+      logicText,
+      filters,
+      fields,
+      conditions,
+    } = this.props;
+
+    const { object } = match.params;
+    const theme = getThemeByType(object);
+
     return (
-      <Fragment>
-        <CriteriaHeader />
-        {filters.map((filter, index) => <FilterCondition key={index} displayNum={filter.display_num} onRemoveFilter={this.onRemoveFilter} />)}
-        <Row style={{ textAlign: 'center', margin: '10px 0' }}>
-          <Button
-            onClick={this.addFilter}
-            className="ml-sm lead-theme-btn"
-            size="small"
-          >
-            + New Filter
-          </Button>
-        </Row>
-        <FloatingLabelInput
-          labelText="Condition Logic"
-          labelColor="#4e4e4e"
-          handleChange={this.handleLogicChange}
-        />
-      </Fragment>
+      <FilterCriteria
+        theme={theme}
+        fields={fields}
+        conditions={conditions}
+        filters={filters}
+        handleFieldChange={this.onFieldChange}
+        handleConditionChange={this.onConditionChange}
+        handleValueChange={this.onFilterValueChange}
+        handleFilterRemove={this.onRemoveFilter}
+
+        handleAddNewClick={this.addFilter}
+        logicText={logicText}
+        handleLogicChange={this.handleLogicChange}
+      />
     );
   }
 }
 
-FilterCriteria.defaultProps = defaultProps;
-FilterCriteria.propTypes = propTypes;
+FilterCriteriaWrapper.defaultProps = defaultProps;
+FilterCriteriaWrapper.propTypes = propTypes;
 const mapStateToProps = ({ global, objectView }) => ({
-  language: global.language,
+  conditions: global.settings.conditions,
+  logicText: objectView.filterCriteria.condition_logic,
   filters: objectView.filterCriteria.filters,
+  fields: objectView.fields.allFields,
 });
 const mapDispatchToProps = {
-  addFilter,
-  removeFilter,
   setConditionLogic,
+  addFilter,
+  changeFilterByColumn,
+  removeFilter,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(FilterCriteria);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(FilterCriteriaWrapper));

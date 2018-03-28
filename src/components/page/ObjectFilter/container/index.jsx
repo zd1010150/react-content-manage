@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { intlShape, injectIntl } from 'react-intl';
 
 import Enums from 'utils/EnumsManager';
-import { Section, Panel, FilterCondition } from 'components/ui/index';
-import { ViewName, FilterCriteria, ViewButtons, FieldsSelection, ViewVisibility } from '../components/index';
-import { resetView, saveView, fetchViewById } from '../flow/actions';
+import { Section, Panel, FilterCondition, SubmitButtons } from 'components/ui/index';
+import { ViewName, FilterCriteria, FieldsSelection, ViewVisibility, ViewActions } from '../components/index';
+import { resetView, fetchViewById } from '../flow/actions';
 
 const defaultProps = {
 };
@@ -35,22 +35,12 @@ const sections = [
 
 class ObjectFilter extends Component {
   componentDidMount() {
-    const { match } = this.props;
-    const { object, viewId } = match.params;
+    const { object, viewId } = this.props.match.params;
     this.props.fetchViewById(viewId, object);
-    if (viewId !== Enums.PhantomID) {
-      // fetch if path id is not phantom
-      console.log('----fetch exist view data----');
-    } else {
-      // otherwise reset all sub store and fetch all fields and selectors
-      console.log('----reset view substore----');
-      this.props.resetView();
-    }
   }
 
-  handleSaveClick = () => {
-    console.log('saving');
-    this.props.saveView();
+  componentWillUnmount() {
+    this.props.resetView();
   }
 
   render() {
@@ -74,7 +64,7 @@ class ObjectFilter extends Component {
             />
           );
         })}
-        <ViewButtons onSaveClick={this.handleSaveClick} />
+        <ViewActions />
       </Panel>
     );
   }
@@ -87,7 +77,6 @@ const mapStateToProps = ({ objectView }) => ({
 });
 const mapDispatchToProps = {
   resetView,
-  saveView,
   fetchViewById,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ObjectFilter));
