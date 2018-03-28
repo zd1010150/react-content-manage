@@ -159,7 +159,7 @@ class EmailTemplateDetail extends React.Component {
                 dataIndex: 'updated_at',
             }, {
                 title: formatMessage({id: 'page.emailTemplates.templateCreatedBy'}),
-                dataIndex: 'page_layouts.data.leads.name',
+                dataIndex: 'folder_created_by_user.name',
             }, {
                 title: formatMessage({id: 'page.emailTemplates.templateDescription'}),
                 dataIndex: 'description',
