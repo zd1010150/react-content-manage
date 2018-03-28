@@ -25,6 +25,7 @@ const propTypes = {
   logicText: PropTypes.string,
   conditions: PropTypes.array.isRequired,
   fields: PropTypes.array.isRequired,
+  // TODO: add function props checking to verify that each filter follow the same shape
   filters: PropTypes.array.isRequired,  
   handleAddNewClick: PropTypes.func,
   handleLogicChange: PropTypes.func,
@@ -48,14 +49,6 @@ class FilterCriteria extends Component {
     }
   }
 
-  _handleFilterRemove = e => {
-    const { handleFilterRemove } = this.props;
-    if (_.isFunction(handleFilterRemove)) {
-      const { displayNum } = e.target.dataset;
-      return handleFilterRemove(displayNum);
-    }
-  }
-
   _onUserTypeChange = value => {
     const { onUserTypeChange } = this.props;
     if (_.isFunction(onUserTypeChange)) {
@@ -67,6 +60,35 @@ class FilterCriteria extends Component {
     const { handleCheckboxChange } = this.props;
     if (_.isFunction(handleCheckboxChange)) {
       return handleCheckboxChange(e.target.checked);
+    }
+  }
+
+  _handleFieldChange = (fieldId, displayNum) => {
+    const { handleFieldChange } = this.props;
+    if (_.isFunction(handleFieldChange)) {
+      return handleFieldChange(fieldId, displayNum);
+    }
+  }
+
+  _handleConditionChange = (fieldId, displayNum) => {
+    const { handleConditionChange } = this.props;
+    if (_.isFunction(handleConditionChange)) {
+      return handleConditionChange(fieldId, displayNum);
+    }
+  }
+
+  _handleValueChange = (value, displayNum) => {
+    const { handleValueChange } = this.props;
+    if (_.isFunction(handleValueChange)) {
+      return handleValueChange(value, displayNum);
+    }
+  }
+
+  _handleFilterRemove = e => {
+    const { handleFilterRemove } = this.props;
+    if (_.isFunction(handleFilterRemove)) {
+      const { displayNum } = e.target.dataset;
+      return handleFilterRemove(displayNum);
     }
   }
 
@@ -94,6 +116,9 @@ class FilterCriteria extends Component {
             filters={filters}
             fields={fields}
             conditions={conditions}
+            handleFieldChange={this._handleFieldChange}
+            handleConditionChange={this._handleConditionChange}
+            handleValueChange={this._handleValueChange}
             handleFilterRemove={this._handleFilterRemove}
           />
         </Row>

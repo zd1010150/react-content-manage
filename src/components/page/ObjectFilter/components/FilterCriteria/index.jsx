@@ -1,59 +1,48 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { intlShape, injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
-import { Button, Row, Col } from 'antd';
 
+import { FilterCriteria } from 'components/page/index';
 import { getThemeByType } from 'utils/common';
 import Enums from 'utils/EnumsManager';
-import { FilterCriteria } from 'components/page/index';
-import { FloatingLabelInput, Criterion } from 'components/ui/index';
 import {
   addFilter,
   removeFilter,
   setConditionLogic,
-  changeFilter,
+  changeFilterByColumn,
 } from './flow/actions';
 
 const defaultProps = {};
-const propTypes = {
-  intl: intlShape.isRequired,
-};
+const propTypes = {};
 
 class FilterCriteriaWrapper extends Component {
-  handleLogicChange = value => this.props.setConditionLogic(value)
-
-  addFilter = e => this.props.addFilter()
-
-  onRemoveFilter = displayNum => this.props.removeFilter(displayNum)
-
-  handleConditionChange = (conditionId, display_num) => this.props.changeFilter(display_num, 'condition', conditionId)
-
-  handleFieldChange = (fieldId, display_num) => {
-    const { fields, changeFilter } = this.props;
+  onFieldChange = (fieldId, displayNum) => {
+    const { fields, changeFilterByColumn } = this.props;
     const field = fields.find(field => field.id === fieldId);
     if (field) {
-      changeFilter(display_num, 'type', field.crm_data_type, fieldId);
+      return changeFilterByColumn(displayNum, 'type', field.crm_data_type, fieldId);
     }
   }
 
-  handleFilterValueChange = () => {
-    console.log('changing the value');
-  }
+  onConditionChange = (conditionId, displayNum) => this.props.changeFilterByColumn(displayNum, 'conditionId', conditionId)
+
+  onFilterValueChange = (displayNum, value) => this.props.changeFilterByColumn(displayNum, 'value', value)
+
+  onRemoveFilter = displayNum => this.props.removeFilter(displayNum)
+
+  addFilter = $ => this.props.addFilter()
+
+  handleLogicChange = value => this.props.setConditionLogic(value)
 
   render() {
     const {
-      intl,
       match,
       logicText,
       filters,
       fields,
       conditions,
     } = this.props;
-
-    const { formatMessage } = intl;
-    const i18nPrefix = 'page.objectFilter.criteria';
 
     const { object } = match.params;
     const theme = getThemeByType(object);
@@ -64,6 +53,9 @@ class FilterCriteriaWrapper extends Component {
         fields={fields}
         conditions={conditions}
         filters={filters}
+        handleFieldChange={this.onFieldChange}
+        handleConditionChange={this.onConditionChange}
+        handleValueChange={this.onFilterValueChange}
         handleFilterRemove={this.onRemoveFilter}
 
         handleAddNewClick={this.addFilter}
@@ -86,6 +78,6 @@ const mapDispatchToProps = {
   addFilter,
   removeFilter,
   setConditionLogic,
-  changeFilter,
+  changeFilterByColumn,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withRouter(FilterCriteriaWrapper)));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(FilterCriteriaWrapper));

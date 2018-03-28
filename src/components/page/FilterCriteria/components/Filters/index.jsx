@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl, intlShape } from 'react-intl';
 
 import { Header, Criterion } from '../index';
 import Enums from 'utils/EnumsManager';
@@ -15,28 +14,22 @@ const getOptionsByType = (type, targetId, collection) => {
   return [];
 };
 
-const Filters = ({ filters, fields, conditions, handleFilterRemove }) => {
+// others includes fields, conditions, handleFieldChange, handleConditionChange, handleValueChange, handleFilterRemove
+const Filters = ({
+  filters,
+  ...others,
+}) => {
+
   return (
     <Fragment>
       <Header />
       {filters.map(filter => {
-        const { id, display_num, type } = filter;
-        return (
-          <Criterion
-            key={display_num}
-            displayNum={display_num}
-            onRemoveFilter={handleFilterRemove}
-            fieldType={type}
-            allFields={fields}
-            conditions={conditions}
-            handleFieldChange={this.handleFieldChange}
-            handleConditionChange={this.handleConditionChange}
-            options={getOptionsByType(type, id, fields)}
-          />
-        );
+        // filterOthers includes fieldId, value, conditionId, type
+        const { displayNum, ...filterOthers } = filter;
+        return <Criterion key={displayNum} {...filter} {...others} />
       })}
     </Fragment>
   );
 };
 
-export default injectIntl(Filters);
+export default Filters;

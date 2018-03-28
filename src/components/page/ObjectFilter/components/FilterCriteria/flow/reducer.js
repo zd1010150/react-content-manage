@@ -25,15 +25,17 @@ const filterCriteria = (state = initialState, action) => {
     case ADD_FILTER:
       const { filters } = state;
       const lastItem = filters[filters.length - 1];
-      const display_num = lastItem && lastItem.display_num ? (lastItem.display_num + 1) : 1;
-      const newFilter = {
-        // TODO: when add a new filter, the default should be null, but before submit to backend, this id should be any available field id, NOT a phantom id
-        id: Enums.PhantomID,
-        display_num,
-        condition: '',
+      const newDisplayNum = lastItem && lastItem.displayNum ? (lastItem.displayNum + 1) : 1;
+      
+      // TODO: when add a new filter, the default should be null, but before submit to backend, this id should be any available field id, NOT a phantom id
+      const newFilter = {      
+        displayNum: newDisplayNum,
+        fieldId: Enums.PhantomID,
+        conditionId: Enums.PhantomID,
         value: '',
         type: '',
       };
+
       return {
         ...state,
         filters: [...filters, newFilter]
@@ -41,8 +43,8 @@ const filterCriteria = (state = initialState, action) => {
 
       
     case REMOVE_FILTER:
-      const { displayNum } = action.payload;
-      const arrayAfterRemove = state.filters.filter(filter => filter.display_num != displayNum);
+      const removedItemNum = action.payload.displayNum;
+      const arrayAfterRemove = state.filters.filter(filter => filter.displayNum != removedItemNum);
       return {
         ...state,
         filters: arrayAfterRemove,
@@ -50,14 +52,13 @@ const filterCriteria = (state = initialState, action) => {
     
 
     case CHANGE_FILTER:
-      const { key, value, fieldId } = action.payload;
-      const filterDisplayNum = action.payload.displayNum;
+      const { key, value, fieldId, displayNum } = action.payload;
       const filtersAfterChange = state.filters.map(filter => {
-        if (filter.display_num === filterDisplayNum) {
-          if (fieldId) {
-            filter.id = fieldId;
-          }
+        if (filter.displayNum === displayNum) {
           filter[key] = value;
+          if (fieldId) {
+            filter.fieldId = fieldId;
+          }
         }
         return filter;
       });

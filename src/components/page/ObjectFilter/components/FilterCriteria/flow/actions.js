@@ -19,7 +19,7 @@ export const removeFilter = displayNum => ({
   payload: { displayNum },
 });
 
-export const changeFilter = (displayNum, key, value, fieldId) => ({
+export const changeFilterByColumn = (displayNum, key, value, fieldId) => ({
   type: CHANGE_FILTER,
   payload: { displayNum, key, value, fieldId },
 });

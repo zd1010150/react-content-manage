@@ -50,6 +50,8 @@ const EnumsManager = Object.freeze({
 
   ThemeTypes: BaseEnums.ThemeTypes,
 
+  // Transfer to array will facilitate the proptypes checking by oneof and use JS array methods
+  // The following xxInArray properties serve the same purpose like this one.
   ThemeTypesInArray: Object.freeze([
     BaseEnums.ThemeTypes.Leads,
     BaseEnums.ThemeTypes.Accounts,
@@ -63,9 +65,8 @@ const EnumsManager = Object.freeze({
     descend: 'desc',
   }),
 
-  FieldTypes: Object.freeze(BaseEnums.FieldTypes),
+  FieldTypes: BaseEnums.FieldTypes,
 
-  // this will be used in propTypes checking props is one of values
   FieldTypesInArray: Object.freeze([
     BaseEnums.FieldTypes.Date,
     BaseEnums.FieldTypes.DateTime,
@@ -101,10 +102,6 @@ const EnumsManager = Object.freeze({
     [BaseEnums.ObjectTypes.Report]: BaseEnums.ThemeTypes.Report,
     [BaseEnums.ObjectTypes.Email]: BaseEnums.ThemeTypes.Email,
   }),
-
-  CriteriaColumns: Object.freeze([
-    'field', 'condition', 'value'
-  ]),
 
   // This is used to avoid conflicts and make each one become unique in global action types pool
   ReduxActionTypePrefix: Object.freeze({

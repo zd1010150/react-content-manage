@@ -7,47 +7,49 @@ import classNames from 'classnames/bind';
 import styles from './index.less';
 const cx = classNames.bind(styles);
 
-import { CustomField } from 'components/ui/index';
+import { ValueCriteriaField } from '../index';
 import Enums from 'utils/EnumsManager';
+
+const sideColLayout = {
+  xs: 24,
+  sm: 1,
+};
+const colLayout = {
+  xs: 24,
+  sm: 7,
+}
 
 const propTypes = {
   intl: intlShape.isRequired,
   displayNum: PropTypes.number.isRequired,
-  label: PropTypes.string,
-  fieldType: PropTypes.oneOf([
+  condition: PropTypes.string,
+  value: PropTypes.string,
+  type: PropTypes.oneOf([
     ...Enums.FieldTypesInArray,
     '', // TODO: not best practice
   ]).isRequired,
-  condition: PropTypes.string,
-  value: PropTypes.string,
   conditions: PropTypes.array.isRequired,
-  allFields: PropTypes.array.isRequired,
+  fields: PropTypes.array.isRequired,
   options: PropTypes.array.isRequired,
 };
 
 const Criterion = ({
   intl,
-  displayNum = 1,
-  label,
-  fieldType = Enums.FieldTypes.Text,
-  condition,
+  
+  displayNum,
+  fieldId,
+  conditionId,
   value,
-  onRemoveFilter,
-  allFields = [],
-  conditions = [],
-  options = [],
+  type,
+
+  fields,
+  conditions,
+  options,
   handleFieldChange,
   handleConditionChange,
+  handleValueChange,
+  handleFilterRemove,
 }) => {
-
-  const sideColLayout = {
-    xs: 24,
-    sm: 1,
-  };
-  const colLayout = {
-    xs: 24,
-    sm: 7,
-  }
 
   return (
     <Row gutter={16} style={{ marginBottom: 10 }}>
@@ -58,9 +60,10 @@ const Criterion = ({
         <Select
           size="small"
           className={cx('select')}
-          onChange={fieldId => handleFieldChange(fieldId, displayNum)}
+          value={fieldId === Enums.PhantomID ? '' : fieldId}
+          onChange={newFieldId => handleFieldChange(newFieldId, displayNum)}
         >
-          {allFields.map(field => 
+          {fields.map(field =>
             <Option key={field.id} value={field.id}>{field.field_label}</Option>
           )}
         </Select>
@@ -77,15 +80,15 @@ const Criterion = ({
         </Select>
       </Col>
       <Col {...colLayout}>
-        {fieldType
-          ? <CustomField type={fieldType} options={options}/>
+        {type
+          ? <ValueCriteriaField displayNum={displayNum} type={type} handleValueChange={handleValueChange} value={value} />
           : <span className={cx('message')}>{intl.formatMessage({ id: 'page.customField.message'})}</span>}
       </Col>
       <Col {...sideColLayout}>
         <Icon
           className={cx('deleteIcon')}
           data-display-num={displayNum}
-          onClick={onRemoveFilter}
+          onClick={handleFilterRemove}
           type="delete"
         />
       </Col>
