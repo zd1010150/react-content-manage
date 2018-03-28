@@ -75,6 +75,7 @@ const Criterion = ({
         <Select
           size="small"
           className={cx('select')}
+          value={conditionId === Enums.PhantomID ? '' : conditionId}
           onChange={conditionId => handleConditionChange(conditionId, displayNum)}
         >
           {conditions.map(condition =>
