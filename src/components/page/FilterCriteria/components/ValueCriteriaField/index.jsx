@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Input, DatePicker, InputNumber } from 'antd';
+import { Input, DatePicker, InputNumber, Icon } from 'antd';
 
 import Enums from 'utils/EnumsManager';
 
@@ -22,6 +22,7 @@ const ValueCriteriaField = ({
   displayNum,
   type,
   handleValueChange,
+  handleAddonClick,
   value,
   dateFormat = 'YYYY-MM-DD',
   datetimeFormat = 'YYYY-MM-DD HH:mm:ss',
@@ -54,11 +55,16 @@ const ValueCriteriaField = ({
         />
       );
     case FieldTypes.PickList:
-      // TODO: replace with a customized component to enable select value from right side bar
-      return <Input size="small" onChange={e => handleValueChange(displayNum, e.target.value)} value={value} />;
     case FieldTypes.Lookup:
       // TODO: replace with a customized component to enable select value from right side bar
-      return <Input size="small" onChange={e => handleValueChange(displayNum, e.target.value)} value={value} />;
+      return (
+        <Input
+          size="small"
+          addonAfter={<Icon type="search" onClick={e => handleAddonClick(displayNum)} />}
+          onChange={e => handleValueChange(displayNum, e.target.value)}
+          value={value}
+        />
+      );
     case FieldTypes.Email:
     case FieldTypes.LongText:
     case FieldTypes.Text:

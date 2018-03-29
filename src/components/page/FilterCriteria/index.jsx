@@ -1,11 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Row, Select, Checkbox } from 'antd';
+import { Row, Col, Select, Checkbox, Button, Icon } from 'antd';
 const Option = Select.Option;
+const CheckboxGroup = Checkbox.Group;
+import classNames from 'classnames/bind';
+import styles from './index.less';
+const cx = classNames.bind(styles);
 
 import Enums from 'utils/EnumsManager';
 import { Buttons, ConditionLogic, Filters } from './components/index';
+import { RightSider } from 'components/page/index';
 
 const ClientTypes = [
   Enums.ObjectTypes.Leads,
@@ -19,6 +24,7 @@ const defaultProps = {
   filters: [],
   enableTopSelection: false,
   enableCheckbox: false,
+  siderOptions: [],
 };
 const propTypes = {
   theme: PropTypes.oneOf(Enums.ThemeTypesInArray).isRequired,
@@ -32,6 +38,7 @@ const propTypes = {
   handleFilterRemove: PropTypes.func,
   enableTopSelection: PropTypes.bool.isRequired,
   enableCheckbox: PropTypes.bool.isRequired,
+  siderOptions: PropTypes.array,
 };
 
 class FilterCriteria extends Component {
@@ -84,11 +91,38 @@ class FilterCriteria extends Component {
     }
   }
 
-  _handleFilterRemove = e => {
+  _handleAddonClick = displayNum => {
+    const { handleAddonClick } = this.props;
+    if (_.isFunction(handleAddonClick)) {
+      return handleAddonClick(displayNum);
+    }
+  }
+  
+  _handleSiderClose = e => {
+    const { handleSiderClose } = this.props;
+    if (_.isFunction(handleSiderClose)) {
+      return handleSiderClose();
+    }
+  }
+
+  _handleFilterRemove = displayNum => {
     const { handleFilterRemove } = this.props;
     if (_.isFunction(handleFilterRemove)) {
-      const { displayNum } = e.target.dataset;
       return handleFilterRemove(displayNum);
+    }
+  }
+
+  _handleSiderValuesChange = checkedValues => {
+    const { handleSiderValuesChange } = this.props;
+    if (_.isFunction(handleSiderValuesChange)) {
+      return handleSiderValuesChange(checkedValues);
+    }
+  }
+
+  _handleInsertSelection = $ => {
+    const { handleInsertSelection } = this.props;
+    if (_.isFunction(handleInsertSelection)) {
+      return handleInsertSelection();
     }
   }
 
@@ -100,7 +134,11 @@ class FilterCriteria extends Component {
       filters,
       conditions,
       enableTopSelection,
-      enableCheckbox
+      enableCheckbox,
+      collapsed,
+      siderFieldId,
+      siderOptions,
+      siderSelection,
     } = this.props;
     
     return (
@@ -119,6 +157,7 @@ class FilterCriteria extends Component {
             handleFieldChange={this._handleFieldChange}
             handleConditionChange={this._handleConditionChange}
             handleValueChange={this._handleValueChange}
+            handleAddonClick={this._handleAddonClick}
             handleFilterRemove={this._handleFilterRemove}
           />
         </Row>
@@ -134,6 +173,39 @@ class FilterCriteria extends Component {
             className={`${theme}-theme-checkbox`}
             onChange={this._handleCheckboxChange}>Opt-out Unsubscribers</Checkbox>
         </Row>}
+        <RightSider collapsed={collapsed}>
+          <CheckboxGroup
+            value={siderSelection.map(select => select.id)}
+            className={cx('siderCheckboxGroup')}
+            onChange={this._handleSiderValuesChange}
+          >
+            <Row>
+            {siderOptions.map(option => (
+              <Col key={option.id}>
+                <Checkbox
+                  value={option.id}
+                  className={`${theme}-theme-checkbox`}
+                >
+                  {option.name ? option.name : option.option_value}
+                </Checkbox>
+              </Col>
+            ))}
+            </Row>
+          </CheckboxGroup>
+          <div className={cx('buttonsWrapper')}>
+            <Button
+              size="small"
+              className={`${theme}-theme-btn mr-sm`}
+              onClick={this._handleInsertSelection}
+            >
+              + Add
+            </Button>
+            <Button size="small" onClick={this._handleSiderClose}>
+              <Icon size="small" type="close" />
+              Cancel
+            </Button>
+          </div>
+        </RightSider>
       </Fragment>
     );
   }

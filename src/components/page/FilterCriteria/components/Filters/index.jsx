@@ -14,7 +14,7 @@ const getOptionsByType = (type, targetId, collection) => {
   return [];
 };
 
-// others includes fields, conditions, handleFieldChange, handleConditionChange, handleValueChange, handleFilterRemove
+// others includes fields, conditions, handleFieldChange, handleConditionChange, handleValueChange, handleFilterRemove, handleAddonClick
 const Filters = ({
   filters,
   ...others,
