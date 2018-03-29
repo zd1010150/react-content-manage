@@ -55,18 +55,16 @@ const ValueCriteriaField = ({
         />
       );
     case FieldTypes.PickList:
+    case FieldTypes.Lookup:
       // TODO: replace with a customized component to enable select value from right side bar
       return (
         <Input
           size="small"
-          addonAfter={<Icon type="search" onClick={e => handleAddonClick(displayNum, type)} />}
+          addonAfter={<Icon type="search" onClick={e => handleAddonClick(displayNum)} />}
           onChange={e => handleValueChange(displayNum, e.target.value)}
           value={value}
         />
       );
-    case FieldTypes.Lookup:
-      // TODO: replace with a customized component to enable select value from right side bar
-      return <Input size="small" onChange={e => handleValueChange(displayNum, e.target.value)} value={value} />;
     case FieldTypes.Email:
     case FieldTypes.LongText:
     case FieldTypes.Text:

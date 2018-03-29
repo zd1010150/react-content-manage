@@ -1,8 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Row, Select, Checkbox, Button, Icon } from 'antd';
+import { Row, Col, Select, Checkbox, Button, Icon } from 'antd';
 const Option = Select.Option;
+const CheckboxGroup = Checkbox.Group;
+import classNames from 'classnames/bind';
+import styles from './index.less';
+const cx = classNames.bind(styles);
 
 import Enums from 'utils/EnumsManager';
 import { Buttons, ConditionLogic, Filters } from './components/index';
@@ -20,6 +24,7 @@ const defaultProps = {
   filters: [],
   enableTopSelection: false,
   enableCheckbox: false,
+  siderOptions: [],
 };
 const propTypes = {
   theme: PropTypes.oneOf(Enums.ThemeTypesInArray).isRequired,
@@ -33,6 +38,7 @@ const propTypes = {
   handleFilterRemove: PropTypes.func,
   enableTopSelection: PropTypes.bool.isRequired,
   enableCheckbox: PropTypes.bool.isRequired,
+  siderOptions: PropTypes.array,
 };
 
 class FilterCriteria extends Component {
@@ -106,6 +112,20 @@ class FilterCriteria extends Component {
     }
   }
 
+  _handleSiderValuesChange = checkedValues => {
+    const { handleSiderValuesChange } = this.props;
+    if (_.isFunction(handleSiderValuesChange)) {
+      return handleSiderValuesChange(checkedValues);
+    }
+  }
+
+  _handleInsertSelection = $ => {
+    const { handleInsertSelection } = this.props;
+    if (_.isFunction(handleInsertSelection)) {
+      return handleInsertSelection();
+    }
+  }
+
   render() {
     const {
       theme,
@@ -116,6 +136,9 @@ class FilterCriteria extends Component {
       enableTopSelection,
       enableCheckbox,
       collapsed,
+      siderFieldId,
+      siderOptions,
+      siderSelection,
     } = this.props;
     
     return (
@@ -151,11 +174,37 @@ class FilterCriteria extends Component {
             onChange={this._handleCheckboxChange}>Opt-out Unsubscribers</Checkbox>
         </Row>}
         <RightSider collapsed={collapsed}>
-          <Button>Add</Button>
-          <Button onClick={this._handleSiderClose}>
-            <Icon size="small" type="close" />
-            Cancel
-          </Button>
+          <CheckboxGroup
+            value={siderSelection.map(select => select.id)}
+            className={cx('siderCheckboxGroup')}
+            onChange={this._handleSiderValuesChange}
+          >
+            <Row>
+            {siderOptions.map(option => (
+              <Col key={option.id}>
+                <Checkbox
+                  value={option.id}
+                  className={`${theme}-theme-checkbox`}
+                >
+                  {option.name ? option.name : option.option_value}
+                </Checkbox>
+              </Col>
+            ))}
+            </Row>
+          </CheckboxGroup>
+          <div className={cx('buttonsWrapper')}>
+            <Button
+              size="small"
+              className={`${theme}-theme-btn mr-sm`}
+              onClick={this._handleInsertSelection}
+            >
+              + Add
+            </Button>
+            <Button size="small" onClick={this._handleSiderClose}>
+              <Icon size="small" type="close" />
+              Cancel
+            </Button>
+          </div>
         </RightSider>
       </Fragment>
     );

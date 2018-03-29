@@ -52,7 +52,7 @@ const Criterion = ({
   handleFilterRemove,
 }) => {
 
-  const globalI18nPrefix = 'global.ui';
+  const i18nPrefix = 'global.ui';
   const { formatMessage } = intl;
   const valueCriteriaFieldProps = {
     displayNum,
@@ -96,10 +96,10 @@ const Criterion = ({
       </Col>
       <Col {...sideColLayout}>
         <Popconfirm
-          title={formatMessage({ id: `${globalI18nPrefix}.dialog.deleteTitle`})}
+          title={formatMessage({ id: `${i18nPrefix}.dialog.deleteTitle`})}
           onConfirm={e => handleFilterRemove(displayNum)}
-          okText={formatMessage({ id: `${globalI18nPrefix}.button.ok` })}
-          cancelText={formatMessage({ id: `${globalI18nPrefix}.button.cancel` })}
+          okText={formatMessage({ id: `${i18nPrefix}.button.ok` })}
+          cancelText={formatMessage({ id: `${i18nPrefix}.button.cancel` })}
         >
           <Icon className={cx('deleteIcon')} type="delete" />
         </Popconfirm>
