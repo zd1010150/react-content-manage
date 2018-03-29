@@ -1,0 +1,27 @@
+export default {
+  zh: {
+    label: '字段标签',
+    api: '字段 API',
+    helpText: '提示',
+    description: '描述',
+    length: '长度',
+    scale: '小数点位数',
+    nameDuplicate: 'API 重复',
+    notNullTip1: '必须字段',
+    notNullTip2: '一旦勾选，该字段必须存在所有的page layout',
+    pageLaoyoutName: '布局名',
+    department: '部门',
+  },
+  en: {
+    label: 'Field Label',
+    api: 'Field API',
+    helpText: 'Help Text',
+    description: 'Discription',
+    scale: 'Decimal Places',
+    nameDuplicate: 'API duplicate',
+    notNullTip1: 'Always require value in order to save',
+    notNullTip2: 'Once ticked, will show on all page layout',
+    pageLaoyoutName: 'Page Layout Name',
+    department: 'Departments',
+  },
+};

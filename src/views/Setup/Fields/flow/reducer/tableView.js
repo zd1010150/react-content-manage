@@ -3,6 +3,8 @@ import _ from 'lodash';
 import { SETUP_FIELDS_SET_CURRENT_OBJECT, SETUP_FIELDS_SET_OTHER_OBJECT_FILEDS, SETUP_FIELDS_TOGGLE_EDITING, SETUP_FIELDS_SELECT_FIELD, SETUP_FIELDS_CHANGE_MAPPING_FIELD_STATUS } from '../actionType';
 import { objectTypeRelations } from '../objectTypeHelper';
 import { OBJECT_TYPES } from 'config/app.config';
+import { fieldCategory } from '../objectTypeHelper';
+
 
 const updateMapping = (state, {
   checked, fromField, toField, toObject, fromObject, fieldCategory,
@@ -52,7 +54,7 @@ const updateMapping = (state, {
   }
   return Object.assign({}, state, { fields: Object.assign({}, state.fields, { [fieldCategory]: newFields, mappings: newMappings }) });
 };
-const currentObject = (state = { objType: OBJECT_TYPES.leads, fields: { main: [], cstm: [], mappings: [] } }, action) => {
+const currentObject = (state = { objType: OBJECT_TYPES.leads, fields: { [fieldCategory.MAIN]: [], [fieldCategory.CUSTOM]: [], mappings: [] } }, action) => {
   const { type, ...payload } = action;
   switch (type) {
     case SETUP_FIELDS_SET_CURRENT_OBJECT:

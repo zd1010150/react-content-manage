@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import _ from 'lodash';
+import { types } from './objectTypeHelper';
 
 const getCurrentObjectFields = setup => setup.fields.tableView.currentObject;
 const getRelativeFields = setup => setup.fields.tableView.relativeFields;
@@ -28,3 +29,14 @@ export const getToFieldsStatus = createSelector(
   },
 );
 
+const getGlobalTypes = state => state.global.settings.fields.crm_data_type;
+
+export const getMappedTypes = createSelector([getGlobalTypes], (globalTypes) => {
+  const result = {};
+  globalTypes.forEach((t) => {
+    if (!_.isEmpty(types[t])) {
+      result[t] = types[t];
+    }
+  });
+  return result;
+});

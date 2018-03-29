@@ -60,3 +60,9 @@ export const OBJECT_TYPES = {
   accounts: 'accounts',
   opportunities: 'opportunities',
 };
+/* 定义objType和css 样式的映射关系 */
+export const objTypeAndClassTypeMap = {
+  leads: 'lead',
+  accounts: 'account',
+  opportunities: 'opport',
+};

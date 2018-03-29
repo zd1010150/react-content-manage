@@ -230,6 +230,7 @@ const password = (() => {
     },
   };
 })();
+
 const validator = {
   between: registerRule(between),
   phone: registerRule(phone),

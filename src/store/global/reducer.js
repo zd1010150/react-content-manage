@@ -60,7 +60,7 @@ const settings = (state = {
   timeZones: [],
   languages: [],
   countries: [],
-  fields: {},
+  fields: { crm_data_type: [], cstm_attribute_prefix: '' },
   model: {},
   moments,
   years,

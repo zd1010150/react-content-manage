@@ -8,6 +8,7 @@ import { Button, Icon } from 'antd';
 import { connect } from 'react-redux';
 import { RightSider } from 'components/page/index';
 import { Panel } from 'components/ui/index';
+import { objTypeAndClassTypeMap } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import { toggleRightSider } from 'components/page/RightSider/flow/action';
 import { fetchFields, toggleEditingStatus, setSelectedFields, changeMapping, saveFieldsMapping } from '../flow/action';
@@ -15,6 +16,7 @@ import { getToFieldsStatus } from '../flow/reselect';
 import { FIELD_TYPE_SELECT, FIELD_EDIT, FIELD_ADD, PICKLIST_OPTION_EDIT } from '../flow/pageAction';
 import FieldMappingInput from '../component/tableView/fieldMappingInput';
 import RightSiderFields from '../component/tableView/rightSiderFields';
+import { fieldCategory } from '../flow/objectTypeHelper';
 
 class FieldsTableView extends React.Component {
   componentDidMount() {
@@ -57,14 +59,15 @@ class FieldsTableView extends React.Component {
       fetchFields,
       allFields,
     } = this.props;
+    const classType = objTypeAndClassTypeMap[objectType];
     const rightActions = (() => {
       const actions = [];
-      actions.push(<Button key="save" className={classNames('btn-ellipse', 'ml-sm', 'lead-theme-btn', isEditing ? '' : 'no-display')} size="small" icon="save" onClick={() => saveFieldsMapping(mappings)}>{ formatMessage({ id: 'global.ui.button.save' })}</Button>);
-      actions.push(<Button key="cancel" className={classNames('btn-ellipse', 'ml-sm', 'lead-theme-btn', isEditing ? '' : 'no-display')} size="small" icon="close" onClick={() => fetchFields(objectType)}>{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>);
-      actions.push(<Button key="addBtn" className={classNames('btn-ellipse', 'ml-sm', 'lead-theme-btn', !isEditing ? '' : 'no-display')} size="small" icon="plus" onClick={() => history.push(`/setup/fields?objectType=${objectType}&action=${FIELD_TYPE_SELECT}`)}>
+      actions.push(<Button key="save" className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, isEditing ? '' : 'no-display')} size="small" icon="save" onClick={() => saveFieldsMapping(mappings)}>{ formatMessage({ id: 'global.ui.button.save' })}</Button>);
+      actions.push(<Button key="cancel" className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, isEditing ? '' : 'no-display')} size="small" icon="close" onClick={() => fetchFields(objectType)}>{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>);
+      actions.push(<Button key="addBtn" className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')} size="small" icon="plus" onClick={() => history.push(`/setup/fields?objectType=${objectType}&action=${FIELD_TYPE_SELECT}`)}>
         { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}
       </Button>);
-      actions.push(<Button key="viewAll" className={classNames('btn-ellipse', 'ml-sm', 'lead-theme-btn', !isEditing ? '' : 'no-display')} size="small" icon="eye" onClick={() => this.mappingField()}>{ formatMessage({ id: 'global.ui.button.edit' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}</Button>);
+      actions.push(<Button key="viewAll" className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')} size="small" icon="eye" onClick={() => this.mappingField()}>{ formatMessage({ id: 'global.ui.button.edit' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}</Button>);
       return actions;
     })();
     const getMappingTd = (field, fieldProp, mappingFields, fieldCategory) => {
@@ -96,7 +99,7 @@ class FieldsTableView extends React.Component {
     ));
     return (
       <Fragment>
-        <Panel panelClasses="lead-theme-panel" panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions} contentClasses="pl-lg pr-lg pt-lg pb-lg" >
+        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions} contentClasses="pl-lg pr-lg pt-lg pb-lg" >
           <div className="panel-section">
             <div className="section-header">Default Fields</div>
             <div className="section-content  mt-lg mb-lg">
@@ -116,7 +119,7 @@ class FieldsTableView extends React.Component {
                 </thead>
                 <tbody className="ant-table-tbody">
                   {
-                      getFieldEl(mainFields, 'main')
+                      getFieldEl(mainFields, fieldCategory.MAIN)
                   }
                 </tbody>
               </table>
@@ -141,7 +144,7 @@ class FieldsTableView extends React.Component {
                 </thead>
                 <tbody className="ant-table-tbody">
                   {
-                    getFieldEl(cstmFields, 'cstm')
+                    getFieldEl(cstmFields, fieldCategory.CUSTOM)
                 }
                 </tbody>
               </table>
