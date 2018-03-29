@@ -17,6 +17,7 @@ import Sections from '../component/Sections';
 import RightSideBar from '../component/rightSideBar';
 import EditBoxes from '../component/editBox';
 import FilterCriteria from '../component/FilterCriteria';
+import Pools from '../component/Pools';
 
 const AntdPanel = Collapse.Panel;
 const { TabPane } = Tabs;
@@ -24,7 +25,10 @@ const { TabPane } = Tabs;
 const UIDemo = () => (
   <Tabs defaultActiveKey="1">
     <TabPane tab="Html UI" key="1">
-      <Collapse defaultActiveKey="11">
+      <Collapse defaultActiveKey="12">
+        <AntdPanel header="Selection Pools" key="12">
+          <Pools />
+        </AntdPanel>
         <AntdPanel header="panels" key="1">
           <Panels />
         </AntdPanel>
