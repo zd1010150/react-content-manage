@@ -8,7 +8,11 @@ import Users from './Setup/Users';
 import OrganisationChart from './Setup/OrganisationChart';
 import EmailTemplates from './email/emailTemplates';
 import EmailTemplatesCreation from './email/emailTemplatesCreation';
-import EmailTemplatesCampaign from './email/emailTemplatesCampaign';
+import {
+    EmailCampaign,
+    EditCampaign,
+    NewCampaign
+} from './email/emailCampaign';
 import NewEmail from './email/newEmail';
 import PermissionProfile from './Setup/PermissionProfile';
 import Fields from './Setup/Fields';
@@ -24,7 +28,9 @@ export {
   OrganisationChart,
   EmailTemplates,
   EmailTemplatesCreation,
-  EmailTemplatesCampaign,
+  EmailCampaign,
+  EditCampaign,
+  NewCampaign,
   NewEmail,
   PermissionProfile,
   Fields,

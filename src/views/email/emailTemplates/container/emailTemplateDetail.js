@@ -151,14 +151,14 @@ class EmailTemplateDetail extends React.Component {
                 dataIndex: 'name',
                 key: 'name',
             }, {
-                title: formatMessage({id: 'page.emailTemplates.templateCreatedDate'}),
+                title: formatMessage({id: 'page.emailTemplates.createdDate'}),
                 dataIndex: 'created_at',
                 key: 'created_at',
             }, {
                 title: formatMessage({id: 'page.emailTemplates.templateModifiedDate'}),
                 dataIndex: 'updated_at',
             }, {
-                title: formatMessage({id: 'page.emailTemplates.templateCreatedBy'}),
+                title: formatMessage({id: 'page.emailTemplates.createdBy'}),
                 dataIndex: 'folder_created_by_user.name',
             }, {
                 title: formatMessage({id: 'page.emailTemplates.templateDescription'}),
@@ -167,7 +167,6 @@ class EmailTemplateDetail extends React.Component {
         ];
         return (
             <Panel panelClasses="email-theme-panel" actionsLeft={actionsLeft}
-                   contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`}
                    actionsRight={(isSharedByVisible || loginUser.id !== selectedUser.id) ? null : actionsRight}>
                 <Folders
                     formatMessage={formatMessage}

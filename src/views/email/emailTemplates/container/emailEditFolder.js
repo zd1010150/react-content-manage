@@ -181,7 +181,7 @@ class EmailTemplateEditFolder extends React.Component {
         return (
             <Panel panelTitle={formatMessage({id: 'page.emailTemplates.editFolderTitle'})}
                    panelClasses="email-theme-panel"
-                   contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={actionsRight}>
+                   actionsRight={actionsRight}>
                 <Row onMouseDown={this.handleItemSelection} className={cx('folders')}>
                     {userFolders.map((item, key) =>
                         <Col

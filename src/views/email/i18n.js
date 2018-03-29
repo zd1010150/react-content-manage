@@ -10,13 +10,12 @@ export default {
       newFolder: '新建文档',
       editFolderTitle:'编辑文档',
       dragFolder: '拖拽文档改变顺序',
-      save: '保存',
-      cancel: '取消',
+
 
       templateName: '模板标题',
-      templateCreatedDate: '创建日期',
+
       templateModifiedDate: '更改日期',
-      templateCreatedBy: '创建者',
+
       templateDescription: '详情',
       permissionToGetAccess: '获取权限',
       folder:'文件夹',
@@ -39,8 +38,31 @@ export default {
       cloudAttachment: '云附件',
       localAttachment: '本地附件',
       attachment: '附件',
-      sharedBy: '共享者：'
+      sharedBy: '共享者：',
+      emailCampaignsSeparator: '............................................................................................',
+      emailCampaign: '活动邮件',
+      campaignName: '名称',
+      subscriberList: '订阅者列表',
+      type: '种类',
+      startDate: '开始日期',
+      endDate: '截止日期',
+      status: '状态',
+      campaignDescription: '详情',
+      newCampaign: '新活动',
+      subscriberLists: '订阅者列表',
+      unsubscriberList: '退订者名单',
+      newEmailCampaign: '新活动邮件',
+      stepOne: '第一步：信息',
+      emailTemplate: '邮件模板',
+      stepTwo: '第二步: 时间安排',
+      schedulesDescription: '( 邮件活动开始日期和截止日期如下 )',
+      ongingCampaign: '持续的活动',
 
+      commonUserSeparator: '................................................................................................',
+      createdDate: '创建日期',
+      createdBy: '创建者',
+      save: '保存',
+      cancel: '取消',
 
   },
   en: {
@@ -54,12 +76,11 @@ export default {
       newFolder: 'New Folder',
       editFolderTitle:'Edit Folder',
       dragFolder: 'Drag the folder to change the order.',
-      save: 'Save',
-      cancel: 'Cancel',
+
       templateName: 'Template Name',
-      templateCreatedDate: 'Created Date',
+
       templateModifiedDate: 'Modified Date',
-      templateCreatedBy: 'Created By',
+
       templateDescription: 'Description',
       permissionToGetAccess: 'Permission to Get Access',
       folder: 'folder',
@@ -83,8 +104,33 @@ export default {
       cloudAttachment: 'Cloud Attachment',
       localAttachment: 'Local Attachment',
       attachment: 'Attachment',
-      sharedBy: 'By: '
+      sharedBy: 'By: ',
+      emailCampaignsSeparator: '............................................................................................',
+      emailCampaign: 'Email Campaigns',
+      campaignName: 'Campaign Name',
+      subscriberList: 'Subscriber List',
+      type: 'Type',
+      startDate: 'Start Date',
+      endDate: 'End Date',
+      status: 'Status',
+      campaignDescription: 'Description',
+      newCampaign: 'New Campaign',
+      subscriberLists: 'Subscriber Lists',
+      unsubscriberList: 'Unsubscriber List',
+
+      newEmailCampaign: 'New Email Campaigns',
+      stepOne: 'Step 1: Information',
+      emailTemplate: 'Email Template',
+      stepTwo: 'Step 2: Schedules',
+      schedulesDescription: '( Email campaign start at the start date, and end at the end date. )',
+      ongingCampaign: 'Ongoing Campaign',
 
 
+
+      commonUseSeparator: '................................................................................................',
+      createdDate: 'Created Date',
+      createdBy: 'Created By',
+      save: 'Save',
+      cancel: 'Cancel',
   },
 };

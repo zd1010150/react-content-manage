@@ -14,7 +14,9 @@ import {
   EmailTemplates,
   EmailTemplatesCreation,
   NewEmail,
-  EmailTemplatesCampaign,
+  EmailCampaign,
+  EditCampaign,
+  NewCampaign,
   PermissionProfile,
   Fields,
 } from 'views/index';
@@ -34,7 +36,9 @@ const MainContent = () => (
     <Route path="/setup/email/templates" component={EmailTemplates} />
     <Route path="/setup/email/templates-creation" component={EmailTemplatesCreation} />
     <Route path="/email/new" component={NewEmail} />
-    <Route path="/setup/email/campaign/" component={EmailTemplatesCampaign} />
+    <Route path="/setup/email-campaign/list" component={EmailCampaign} />
+    <Route path="/setup/email-campaign/edit/:campaignId" component={EditCampaign}/>
+    <Route path="/setup/email-campaign/new" component={NewCampaign}/>
     <Route path="/setup/company-info/permissions" component={PermissionProfile} />
     <Route path="/setup/fields" component={Fields} />
   </Switch>
