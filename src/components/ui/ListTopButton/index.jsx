@@ -15,7 +15,7 @@ const defaultProps = {
 };
 const propTypes = {
   intl: intlShape.isRequired,
-  object: PropTypes.oneOf(Enums.ObjectTypes).isRequired,
+  object: PropTypes.oneOf(Enums.ObjectTypesInArray).isRequired,
   viewId: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
