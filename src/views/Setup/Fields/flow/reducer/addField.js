@@ -4,7 +4,8 @@ import {
   SETUP_FIELDS_SET_CURRENT_OBJECT,
   SETUP_FIELDS_SET_ADDED_ATTR,
   SETUP_FIELDS_RESET_ADDED_ATTR,
-  SETUP_FIELDS_SET_OBJECT_LAYOUT } from '../actionType';
+  SETUP_FIELDS_SET_OBJECT_LAYOUT,
+  SETUP_FIELDS_SET_FIELD_LABEL_IS_DUPLICATE } from '../actionType';
 import { fieldCategory } from '../objectTypeHelper';
 
 
@@ -40,8 +41,17 @@ const backgroundInfo = (state = { layouts: [] }, action) => {
       return state;
   }
 };
-
+const isDuplicate = (state = false, action) => {
+  const { type, ...payload } = action;
+  switch (type) {
+    case SETUP_FIELDS_SET_FIELD_LABEL_IS_DUPLICATE:
+      return payload.isDuplicate;
+    default:
+      return state;
+  }
+};
 export default combineReducers({
   addedField,
   backgroundInfo,
+  isDuplicate,
 });

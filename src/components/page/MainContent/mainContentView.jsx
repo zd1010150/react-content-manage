@@ -36,7 +36,7 @@ const MainContent = () => (
     <Route path="/email/new" component={NewEmail} />
     <Route path="/setup/email/campaign/" component={EmailTemplatesCampaign} />
     <Route path="/setup/company-info/permissions" component={PermissionProfile} />
-    <Route path="/setup/fields" component={Fields} />
+    <Route path="/setup/:objectType/fields" component={Fields} />
   </Switch>
 );
 
