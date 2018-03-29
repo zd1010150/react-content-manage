@@ -18,6 +18,7 @@ import RichEditor from './RichEditor/index';
 import UsersList from './UsersList/index';
 import SelectionModal from './SelectionModal/index';
 import SubmitButtons from './SubmitButtons/index';
+import { SelectionPool, SearchPool } from './SelectionPool/index';
 
 export {
   Upload,
@@ -41,4 +42,6 @@ export {
   UsersList,
   SelectionModal,
   SubmitButtons,
+  SelectionPool,
+  SearchPool,
 };
