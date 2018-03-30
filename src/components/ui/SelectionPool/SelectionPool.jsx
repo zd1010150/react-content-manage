@@ -7,11 +7,10 @@ const cx = classNames.bind(styles);
 
 import Enums from 'utils/EnumsManager';
 
-// defaultProps will not work with pure component
 const propTypes = {
   theme: PropTypes.oneOf(Enums.ThemeTypesInArray),
-  selectedUsers: PropTypes.array,
-  selectedTeams: PropTypes.array,
+  users: PropTypes.array,
+  teams: PropTypes.array,
   onTagClick: PropTypes.func,
   onTagDoubleClick: PropTypes.func,
   onTagClose: PropTypes.func,
@@ -21,8 +20,8 @@ const propTypes = {
 
 const SelectionPool = ({
   theme,
-  selectedUsers,
-  selectedTeams,
+  users,
+  teams,
   onTagClick,
   onTagDoubleClick,
   onTagClose,
@@ -32,14 +31,13 @@ const SelectionPool = ({
   
   // Internal methods
   const _onTagClick = e => {
-    console.log('on single click');
     if (_.isFunction(onTagClick)) {
       const { id, isTeam } = e.target.dataset;
       onTagClick(id, isTeam);
     }
   };
   const _onTagDoubleClick = e => {
-    console.log('on double click');
+    // TODO: add debounce to separate double click and single click twice
     if (_.isFunction(onTagDoubleClick)) {
       const { id, isTeam } = e.target.dataset;
       onTagDoubleClick(id, isTeam);
@@ -54,15 +52,23 @@ const SelectionPool = ({
     }
   };
 
-  const collection = [...selectedUsers, ...selectedTeams];
+  // Cannot assign default values for pure component, so we have to manually check and assign them here.
+  if (_.isEmpty(users)) {
+    users = [];
+  }
+  if (_.isEmpty(teams)) {
+    teams = [];
+  }
+  const collection = [...users, ...teams];
   return (
     <div className={cx('tagsContainer')}>
       {collection.map(item => {
 
         const isTeam = item.team_id === undefined;
         const key = isTeam ? `t${item.id}` : item.id;
-        const iconType = isTeam ? 'team' : 'user';
         const cls = isTeam ? '' : `${theme}-theme-tag`;
+        const iconType = isTeam ? 'team' : 'user';
+
         return (
           <Tag
             key={key}
@@ -72,7 +78,7 @@ const SelectionPool = ({
             onClick={_onTagClick}
             onDoubleClick={_onTagDoubleClick}
             onClose={_onTagClose}
-            closable
+            closable={closable}
           >
             {withIcon && <Icon type={iconType} size="small" />}
             {item.name}

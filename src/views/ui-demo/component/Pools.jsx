@@ -86,23 +86,33 @@ class Pools extends Component {
 
   render() {
     const { theme, selectedUsers, selectedTeams } = this.state;
+    const pStyle = {
+      margin: 0,
+      color: '#09c',
+    };
     return (
     <Fragment>
-      <RadioGroup onChange={this.onRadioChange}>
+      <RadioGroup onChange={this.onRadioChange} defaultValue={this.state.theme}>
         {Enums.ThemeTypesInArray.map(type => <Radio key={type} value={type}>{type}</Radio>)}
       </RadioGroup>
       <br/>
+      <h2><b>&lt;SelectionPool&gt;</b></h2>
+      <p style={pStyle}>A tags container lists all users and teams. The tag is removable. Click, double click and close handlers can be attached to each tag.</p>
+      <p style={pStyle}>Under the hood, we use &lt;Tag&gt; from the ant design library.</p>
       <SelectionPool
         theme={theme}
-        selectedUsers={selectedUsers}
-        selectedTeams={selectedTeams}
+        users={selectedUsers}
+        teams={selectedTeams}
+        closable
         withIcon
       />
-      {/* <SearchPool
+      <br/>
+      <h2>Selection Pool with filter</h2>
+      <SearchPool
         theme={theme}
-        selectedUsers={selectedUsers}
-        selectedTeams={selectedTeams}
-      /> */}
+        users={selectedUsers}
+        teams={selectedTeams}
+      />
     </Fragment>
     );
   }
