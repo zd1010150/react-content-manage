@@ -5,6 +5,61 @@ const RadioGroup = Radio.Group;
 import Enums from 'utils/EnumsManager';
 import { SelectionPool, SearchPool } from 'components/ui/index';
 
+const apis = [
+  {
+    key: 'theme',
+    type: 'string',
+    value: 'One of the values from ThemeTypes in Enums'
+  },
+  {
+    key: 'users',
+    type: 'array',
+    value: 'All selected/available users. Each user is a object, at least contains id and name properties.'
+  },
+  {
+    key: 'teams',
+    type: 'array',
+    value: 'All selected/available teams. Each team is a object, at least contains id and name properties.'
+  },
+  {
+    key: 'onTagClick',
+    type: 'func',
+    value: 'A handler is triggered after click on the tag. (id, isTeam) => {}'
+  },
+  {
+    key: 'onTagDoubleClick',
+    type: 'func',
+    value: 'A handler is triggered after double click on the tag. (id, isTeam) => {}'
+  },
+  {
+    key: 'onTagClose',
+    type: 'func',
+    value: 'A handler is triggered after close icon is clicked. (id, isTeam) => {}'
+  },
+  {
+    key: 'closable',
+    type: 'boolean',
+    value: 'Show or hide the close icon after tag text. Default is false.'
+  },
+  {
+    key: 'withIcon',
+    type: 'boolean',
+    value: 'Show or hide the user/team tag front icon. Default is false.'
+  },
+];
+const searchPoolApis = [
+  {
+    key: 'title',
+    type: 'string',
+    value: 'Any department name or default title when no department is selected. Either title is not empty string or withFilter is true, the header will display.'
+  },
+  {
+    key: 'withFilter',
+    type: 'boolean',
+    value: 'Show or hide the filter on header. The filter will only filter users data based on current requirements.'
+  },
+];
+
 class Pools extends Component {
   state = {
     theme: Enums.ThemeTypes.Leads,
@@ -90,15 +145,30 @@ class Pools extends Component {
       margin: 0,
       color: '#09c',
     };
+    const docStyle = {
+      margin: 0,
+      fontSize: 14,
+    };
     return (
     <Fragment>
-      <RadioGroup onChange={this.onRadioChange} defaultValue={this.state.theme}>
+      <RadioGroup onChange={this.onRadioChange} defaultValue={theme}>
         {Enums.ThemeTypesInArray.map(type => <Radio key={type} value={type}>{type}</Radio>)}
       </RadioGroup>
+      <br/><br/>
+      <h2><b>&lt;SelectionPool /&gt;</b></h2>
+      <p style={pStyle}><b>Description</b></p>
+      <p style={pStyle}>A tags container lists all users and teams. The tag is removable. Click, double click and close handlers can be attached to each tag. Under the hood, we use &lt;Tag&gt; component from the ant design library.</p>
+      <br />
+      <p style={docStyle}><b>APIs</b></p>
+      {apis.map((api, i) => (
+        <p key={i} style={docStyle}>
+          <b>{api.key} - </b>
+          [{api.type}]
+          <br/>
+          {api.value}
+        </p>
+      ))}
       <br/>
-      <h2><b>&lt;SelectionPool&gt;</b></h2>
-      <p style={pStyle}>A tags container lists all users and teams. The tag is removable. Click, double click and close handlers can be attached to each tag.</p>
-      <p style={pStyle}>Under the hood, we use &lt;Tag&gt; from the ant design library.</p>
       <SelectionPool
         theme={theme}
         users={selectedUsers}
@@ -107,11 +177,29 @@ class Pools extends Component {
         withIcon
       />
       <br/>
-      <h2>Selection Pool with filter</h2>
+      <hr/>
+      <br/>
+      <h2><b>&lt;SearchPool /&gt;</b></h2>
+      <p style={pStyle}><b>Description</b></p>
+      <p style={pStyle}>Same as above but with filter and title</p>
+      <br />
+      <p style={docStyle}><b>APIs</b></p>
+      <p style={pStyle}>Besides the above APIs for SelectionPool, more APIs are exposed by SearchPool component.</p>
+      {searchPoolApis.map((api, i) => (
+        <p key={i} style={docStyle}>
+          <b>{api.key} - </b>
+          [{api.type}]
+          <br/>
+          {api.value}
+        </p>
+      ))}
+      <br/> 
       <SearchPool
         theme={theme}
         users={selectedUsers}
         teams={selectedTeams}
+        withFilter
+        withIcon
       />
     </Fragment>
     );
