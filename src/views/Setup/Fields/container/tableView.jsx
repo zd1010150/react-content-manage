@@ -85,7 +85,7 @@ class FieldsTableView extends React.Component {
     };
     const getFieldEl = (fields, fieldCategory) => fields.map(f => (
       <tr key={f.id}>
-        <td><Icon type="edit" className="ok" onClick={() => this.editField(f)} /></td>
+        <td><Icon type="edit" className={`${classType}-theme-icon`} onClick={() => this.editField(f)} /></td>
         <td>{f.field_label}</td>
         {
             getMappingTd(f, 'map_to', toFields, fieldCategory)
