@@ -91,7 +91,7 @@ class FieldAddSelecteTypeContainer extends React.Component {
               <Button
                 key="cancel"
                 type="danger"
-                icon="left"
+                icon=""
                 size="small"
                 onClick={() => this.goPrevious()}
               >{ formatMessage({ id: 'global.ui.button.previous' })}

@@ -64,12 +64,12 @@ const menuItems = [
     children: [
       {
         id: 'fields',
-        path: `${pathPrefix}/leads/fields?objectType=${OBJECT_TYPES.leads}`,
+        path: `${pathPrefix}/${OBJECT_TYPES.leads}/fields`,
         icon: 'profile',
       },
       {
         id: 'pageLayout',
-        path: `${pathPrefix}/leads/pageLayout?objectType=${OBJECT_TYPES.leads}`,
+        path: `${pathPrefix}/${OBJECT_TYPES.leads}/pageLayout`,
         icon: 'table',
       },
     ],
@@ -80,12 +80,12 @@ const menuItems = [
     children: [
       {
         id: 'fields',
-        path: `${pathPrefix}/accounts/fields?objectType=${OBJECT_TYPES.accounts}`,
+        path: `${pathPrefix}/${OBJECT_TYPES.accounts}/fields`,
         icon: 'setting',
       },
       {
         id: 'pageLayout',
-        path: `${pathPrefix}/accounts/pageLayout?objectType=${OBJECT_TYPES.accounts}`,
+        path: `${pathPrefix}/${OBJECT_TYPES.accounts}/pageLayout`,
         icon: 'setting',
       },
     ],
@@ -96,12 +96,12 @@ const menuItems = [
     children: [
       {
         id: 'fields',
-        path: `${pathPrefix}/opportunities/fields?objectType=${OBJECT_TYPES.opportunities}`,
+        path: `${pathPrefix}/${OBJECT_TYPES.opportunities}/fields`,
         icon: 'setting',
       },
       {
         id: 'pageLayout',
-        path: `${pathPrefix}/opportunities/pageLayout?objectType=${OBJECT_TYPES.opportunities}`,
+        path: `${pathPrefix}/${OBJECT_TYPES.opportunities}/pageLayout`,
         icon: 'setting',
       },
     ],
@@ -163,7 +163,7 @@ class SetupSider extends React.Component {
     }
     render() {
       const { intl, location } = this.props;
-      console.log(location.pathname)
+      console.log(location.pathname, '***=====');
       return (
         <Sider width={250} className={cx('setupSider')}>
           <div className={cx('siderTitle')}>setup</div>
