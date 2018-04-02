@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Radio } from 'antd';
+import { Radio, Icon } from 'antd';
 const RadioGroup = Radio.Group;
 
 import Enums from 'utils/EnumsManager';
@@ -45,6 +45,11 @@ const apis = [
     key: 'withIcon',
     type: 'boolean',
     value: 'Show or hide the user/team tag front icon. Default is false.'
+  },
+  {
+    key: 'addonAfter',
+    type: 'React Node',
+    value: 'A React node (normally an antd Icon) append after the tag text. Default is undefined.'
   },
 ];
 const searchPoolApis = [
@@ -158,6 +163,7 @@ class Pools extends Component {
       <h2><b>&lt;SelectionPool /&gt;</b></h2>
       <p style={pStyle}><b>Description</b></p>
       <p style={pStyle}>A tags container lists all users and teams. The tag is removable. Click, double click and close handlers can be attached to each tag. Under the hood, we use &lt;Tag&gt; component from the ant design library.</p>
+      <p style={{...pStyle, color: 'red' }}>In order to avoid duplication in teams, please flat the team array instead of using nested structure.</p>
       <br />
       <p style={docStyle}><b>APIs</b></p>
       {apis.map((api, i) => (
@@ -184,7 +190,7 @@ class Pools extends Component {
       <p style={pStyle}>Same as above but with filter and title</p>
       <br />
       <p style={docStyle}><b>APIs</b></p>
-      <p style={pStyle}>Besides the above APIs for SelectionPool, more APIs are exposed by SearchPool component.</p>
+      <p style={docStyle}>Besides the above APIs of SelectionPool, more APIs are exposed by SearchPool component.</p>
       {searchPoolApis.map((api, i) => (
         <p key={i} style={docStyle}>
           <b>{api.key} - </b>
@@ -200,6 +206,7 @@ class Pools extends Component {
         teams={selectedTeams}
         withFilter
         withIcon
+        addonAfter={<Icon style={{ marginLeft: 5 }} type="save" size="small" />}
       />
     </Fragment>
     );

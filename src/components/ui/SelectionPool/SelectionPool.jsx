@@ -16,6 +16,7 @@ const propTypes = {
   onTagClose: PropTypes.func,
   closable: PropTypes.bool,
   withIcon: PropTypes.bool,
+  addonAfter: PropTypes.element,
 };
 
 const SelectionPool = ({
@@ -27,6 +28,7 @@ const SelectionPool = ({
   onTagClose,
   closable,
   withIcon,
+  addonAfter,
 }) => {
   
   // Internal methods
@@ -82,6 +84,7 @@ const SelectionPool = ({
           >
             {withIcon && <Icon type={iconType} size="small" />}
             {item.name}
+            {addonAfter}
           </Tag>
         );
       })}
