@@ -17,13 +17,15 @@ import {
   EmailTemplatesCampaign,
   PermissionProfile,
   Fields,
+  ObjectDetails,
 } from 'views/index';
 
 import { ObjectFilter } from '../index';
 
 const MainContent = () => (
   <Switch>
-    <Route path="/:object/views/:viewId" component={ObjectFilter} />
+    <Route path="/:objectType/views/:viewId" component={ObjectFilter} />
+    <Route path="/:objectType/details/:objectId" component={ObjectDetails} />
     <Route path="/leads" component={Leads} />
     <Route path="/setup/company-info/dd-demo" component={DDDemo} />
     <Route path="/setup/company-info/drag-preveiw" component={DragPreview} />

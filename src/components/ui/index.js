@@ -18,6 +18,7 @@ import RichEditor from './RichEditor/index';
 import SelectionModal from './SelectionModal/index';
 import SubmitButtons from './SubmitButtons/index';
 import { SelectionPool, SearchPool } from './SelectionPool/index';
+import DetailTopButtons from './DetailTopButtons/index';
 
 export {
   Upload,
@@ -42,4 +43,5 @@ export {
   SubmitButtons,
   SelectionPool,
   SearchPool,
+  DetailTopButtons,
 };

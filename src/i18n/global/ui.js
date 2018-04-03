@@ -24,6 +24,9 @@ export default {
       massUpdate: '批量更新',
       massDelete: '批量删除',
       addToCampaign: '添加到营销活动',
+      convert: '转化',
+      sharing: '分享给他人',
+      findDuplicates: '查询重复记录',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -82,6 +85,9 @@ export default {
       massUpdate: 'Mass Update',
       massDelete: 'Mass Delete',
       addToCampaign: 'Add to Campaign',
+      convert: 'Convert',
+      sharing: 'Sharing',
+      findDuplicates: 'Find Duplicates'
     },
     input: {
       searchStore: 'Search entire store here...',

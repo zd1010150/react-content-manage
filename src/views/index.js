@@ -12,6 +12,7 @@ import EmailTemplatesCampaign from './email/emailTemplatesCampaign';
 import NewEmail from './email/newEmail';
 import PermissionProfile from './Setup/PermissionProfile';
 import Fields from './Setup/Fields';
+import ObjectDetails from './ObjectDetails/index';
 
 export {
   Leads,
@@ -28,4 +29,5 @@ export {
   NewEmail,
   PermissionProfile,
   Fields,
+  ObjectDetails,
 };

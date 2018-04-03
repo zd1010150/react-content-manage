@@ -35,8 +35,8 @@ const sections = [
 
 class ObjectFilter extends Component {
   componentDidMount() {
-    const { object, viewId } = this.props.match.params;
-    this.props.fetchViewById(viewId, object);
+    const { objectType, viewId } = this.props.match.params;
+    this.props.fetchViewById(viewId, objectType);
   }
 
   componentWillUnmount() {
@@ -48,7 +48,7 @@ class ObjectFilter extends Component {
     const { formatMessage } = intl;
     const i18nPrefix = 'page.objectFilter';
 
-    const { object, viewId } = match.params;
+    const { viewId } = match.params;
     const panelTitleI18nId = viewId === Enums.PhantomID ? 'general.newTitle' : 'general.existTitle';
 
     return (

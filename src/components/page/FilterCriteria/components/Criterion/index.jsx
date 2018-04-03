@@ -30,7 +30,6 @@ const propTypes = {
   ]).isRequired,
   conditions: PropTypes.array.isRequired,
   fields: PropTypes.array.isRequired,
-  options: PropTypes.array,
 };
 
 const Criterion = ({
@@ -44,7 +43,6 @@ const Criterion = ({
 
   fields,
   conditions,
-  options,
   handleFieldChange,
   handleConditionChange,
   handleValueChange,
