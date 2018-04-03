@@ -63,7 +63,7 @@ const visibilities = (state = initialState, action) => {
       };
 
 
-      case SET_TEAMS:
+    case SET_TEAMS:
       const teams = [...action.teams];
       teams.unshift({
         id: -1,
