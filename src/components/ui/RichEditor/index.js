@@ -6,12 +6,15 @@ import {connect} from 'react-redux';
 import {Panel} from 'components/ui/index';
 import classNames from 'classnames/bind';
 import {Editor, EditorState, RichUtils, getDefaultKeyBinding} from 'draft-js';
+import {stateToHTML} from 'draft-js-export-html';
+
 import styles from './richEditor.less';
 const cx = classNames.bind(styles);
 
 class RichEditor extends React.Component {
     constructor(props){
         super(props);
+        const {registerGetContentHook} = this.props;
         this.state = {editorState: EditorState.createEmpty()};
         this.focus = () => this.refs.editor.focus();
         this.onChange = (editorState) => this.setState({editorState});
@@ -21,6 +24,14 @@ class RichEditor extends React.Component {
         this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
         this.getLocalHtml = this.getLocalHtml.bind(this);
         this.previewHtml = this.previewHtml.bind(this);
+
+
+        registerGetContentHook &&
+        registerGetContentHook(() => {
+            return stateToHTML(this.state.editorState.getCurrentContent());
+            // return this.state.editorState.getCurrentContent ().getPlainText ();
+        });
+
 
     }
     componentDidMount() {
@@ -74,7 +85,8 @@ class RichEditor extends React.Component {
 
     render() {
         const {editorState} = this.state;
-        const { formatMessage } = this.props.intl;
+        const {intl, setContent} = this.props;
+        const { formatMessage } = intl;
         // If the user changes block type before entering any text, we can
         // either style the placeholder or hide it. Let's just hide it now.
         let className = 'RichEditor-editor';

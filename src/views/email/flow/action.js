@@ -26,7 +26,7 @@ import {
   EMAIL_TEMPLATES_SET_NEW_ORDER,
   EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
   EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
-  EMAIL_TEMPLATES_UPDATE_NEW_TEMPLATE
+  EMAIL_TEMPLATES_UPDATE_TEMPLATE
 } from "./actionType";
 
 const url = "/";
@@ -141,9 +141,9 @@ export const setAddVisible = isAddVisible => ({
 });
 
 //Update new template
-export const updateNewTemplate = payload => ({
-    type: EMAIL_TEMPLATES_UPDATE_NEW_TEMPLATE,
-    payload
+export const updateTemplate = payload => ({
+  type: EMAIL_TEMPLATES_UPDATE_TEMPLATE,
+  payload
 });
 //Set Templates
 export const setTemplatesData = templates => ({
@@ -167,7 +167,7 @@ export const createTemplate = ({
   cb
 }) => (dispatch, getState) => {
   post(
-    `/admin/email_folders/${folderId}`,
+    `/admin/email_templates/email_folders/${folderId}`,
     { name, api_name: apiName, content, description },
     dispatch
   ).then(data => {
@@ -181,7 +181,7 @@ export const createTemplate = ({
   });
 };
 
-export const updateTemplate = ({
+export const updateTemplateData = ({
   templateId,
   folderId,
   name,
@@ -208,15 +208,10 @@ export const updateTemplate = ({
 export const deleteTemplate = ({
   templateId,
   folderId,
-  name,
-  apiName,
-  content,
-  description,
   cb
 }) => (dispatch, getState) => {
-  patch(
+  httpDelete(
     `/admin/email_templates/${templateId}`,
-    { name, api_name: apiName, content, folder_id: folderId, description },
     dispatch
   ).then(data => {
     if (!_.isEmpty(data)) {

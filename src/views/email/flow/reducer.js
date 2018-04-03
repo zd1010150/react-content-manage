@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import _ from "lodash";
 import EnumsManager from "utils/EnumsManager";
+import newTemplate from '../emailTemplatesCreation/flow/reducer';
 import {
   EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
   EMAIL_TEMPLATES_SET_NEW_DEPARTMENT_NAME,
@@ -24,7 +25,7 @@ import {
   EMAIL_TEMPLATES_SET_NEW_ORDER,
   EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
   EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
-  EMAIL_TEMPLATES_UPDATE_NEW_TEMPLATE
+  EMAIL_TEMPLATES_UPDATE_TEMPLATE
 } from "./actionType";
 
 const templates = (
@@ -39,16 +40,6 @@ const templates = (
   const { type, ...payload } = action;
   switch (type) {
     case EMAIL_TEMPLATES_SET_TEMPLATES:
-      return Object.assign({}, state, { ...payload });
-    default:
-      return state;
-  }
-};
-
-const newTemplate = (state = {}, action) => {
-  const { type, ...payload } = action;
-  switch (type) {
-    case EMAIL_TEMPLATES_UPDATE_NEW_TEMPLATE:
       return Object.assign({}, state, { ...payload });
     default:
       return state;
@@ -387,6 +378,7 @@ const sortingTeams = (state = [], action) => {
       return state;
   }
 };
+
 export default combineReducers({
   ui,
   newTeam,

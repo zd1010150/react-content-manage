@@ -2,7 +2,7 @@
 import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import {intlShape, injectIntl} from 'react-intl';
-import {Row, Col, Button, Icon, Radio, Table} from 'antd';
+import {Row, Col, Button, Icon, Radio, Table, Popconfirm} from 'antd';
 import {Panel} from 'components/ui/index';
 import {setTeams} from 'store/global/action';
 import {updateUsers} from 'views/Setup/Users/flow/action';
@@ -16,10 +16,13 @@ import {
     setPermissionSettingVisible,
     setSharedByVisible,
     queryByPaging,
-    setSelectedFolderData
+    setSelectedFolderData,
+    deleteTemplate,
+    updateTemplate
 } from '../../flow/action';
 import {getTeamUsers, getSelectedTeamName} from '../../flow/reselect';
 import {Tabs} from 'antd';
+import { withRouter } from "react-router";
 import styles from '../emailTemplates.less';
 const cx = classNames.bind(styles);
 const RadioGroup = Radio.Group;
@@ -120,7 +123,7 @@ class EmailTemplateDetail extends React.Component {
         const {
             setEditFolderViewVisible, setPermissionSettingVisible, isPermissionSettingVisible,
             isSharedByVisible, templates, templatesDataTablePagination, queryByPaging, setSharedByVisible,
-            setSelectedFolderData, selectedFolder, userFolders, sharedFolders, selectedUser, loginUser
+            setSelectedFolderData, selectedFolder, userFolders, sharedFolders, selectedUser, loginUser, deleteTemplate, updateTemplate, history
         } = this.props;
         const actionsLeft = <div><Radios selectedUser={selectedUser} setSharedByVisible={setSharedByVisible}/></div>;
         const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {
@@ -142,8 +145,17 @@ class EmailTemplateDetail extends React.Component {
                 key: 'id',
                 render: record => (
                     <span>
-            <Icon type="edit" onClick={() => this.edit(record.id)}/>
-            <Icon type="delete" className="danger pl-lg" onClick={() => this.delete(record.id)}/>
+            <Icon type="edit" onClick={() => {
+                updateTemplate({templateId: record.id, folderId: selectedFolder.id, name: record.name, description: record.description, content: record.content});
+                history.push('template-edit/' + record.id)
+            }}/>
+            <Popconfirm
+                title='Are you sure to delete it?'
+                onConfirm={() => deleteTemplate({templateId: record.id, folderId: selectedFolder.id})}
+            >
+                <Icon type="delete" className="danger pl-lg"/>
+            </Popconfirm>
+
           </span>
                 ),
             }, {
@@ -227,8 +239,10 @@ const mapDispatchToProps = {
     setPermissionSettingVisible,
     setSharedByVisible,
     queryByPaging,
-    setSelectedFolderData
+    setSelectedFolderData,
+    deleteTemplate,
+    updateTemplate
 };
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateDetail));
+export default withRouter(injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateDetail)));
 
