@@ -8,7 +8,7 @@ import { setCurrentObject } from '../flow/action';
 import { FIELD_TYPE_SELECT, FIELD_EDIT, FIELD_ADD, PICKLIST_OPTION_EDIT } from '../flow/pageAction';
 import FieldAddContainer from './fieldAddContainer';
 import FieldEditContaienr from './fieldEditContainer';
-import FieldTypeContainer from './fieldTypeContainer';
+import FieldTypeContainer from './fieldAddSelectTypeContainer';
 import PickListOptionEditContainer from './pickListOptionEditContainer';
 import TableView from './tableView';
 
@@ -21,9 +21,8 @@ class FieldsIndexView extends React.Component {
     this.setObjectType(nextProps);
   }
   setObjectType(props) {
-    const { location, setCurrentObject } = props;
-    const pairs = queryString.parse(location.search);
-    setCurrentObject({ objType: pairs.objectType });
+    const { match, setCurrentObject } = props;
+    setCurrentObject({ objType: match.params.objectType });
   }
   getView(props) {
     const { location } = props;

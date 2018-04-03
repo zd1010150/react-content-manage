@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, injectIntl } from 'react-intl';
-import { Select, Row, Col, Icon, Input } from 'antd';
+import { Select, Row, Col, Icon, Popconfirm } from 'antd';
 const Option = Select.Option;
 import classNames from 'classnames/bind';
 import styles from './index.less';
@@ -30,7 +30,7 @@ const propTypes = {
   ]).isRequired,
   conditions: PropTypes.array.isRequired,
   fields: PropTypes.array.isRequired,
-  options: PropTypes.array.isRequired,
+  options: PropTypes.array,
 };
 
 const Criterion = ({
@@ -48,9 +48,19 @@ const Criterion = ({
   handleFieldChange,
   handleConditionChange,
   handleValueChange,
+  handleAddonClick,
   handleFilterRemove,
 }) => {
 
+  const i18nPrefix = 'global.ui';
+  const { formatMessage } = intl;
+  const valueCriteriaFieldProps = {
+    displayNum,
+    type,
+    handleValueChange,
+    handleAddonClick,
+    value,
+  };
   return (
     <Row gutter={16} style={{ marginBottom: 10 }}>
       <Col {...sideColLayout} className={cx('displayNumCol')}>
@@ -72,6 +82,7 @@ const Criterion = ({
         <Select
           size="small"
           className={cx('select')}
+          value={conditionId === Enums.PhantomID ? '' : conditionId}
           onChange={conditionId => handleConditionChange(conditionId, displayNum)}
         >
           {conditions.map(condition =>
@@ -80,17 +91,18 @@ const Criterion = ({
         </Select>
       </Col>
       <Col {...colLayout}>
-        {type
-          ? <ValueCriteriaField displayNum={displayNum} type={type} handleValueChange={handleValueChange} value={value} />
-          : <span className={cx('message')}>{intl.formatMessage({ id: 'page.customField.message'})}</span>}
+        {type ? <ValueCriteriaField {...valueCriteriaFieldProps} />
+              : <span className={cx('message')}>{formatMessage({ id: 'page.customField.message'})}</span>}
       </Col>
       <Col {...sideColLayout}>
-        <Icon
-          className={cx('deleteIcon')}
-          data-display-num={displayNum}
-          onClick={handleFilterRemove}
-          type="delete"
-        />
+        <Popconfirm
+          title={formatMessage({ id: `${i18nPrefix}.dialog.deleteTitle`})}
+          onConfirm={e => handleFilterRemove(displayNum)}
+          okText={formatMessage({ id: `${i18nPrefix}.button.ok` })}
+          cancelText={formatMessage({ id: `${i18nPrefix}.button.cancel` })}
+        >
+          <Icon className={cx('deleteIcon')} type="delete" />
+        </Popconfirm>
       </Col>
     </Row>
   );

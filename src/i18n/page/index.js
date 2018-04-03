@@ -6,6 +6,8 @@ import emailTemplates from 'views/email/i18n';
 import objectFilter from 'components/page/ObjectFilter/i18n';
 import customField from 'components/ui/CustomField/i18n';
 import filterCriteria from 'components/page/FilterCriteria/i18n';
+import fields from 'views/Setup/Fields/i18n';
+import selectionPool from 'components/ui/SelectionPool/i18n';
 
 export default {
   comInfo,
@@ -16,4 +18,6 @@ export default {
   objectFilter,
   customField,
   filterCriteria,
+  fields,
+  selectionPool,
 };

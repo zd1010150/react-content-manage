@@ -15,9 +15,9 @@ import { CustomField } from './CustomField/index';
 import DefaultDepartment from './DefaultDepartment/index';
 import { Wrapper, CardContainer } from './MultiSelectDnD/index';
 import RichEditor from './RichEditor/index';
-import UsersList from './UsersList/index';
 import SelectionModal from './SelectionModal/index';
 import SubmitButtons from './SubmitButtons/index';
+import { SelectionPool, SearchPool } from './SelectionPool/index';
 
 export {
   Upload,
@@ -38,7 +38,8 @@ export {
   Wrapper,
   CardContainer,
   RichEditor,
-  UsersList,
   SelectionModal,
   SubmitButtons,
+  SelectionPool,
+  SearchPool,
 };
