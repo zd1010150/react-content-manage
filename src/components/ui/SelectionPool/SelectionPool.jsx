@@ -32,25 +32,22 @@ const SelectionPool = ({
 }) => {
   
   // Internal methods
-  const _onTagClick = e => {
+  const _onTagClick = (e, item, isTeam) => {
     if (_.isFunction(onTagClick)) {
-      const { id, isTeam } = e.target.dataset;
-      onTagClick(id, isTeam);
+      onTagClick(item.id, isTeam);
     }
   };
-  const _onTagDoubleClick = e => {
+  const _onTagDoubleClick = (e, item, isTeam) => {
     // TODO: add debounce to separate double click and single click twice
     if (_.isFunction(onTagDoubleClick)) {
-      const { id, isTeam } = e.target.dataset;
-      onTagDoubleClick(id, isTeam);
+      onTagDoubleClick(item.id, isTeam);
     }
   };
-  const _onTagClose = e => {
+  const _onTagClose = (e, item, isTeam) => {
     // Avoid further trigger on onTagClick via propagation
     e.stopPropagation();
     if (_.isFunction(onTagClose)) {
-      const { id, isTeam } = e.target.dataset;
-      onTagClose(id, isTeam);
+      onTagClose(item.id, isTeam);
     }
   };
 
@@ -75,11 +72,9 @@ const SelectionPool = ({
           <Tag
             key={key}
             className={cls}
-            data-id={item.id}
-            data-is-team={isTeam}
-            onClick={_onTagClick}
-            onDoubleClick={_onTagDoubleClick}
-            onClose={_onTagClose}
+            onClick={e => _onTagClick(e, item, isTeam)}
+            onDoubleClick={e => _onTagDoubleClick(e, item, isTeam)}
+            onClose={e => _onTagClose(e, item, isTeam)}
             closable={closable}
           >
             {withIcon && <Icon type={iconType} size="small" />}

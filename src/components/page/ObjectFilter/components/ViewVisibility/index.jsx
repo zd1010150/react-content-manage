@@ -6,7 +6,7 @@ import { Row, Col, Radio, Icon, Button, Checkbox } from 'antd';
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 
-import { UsersList, StyledModal, SelectionModal } from 'components/ui/index';
+import { UsersList, StyledModal, SelectionModal, SelectionPool, SearchPool } from 'components/ui/index';
 import { TeamTree } from 'components/page/index';
 import Enums from 'utils/EnumsManager';
 import {
@@ -47,12 +47,6 @@ class ViewVisibility extends Component {
 
   handleSelect = teamIds => this.props.selectTeam(teamIds[0])
 
-  handleRemoveItem = (itemId, teamId) => {
-    if (!itemId) return;
-    const isTeam = teamId === undefined ? true : false;
-    this.props.removeEntityFromSelection(itemId, isTeam);
-  }
-
   handleTeamSelection = id => this.props.addEntityToSelection(id, true)
 
   handleUserSelection = id => this.props.addEntityToSelection(id)
@@ -64,11 +58,11 @@ class ViewVisibility extends Component {
   handleModalCancel = e => this.setState({ showModal: !this.state.showModal })
 
   handleModalSave = checkedValues => {
-    console.log('on modal save');
-    console.log(checkedValues);
     this.setState({ showModal: !this.state.showModal });
     this.props.changeSelections(checkedValues);
   }
+
+  handleTagClose = (itemId, isTeam) => this.props.removeEntityFromSelection(itemId, isTeam)
 
   render() {
     const { showModal, showTreeSection, checkedValues } = this.state;
@@ -106,14 +100,13 @@ class ViewVisibility extends Component {
         </RadioGroup>
         {selectedOption === Enums.ViewVisibilityIds.GroupsAndUsers && (
           <Fragment>
-            <UsersList
+            <SelectionPool
+              theme={theme}
               users={selectedUsers}
               teams={selectedTeams}
-              showTeams
-              canRemoveItem
-              onRemoveItem={this.handleRemoveItem}
-              userAddonBefore={<Icon className="mr-sm" type="user" size="small"/>}
-              teamAddonBefore={<Icon type="team" size="small"/>}
+              onTagClose={this.handleTagClose}
+              closable
+              withIcon
             />
             <Row style={{ margin: '10px 0' }}>
               <Button size="small" onClick={this.handleUserBtnClick}>
@@ -143,17 +136,11 @@ class ViewVisibility extends Component {
                   />
                 </Col>
                 <Col xs={24} sm={16}>
-                  <UsersList
-                    defaultTitle={formatMessage({ id: `${visibilityI18n}.defaultTitle` })}
-                    // defaultTitle="Click Chart to Choose Department"
+                  <SearchPool
+                    theme={theme}
                     title={title}
-                    withFilter
-                    showHeader
                     users={usersInTeam}
-                    teamId={selectedTeamId}
-                    userAddonBefore={<Icon className="mr-sm" type="user" size="small"/>}
-                    teamAddonBefore={<Icon type="team" size="small"/>}
-                    onDoubleClick={this.handleUserSelection}
+                    onTagDoubleClick={this.handleUserSelection}
                   />
                 </Col>
               </Row>
