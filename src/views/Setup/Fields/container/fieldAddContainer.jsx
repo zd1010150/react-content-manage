@@ -9,8 +9,8 @@ import { connect } from 'react-redux';
 import { Panel } from 'components/ui/index';
 import { objTypeAndClassTypeMap, PAGE_ACTION } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
-import { setAddedFieldAttr, resetAddedFieldAttr, fetchBackground } from '../flow/action';
-import { FIELD_ADD } from '../flow/pageAction';
+import { setAddedFieldAttr, resetAddedFieldAttr, fetchBackground, duplicatFilter, setFieldLableisDuplicate } from '../flow/action';
+import { FIELD_ADD, FIELD_TYPE_SELECT } from '../flow/pageAction';
 import { getMappedTypes } from '../flow/reselect';
 import FieldForm from '../component/field/fieldForm';
 
@@ -24,9 +24,14 @@ class FieldAddSelecteTypeContainer extends React.Component {
     onTypesChange = (e) => {
       this.props.setAddedFieldAttr({ field: { type: e.target.value } });
     }
-    goNext = () => {
-      const { history, objectType } = this.props;
-      history.push(`/setup/fields?objectType=${objectType}&action=${FIELD_ADD}`);
+    save = () => {
+      const { isDuplicate } = this.props;
+      this.form.validateFieldsAndScroll((err, values) => {
+        if (!err && !isDuplicate) {
+          debugger;
+          console.log(values);
+        }
+      });
     }
     cancel =() => {
       const { history, resetAddedFieldAttr, objectType } = this.props;
@@ -36,6 +41,10 @@ class FieldAddSelecteTypeContainer extends React.Component {
     onSelectChange = (selectedRowKeys, selectedRows) => {
       console.log(selectedRowKeys, selectedRowKeys);
     }
+    goPrevious() {
+      const { history, objectType } = this.props;
+      history.push(`/setup/fields?objectType=${objectType}&action=${FIELD_TYPE_SELECT}`);
+    }
     render() {
       const { formatMessage, locale } = this.props.intl;
       const {
@@ -43,6 +52,10 @@ class FieldAddSelecteTypeContainer extends React.Component {
         objectType,
         types,
         layouts,
+        fieldPrefix,
+        duplicatFilter,
+        isDuplicate,
+        setFieldLableisDuplicate,
       } = this.props;
       const classType = objTypeAndClassTypeMap[objectType];
       const rowSelection = {
@@ -66,7 +79,7 @@ class FieldAddSelecteTypeContainer extends React.Component {
       ];
       return (
         <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'global.properNouns.users' })} contentClasses="pt-lg pb-lg">
-          <FieldForm action={ADD} editObject={addedField.field} ref={(c) => { this.form = c; }} />
+          <FieldForm isDuplicate={isDuplicate} setFieldLableisDuplicate={setFieldLableisDuplicate} action={ADD} editObject={addedField.field} ref={(c) => { this.form = c; }} objType={objectType} prefix={fieldPrefix} checkLabelDuplicate={duplicatFilter} />
           <div className="panel-section">
             <div className="section-header">Default Fields</div>
             <div className="section-content  mt-lg mb-lg">
@@ -78,21 +91,20 @@ class FieldAddSelecteTypeContainer extends React.Component {
               <Button
                 key="cancel"
                 type="danger"
-                icon="close"
+                icon=""
                 size="small"
-                onClick={this.cancel}
-              >{ formatMessage({ id: 'global.ui.button.cancel' })}
+                onClick={() => this.goPrevious()}
+              >{ formatMessage({ id: 'global.ui.button.previous' })}
               </Button>
             </Col>
             <Col span={12} className="text-right">
               <Button
                 key="save"
                 size="small"
-                disabled={_.isEmpty(addedField.field.type)}
                 type="primary"
                 icon="save"
-                onClick={this.goNext}
-              >{ formatMessage({ id: 'global.ui.button.next' })}
+                onClick={() => this.save()}
+              >{ formatMessage({ id: 'global.ui.button.save' })}
               </Button>
             </Col>
           </Row>
@@ -109,11 +121,14 @@ const mapStateToProps = ({ setup, global }) => {
   const {
     addedField,
     backgroundInfo,
+    isDuplicate,
   } = setup.fields.addField;
   return {
     addedField,
+    isDuplicate,
     objectType: addedField.objType,
     types: getMappedTypes({ global }),
+    fieldPrefix: global.settings.fields.cstm_attribute_prefix,
     layouts: backgroundInfo.layouts,
   };
 };
@@ -121,6 +136,8 @@ const mapDispatchToProps = {
   setAddedFieldAttr,
   resetAddedFieldAttr,
   fetchBackground,
+  duplicatFilter,
+  setFieldLableisDuplicate,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldAddSelecteTypeContainer)));
 

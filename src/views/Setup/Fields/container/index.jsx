@@ -21,9 +21,8 @@ class FieldsIndexView extends React.Component {
     this.setObjectType(nextProps);
   }
   setObjectType(props) {
-    const { location, setCurrentObject } = props;
-    const pairs = queryString.parse(location.search);
-    setCurrentObject({ objType: pairs.objectType });
+    const { match, setCurrentObject } = props;
+    setCurrentObject({ objType: match.params.objectType });
   }
   getView(props) {
     const { location } = props;

@@ -64,12 +64,12 @@ const menuItems = [
     children: [
       {
         id: 'fields',
-        path: `${pathPrefix}/fields?objectType=${OBJECT_TYPES.leads}`,
+        path: `${pathPrefix}/${OBJECT_TYPES.leads}/fields`,
         icon: 'profile',
       },
       {
         id: 'pageLayout',
-        path: `${pathPrefix}/pageLayout?objectType=${OBJECT_TYPES.leads}`,
+        path: `${pathPrefix}/${OBJECT_TYPES.leads}/pageLayout`,
         icon: 'table',
       },
     ],
@@ -80,12 +80,12 @@ const menuItems = [
     children: [
       {
         id: 'fields',
-        path: `${pathPrefix}/fields?objectType=${OBJECT_TYPES.accounts}`,
+        path: `${pathPrefix}/${OBJECT_TYPES.accounts}/fields`,
         icon: 'setting',
       },
       {
         id: 'pageLayout',
-        path: `${pathPrefix}/pageLayout?objectType=${OBJECT_TYPES.accounts}`,
+        path: `${pathPrefix}/${OBJECT_TYPES.accounts}/pageLayout`,
         icon: 'setting',
       },
     ],
@@ -96,12 +96,12 @@ const menuItems = [
     children: [
       {
         id: 'fields',
-        path: `${pathPrefix}/fields?objectType=${OBJECT_TYPES.opportunities}`,
+        path: `${pathPrefix}/${OBJECT_TYPES.opportunities}/fields`,
         icon: 'setting',
       },
       {
         id: 'pageLayout',
-        path: `${pathPrefix}/pageLayout?objectType=${OBJECT_TYPES.opportunities}`,
+        path: `${pathPrefix}/${OBJECT_TYPES.opportunities}/pageLayout`,
         icon: 'setting',
       },
     ],
@@ -148,25 +148,42 @@ const renderMenuItem = (intl) => {
         <NavLink to={item.path}><Icon type={item.icon || 'setting'} />{ formatMessage({ id: `${i18nPath}.${item.id}` }) }</NavLink>
       </Menu.Item>);
   };
-
   return menuItems.map(item => getChildrenTree(item));
 };
-const SetupSider = ({ intl, location }) => (
-  <Sider width={250} className={cx('setupSider')}>
-    <div className={cx('siderTitle')}>setup</div>
-    <Menu
-      theme="dark"
-      inlineIndent={8}
-      mode="inline"
-      defaultSelectedKeys={[location.pathname]}
-      defaultOpenKeys={[getParentUrl(location.pathname)]}
-      selectedKeys={[location.pathname]}
-      style={{ height: '100%', borderRight: 0 }}
-    >
-      {renderMenuItem(intl)}
-    </Menu>
-  </Sider>
-);
+class SetupSider extends React.Component {
+    state = {
+      openKeys: [getParentUrl(this.props.location.pathname)],
+    };
+    onOpenChange = (openKeys) => {
+      if (openKeys.length < 1) return;
+      openKeys.shift();
+      this.setState({
+        openKeys,
+      });
+    }
+    render() {
+      const { intl, location } = this.props;
+      console.log(location.pathname, '***=====');
+      return (
+        <Sider width={250} className={cx('setupSider')}>
+          <div className={cx('siderTitle')}>setup</div>
+          <Menu
+            theme="dark"
+            inlineIndent={8}
+            onOpenChange={this.onOpenChange}
+            openKeys={this.state.openKeys}
+            mode="inline"
+            defaultSelectedKeys={[location.pathname]}
+            defaultOpenKeys={[getParentUrl(location.pathname)]}
+            selectedKeys={[location.pathname]}
+            style={{ height: '100%', borderRight: 0 }}
+          >
+            {renderMenuItem(intl)}
+          </Menu>
+        </Sider>
+      );
+    }
+}
 
 
 SetupSider.propTypes = {

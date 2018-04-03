@@ -81,7 +81,7 @@ class FieldAddSelecteTypeContainer extends React.Component {
               size="small"
               disabled={_.isEmpty(addedField.field.type)}
               type="primary"
-              icon="save"
+              icon="right"
               onClick={this.goNext}
             >{ formatMessage({ id: 'global.ui.button.next' })}
             </Button>

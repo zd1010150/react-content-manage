@@ -7,6 +7,8 @@ export default {
     timeZone: '时区',
     workingHourStart: '上班时间',
     workingHourEnd: '结束时间',
+    field_label: '字段标签',
+    field_name: 'API',
   },
   en: {
     userName: 'User Name',
@@ -16,5 +18,7 @@ export default {
     timeZone: 'Time Zone',
     workingHourStart: 'Working Hour Start',
     workingHourEnd: 'Working Hour End',
+    field_label: 'Field Label',
+    field_name: 'Field API',
   },
 };

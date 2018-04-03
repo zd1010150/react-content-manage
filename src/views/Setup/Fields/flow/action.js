@@ -8,7 +8,7 @@ import {
   SETUP_FIELDS_CHANGE_MAPPING_FIELD_STATUS,
   SETUP_FIELDS_SET_ADDED_ATTR,
   SETUP_FIELDS_RESET_ADDED_ATTR,
-  SETUP_FIELDS_SET_OBJECT_LAYOUT } from './actionType';
+  SETUP_FIELDS_SET_OBJECT_LAYOUT, SETUP_FIELDS_SET_FIELD_LABEL_IS_DUPLICATE } from './actionType';
 
 
 export const setCurrentObject = args => ({
@@ -46,12 +46,15 @@ export const fetchFields = objectType => dispatch => get(`/admin/metadata/object
     dispatch(setRelativesObjectTypeFields({ objectType, data }));
   }
 });
-export const saveFieldsMapping = mappings => dispatch => post('/admin/metadata/mass-mapping', { data: mappings }, dispatch).then((data) => {
+export const saveFieldsMapping = mappings => dispatch => patch('/admin/metadata/mass-mapping', { data: mappings }, dispatch).then((data) => {
   console.log(data, 'save result');
 });
 
 /* addField actions */
-
+export const setFieldLableisDuplicate = isDuplicate => ({
+  type: SETUP_FIELDS_SET_FIELD_LABEL_IS_DUPLICATE,
+  isDuplicate,
+});
 export const setAddedFieldAttr = args => ({
   type: SETUP_FIELDS_SET_ADDED_ATTR,
   ...args,
@@ -69,7 +72,7 @@ export const fetchBackground = objectType => dispatch => get(`/admin/metadata/ob
     dispatch(setObjectTypeLayout({ layouts: data.page_layouts.data }));
   }
 });
-export const duplicatFilter = (objectType, file_name, cb) => dispatch => post(`/admin/metadata/object/${objectType}/checkDuplication`, { file_name }, dispatch).then((data) => {
+export const duplicatFilter = (objectType, file_name, cb) => dispatch => get(`/admin/metadata/object/${objectType}/checkDuplication`, { file_name }, dispatch).then((data) => {
   if (_.isFunction(cb)) {
     cb(data.is_duplicated, data.recommendation);
   }
