@@ -10,11 +10,9 @@ const cx = classNames.bind(styles);
 import { SelectionPool } from './index';
 
 const defaultProps = {
-  withFilter: false,
 };
 const propTypes = {
   title: PropTypes.string,
-  withFilter: PropTypes.bool.isRequired,
 };
 
 class SearchPool extends Component {
@@ -38,19 +36,19 @@ class SearchPool extends Component {
     const filteredUsers = users.filter(user => user.name.indexOf(searchText) !== -1);
     return (
       <Fragment>
-        {(title || withFilter) && <Row className={cx('poolHeader')}>
+        <Row className={cx('poolHeader')}>
           <Col xs={24} sm={18}>
             {title || formatMessage({ id: 'page.selectionPool.defaultTitle' })}
           </Col>
           <Col xs={24} sm={6}>
-            {withFilter && <Search
+            <Search
               size="small"
               placeholder={formatMessage({ id: 'global.ui.input.searchUser' })}
               onChange={this._onFilterChange}
               value={searchText}
-            />}
+            />
           </Col>
-        </Row>}
+        </Row>
         <SelectionPool
           users={filteredUsers}
           {...selectionPoolProps}

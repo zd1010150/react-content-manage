@@ -56,12 +56,7 @@ const searchPoolApis = [
   {
     key: 'title',
     type: 'string',
-    value: 'Any department name or default title when no department is selected. Either title is not empty string or withFilter is true, the header will display.'
-  },
-  {
-    key: 'withFilter',
-    type: 'boolean',
-    value: 'Show or hide the filter on header. The filter will only filter users data based on current requirements.'
+    value: 'The header shows with filter by default. If no title is specified, the title shows default string.'
   },
 ];
 
@@ -203,8 +198,6 @@ class Pools extends Component {
       <SearchPool
         theme={theme}
         users={selectedUsers}
-        teams={selectedTeams}
-        withFilter
         withIcon
         addonAfter={<Icon style={{ marginLeft: 5 }} type="save" size="small" />}
       />

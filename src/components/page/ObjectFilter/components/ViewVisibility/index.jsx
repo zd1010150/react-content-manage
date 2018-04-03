@@ -6,7 +6,7 @@ import { Row, Col, Radio, Icon, Button, Checkbox } from 'antd';
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 
-import { UsersList, StyledModal, SelectionModal, SelectionPool, SearchPool } from 'components/ui/index';
+import { StyledModal, SelectionModal, SelectionPool, SearchPool } from 'components/ui/index';
 import { TeamTree } from 'components/page/index';
 import Enums from 'utils/EnumsManager';
 import {
