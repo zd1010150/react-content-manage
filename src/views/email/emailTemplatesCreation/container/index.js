@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types,no-shadow */
 import React, { Fragment } from 'react';
 import _ from 'lodash';
-import { fetchTeams } from 'store/global/action';
+import { fetchTeams, createTemplate } from 'store/global/action';
 import { connect } from 'react-redux';
 import TemplateInformation from './templateInformation';
 
@@ -24,7 +24,7 @@ const mapStateToProps = ({ global }) => ({
 
 });
 const mapDispatchToProps = {
-
+    createTemplate
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmailTemplatesCreation);

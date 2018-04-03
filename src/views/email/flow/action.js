@@ -25,7 +25,8 @@ import {
   EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
   EMAIL_TEMPLATES_SET_NEW_ORDER,
   EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
-  EMAIL_TEMPLATES_CREATE_USER_FOLDERS
+  EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
+  EMAIL_TEMPLATES_UPDATE_NEW_TEMPLATE
 } from "./actionType";
 
 const url = "/";
@@ -49,17 +50,17 @@ export const sortValues = array => dispatch => dispatch(setNewOrder(array));
 
 export const getUserFolderData = userId => dispatch =>
   get(`/admin/email_folders/user/${userId}`, {}, dispatch).then(data => {
-      //data will be {own: {data: []}, shared_by: {data: []}}
-      console.log('1111', data)
+    //data will be {own: {data: []}, shared_by: {data: []}}
+    console.log("1111", data);
     if (data.own && !_.isEmpty(data.own.data)) {
       dispatch(setUserFolderData(data.own.data));
     } else {
       dispatch(setUserFolderData([]));
     }
-    if(data.shared_by && !_.isEmpty(data.shared_by.data)){
-        dispatch(setSharedFolderData(data.shared_by.data));
-    }else {
-        dispatch(setSharedFolderData([]));
+    if (data.shared_by && !_.isEmpty(data.shared_by.data)) {
+      dispatch(setSharedFolderData(data.shared_by.data));
+    } else {
+      dispatch(setSharedFolderData([]));
     }
   });
 
@@ -93,19 +94,25 @@ export const setSelectedFolderData = selectedFolder => ({
   selectedFolder
 });
 
-export const uploadFolders = (cb) => (dispatch, getState) =>{
-    const state = getState();
-    const {setup} = state;
-    post("/admin/email_folders/mass_cud/me", { current: setup.emailTemplates.userFolders, delete: setup.emailTemplates.deletedFolders }, dispatch).then(data => {
-        if (!_.isEmpty(data)) {
-            console.log('data', data)
-        }
-        if (_.isFunction(cb)) {
-            cb();
-        }
-    });
-}
-
+export const uploadFolders = cb => (dispatch, getState) => {
+  const state = getState();
+  const { setup } = state;
+  post(
+    "/admin/email_folders/mass_cud/me",
+    {
+      current: setup.emailTemplates.userFolders,
+      delete: setup.emailTemplates.deletedFolders
+    },
+    dispatch
+  ).then(data => {
+    if (!_.isEmpty(data)) {
+      console.log("data", data);
+    }
+    if (_.isFunction(cb)) {
+      cb();
+    }
+  });
+};
 
 export const setDepartmentVisible = isDepartmentVisible => ({
   type: EMAIL_TEMPLATES_DEPARTMENT_VISIBLE,
@@ -133,17 +140,94 @@ export const setAddVisible = isAddVisible => ({
   isAddVisible
 });
 
+//Update new template
+export const updateNewTemplate = payload => ({
+    type: EMAIL_TEMPLATES_UPDATE_NEW_TEMPLATE,
+    payload
+});
 //Set Templates
 export const setTemplatesData = templates => ({
   type: EMAIL_TEMPLATES_SET_TEMPLATES,
   templates
 });
+
 const setPaginations = (perPage, currentPage, total) => ({
   type: EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS,
   perPage,
   currentPage,
   total
 });
+
+export const createTemplate = ({
+  folderId,
+  name,
+  apiName,
+  content,
+  description,
+  cb
+}) => (dispatch, getState) => {
+  post(
+    `/admin/email_folders/${folderId}`,
+    { name, api_name: apiName, content, description },
+    dispatch
+  ).then(data => {
+    if (!_.isEmpty(data)) {
+      dispatch(queryByPaging({ folderId }));
+      console.log("data", data);
+    }
+    if (_.isFunction(cb)) {
+      cb();
+    }
+  });
+};
+
+export const updateTemplate = ({
+  templateId,
+  folderId,
+  name,
+  apiName,
+  content,
+  description,
+  cb
+}) => (dispatch, getState) => {
+  patch(
+    `/admin/email_templates/${templateId}`,
+    { name, api_name: apiName, content, folder_id: folderId, description },
+    dispatch
+  ).then(data => {
+    if (!_.isEmpty(data)) dispatch(queryByPaging({ folderId }));
+    {
+      console.log("data", data);
+    }
+    if (_.isFunction(cb)) {
+      cb();
+    }
+  });
+};
+
+export const deleteTemplate = ({
+  templateId,
+  folderId,
+  name,
+  apiName,
+  content,
+  description,
+  cb
+}) => (dispatch, getState) => {
+  patch(
+    `/admin/email_templates/${templateId}`,
+    { name, api_name: apiName, content, folder_id: folderId, description },
+    dispatch
+  ).then(data => {
+    if (!_.isEmpty(data)) {
+      dispatch(queryByPaging({ folderId }));
+      console.log("data", data);
+    }
+    if (_.isFunction(cb)) {
+      cb();
+    }
+  });
+};
 
 export const fetchTemplates = ({
   perPage = EnumsManager.DefaultPageConfigs.PageSize,
@@ -152,29 +236,29 @@ export const fetchTemplates = ({
   folderId,
   dispatch
 }) => {
-    //folderId undefined means the folder is just created and has not been saved yet!!!
-    if(!folderId){
-        return dispatch(setTemplatesData([]));
-    }
-    get(
-        `/admin/email_templates/email_folders/${folderId}`,
-        { per_page: perPage, page: currentPage, search },
-        dispatch
-    ).then(data => {
-        if (data && !_.isEmpty(data.data) && !_.isEmpty(data.meta)) {
-            dispatch(setTemplatesData(data.data));
-            const { pagination } = data.meta;
+  //folderId undefined means the folder is just created and has not been saved yet!!!
+  if (!folderId) {
+    return dispatch(setTemplatesData([]));
+  }
+  get(
+    `/admin/email_templates/email_folders/${folderId}`,
+    { per_page: perPage, page: currentPage, search },
+    dispatch
+  ).then(data => {
+    if (data && !_.isEmpty(data.data) && !_.isEmpty(data.meta)) {
+      dispatch(setTemplatesData(data.data));
+      const { pagination } = data.meta;
 
-            dispatch(
-                setPaginations(
-                    pagination.per_page,
-                    pagination.current_page,
-                    pagination.total
-                )
-            );
-        }
-    });
-}
+      dispatch(
+        setPaginations(
+          pagination.per_page,
+          pagination.current_page,
+          pagination.total
+        )
+      );
+    }
+  });
+};
 
 export const queryByPaging = ({ perPage, currentPage, folderId }) => (
   dispatch,

@@ -58,7 +58,7 @@ const StepOne = ({emailTemplates, selectedTemplate, formatMessage}) => {
         {/*<SelectComponent itemList={emailTemplates} selectedItem={selectedTemplate} label={formatMessage({id: 'page.emailTemplates.folder'})}/>*/}
         {/*<SelectComponent userFolders={userFolders} selectedFolder={selectedFolder} label={formatMessage({id: 'page.emailTemplates.folder'})}/>*/}
         {/*<SelectComponent userFolders={userFolders} selectedFolder={selectedFolder} label={formatMessage({id: 'page.emailTemplates.folder'})}/>*/}
-        <InputComponent optional={true} type="textarea" label={formatMessage({id: 'page.emailTemplates.description'})}/>
+        <InputComponent optional={true} type="textarea" label={formatMessage({id: 'page.emailTemplates.campaignDescription'})}/>
     </Fragment>
 }
 
