@@ -66,3 +66,4 @@ export const objTypeAndClassTypeMap = {
   accounts: 'account',
   opportunities: 'opport',
 };
+export const PICKLIST_FIELD_TYPE = 'picklist';

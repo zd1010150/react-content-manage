@@ -24,6 +24,7 @@ export default {
       massUpdate: '批量更新',
       massDelete: '批量删除',
       addToCampaign: '添加到营销活动',
+      replace: '替换',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -46,10 +47,10 @@ export default {
       default: '默认部门',
     },
     labels: {
-      viewName: '视图名称'
+      viewName: '视图名称',
     },
     errors: {
-      inputRequired: '必填项'
+      inputRequired: '必填项',
     },
     criteria: {
       field: '字段',
@@ -82,6 +83,7 @@ export default {
       massUpdate: 'Mass Update',
       massDelete: 'Mass Delete',
       addToCampaign: 'Add to Campaign',
+      replace: 'Replace',
     },
     input: {
       searchStore: 'Search entire store here...',
@@ -107,7 +109,7 @@ export default {
       viewName: 'View Name',
     },
     errors: {
-      inputRequired: 'The input is required.'
+      inputRequired: 'The input is required.',
     },
     criteria: {
       field: 'Field',

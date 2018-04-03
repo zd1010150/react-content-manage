@@ -21,11 +21,11 @@ class FieldAddSelecteTypeContainer extends React.Component {
   }
   goNext = () => {
     const { history, objectType } = this.props;
-    history.push(`/setup/fields?objectType=${objectType}&action=${FIELD_ADD}`);
+    history.push(`/setup/${objectType}/fields?&action=${FIELD_ADD}`);
   }
   cancel =() => {
     const { history, resetAddedFieldAttr, objectType } = this.props;
-    history.push(`/setup/fields?objectType=${objectType}`);
+    history.push(`/setup/${objectType}/fields`);
     resetAddedFieldAttr(objectType);
   }
   render() {
@@ -81,9 +81,8 @@ class FieldAddSelecteTypeContainer extends React.Component {
               size="small"
               disabled={_.isEmpty(addedField.field.type)}
               type="primary"
-              icon="right"
               onClick={this.goNext}
-            >{ formatMessage({ id: 'global.ui.button.next' })}
+            >{ formatMessage({ id: 'global.ui.button.next' })}<Icon type="right" />
             </Button>
           </Col>
         </Row>

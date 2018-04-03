@@ -8,7 +8,11 @@ import {
   SETUP_FIELDS_CHANGE_MAPPING_FIELD_STATUS,
   SETUP_FIELDS_SET_ADDED_ATTR,
   SETUP_FIELDS_RESET_ADDED_ATTR,
-  SETUP_FIELDS_SET_OBJECT_LAYOUT, SETUP_FIELDS_SET_FIELD_LABEL_IS_DUPLICATE } from './actionType';
+  SETUP_FIELDS_SET_OBJECT_LAYOUT,
+  SETUP_FIELDS_SET_FIELD_LABEL_IS_DUPLICATE,
+  SETUP_FIELDS_DELETE_PICKLIST_VALUE,
+  SETUP_FIELDS_ADD_PICKLIST_VALUE,
+} from './actionType';
 
 
 export const setCurrentObject = args => ({
@@ -67,13 +71,50 @@ export const setObjectTypeLayout = args => ({
   type: SETUP_FIELDS_SET_OBJECT_LAYOUT,
   ...args,
 });
+export const deletePickListValue = picklist => ({
+  type: SETUP_FIELDS_DELETE_PICKLIST_VALUE,
+  picklist,
+});
+export const addPickListValue = val => ({
+  type: SETUP_FIELDS_ADD_PICKLIST_VALUE,
+  val,
+});
 export const fetchBackground = objectType => dispatch => get(`/admin/metadata/object/${objectType}/create`, {}, dispatch).then((data) => {
   if (!_.isEmpty(data.page_layouts.data)) {
     dispatch(setObjectTypeLayout({ layouts: data.page_layouts.data }));
   }
 });
-export const duplicatFilter = (objectType, file_name, cb) => dispatch => get(`/admin/metadata/object/${objectType}/checkDuplication`, { file_name }, dispatch).then((data) => {
+export const duplicatFilter = (objectType, field_name, cb) => dispatch => get(`/admin/metadata/object/${objectType}/checkDuplication`, { field_name }, dispatch).then((data) => {
   if (_.isFunction(cb)) {
-    cb(data.is_duplicated, data.recommendation);
+    cb(data.is_duplicated, data.suggestion);
   }
 });
+export const addPickListValueToRemote = (meta_data_id, option_value) => dispatch => post('/admin/picklists', { meta_data_id, option_value }, dispatch).then((data) => {
+  if (!_.isEmpty(`${data.data.id}`)) {
+    dispatch(addPickListValue(data.data));
+  }
+});
+export const replacePickListValueToRemote = (id, replace_value) => dispatch => patch(`/admin/picklists/${id}/replace`, { replace_value }, dispatch).then((data) => {
+
+});
+export const sortPicklistValueToRemote = ids => dispatch => patch('/admin/picklists/sort', { ids }, dispatch).then((data) => {
+
+});
+export const saveFieldToRemote = (objectType, field, cb) => dispatch => post(`/admin/metadata/object/${objectType}`, { ...field }, dispatch).then((data) => {
+  if (_.isFunction(cb)) {
+    cb();
+  }
+});
+export const updateFieldToRemote = (fieldid, field, cb) => dispatch => patch(`/admin/metadata/${fieldid}`, { ...field }, dispatch).then((data) => {
+  if (_.isFunction(cb)) {
+    cb();
+  }
+});
+export const fetchFieldDetailInfo = fieldId => dispatch => get(`/admin/metadata/${fieldId}/setup`, {}, dispatch).then((data) => {
+  if (!_.isEmpty(data['de-active_picklists'])) {
+    dispatch(setAddedFieldAttr({
+      deactiveList: data['de-active_picklists'],
+    }));
+  }
+});
+

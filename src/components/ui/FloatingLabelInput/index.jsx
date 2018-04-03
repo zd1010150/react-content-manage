@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { Input } from 'antd';
 import classNames from 'classnames/bind';
 import styles from './index.less';
+
 const cx = classNames.bind(styles);
 
 const defaultProps = {
   labelText: 'Default Label',
   withSearch: false,
+  enterButton: true,
 };
 const propTypes = {
   labelText: PropTypes.string.isRequired,
@@ -18,6 +20,7 @@ const propTypes = {
   handleChange: PropTypes.func,
   handleSearch: PropTypes.func,
   handleFocus: PropTypes.func,
+  enterButton: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
 };
 
 class FloatingLabelInput extends Component {
@@ -37,7 +40,7 @@ class FloatingLabelInput extends Component {
 
   onBlur = e => this.setState({ isFocused: false })
 
-  onFocus = e => {
+  onFocus = (e) => {
     e.stopPropagation();
     this.setState({ isFocused: true });
 
@@ -46,15 +49,15 @@ class FloatingLabelInput extends Component {
       handleFocus(e.target.value);
     }
   }
-  
-  onPressEnter = e => {
+
+  onPressEnter = (e) => {
     const { handleSearch } = this.props;
     if (_.isFunction(handleSearch)) {
       handleSearch(e.target.value);
     }
   }
 
-  onChange = e => {
+  onChange = (e) => {
     const { value } = e.target;
     this.setState({ isEmpty: value.length === 0 });
 
@@ -78,6 +81,7 @@ class FloatingLabelInput extends Component {
       message,
       required,
       noLabel,
+      enterButton,
     } = this.props;
     const shouldLabelUp = !(!isFocused && isEmpty);
     const shouldShowPlaceholder = isFocused && isEmpty;
@@ -102,7 +106,7 @@ class FloatingLabelInput extends Component {
             onFocus={this.onFocus}
             onPressEnter={this.onPressEnter}
             onSearch={value => handleSearch(value)}
-            enterButton
+            enterButton={enterButton}
           />
         ) : (
           <Input

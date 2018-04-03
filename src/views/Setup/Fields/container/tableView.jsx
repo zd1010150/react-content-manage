@@ -11,9 +11,9 @@ import { Panel } from 'components/ui/index';
 import { objTypeAndClassTypeMap } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import { toggleRightSider } from 'components/page/RightSider/flow/action';
-import { fetchFields, toggleEditingStatus, setSelectedFields, changeMapping, saveFieldsMapping } from '../flow/action';
+import { fetchFields, toggleEditingStatus, setSelectedFields, changeMapping, saveFieldsMapping, setAddedFieldAttr } from '../flow/action';
 import { getToFieldsStatus } from '../flow/reselect';
-import { FIELD_TYPE_SELECT, FIELD_EDIT, FIELD_ADD, PICKLIST_OPTION_EDIT } from '../flow/pageAction';
+import { FIELD_TYPE_SELECT, FIELD_EDIT } from '../flow/pageAction';
 import FieldMappingInput from '../component/tableView/fieldMappingInput';
 import RightSiderFields from '../component/tableView/rightSiderFields';
 import { fieldCategory } from '../flow/objectTypeHelper';
@@ -32,8 +32,28 @@ class FieldsTableView extends React.Component {
     toggleRightSider(false);
     toggleEditingStatus(true);
   }
-  editField(field) {
-    console.log(field.id, '---');
+  editField(field, category) {
+    const {
+      fieldPrefix, history, objectType, setAddedFieldAttr,
+    } = this.props;
+    setAddedFieldAttr({
+      objectType,
+      field: {
+        id: field.id,
+        name: category === fieldCategory.CUSTOM ? field.field_name.slice(fieldPrefix.length) : field.field_name,
+        notnull: field.notnull,
+        type: field.crm_data_type,
+        label: field.field_label,
+        length: field.length,
+        scale: field.scale,
+        precision: field.precision,
+        helpText: field.helper_text,
+        description: field.description,
+        category,
+      },
+      picklist: field.picklists,
+    });
+    history.push(`/setup/${objectType}/fields?&action=${FIELD_EDIT}`);
   }
   mapField(fromField, mapToOfFromField, fieldCategory, toObjectType, fromObjectType) {
     this.props.setSelectedFields({
@@ -64,7 +84,7 @@ class FieldsTableView extends React.Component {
       const actions = [];
       actions.push(<Button key="save" className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, isEditing ? '' : 'no-display')} size="small" icon="save" onClick={() => saveFieldsMapping(mappings)}>{ formatMessage({ id: 'global.ui.button.save' })}</Button>);
       actions.push(<Button key="cancel" className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, isEditing ? '' : 'no-display')} size="small" icon="close" onClick={() => fetchFields(objectType)}>{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>);
-      actions.push(<Button key="addBtn" className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')} size="small" icon="plus" onClick={() => history.push(`/setup/fields?objectType=${objectType}&action=${FIELD_TYPE_SELECT}`)}>
+      actions.push(<Button key="addBtn" className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')} size="small" icon="plus" onClick={() => history.push(`/setup/${objectType}/fields?&action=${FIELD_TYPE_SELECT}`)}>
         { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}
       </Button>);
       actions.push(<Button key="viewAll" className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')} size="small" icon="eye" onClick={() => this.mappingField()}>{ formatMessage({ id: 'global.ui.button.edit' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}</Button>);
@@ -85,7 +105,7 @@ class FieldsTableView extends React.Component {
     };
     const getFieldEl = (fields, fieldCategory) => fields.map(f => (
       <tr key={f.id}>
-        <td><Icon type="edit" className={`${classType}-theme-icon`} onClick={() => this.editField(f)} /></td>
+        <td><Icon type="edit" className={`${classType}-theme-icon`} onClick={() => this.editField(f, fieldCategory)} /></td>
         <td>{f.field_label}</td>
         {
             getMappingTd(f, 'map_to', toFields, fieldCategory)
@@ -99,7 +119,7 @@ class FieldsTableView extends React.Component {
     ));
     return (
       <Fragment>
-        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions} contentClasses="pl-lg pr-lg pt-lg pb-lg" >
+        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions} contentClasses="pt-lg pb-lg" >
           <div className="panel-section">
             <div className="section-header">Default Fields</div>
             <div className="section-content  mt-lg mb-lg">
@@ -171,7 +191,7 @@ FieldsTableView.propTypes = {
   objectType: PropTypes.string.isRequired,
 
 };
-const mapStateToProps = ({ setup }) => {
+const mapStateToProps = ({ setup, global }) => {
   const {
     currentObject, relativeFields, ui, selectedField,
   } = setup.fields.tableView;
@@ -188,6 +208,7 @@ const mapStateToProps = ({ setup }) => {
     toFieldsStatus: getToFieldsStatus(setup),
     isEditing: ui.isEditing,
     selectedField,
+    fieldPrefix: global.settings.fields.cstm_attribute_prefix,
   };
 };
 const mapDispatchToProps = {
@@ -197,5 +218,6 @@ const mapDispatchToProps = {
   setSelectedFields,
   changeMapping,
   saveFieldsMapping,
+  setAddedFieldAttr,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldsTableView)));
