@@ -51,7 +51,7 @@ const renderColumns = (data, onDeleteClick, theme) => {
         render: (text, record) => (
           <Link
             className={`${theme}-link`}
-            to={`/${theme}/${record.id}`}
+            to={`/leads/details/${record.id}`}
           >
             {text}
           </Link>

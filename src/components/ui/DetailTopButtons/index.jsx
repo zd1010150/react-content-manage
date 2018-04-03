@@ -51,7 +51,7 @@ const DetailTopButtons = ({ intl, type, tools, id, onDelete }) => {
                 {key === 'delete'
                   ? text
                   : (
-                  <Link to={`${type}/${path}/${id}`}>
+                  <Link to={`../../${type}/${path}/${id}`}>
                     {formatMessage({ id: `global.ui.button.${key}` })}
                   </Link>
                 )}

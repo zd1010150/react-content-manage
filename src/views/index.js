@@ -13,6 +13,7 @@ import NewEmail from './email/newEmail';
 import PermissionProfile from './Setup/PermissionProfile';
 import Fields from './Setup/Fields';
 import ObjectDetails from './ObjectDetails/index';
+import FindDuplicates from './FindDuplicates/index';
 
 export {
   Leads,
@@ -30,4 +31,5 @@ export {
   PermissionProfile,
   Fields,
   ObjectDetails,
+  FindDuplicates,
 };

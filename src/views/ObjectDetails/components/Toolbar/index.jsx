@@ -53,7 +53,6 @@ Toolbar.propTypes = propTypes;
 const mapStateToProps = ({ global, objectDetails }) => ({
   language: global.language,
   tools: objectDetails.toolbar.tools,
-  // fields data
 });
 const mapDispatchToProps = {
   setTools,
