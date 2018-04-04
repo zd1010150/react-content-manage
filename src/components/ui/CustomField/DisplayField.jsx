@@ -17,35 +17,41 @@ const propTypes = {
     PropTypes.string,
     PropTypes.number,
   ]),
-  isLocked: PropTypes.bool.isRequired,
+  readOnly: PropTypes.bool.isRequired,
   isValueChanged: PropTypes.bool.isRequired,
   onReloadClick: PropTypes.func,
   onDoubleClick: PropTypes.func,
 };
 
 const DisplayField = ({
+  id,
   label,
   helpText,
   value,
-  isLocked,
+  readOnly,
   isValueChanged,
-  onReloadClick,
+  onRevertClick,
   onDoubleClick,
 }) => {
 
+  const _onRevertClick = id => {
+    if (_.isFunction(onRevertClick)) {
+      onRevertClick(id);
+    }
+  };
+
   return (
     <div className={cx('displayField')}>
-      <label>{label}</label>
-      {!helpText && (<Tooltip title="prompt text">
-                        <Icon size="small" type="info-circle" />
-                      </Tooltip>)}
       <span onDoubleClick={onDoubleClick}>{value}</span>
-      {isLocked && <Icon size="small" type="lock" />}
-      {isValueChanged && (<Icon
-                            size="small"
-                            type="reload"
-                            onClick={onReloadClick}
-                            className={cx('reloadIcon')}/>)}
+      {isValueChanged && (
+        <Icon
+          size="small"
+          type="reload"
+          onClick={e => _onRevertClick(id)}
+          className={cx('reloadIcon')}
+        />
+      )}
+      {readOnly && <Icon size="small" type="lock" />}
     </div>
   );
 }

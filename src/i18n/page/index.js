@@ -8,6 +8,7 @@ import customField from 'components/ui/CustomField/i18n';
 import filterCriteria from 'components/page/FilterCriteria/i18n';
 import fields from 'views/Setup/Fields/i18n';
 import selectionPool from 'components/ui/SelectionPool/i18n';
+import objectDetails from 'views/ObjectDetails/i18n';
 
 export default {
   comInfo,
@@ -20,4 +21,5 @@ export default {
   filterCriteria,
   fields,
   selectionPool,
+  objectDetails,
 };

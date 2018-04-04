@@ -23,9 +23,12 @@ class Section extends Component {
     collapsed: false,
   }
 
-  handleClick = () => this.setState({
-    collapsed: !this.state.collapsed
-  })
+  handleClick = e => {
+    e.stopPropagation();
+    this.setState({
+      collapsed: !this.state.collapsed
+    })
+  }
 
   render() {
     const { collapsed } = this.state;
@@ -41,7 +44,6 @@ class Section extends Component {
           collapsed={collapsed}
           collapsible={collapsible}
         />
-        {/* {body && !collapsed && <SectionBody body={body} />} */}
         {children && !collapsed && (
           <div className={cx('body')}>
             {typeof children === 'function'

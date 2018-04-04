@@ -31,6 +31,10 @@ const BaseEnums = Object.freeze({
 
 });
 
+// map object to array
+// TODO: extract to utils/common
+// const ThemeTypesInArray = BaseEnums.ThemeTypes.
+
 const EnumsManager = Object.freeze({
   LocalStorageKey: 'crmLoginUser',
 
@@ -136,6 +140,8 @@ const EnumsManager = Object.freeze({
       path: 'find',
     },
   ]),
+
+  AntGridMax: 24,
 });
 
 export default EnumsManager;

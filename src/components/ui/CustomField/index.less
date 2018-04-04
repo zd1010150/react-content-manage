@@ -1,18 +1,32 @@
 @import "~assets/less/theme.less";
 
+.row {
+  padding: 3px 10px;
+  border-bottom: 1px solid #eee;
+}
+
 .customField {
   width: 100%;
 }
 
-.displayField {
-  padding: 3px 10px;
+.required:before {
+  content: '*';
+  margin-right: 5px;
+  color: red;
+}
 
-  label {
-    display: inline-block;
-    margin-right: 10px;
-    font-weight: 700;
-  }
-  
+.helpIcon {
+  font-weight: 400;
+  margin: 0 10px;
+}
+
+.iconPlaceholder {
+  display: inline-block;
+  width: 14px;
+  margin-left: 10px;
+}
+
+.displayField {  
   .reloadIcon {
     cursor: pointer;
     color: green;

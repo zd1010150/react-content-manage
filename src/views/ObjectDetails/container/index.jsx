@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { getThemeByType } from 'utils/common';
-import { Toolbar } from '../components/index';
+import { Toolbar, PrimaryDetails } from '../components/index';
 
 
 class ObjectDetails extends Component {
@@ -13,6 +13,7 @@ class ObjectDetails extends Component {
     return (
       <Fragment>
         <Toolbar {...params} />
+        <PrimaryDetails {...params} theme={theme} />
       </Fragment>
     );
   }
