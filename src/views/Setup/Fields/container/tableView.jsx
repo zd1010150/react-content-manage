@@ -27,6 +27,7 @@ class FieldsTableView extends React.Component {
       this.props.fetchFields(nextProps.objectType);
     }
   }
+
   mappingField() {
     const { toggleRightSider, toggleEditingStatus } = this.props;
     toggleRightSider(false);
@@ -60,11 +61,30 @@ class FieldsTableView extends React.Component {
       fromField, mapToOfFromField, fieldCategory, toObjectType, fromObjectType,
     });
   }
-
+  addNewField() {
+    const { history, objectType } = this.props;
+    history.push(`/setup/${objectType}/fields?&action=${FIELD_TYPE_SELECT}`);
+  }
+  coloseEditing() {
+    const {
+      toggleRightSider, toggleEditingStatus, fetchFields, objectType,
+    } = this.props;
+    fetchFields(objectType);
+    toggleRightSider(true);
+    toggleEditingStatus(false);
+  }
+  cancelEditing() {
+    this.coloseEditing();
+  }
+  saveMappingFields() {
+    const { saveFieldsMapping, mappings } = this.props;
+    saveFieldsMapping(mappings, () => {
+      this.coloseEditing();
+    });
+  }
   render() {
     const { formatMessage } = this.props.intl;
     const {
-      history,
       objectType,
       mainFields,
       cstmFields,
@@ -76,25 +96,61 @@ class FieldsTableView extends React.Component {
       changeMapping,
       saveFieldsMapping,
       mappings,
-      fetchFields,
       allFields,
     } = this.props;
     const classType = objTypeAndClassTypeMap[objectType];
     const rightActions = (() => {
       const actions = [];
-      actions.push(<Button key="save" className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, isEditing ? '' : 'no-display')} size="small" icon="save" onClick={() => saveFieldsMapping(mappings)}>{ formatMessage({ id: 'global.ui.button.save' })}</Button>);
-      actions.push(<Button key="cancel" className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, isEditing ? '' : 'no-display')} size="small" icon="close" onClick={() => fetchFields(objectType)}>{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>);
-      actions.push(<Button key="addBtn" className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')} size="small" icon="plus" onClick={() => history.push(`/setup/${objectType}/fields?&action=${FIELD_TYPE_SELECT}`)}>
+      actions.push(<Button
+        key="save"
+        className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, isEditing ? '' : 'no-display')}
+        size="small"
+        icon="save"
+        onClick={() => this.saveMappingFields()}
+      >
+        { formatMessage({ id: 'global.ui.button.save' })}
+      </Button>);
+      actions.push(<Button
+        key="cancel"
+        className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, isEditing ? '' : 'no-display')}
+        size="small"
+        icon="close"
+        onClick={() => this.cancelEditing()}
+      >
+        { formatMessage({ id: 'global.ui.button.cancel' })}
+      </Button>);
+      actions.push(<Button
+        key="addBtn"
+        className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')}
+        size="small"
+        icon="plus"
+        onClick={() => this.addNewField()}
+      >
         { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}
       </Button>);
-      actions.push(<Button key="viewAll" className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')} size="small" icon="eye" onClick={() => this.mappingField()}>{ formatMessage({ id: 'global.ui.button.edit' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}</Button>);
+      actions.push(<Button
+        key="viewAll"
+        className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')}
+        size="small"
+        icon="eye"
+        onClick={() => this.mappingField()}
+      >
+        { formatMessage({ id: 'global.ui.button.edit' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}
+                   </Button>);
       return actions;
     })();
     const getMappingTd = (field, fieldProp, mappingFields, fieldCategory) => {
       if (!_.isEmpty(mappingFields)) {
         return Object.keys(mappingFields).map((objType) => {
           if (!field.can_be_mapped) return <td> Cannot be mapped</td>;
-          const fields = _.isEmpty(field[fieldProp][objType]) ? [] : field[fieldProp][objType];
+          let fields = [];
+          if (!_.isEmpty(field[fieldProp][objType])) {
+            if (fieldProp === 'map_from') {
+              fields = [field[fieldProp][objType]];
+            } else {
+              fields = field[fieldProp][objType];
+            }
+          }
           return (
             <td key={objType}>
               <FieldMappingInput disabled={fieldProp === 'map_from'} fields={fields} field={field} isEditing={isEditing} onSearch={(field, Fields) => this.mapField(field, Fields, fieldCategory, objType, objectType)} onClick={(field, Fields) => this.mapField(field, Fields, fieldCategory, objType, objectType)} />
@@ -108,11 +164,12 @@ class FieldsTableView extends React.Component {
         <td><Icon type="edit" className={`${classType}-theme-icon`} onClick={() => this.editField(f, fieldCategory)} /></td>
         <td>{f.field_label}</td>
         {
+              getMappingTd(f, 'map_from', fromFields, fieldCategory)
+          }
+        {
             getMappingTd(f, 'map_to', toFields, fieldCategory)
         }
-        {
-            getMappingTd(f, 'map_from', fromFields, fieldCategory)
-        }
+
         <td>{f.crm_data_type}</td>
 
       </tr>

@@ -1,7 +1,6 @@
 /* eslint-disable no-shadow */
-import React, { Fragment } from 'react';
+import React from 'react';
 import _ from 'lodash';
-import classNames from 'classnames/bind';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import { Button, Icon, Radio, Col, Row } from 'antd';
@@ -12,12 +11,12 @@ import { intlShape, injectIntl } from 'react-intl';
 import { setAddedFieldAttr, resetAddedFieldAttr } from '../flow/action';
 import { FIELD_ADD } from '../flow/pageAction';
 import { getMappedTypes } from '../flow/reselect';
+import { fieldCategory } from '../flow/objectTypeHelper';
 
-const RadioGroup = Radio.Group;
 
 class FieldAddSelecteTypeContainer extends React.Component {
   onTypesChange = (e) => {
-    this.props.setAddedFieldAttr({ field: { type: e.target.value } });
+    this.props.setAddedFieldAttr({ field: { type: e.target.value, category: fieldCategory.CUSTOM } });
   }
   goNext = () => {
     const { history, objectType } = this.props;

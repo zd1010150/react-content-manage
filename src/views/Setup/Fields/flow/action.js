@@ -12,6 +12,10 @@ import {
   SETUP_FIELDS_SET_FIELD_LABEL_IS_DUPLICATE,
   SETUP_FIELDS_DELETE_PICKLIST_VALUE,
   SETUP_FIELDS_ADD_PICKLIST_VALUE,
+  SETUP_FIELDS_SET_REPLACE_DIALOG_ATTR,
+  SETUP_FIELDS_PICKLIST_VALUE_TOGGLE_ADDING,
+  SETUP_FIELDS_PICKLIST_VALUE_MANAGEMENT,
+  SETUP_FIELDS_PICKLIST_ADD_RESTRICT_DEPARTMENT_USER,
 } from './actionType';
 
 
@@ -50,10 +54,16 @@ export const fetchFields = objectType => dispatch => get(`/admin/metadata/object
     dispatch(setRelativesObjectTypeFields({ objectType, data }));
   }
 });
-export const saveFieldsMapping = mappings => dispatch => patch('/admin/metadata/mass-mapping', { data: mappings }, dispatch).then((data) => {
-  console.log(data, 'save result');
+export const saveFieldsMapping = (mappings, cb) => dispatch => patch('/admin/metadata/mass-mapping', { data: mappings }, dispatch).then((data) => {
+  if (_.isFunction(cb)) {
+    cb();
+  }
 });
-
+/* replace dialog actions */
+export const setReplaceDialog = args => ({
+  type: SETUP_FIELDS_SET_REPLACE_DIALOG_ATTR,
+  ...args,
+});
 /* addField actions */
 export const setFieldLableisDuplicate = isDuplicate => ({
   type: SETUP_FIELDS_SET_FIELD_LABEL_IS_DUPLICATE,
@@ -94,11 +104,28 @@ export const addPickListValueToRemote = (meta_data_id, option_value) => dispatch
     dispatch(addPickListValue(data.data));
   }
 });
-export const replacePickListValueToRemote = (id, replace_value) => dispatch => patch(`/admin/picklists/${id}/replace`, { replace_value }, dispatch).then((data) => {
-
+export const replacePickListValueToRemote = (id, replace_value, cb) => dispatch => patch(`/admin/picklists/${id}/replace`, { replace_value }, dispatch).then((data) => {
+  if (_.isFunction(cb)) {
+    cb();
+  }
 });
-export const sortPicklistValueToRemote = ids => dispatch => patch('/admin/picklists/sort', { ids }, dispatch).then((data) => {
-
+export const sortPicklistValueToRemote = (ids, cb) => dispatch => patch('/admin/picklists/sort', { ids }, dispatch).then((data) => {
+  if (_.isFunction(cb)) {
+    cb();
+  }
+});
+export const fetchFieldDetailInfo = fieldId => dispatch => get(`/admin/metadata/${fieldId}/setup`, {}, dispatch).then((data) => {
+  if (!_.isEmpty(data['de-active_picklists'])) {
+    dispatch(setAddedFieldAttr({
+      deactiveList: data['de-active_picklists'].data,
+      picklist: data.meta.data.picklists,
+    }));
+  }
+});
+export const updatePickListValueStatusToRemote = (id, attrs, cb) => dispatch => patch(`/admin/picklists/${id}`, { ...attrs }, dispatch).then((data) => {
+  if (!_.isEmpty(data.data) && _.isFunction(cb)) {
+    cb();
+  }
 });
 export const saveFieldToRemote = (objectType, field, cb) => dispatch => post(`/admin/metadata/object/${objectType}`, { ...field }, dispatch).then((data) => {
   if (_.isFunction(cb)) {
@@ -110,11 +137,58 @@ export const updateFieldToRemote = (fieldid, field, cb) => dispatch => patch(`/a
     cb();
   }
 });
-export const fetchFieldDetailInfo = fieldId => dispatch => get(`/admin/metadata/${fieldId}/setup`, {}, dispatch).then((data) => {
-  if (!_.isEmpty(data['de-active_picklists'])) {
-    dispatch(setAddedFieldAttr({
-      deactiveList: data['de-active_picklists'],
+
+/* picklist visible manage */
+
+export const setPickListValueManagement = args => ({
+  type: SETUP_FIELDS_PICKLIST_VALUE_MANAGEMENT,
+  ...args,
+});
+export const toggleAdding = isShowAdding => ({
+  type: SETUP_FIELDS_PICKLIST_VALUE_TOGGLE_ADDING,
+  isShowAdding,
+});
+
+export const getVisibleTeamandUsers = valId => dispatch => get(`/admin/picklists/${valId}/managers`, {}, dispatch).then((data) => {
+  if (!_.isEmpty(data.teams)) {
+    dispatch(setPickListValueManagement({
+      visibleTeams: data.teams,
+    }));
+  }
+  if (!_.isEmpty(data.users)) {
+    dispatch(setPickListValueManagement({
+      visibleUsers: data.users,
+    }));
+  }
+});
+export const getUnVisibleTeamandUsers = valId => dispatch => get(`/admin/picklists/${valId}/restriction`, {}, dispatch).then((data) => {
+  if (!_.isEmpty(data.teams)) {
+    dispatch(setPickListValueManagement({
+      unvisibleTeams: data.teams,
+    }));
+  }
+  if (!_.isEmpty(data.users)) {
+    dispatch(setPickListValueManagement({
+      unvisibleUsers: data.users,
     }));
   }
 });
 
+export const updateRestriciontToRemote = (valId, user_ids, team_ids, cb) => dispatch => patch(`/admin/picklists/${valId}/restriction`, { team_ids, user_ids }, dispatch).then(() => {
+  dispatch(toggleAdding(false));
+  if (_.isFunction(cb)) {
+    cb();
+  }
+});
+
+export const setAddDepartment = args => ({
+  type: SETUP_FIELDS_PICKLIST_ADD_RESTRICT_DEPARTMENT_USER,
+  ...args,
+});
+export const fetchUserAll = () => dispatch => get('/admin/users/all', {}, dispatch).then((data) => {
+  if (!_.isEmpty(data)) {
+    dispatch(setAddDepartment({
+      allUsers: data.data,
+    }));
+  }
+});

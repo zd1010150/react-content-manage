@@ -1,26 +1,21 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { Modal, Row, Col, Radio, Icon, Button } from 'antd';
+import { Modal, Row, Col, Icon } from 'antd';
 import { intlShape, injectIntl } from 'react-intl';
 import { PAGE_ACTION, objTypeAndClassTypeMap } from 'config/app.config';
-import { CardContainer, DeleteConfirmDialog, FloatingLabelInput } from 'components/ui/index';
+import { CardContainer, FloatingLabelInput } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
+import { PICKLIST_OPTION_EDIT } from '../../flow/pageAction';
 
 const { confirm } = Modal;
 class PickListValue extends React.Component {
-    state={
-      deleteDialogVisible: false,
-      selectedId: '',
-      replaceValue: '',
-      radioSelectedId: '',
+  componentDidMount() {
+    const { action, setAddedFieldAttr } = this.props;
+    if (action === PAGE_ACTION.ADD) {
+      setAddedFieldAttr({ picklist: [] });
     }
-    componentDidMount() {
-      const { action, editObject, setAddedFieldAttr } = this.props;
-      if (action === PAGE_ACTION.ADD) {
-        setAddedFieldAttr({ picklist: [] });
-      }
-    }
+  }
     onIconClick = (e) => {
       const { id } = e.currentTarget.dataset;
       const { type } = e.target.dataset;
@@ -37,11 +32,10 @@ class PickListValue extends React.Component {
           this.onEdit(id);
       }
     }
-    onEdit(id) {
-
-    }
     onDelete(id) {
-      const { action, deletePickListValue, editObject } = this.props;
+      const {
+        action, deletePickListValue, editObject, setReplaceDialog,
+      } = this.props;
       const isEdit = action === PAGE_ACTION.EDIT;
       if (!isEdit) {
         const { formatMessage } = this.props.intl;
@@ -54,77 +48,68 @@ class PickListValue extends React.Component {
           },
         });
       } else {
-        this.setState({
-          deleteDialogVisible: true,
-          selectedId: id,
+        setReplaceDialog({
+          options: editObject.picklist.filter(v => `${v.id}` !== `${id}`),
+          isVisible: true,
+          replacedValId: id,
         });
       }
     }
     onDeative(id) {
-      console.log('deactive', id);
+      const { updatePickListValueStatusToRemote, fetchFieldDetailInfo, editObject } = this.props;
+      updatePickListValueStatusToRemote(id, { active: 0 }, () => {
+        fetchFieldDetailInfo(editObject.field.id);
+      });
     }
     onEdit(id) {
-      console.log('onEdit', id);
+      const {
+        setPickListValueManagement, editObject, history, objectType,
+      } = this.props;
+      setPickListValueManagement({
+        valId: id,
+        valueText: editObject.picklist.filter(v => `${v.id}` === `${id}`)[0].option_value,
+      });
+      history.push(`/setup/${objectType}/fields?&action=${PICKLIST_OPTION_EDIT}`);
     }
     sortValue(sortedArr) {
-      const { action, setAddedFieldAttr } = this.props;
+      const {
+        action, setAddedFieldAttr, sortPicklistValueToRemote, fetchFieldDetailInfo, editObject,
+      } = this.props;
       const isEdit = action === PAGE_ACTION.EDIT;
       if (!isEdit) {
         setAddedFieldAttr({ picklist: sortedArr.map(f => f.option_value) });
       } else {
-        setAddedFieldAttr({ picklist: sortedArr });
+        sortPicklistValueToRemote(sortedArr.map(v => v.id), () => {
+          fetchFieldDetailInfo(editObject.field.id);
+        });
       }
     }
     addVal(val) {
       const {
-        action, addPickListValue, addPickListValueToRemote, editObject,
+        editObject,
+        action,
+        addPickListValue,
+        addPickListValueToRemote,
+        fetchFieldDetailInfo,
       } = this.props;
       const isEdit = action === PAGE_ACTION.EDIT;
       if (!isEdit) {
         addPickListValue(val);
       } else {
-        addPickListValueToRemote(editObject.field.id, val);
+        addPickListValueToRemote(editObject.field.id, val, () => { fetchFieldDetailInfo(editObject.field.id); });
       }
     }
-    submitReplace() {
 
-    }
-    cancelReplace() {
-      this.setState({
-        deleteDialogVisible: false,
-      });
-    }
-    replacedChangeVal(val, id) {
-      this.setState({
-        replaceValue: val,
-        radioSelectedId: id,
-      });
-    }
     render() {
       const {
-        action, editObject, intl, objectType,
+        action,
+        editObject,
+        intl,
+        objectType,
       } = this.props;
       const { formatMessage } = intl;
       const isEdit = action === PAGE_ACTION.EDIT;
       const classType = objTypeAndClassTypeMap[objectType];
-      const deleteFooter = (<Fragment>
-        <Button
-          key="cancel"
-          type="default"
-          icon="close"
-          size="small"
-          onClick={() => this.cancelReplace()}
-        >{ formatMessage({ id: 'global.ui.button.cancel' })}
-        </Button>
-        <Button
-          key="save"
-          size="small"
-          type="danger"
-          icon="save"
-          onClick={() => this.submitReplace()}
-        >{ formatMessage({ id: 'global.ui.button.replace' })}
-        </Button>
-      </Fragment>);
       return (
         <Row>
           <Col span={14} offset={5}>
@@ -152,33 +137,7 @@ class PickListValue extends React.Component {
                       }
               onDrop={sortedArr => this.sortValue(sortedArr)}
             />
-            {
-                      isEdit ?
-                        <DeleteConfirmDialog visible={this.state.deleteDialogVisible} modelConfig={{ footer: deleteFooter }}>
-                          <p>please select a value to replace</p>
-                          <Row>
-                            {
-                                      editObject.picklist.map((val) => {
-                                          if (`${val.id}` !== `${this.state.selectedId}`) {
-                                              return (
-                                                <Col span={24}>
-                                                  <Radio
-                                                    checked={`${this.state.radioSelectedId}` === `${val.id}`}
-                                                    value={val.id}
-                                                    onChange={id => this.replacedChangeVal(val.option_value, id)}
-                                                  >
-                                                    { val.option_value }
-                                                  </Radio>
-                                                </Col>
-                                              );
-                                          }
-                                      })
-                                  }
-                          </Row>
-                          <p className="error-msg">Change can take up to 5 mins to become effective.</p>
 
-                        </DeleteConfirmDialog> : ''
-                  }
           </Col>
         </Row>
 
@@ -186,6 +145,13 @@ class PickListValue extends React.Component {
       );
     }
 }
+PickListValue.defaultProps = {
+  setReplaceDialog: () => {},
+  updatePickListValueStatusToRemote: () => {},
+  fetchFieldDetailInfo: () => {},
+  addPickListValueToRemote: () => {},
+  setPickListValueManagement: () => {},
+};
 PickListValue.propTypes = {
   intl: intlShape.isRequired,
   action: PropTypes.string.isRequired,
@@ -197,6 +163,11 @@ PickListValue.propTypes = {
   sortPicklistValueToRemote: PropTypes.func.isRequired,
   replacePickListValueToRemote: PropTypes.func.isRequired,
   addPickListValueToRemote: PropTypes.func,
+  setReplaceDialog: PropTypes.func,
+  updatePickListValueStatusToRemote: PropTypes.func,
+  fetchFieldDetailInfo: PropTypes.func,
+  setPickListValueManagement: PropTypes.func,
+  history: PropTypes.object,
 };
 export default injectIntl(PickListValue);
 

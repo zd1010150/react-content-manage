@@ -221,8 +221,8 @@ class FieldForm extends React.Component {
         {
             isEdit ?
               <FormItem {...FORM_FOOTER_CONFIG}>
+                <Button type="danger" size="small" className="mr-lg" onClick={() => { this.onCancel(); }}><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
                 <Button type="primary" size="small" htmlType="submit" onClick={() => { this.onSubmit(); }}><Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' })}</Button>
-                <Button type="danger" size="small" className="ml-sm" onClick={() => { this.onCancel(); }}><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
               </FormItem> :
                 ''
           }
