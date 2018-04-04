@@ -1,0 +1,32 @@
+import { get, patch, post, httpDelete } from 'store/http/httpAction';
+import _ from 'lodash';
+import {
+  SETUP_LAYOUT_SET_CURRENT_OBJECT,
+  SETUP_LAYOUT_SET_ALL_LAYOUTS,
+  SETUP_LAYOUT_SET_EDIT,
+  SETUP_LAYOUT_ADD_LAYOUT,
+} from './actionType';
+
+
+export const setCurrentObject = args => ({
+  type: SETUP_LAYOUT_SET_CURRENT_OBJECT,
+  ...args,
+});
+export const setAllLayout = args => ({
+  type: SETUP_LAYOUT_SET_ALL_LAYOUTS,
+  ...args,
+});
+export const setEditLayout = args => ({
+  type: SETUP_LAYOUT_SET_EDIT,
+  ...args,
+});
+export const setAddLayout = args => ({
+  type: SETUP_LAYOUT_ADD_LAYOUT,
+  ...args,
+});
+
+export const fetchAllLayouts = objType => dispatch => get(`/admin/page_layouts/object/${objType}`, {}, dispatch).then((data) => {
+  if (!_.isEmpty(data.data)) {
+    setAllLayout({ layouts: data.data });
+  }
+});
