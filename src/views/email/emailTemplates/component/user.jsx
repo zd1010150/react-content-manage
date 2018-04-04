@@ -32,7 +32,6 @@ class User extends React.Component {
     render() {
         const {
             intl,
-            isSelectTeamDialogVisible,
             selectedUser,
             teamUsers,
             teams,
@@ -59,7 +58,6 @@ User.propTypes = {
     intl: intlShape.isRequired,
     selectedTeamName: PropTypes.string.isRequired,
     teamUsers: PropTypes.array.isRequired,
-    isSelectTeamDialogVisible: PropTypes.bool.isRequired,
     teams: PropTypes.array.isRequired,
     selectedUser: PropTypes.object.isRequired,
     getUserFolderData: PropTypes.func.isRequired,

@@ -10,7 +10,6 @@ import {
   EMAIL_TEMPLATES_SET_NEW_DEPARTMENT_NAME,
   EMAIL_TEMPLATES_RESET_NEW_DEPARMENT,
   EMAIL_TEMPLATES_SET_SELECTED_DEPARTMENT,
-  EMAIL_TEMPLATES_SET_ADD_VISIBLE,
   EMAIL_TEMPLATES_SET_USER,
   EMAIL_TEMPLATES_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
   EMAIL_TEMPLATES_SET_SELECT_USER,
@@ -28,6 +27,7 @@ import {
   EMAIL_TEMPLATES_SET_NEW_ORDER,
   EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
   EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
+  EMAIL_TEMPLATES_PERMISSION_VISIBLE,
   EMAIL_TEMPLATES_UPDATE_TEMPLATE
 } from "./actionType";
 
@@ -346,18 +346,16 @@ const allUsers = (state = [], action) => {
 const ui = (
   state = {
     isEditFolderViewVisible: false,
-    isAddVisible: false,
     isSelectTeamDialogVisible: false,
     isSharedByVisible: false,
-    isDepartmentVisible: true
+    isDepartmentVisible: true,
+    isPermissionVisible: false
   },
   action
 ) => {
   const { type, ...payload } = action;
   switch (type) {
     case EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE:
-      return Object.assign({}, state, { ...payload });
-    case EMAIL_TEMPLATES_SET_ADD_VISIBLE:
       return Object.assign({}, state, { ...payload });
     case EMAIL_TEMPLATES_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE:
       return Object.assign({}, state, { ...payload });
@@ -366,6 +364,8 @@ const ui = (
     case EMAIL_TEMPLATES_SHARED_BY_VISIBLE:
       return Object.assign({}, state, { ...payload });
     case EMAIL_TEMPLATES_DEPARTMENT_VISIBLE:
+      return Object.assign({}, state, { ...payload });
+    case EMAIL_TEMPLATES_PERMISSION_VISIBLE:
       return Object.assign({}, state, { ...payload });
     default:
       return state;

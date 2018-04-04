@@ -5,7 +5,6 @@ import EnumsManager from "utils/EnumsManager";
 import _ from "lodash";
 import {
   EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
-  EMAIL_TEMPLATES_SET_ADD_VISIBLE,
   EMAIL_TEMPLATES_RESET_NEW_DEPARMENT,
   EMAIL_TEMPLATES_SET_NEW_DEPARTMENT_NAME,
   EMAIL_TEMPLATES_SET_SELECTED_DEPARTMENT,
@@ -26,7 +25,8 @@ import {
   EMAIL_TEMPLATES_SET_NEW_ORDER,
   EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
   EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
-  EMAIL_TEMPLATES_UPDATE_TEMPLATE
+  EMAIL_TEMPLATES_UPDATE_TEMPLATE,
+  EMAIL_TEMPLATES_PERMISSION_VISIBLE
 } from "./actionType";
 
 const url = "/";
@@ -114,6 +114,11 @@ export const uploadFolders = cb => (dispatch, getState) => {
   });
 };
 
+export const setPermissionVisible = isPermissionVisible => ({
+  type: EMAIL_TEMPLATES_PERMISSION_VISIBLE,
+  isPermissionVisible
+});
+
 export const setDepartmentVisible = isDepartmentVisible => ({
   type: EMAIL_TEMPLATES_DEPARTMENT_VISIBLE,
   isDepartmentVisible
@@ -132,12 +137,6 @@ export const setEditFolderViewVisible = isEditFolderViewVisible => ({
 export const setPermissionSettingVisible = isPermissionSettingVisible => ({
   type: EMAIL_TEMPLATES_PERMISSION_VIEW_VISIBLE,
   isPermissionSettingVisible
-});
-
-/* ADD */
-export const setAddVisible = isAddVisible => ({
-  type: EMAIL_TEMPLATES_SET_ADD_VISIBLE,
-  isAddVisible
 });
 
 //Update new template

@@ -8,7 +8,7 @@ import {setTeams} from 'store/global/action';
 import {updateUsers} from 'views/Setup/Users/flow/action';
 import classNames from 'classnames/bind';
 import {NavLink} from 'react-router-dom';
-import AddDepartment from '../component/add';
+import EmailTemplatePermission from './emailTemplatePermission';
 import Department from '../component/department';
 import User from '../component/user';
 import {
@@ -111,7 +111,7 @@ const Templates = ({templates, pagination, columns, formatMessage, isSharedByVis
 )
 
 const TemplatePermission = () => (
-    null
+    <EmailTemplatePermission />
 )
 
 class EmailTemplateDetail extends React.Component {

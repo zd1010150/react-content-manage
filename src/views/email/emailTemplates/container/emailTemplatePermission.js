@@ -1,32 +1,29 @@
 /* eslint-disable react/prop-types,no-shadow */
-import React from 'react';
+import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import {intlShape, injectIntl} from 'react-intl';
 import {Row, Col, Button, Icon} from 'antd';
-import {Panel} from 'components/ui/index';
+import {Panel, SelectionPool, SearchPool} from 'components/ui/index';
 import {setTeams} from 'store/global/action';
 import {updateUsers} from 'views/Setup/Users/flow/action';
 import Department from '../component/department';
 import User from '../component/user';
+import Enums from 'utils/EnumsManager';
 import {
     getUserFolderData,
     getAllUser,
     setSelectedTeam,
     updateTeam,
-    setDepartmentVisible,
+    setPermissionVisible,
     setSelectedUser
 } from '../../flow/action';
 import {getTeamUsers, getSelectedTeamName} from '../../flow/reselect';
 
 
-class EditView extends React.Component {
+class EmailTemplatePermission extends React.Component {
     componentDidMount() {
         const {getAllUser, getUserFolderData, loginUser, setSelectedUser} = this.props;
         getAllUser();
-        // get current user's folders as default
-        getUserFolderData(loginUser.id);
-        // set the radio button content as current user's name
-        setSelectedUser(loginUser);
     }
 
     render() {
@@ -42,19 +39,40 @@ class EditView extends React.Component {
             updateUsers,
             updateTeam,
             selectedTeamName,
-            isDepartmentVisible,
-            setDepartmentVisible,
+            isPermissionVisible,
+            setPermissionVisible,
             setSelectedUser
         } = this.props;
         const {formatMessage} = this.props.intl;
         const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {
-            setDepartmentVisible(!isDepartmentVisible)
+            setPermissionVisible(!isPermissionVisible)
         }}><Icon type="edit"/>{ formatMessage({id: 'page.emailTemplates.hideDepartments'}) }</Button></div>;
         return (
-            <Panel panelTitle={formatMessage({id: 'page.emailTemplates.emailTemplates'})}
-                   panelClasses="email-theme-panel" contentClasses="pl-lg pr-lg" actionsRight={actionsRight}>
+            <div className="pl-lg pt-md pb-lg">
+                <div>{formatMessage({id: 'page.emailTemplates.permissionTitle'})}</div>
+                <SelectionPool
+                    theme={Enums.ThemeTypes.Email}
+                    closable
+                    withIcon
+                />
                 {
-                    isDepartmentVisible && <Row className="pt-lg pb-lg">
+                    !isPermissionVisible &&
+                    <Button className="email-theme-btn mt-sm" size="small" onClick={() => {
+                        setPermissionVisible(true)
+                    }}><Icon type="user"/>{ formatMessage({id: 'page.emailTemplates.addNewUser'}) }</Button>
+                }
+                {
+                    isPermissionVisible &&
+                    <Button className="email-theme-btn mt-sm" size="small" onClick={() => {}}><Icon type="save"/>{ formatMessage({id: 'page.emailTemplates.save'}) }</Button>
+                }
+                {
+                    isPermissionVisible &&
+                    <Button className="ml-sm" size="small" onClick={() => {
+                        setPermissionVisible(false)
+                    }}><Icon type="reload"/>{ formatMessage({id: 'page.emailTemplates.cancel'}) }</Button>
+                }
+                {
+                    isPermissionVisible && <Row className="pt-lg pb-lg">
                         <Col className="gutter-row field-label" span={12}>
                             <Department
                                 teams={teams}
@@ -78,12 +96,12 @@ class EditView extends React.Component {
                         </Col>
                     </Row>
                 }
-            </Panel>
+            </div>
         );
     }
 }
 
-EditView.propTypes = {
+EmailTemplatePermission.propTypes = {
     intl: intlShape.isRequired,
 };
 
@@ -94,7 +112,7 @@ const mapStateToProps = ({global, setup, loginUser}) => {
         teamUsers: getTeamUsers({emailTemplates}),
         loginUser: loginUser,
         isSelectTeamDialogVisible: emailTemplates.ui.isSelectTeamDialogVisible,
-        isDepartmentVisible: emailTemplates.ui.isDepartmentVisible,
+        isPermissionVisible: emailTemplates.ui.isPermissionVisible,
         selectedUser: emailTemplates.selectedUser,
         newTeam: emailTemplates.newTeam,
         selectedTeamName: getSelectedTeamName({global, emailTemplates}),
@@ -108,9 +126,9 @@ const mapDispatchToProps = {
     updateUsers,
     setSelectedTeam,
     updateTeam,
-    setDepartmentVisible,
+    setPermissionVisible,
     setSelectedUser
 };
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EditView));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplatePermission));
 

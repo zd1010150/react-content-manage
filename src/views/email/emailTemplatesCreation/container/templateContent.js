@@ -20,7 +20,6 @@ class TemplateContent extends React.Component {
     render() {
         const {intl, setNewTemplateContent, registerGetContentHook, content} = this.props;
         const { formatMessage } = intl;
-        console.log('???', content)
 
         const selectTemplate = <label>
             <input type="file" id="uploadFile" onChange={() => {}} style={{display: 'none'}}/>

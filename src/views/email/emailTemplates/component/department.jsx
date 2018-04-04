@@ -42,8 +42,6 @@ Department.propTypes = {
   teams: PropTypes.array.isRequired,
   setTeams: PropTypes.func.isRequired,
   setSelectedTeam: PropTypes.func.isRequired,
-  deleteDepartment: PropTypes.func.isRequired,
-  setAddVisible: PropTypes.func.isRequired,
   updateTeam: PropTypes.func.isRequired,
 };
 
