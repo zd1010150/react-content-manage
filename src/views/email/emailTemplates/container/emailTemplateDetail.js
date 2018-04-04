@@ -18,7 +18,7 @@ import {
     queryByPaging,
     setSelectedFolderData,
     deleteTemplate,
-    updateTemplate
+    fetchTemplateData
 } from '../../flow/action';
 import {getTeamUsers, getSelectedTeamName} from '../../flow/reselect';
 import {Tabs} from 'antd';
@@ -123,7 +123,7 @@ class EmailTemplateDetail extends React.Component {
         const {
             setEditFolderViewVisible, setPermissionSettingVisible, isPermissionSettingVisible,
             isSharedByVisible, templates, templatesDataTablePagination, queryByPaging, setSharedByVisible,
-            setSelectedFolderData, selectedFolder, userFolders, sharedFolders, selectedUser, loginUser, deleteTemplate, updateTemplate, history
+            setSelectedFolderData, selectedFolder, userFolders, sharedFolders, selectedUser, loginUser, deleteTemplate, fetchTemplateData, history
         } = this.props;
         const actionsLeft = <div><Radios selectedUser={selectedUser} setSharedByVisible={setSharedByVisible}/></div>;
         const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {
@@ -146,8 +146,8 @@ class EmailTemplateDetail extends React.Component {
                 render: record => (
                     <span>
             <Icon type="edit" onClick={() => {
-                updateTemplate({templateId: record.id, folderId: selectedFolder.id, name: record.name, description: record.description, content: record.content});
-                history.push('template-edit/' + record.id)
+                fetchTemplateData({templateId: record.id, cb: history.push('template-edit/' + record.id)});
+
             }}/>
             <Popconfirm
                 title='Are you sure to delete it?'
@@ -241,7 +241,7 @@ const mapDispatchToProps = {
     queryByPaging,
     setSelectedFolderData,
     deleteTemplate,
-    updateTemplate
+    fetchTemplateData
 };
 
 export default withRouter(injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateDetail)));

@@ -5,7 +5,7 @@ import {Row, Col, Input, Select, Button, Icon, Radio, Table} from 'antd';
 import {connect} from 'react-redux';
 import {Panel} from 'components/ui/index';
 import classNames from 'classnames/bind';
-import {Editor, EditorState, RichUtils, getDefaultKeyBinding} from 'draft-js';
+import {Editor, EditorState, RichUtils, getDefaultKeyBinding, convertFromHTML, ContentState} from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
 
 import styles from './richEditor.less';
@@ -14,8 +14,17 @@ const cx = classNames.bind(styles);
 class RichEditor extends React.Component {
     constructor(props){
         super(props);
-        const {registerGetContentHook} = this.props;
-        this.state = {editorState: EditorState.createEmpty()};
+        const {registerGetContentHook, content} = this.props;
+        if(!!content && content !== '<p><br></p>'){
+            const blocksFromHTML = convertFromHTML(content);
+            const state = ContentState.createFromBlockArray(
+                blocksFromHTML.contentBlocks,
+                blocksFromHTML.entityMap
+            );
+            this.state = {editorState: EditorState.createWithContent(state)};
+        }else{
+            this.state = {editorState: EditorState.createEmpty()};
+        }
         this.focus = () => this.refs.editor.focus();
         this.onChange = (editorState) => this.setState({editorState});
         this.handleKeyCommand = this._handleKeyCommand.bind(this);
@@ -31,9 +40,24 @@ class RichEditor extends React.Component {
             return stateToHTML(this.state.editorState.getCurrentContent());
             // return this.state.editorState.getCurrentContent ().getPlainText ();
         });
-
-
     }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.content !== nextProps.content){
+            if(!!nextProps.content && nextProps.content !== '<p><br></p>'){
+                const blocksFromHTML = convertFromHTML(nextProps.content);
+                console.log('112333', blocksFromHTML)
+                const state = ContentState.createFromBlockArray(
+                    blocksFromHTML.contentBlocks,
+                    blocksFromHTML.entityMap
+                );
+                this.state = {editorState: EditorState.createWithContent(state)};
+            }else{
+                this.state = {editorState: EditorState.createEmpty()};
+            }
+        }
+    }
+
     componentDidMount() {
 
     }

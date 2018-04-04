@@ -18,8 +18,9 @@ class TemplateContent extends React.Component {
     }
 
     render() {
-        const {intl, setNewTemplateContent, registerGetContentHook} = this.props;
+        const {intl, setNewTemplateContent, registerGetContentHook, content} = this.props;
         const { formatMessage } = intl;
+        console.log('???', content)
 
         const selectTemplate = <label>
             <input type="file" id="uploadFile" onChange={() => {}} style={{display: 'none'}}/>
@@ -33,7 +34,7 @@ class TemplateContent extends React.Component {
         </Button>
         const additionalCtrl = <Fragment>{selectTemplate}{attachment}{preview}</Fragment>
         return (
-            <RichEditor registerGetContentHook={registerGetContentHook} setContent={setNewTemplateContent} additionalCtrl={additionalCtrl}/>
+            <RichEditor content={content} registerGetContentHook={registerGetContentHook} setContent={setNewTemplateContent} additionalCtrl={additionalCtrl}/>
         );
     }
 }

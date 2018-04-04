@@ -158,7 +158,7 @@ const setPaginations = (perPage, currentPage, total) => ({
   total
 });
 
-export const createTemplate = ({
+export const createTemplateData = ({
   folderId,
   name,
   apiName,
@@ -181,6 +181,21 @@ export const createTemplate = ({
   });
 };
 
+export const fetchTemplateData = ({ templateId, cb }) => (
+  dispatch,
+  getState
+) => {
+  get(`/admin/email_templates/${templateId}`, dispatch).then(data => {
+    if (!_.isEmpty(data)) {
+      dispatch(updateTemplate(data.data));
+      console.log("data", data);
+    }
+    if (_.isFunction(cb)) {
+      cb();
+    }
+  });
+};
+
 export const updateTemplateData = ({
   templateId,
   folderId,
@@ -195,8 +210,8 @@ export const updateTemplateData = ({
     { name, api_name: apiName, content, folder_id: folderId, description },
     dispatch
   ).then(data => {
-    if (!_.isEmpty(data)) dispatch(queryByPaging({ folderId }));
-    {
+    if (!_.isEmpty(data)) {
+      dispatch(queryByPaging({ folderId }));
       console.log("data", data);
     }
     if (_.isFunction(cb)) {
@@ -205,15 +220,11 @@ export const updateTemplateData = ({
   });
 };
 
-export const deleteTemplate = ({
-  templateId,
-  folderId,
-  cb
-}) => (dispatch, getState) => {
-  httpDelete(
-    `/admin/email_templates/${templateId}`,
-    dispatch
-  ).then(data => {
+export const deleteTemplate = ({ templateId, folderId, cb }) => (
+  dispatch,
+  getState
+) => {
+  httpDelete(`/admin/email_templates/${templateId}`, dispatch).then(data => {
     if (!_.isEmpty(data)) {
       dispatch(queryByPaging({ folderId }));
       console.log("data", data);

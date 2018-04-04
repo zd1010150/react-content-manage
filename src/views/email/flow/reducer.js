@@ -1,7 +1,10 @@
 import { combineReducers } from "redux";
 import _ from "lodash";
 import EnumsManager from "utils/EnumsManager";
-import newTemplate from '../emailTemplatesCreation/flow/reducer';
+import {
+  newTemplate,
+  editTemplate
+} from "../emailTemplatesCreation/flow/reducer";
 import {
   EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
   EMAIL_TEMPLATES_SET_NEW_DEPARTMENT_NAME,
@@ -393,5 +396,6 @@ export default combineReducers({
   selectedFolder,
   editFolders,
   deletedFolders,
-  newTemplate
+  newTemplate,
+  editTemplate
 });
