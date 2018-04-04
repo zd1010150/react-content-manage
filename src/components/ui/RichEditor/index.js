@@ -6,10 +6,18 @@ import {connect} from 'react-redux';
 import {Panel} from 'components/ui/index';
 import classNames from 'classnames/bind';
 import {Editor, EditorState, RichUtils, getDefaultKeyBinding, convertFromHTML, ContentState} from 'draft-js';
+import {decorator} from './decorator';
 import {stateToHTML} from 'draft-js-export-html';
 
 import styles from './richEditor.less';
 const cx = classNames.bind(styles);
+const sampleMarkup =
+    '<b>Bold text</b>, <i>Italic text</i><br/ ><br />' +
+    '<a href="https://www.facebook.com">Example link</a><br /><br/ >' +
+    '<img src="https://raw.githubusercontent.com/facebook/draft-js/master/examples/draft-0-10-0/convertFromHTML/image.png" height="112" width="200" />';
+
+
+
 
 class RichEditor extends React.Component {
     constructor(props){
@@ -21,7 +29,7 @@ class RichEditor extends React.Component {
                 blocksFromHTML.contentBlocks,
                 blocksFromHTML.entityMap
             );
-            this.state = {editorState: EditorState.createWithContent(state)};
+            this.state = {editorState: EditorState.createWithContent(state, decorator)};
         }else{
             this.state = {editorState: EditorState.createEmpty()};
         }
@@ -44,16 +52,16 @@ class RichEditor extends React.Component {
 
     componentWillReceiveProps(nextProps){
         if(this.props.content !== nextProps.content){
+            //什么都没填的时候，content默认为<p><br></p>， 但convertFromHTML('<p><br></p>') 会报错，所以要做这个判断
             if(!!nextProps.content && nextProps.content !== '<p><br></p>'){
                 const blocksFromHTML = convertFromHTML(nextProps.content);
-                console.log('112333', blocksFromHTML)
                 const state = ContentState.createFromBlockArray(
                     blocksFromHTML.contentBlocks,
                     blocksFromHTML.entityMap
                 );
-                this.state = {editorState: EditorState.createWithContent(state)};
+                this.setState({editorState: EditorState.createWithContent(state, decorator)})
             }else{
-                this.state = {editorState: EditorState.createEmpty()};
+                this.setState({editorState: EditorState.createEmpty()})
             }
         }
     }

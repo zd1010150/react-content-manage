@@ -172,11 +172,11 @@ export const createTemplateData = ({
     dispatch
   ).then(data => {
     if (!_.isEmpty(data)) {
-      dispatch(queryByPaging({ folderId }));
       console.log("data", data);
-    }
-    if (_.isFunction(cb)) {
-      cb();
+      dispatch(queryByPaging({ folderId }));
+      if (_.isFunction(cb)) {
+        cb();
+      }
     }
   });
 };
@@ -213,9 +213,9 @@ export const updateTemplateData = ({
     if (!_.isEmpty(data)) {
       dispatch(queryByPaging({ folderId }));
       console.log("data", data);
-    }
-    if (_.isFunction(cb)) {
-      cb();
+      if (_.isFunction(cb)) {
+        cb();
+      }
     }
   });
 };

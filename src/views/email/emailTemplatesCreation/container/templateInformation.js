@@ -20,25 +20,24 @@ import {
 import {connect} from 'react-redux';
 import {Panel} from 'components/ui/index';
 import classNames from 'classnames/bind';
-import {withRouter} from 'react-router';
 import TemplateContent from './templateContent';
 import styles from '../emailTemplatesCreation.less';
 const cx = classNames.bind(styles);
 const Option = Select.Option;
 
-const InputComponent = ({value, label, updateTemplate}) => {
+const InputComponent = ({disableApiInput, value, label, updateTemplate}) => {
     return <Row className={`pt-lg ${cx('new-template-input-row')}`}>
         <Col className="gutter-row field-label" span={4}>
             {label}
         </Col>
         <Col className="gutter-row field-value" span={20}>
             {
-                !!value && <Input value={value} onChange={(e) => {
+                !!value && <Input disabled={disableApiInput} value={value} onChange={(e) => {
                     updateTemplate(e.target.value)
                 }}/>
             }
             {
-                !value && <Input onChange={(e) => {
+                !value && <Input disabled={disableApiInput} onChange={(e) => {
                     updateTemplate(e.target.value)
                 }}/>
             }
@@ -77,6 +76,7 @@ const SelectComponentVertical = ({label, onChange}) => {
 }
 
 const BasicInfo = ({
+                       disableApiInput,
                        defaultFolderName,
                        setTemplateFolder,
                        setTemplateName,
@@ -86,11 +86,12 @@ const BasicInfo = ({
                        userFolders, selectedFolder, formatMessage
                    }) => {
     return <Fragment>
-        <SelectComponent defaultFolderName={defaultFolderName} editTemplate={editTemplate} updateTemplate={setTemplateFolder} userFolders={userFolders}
+        <SelectComponent defaultFolderName={defaultFolderName} editTemplate={editTemplate}
+                         updateTemplate={setTemplateFolder} userFolders={userFolders}
                          selectedFolder={selectedFolder} label={formatMessage({id: 'page.emailTemplates.folder'})}/>
         <InputComponent value={editTemplate.name} updateTemplate={setTemplateName}
                         label={formatMessage({id: 'page.emailTemplates.emailTemplatesName'})}/>
-        <InputComponent value={editTemplate.api_name} updateTemplate={setTemplateApiName}
+        <InputComponent disableApiInput={disableApiInput} value={editTemplate.api_name} updateTemplate={setTemplateApiName}
                         label={formatMessage({id: 'page.emailTemplates.emailTemplateApiName'})}/>
         <InputComponent value={editTemplate.description} updateTemplate={setTemplateDescription}
                         label={formatMessage({id: 'page.emailTemplates.newTemplateDescription'})}/>
@@ -116,9 +117,7 @@ const ActionButtonGroup = ({save, cancel, formatMessage}) => {
     return <div className="pt-md pl-md pb-md">
         <Button className="email-theme-btn mr-md" onClick={save}><Icon
             type="save"/>{ formatMessage({id: 'page.emailTemplates.save'}) }</Button>
-        <Button onClick={() => {
-            cancel(false)
-        }}><Icon type="close"/>{ formatMessage({id: 'page.emailTemplates.cancel'}) }</Button>
+        <Button onClick={cancel}><Icon type="close"/>{ formatMessage({id: 'page.emailTemplates.cancel'}) }</Button>
     </div>
 }
 
@@ -144,7 +143,8 @@ class TemplateInformation extends React.Component {
             setEditTemplateDescription,
             setEditTemplateContent,
             isNewTemplateRouter,
-            save
+            save,
+            cancel
         } = this.props;
         let defaultFolderName = '';
         if (isNewTemplateRouter()) {
@@ -167,15 +167,17 @@ class TemplateInformation extends React.Component {
                    contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('new-template-panel-content')}`}>
                 {isNewTemplateRouter() &&
                 <Fragment>
-                    <BasicInfo defaultFolderName={defaultFolderName}
-                               setTemplateFolder={setNewTemplateFolder}
-                               setTemplateName={setNewTemplateName}
-                               setTemplateApiName={setNewTemplateApiName}
-                               setTemplateDescription={setNewTemplateDescription}
-                               editTemplate={{}}
-                               userFolders={userFolders}
-                               selectedFolder={selectedFolder}
-                               formatMessage={formatMessage}/>
+                    <BasicInfo
+                        disableApiInput={false}
+                        defaultFolderName={defaultFolderName}
+                        setTemplateFolder={setNewTemplateFolder}
+                        setTemplateName={setNewTemplateName}
+                        setTemplateApiName={setNewTemplateApiName}
+                        setTemplateDescription={setNewTemplateDescription}
+                        editTemplate={{}}
+                        userFolders={userFolders}
+                        selectedFolder={selectedFolder}
+                        formatMessage={formatMessage}/>
                     <FieldInfo formatMessage={formatMessage}/>
                     <TemplateContent registerGetContentHook={registerGetContentHook}
                                      setTemplateContent={setNewTemplateContent}/>
@@ -184,15 +186,17 @@ class TemplateInformation extends React.Component {
 
                 {!isNewTemplateRouter() &&
                 <Fragment>
-                    <BasicInfo defaultFolderName={defaultFolderName}
-                               setTemplateFolder={setEditTemplateFolder}
-                               setTemplateName={setEditTemplateName}
-                               setTemplateApiName={setEditTemplateApiName}
-                               setTemplateDescription={setEditTemplateDescription}
-                               editTemplate={editTemplate}
-                               userFolders={userFolders}
-                               selectedFolder={{}}
-                               formatMessage={formatMessage}/>
+                    <BasicInfo
+                        disableApiInput={true}
+                        defaultFolderName={defaultFolderName}
+                        setTemplateFolder={setEditTemplateFolder}
+                        setTemplateName={setEditTemplateName}
+                        setTemplateApiName={setEditTemplateApiName}
+                        setTemplateDescription={setEditTemplateDescription}
+                        editTemplate={editTemplate}
+                        userFolders={userFolders}
+                        selectedFolder={{}}
+                        formatMessage={formatMessage}/>
                     <FieldInfo formatMessage={formatMessage}/>
                     <TemplateContent registerGetContentHook={registerGetContentHook}
                                      setTemplateContent={setEditTemplateContent}
@@ -202,7 +206,7 @@ class TemplateInformation extends React.Component {
                 }
 
 
-                <ActionButtonGroup save={save} formatMessage={formatMessage}/>
+                <ActionButtonGroup cancel={cancel} save={save} formatMessage={formatMessage}/>
             </Panel>
 
         );
@@ -235,6 +239,6 @@ const mapDispatchToProps = {
 };
 
 
-export default withRouter(injectIntl(connect(mapStateToProps, mapDispatchToProps)(TemplateInformation)));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(TemplateInformation));
 
 

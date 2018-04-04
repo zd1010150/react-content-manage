@@ -23,7 +23,7 @@ class EmailTemplatesCreation extends React.Component {
     }
 
     save = () => {
-        const {createTemplateData, updateTemplateData, newTemplate, editTemplate} = this.props;
+        const {createTemplateData, updateTemplateData, newTemplate, editTemplate, history} = this.props;
         const fn = this.hooksFn.getHTMLContent;
         let htmlContent = "<p></p>";
         if (fn) {
@@ -36,34 +36,31 @@ class EmailTemplatesCreation extends React.Component {
                 name: newTemplate.name,
                 apiName: newTemplate.apiName,
                 content: htmlContent,
-                description: newTemplate.description
+                description: newTemplate.description,
+                cb: ()=> history.push('/setup/email/templates')
             })
         }else{
-            console.log('???', {
-                folderId: editTemplate.folderId ? editTemplate.folderId : editTemplate.folder_id,
-                name: editTemplate.name,
-                apiName: editTemplate.apiName,
-                content: htmlContent,
-                description: editTemplate.description
-            })
             updateTemplateData({
                 templateId: editTemplate.id,
                 folderId: editTemplate.folderId ? editTemplate.folderId : editTemplate.folder_id,
                 name: editTemplate.name,
                 apiName: editTemplate.apiName,
                 content: htmlContent,
-                description: editTemplate.description
+                description: editTemplate.description,
+                cb: ()=> history.push('/setup/email/templates')
+
             })
         }
+    }
 
-
-
+    cancel = () => {
+        this.props.history.push('/setup/email/templates')
     }
 
     render() {
         return (
             <Fragment>
-                <TemplateInformation isNewTemplateRouter={this.isNewTemplateRouter} save={this.save} registerGetContentHook={this.registerGetContentHook}/>
+                <TemplateInformation isNewTemplateRouter={this.isNewTemplateRouter} save={this.save} cancel={this.cancel} registerGetContentHook={this.registerGetContentHook}/>
             </Fragment>
 
         );
