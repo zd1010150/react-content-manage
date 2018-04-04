@@ -60,8 +60,9 @@ class ObjectFilter extends Component {
             <Section
               key={i}
               title={`${i + 1}. ${stepName}`}
-              body={section.bodyComponent}
-            />
+            >
+              {section.bodyComponent}
+            </Section>
           );
         })}
         <ViewActions />
