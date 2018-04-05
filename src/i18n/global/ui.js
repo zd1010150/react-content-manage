@@ -57,7 +57,8 @@ export default {
     dialog: {
       info: '提示',
       warning: '警告',
-      deleteTitle: '确定删除这条记录',
+      deleteTitle: '确定删除这条记录？',
+      revertTitle: '所有修改后的值将会被重置，您确定吗？',
     },
     tree: {
       default: '默认部门',
@@ -130,7 +131,8 @@ export default {
     dialog: {
       info: 'Info',
       warning: 'Warning',
-      deleteTitle: 'Are you sure to delete this record?',
+      deleteTitle: 'Are you sure to delete this record ?',
+      revertTitle: 'Are you sure to revert all values ?',
     },
     tree: {
       default: 'No Department',

@@ -47,7 +47,8 @@ class ActionButtonsWrapper extends Component {
 
 ActionButtonsWrapper.defaultProps = defaultProps;
 ActionButtonsWrapper.propTypes = propTypes;
-const mapStateToProps = () => ({
+const mapStateToProps = ({ global }) => ({
+  language: global.language,
 });
 const mapDispatchToProps = {
   trySaveLead,

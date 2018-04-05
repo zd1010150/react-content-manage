@@ -27,6 +27,7 @@ const buttons = [
 ];
 
 const renderButton = (btn, theme, formatMessage, methods) => {
+  const i18nPrefix = 'global.ui';
   let btnCls = cx('floatBtn');
   switch(btn.key) {
     case 'Save':
@@ -47,11 +48,10 @@ const renderButton = (btn, theme, formatMessage, methods) => {
         <Popconfirm
           key={btn.key}
           placement="bottomRight"
-          title="Are you sure revert all values?"
-          // title={formatMessage({ id: '' })}
+          title={formatMessage({ id: `${i18nPrefix}.dialog.revertTitle` })}
           onConfirm={methods[btn.func]}
-          okText="Yes"
-          cancelText="No"
+          okText={formatMessage({ id: `${i18nPrefix}.button.ok` })}
+          cancelText={formatMessage({ id: `${i18nPrefix}.button.cancel` })}
         >
           <Button
             key={btn.key}
