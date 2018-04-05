@@ -7,7 +7,7 @@ const currentObjectType = (state = '', action) => {
   const { type, ...payload } = action;
   switch (type) {
     case SETUP_LAYOUT_SET_CURRENT_OBJECT:
-      return Object.assign({}, state, { ...payload });
+      return payload.objType;
     default:
       return state;
   }

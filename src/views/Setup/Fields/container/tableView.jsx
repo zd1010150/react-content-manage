@@ -54,7 +54,7 @@ class FieldsTableView extends React.Component {
       },
       picklist: field.picklists,
     });
-    history.push(`/setup/${objectType}/fields?&action=${FIELD_EDIT}`);
+    history.push(`/setup/${objectType}/fields?action=${FIELD_EDIT}`);
   }
   mapField(fromField, mapToOfFromField, fieldCategory, toObjectType, fromObjectType) {
     this.props.setSelectedFields({
@@ -63,7 +63,7 @@ class FieldsTableView extends React.Component {
   }
   addNewField() {
     const { history, objectType } = this.props;
-    history.push(`/setup/${objectType}/fields?&action=${FIELD_TYPE_SELECT}`);
+    history.push(`/setup/${objectType}/fields?action=${FIELD_TYPE_SELECT}`);
   }
   coloseEditing() {
     const {

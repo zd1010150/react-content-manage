@@ -8,9 +8,9 @@ import {
 } from './actionType';
 
 
-export const setCurrentObject = args => ({
+export const setCurrentObject = objType => ({
   type: SETUP_LAYOUT_SET_CURRENT_OBJECT,
-  ...args,
+    objType,
 });
 export const setAllLayout = args => ({
   type: SETUP_LAYOUT_SET_ALL_LAYOUTS,
@@ -27,6 +27,6 @@ export const setAddLayout = args => ({
 
 export const fetchAllLayouts = objType => dispatch => get(`/admin/page_layouts/object/${objType}`, {}, dispatch).then((data) => {
   if (!_.isEmpty(data.data)) {
-    setAllLayout({ layouts: data.data });
+    dispatch(setAllLayout({ layouts: data.data }));
   }
 });
