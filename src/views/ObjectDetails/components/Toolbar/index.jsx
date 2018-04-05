@@ -11,6 +11,7 @@ import { setTools, tryDelete } from './flow/actions';
 const defaultProps = {
   objectType: Enums.ObjectTypes.Leads,
   objectId: Enums.PhantomID,
+  tools: [],
 };
 const propTypes = {
   objectType: PropTypes.oneOf(Enums.ObjectTypesInArray).isRequired,
@@ -18,16 +19,17 @@ const propTypes = {
     PropTypes.number,
     PropTypes.string,
   ]).isRequired,
-  tools: PropTypes.arrayOf(PropTypes.string),
+  tools: PropTypes.arrayOf(
+    PropTypes.shape({
+      code: PropTypes.string.isRequired,
+      sequence: PropTypes.number.isRequired,
+    })
+  ).isRequired,
 };
 
 
 class Toolbar extends Component {
-  componentDidMount() {
-    this.props.setTools();
-  }
-
-  handleDeletion = id => {
+  handleDelete = id => {
     console.log(`deleting id is ${id}`);
     this.props.tryDelete(id, this.props.objectType);
   }
@@ -35,12 +37,12 @@ class Toolbar extends Component {
   render () {
     const { objectId, objectType, tools } = this.props;
     return (
-      <Row style={{ textAlign:'right' }}>
+      <Row style={{ textAlign:'right', marginBottom: 5 }}>
         <DetailTopButtons
           id={objectId}
           type={objectType}
           tools={tools}
-          onDelete={this.handleDeletion}
+          onDelete={this.handleDelete}
         />
       </Row>
     );
@@ -55,7 +57,6 @@ const mapStateToProps = ({ global, objectDetails }) => ({
   tools: objectDetails.toolbar.tools,
 });
 const mapDispatchToProps = {
-  setTools,
   tryDelete,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

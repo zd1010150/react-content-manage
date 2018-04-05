@@ -5,7 +5,7 @@ import { Row, Col } from 'antd';
 
 import { Section, CustomField } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
-import { setActiveField, resetActiveField } from '../../flow/actions';
+import { setActiveField, resetActiveField, setFieldValue, resetFieldValue } from '../../flow/actions';
 
 const defaultProps = {
   code: 'code',
@@ -24,8 +24,10 @@ const propTypes = {
 class FieldsSection extends Component {
   handleBlur = $ => this.props.resetActiveField()
 
-  handleChange = value => {
-    console.log(`new field value -> ${value}`);
+  handleChange = (id, value) => {
+    console.log(`changing fieldId: ${id} and its value -> ${value}`);
+    const { code, setFieldValue } = this.props;
+    setFieldValue(code, id, value);
   }
 
   handleDoubleClick = id => {
@@ -34,14 +36,15 @@ class FieldsSection extends Component {
   }
 
   handleRevertClick = id => {
-
+    const { code, resetFieldValue } = this.props;
+    resetFieldValue(code, id);
   }
 
   render() {
     const { code, title, fields, columns } = this.props;
     const colLayout = {
-      sm: Enums.AntGridMax / columns,
-      xs: Enums.AntGridMax,
+      sm: Enums.AntdGridMax / columns,
+      xs: Enums.AntdGridMax,
     };
 
     return (
@@ -73,10 +76,12 @@ class FieldsSection extends Component {
 FieldsSection.defaultProps = defaultProps;
 FieldsSection.propTypes = propTypes;
 const mapStateToProps = ({ objectDetails }) => ({
-  
+  data: objectDetails.primaryDetails.data,
 });
 const mapDispatchToProps = {
   setActiveField,
   resetActiveField,
+  setFieldValue,
+  resetFieldValue,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FieldsSection);

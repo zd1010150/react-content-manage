@@ -12,16 +12,31 @@ import { DisplayField, EmailInput } from './index';
 import { getRange } from 'utils/common';
 import Enums from 'utils/EnumsManager';
 
+//presets
+const {
+  DateOnly,
+  DateTime,
+  Email,
+  LongText,
+  Lookup,
+  NumberInput,
+  PickList,
+  TextInput,
+  Display,
+} = Enums.FieldTypes;
+
 
 const defaultProps = {
-  type: '',
-  size: 'small',
+  initialValue: '',
   options: [],
+  size: 'small',
+  type: '',
 };
 const propTypes = {
-  active: PropTypes.bool.isRequired,
+  active: PropTypes.bool.isRequired,  
   helpText: PropTypes.string,
   id: PropTypes.number.isRequired,
+  initialValue: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func,
@@ -40,6 +55,7 @@ const CustomField = ({
   active,
   helpText,
   id,
+  initialValue,
   label,
   name,
   onBlur,
@@ -58,13 +74,7 @@ const CustomField = ({
     if (_.isFunction(onChange)) {
       onChange(id, value);
     }
-  };
-
-  const _onDoubleClick = id => {
-    if (_.isFunction(onDoubleClick)) {
-      onDoubleClick(id);
-    }
-  };
+  };  
 
   const _onBlur = $ => {
     if (_.isFunction(onBlur)) {
@@ -72,19 +82,7 @@ const CustomField = ({
     }
   };
 
-  const baseCls = cx('customField');
-
-  const {
-    Date,
-    DateTime,
-    Email,
-    LongText,
-    Lookup,
-    Number,
-    PickList,
-    Text,
-    Display,
-  } = Enums.FieldTypes;
+  const baseCls = cx('customField');  
 
   let field = null;
   const others = {
@@ -93,7 +91,7 @@ const CustomField = ({
   };
 
   switch (type) {
-    case Date:
+    case DateOnly:
       field = (
         <DatePicker
           {...others}
@@ -152,7 +150,7 @@ const CustomField = ({
         </Select>
       );
       break;
-    case Number:
+    case NumberInput:
       // Scale is how many digits will show after the dot
       // Precision is how many digits for the number, including the decimal part
       const { precision, scale } = others;
@@ -182,7 +180,7 @@ const CustomField = ({
         </Select>
       );
       break;
-    case Text:
+    case TextInput:
       field = (
         <Input
           className={baseCls}
@@ -196,11 +194,12 @@ const CustomField = ({
       field = (
         <DisplayField
           className={baseCls}
-          value={'testingtesting'}
+          id={id}
+          isValueChanged={value !== initialValue}
           readOnly={readOnly}
-          isValueChanged={true}
+          value={value}
           onRevertClick={onRevertClick}
-          onDoubleClick={e => _onDoubleClick(id)}
+          onDoubleClick={onDoubleClick}
         />
       );
       break;

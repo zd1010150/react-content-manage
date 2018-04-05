@@ -1,7 +1,7 @@
-import FloatActionBtns from './FloatActionBtns/index';
+import ActionButtons from './ActionButtons/index';
 import FieldsSection from './FieldsSection/index';
 
 export {
-  FloatActionBtns,
+  ActionButtons,
   FieldsSection,
 };

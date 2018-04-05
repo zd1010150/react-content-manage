@@ -5,13 +5,59 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 
 import Enums from 'utils/EnumsManager';
+
+// presets
 const { Leads, Accounts, Opportunities, Report, Email } = Enums.ObjectTypes;
+
+const { Convert, Delete, Sharing, FindDuplicates } = Enums.DetailTools;
+
+const renderToolByCode = (code, formatMessage, clickHandler) => {
+  const i18nPrefix = 'global.ui.detailTools';
+  const text = formatMessage({ id: `${i18nPrefix}.${code}` });
+
+  switch(code) {
+    case Convert:
+    case Sharing:
+    case FindDuplicates:
+      const link = '';
+      // const link = `../../${type}/${path}/${id}`;
+      return (
+        <Button
+          className="ml-sm"
+          key={code}
+          size="small"
+        >
+          <Link to={link}>
+            {text}
+          </Link>
+        </Button>
+      );
+    case Delete:
+      return (
+        <Button
+          className="ml-sm"
+          key={code}
+          size="small"
+          onClick={e => clickHandler()}
+        >
+          {text}
+        </Button>
+      );
+    default:
+      return null;
+  }
+};
 
 
 const propTypes = {
   intl: intlShape.isRequired,
   type: PropTypes.oneOf(Enums.ObjectTypesInArray).isRequired,
-  tools: PropTypes.array,
+  tools: PropTypes.arrayOf(
+    PropTypes.shape({
+      code: PropTypes.string.isRequired,
+      sequence: PropTypes.number.isRequired,
+    })
+  ).isRequired,
   id: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,
@@ -23,8 +69,8 @@ const propTypes = {
 const DetailTopButtons = ({ intl, type, tools, id, onDelete }) => {
   const { formatMessage } = intl;
 
-  const _onDelete = (id, key) => {
-    if (_.isFunction(onDelete) && key === 'delete') {
+  const _onDelete = $ => {
+    if (_.isFunction(onDelete)) {
       onDelete(id);
     }
   };
@@ -34,32 +80,9 @@ const DetailTopButtons = ({ intl, type, tools, id, onDelete }) => {
     case Accounts:
       return (
         <Fragment>
-          {tools.map((tool, i) => {
-            const action = Enums.DetailActions.find(action => action.key === tool);
-            if (!action) return null;
-
-            const { key, path } = action;
-            const text = formatMessage({ id: `global.ui.button.${key}` });
-            return (
-              <Button
-                key={i}
-                size="small"
-                className="ml-sm"
-                disabled={id == Enums.PhantomID}
-                onClick={e => _onDelete(id, key)}
-              >
-                {key === 'delete'
-                  ? text
-                  : (
-                  <Link to={`../../${type}/${path}/${id}`}>
-                    {formatMessage({ id: `global.ui.button.${key}` })}
-                  </Link>
-                )}
-              </Button>
-            );
-          })}
+          {tools.map(tool => renderToolByCode(tool.code, formatMessage, _onDelete))}
         </Fragment>
-      );      
+      );
     case Opportunities:
     case Report:
     case Email:

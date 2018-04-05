@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import Upload from './upload';
 import InputNumber from './inputNumber';
-import ViewFilter from './ViewFilter';
+import ViewFilter from './ViewFilter/index';
 import ListTopButtons from './ListTopButton/index';
 import EditBox from './editBox/index';
 import Panel from './panel/index';
@@ -19,6 +19,7 @@ import SelectionModal from './SelectionModal/index';
 import SubmitButtons from './SubmitButtons/index';
 import { SelectionPool, SearchPool } from './SelectionPool/index';
 import DetailTopButtons from './DetailTopButtons/index';
+import FloatingActionButtons from './FloatingActionButtons/index';
 
 export {
   Upload,
@@ -44,4 +45,5 @@ export {
   SelectionPool,
   SearchPool,
   DetailTopButtons,
+  FloatingActionButtons,
 };

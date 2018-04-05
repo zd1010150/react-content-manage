@@ -1,9 +1,9 @@
 import { httpDelete } from 'store/http/httpAction';
 import { SET_TOOLS } from './actionTypes';
 
-export const setTools = _ => ({
+export const setTools = tools => ({
   type: SET_TOOLS,
-  payload: { tools: ['convert', 'delete', 'sharing', 'findDuplicates'] },
+  payload: { tools },
 });
 
 export const tryDelete = (id, objectType) => dispatch => httpDelete(`/admin/${objectType}/${id}`, {}, dispatch).then((data) => {

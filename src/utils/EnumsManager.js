@@ -1,14 +1,14 @@
 const BaseEnums = Object.freeze({
   
   FieldTypes: Object.freeze({
-    Date: 'date',
+    DateOnly: 'date',
     DateTime: 'datetime',
     Email: 'email',
     LongText: 'long_text',
     Lookup: 'lookup',
-    Number: 'number',
+    NumberInput: 'number',
     PickList: 'picklist',
-    Text: 'text',
+    TextInput: 'text',
     // for display only field
     Display: 'display',
   }),
@@ -131,7 +131,7 @@ const EnumsManager = Object.freeze({
     },
   ]),
 
-  AntGridMax: 24,
+  AntdGridMax: 24,
 
   DetailTools: BaseEnums.DetailTools,
 
