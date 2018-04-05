@@ -12,12 +12,12 @@ import Enums from 'utils/EnumsManager';
 import {
     getUserFolderData,
     getAllUser,
-    setSelectedTeam,
+    setSelectedPermissionTeam,
     updateTeam,
     setPermissionVisible,
     setSelectedUser
 } from '../../flow/action';
-import {getTeamUsers, getSelectedTeamName} from '../../flow/reselect';
+import {getPermissionTeamUsers, getSelectedTeamName} from '../../flow/reselect';
 
 
 class EmailTemplatePermission extends React.Component {
@@ -26,10 +26,15 @@ class EmailTemplatePermission extends React.Component {
         getAllUser();
     }
 
+    //Todo add team to permission list
+    addPermissionTeam = (selectedKeys) => {
+        console.log(selectedKeys)
+    }
+
     render() {
         const {
             teams,
-            setSelectedTeam,
+            setSelectedPermissionTeam,
             setTeams,
             teamUsers,
             isSelectTeamDialogVisible,
@@ -63,7 +68,8 @@ class EmailTemplatePermission extends React.Component {
                 }
                 {
                     isPermissionVisible &&
-                    <Button className="email-theme-btn mt-sm" size="small" onClick={() => {}}><Icon type="save"/>{ formatMessage({id: 'page.emailTemplates.save'}) }</Button>
+                    <Button className="email-theme-btn mt-sm" size="small" onClick={() => {
+                    }}><Icon type="save"/>{ formatMessage({id: 'page.emailTemplates.save'}) }</Button>
                 }
                 {
                     isPermissionVisible &&
@@ -75,23 +81,20 @@ class EmailTemplatePermission extends React.Component {
                     isPermissionVisible && <Row className="pt-lg pb-lg">
                         <Col className="gutter-row field-label" span={12}>
                             <Department
+                                canDoubleClick={true}
+                                handleDoubleClick={this.addPermissionTeam}
                                 teams={teams}
                                 setTeams={setTeams}
-                                setSelectedTeam={setSelectedTeam}
+                                setSelectedTeam={setSelectedPermissionTeam}
                                 updateTeam={updateTeam}
                             />
                         </Col>
                         <Col className="gutter-row field-value" span={12}>
-                            <User
-                                teamUsers={teamUsers}
-                                isSelectTeamDialogVisible={isSelectTeamDialogVisible}
-                                teams={teams}
-                                selectedUser={selectedUser}
-                                getUserFolderData={getUserFolderData}
-                                getAllUser={getAllUser}
-                                updateUsers={updateUsers}
-                                selectedTeamName={selectedTeamName}
-                                setSelectedUser={setSelectedUser}
+                            <SearchPool
+                                theme={Enums.ThemeTypes.Email}
+                                title='Click Chart to Choose Department'
+                                users={teamUsers}
+                                onTagDoubleClick={this.handleUserSelection}
                             />
                         </Col>
                     </Row>
@@ -109,12 +112,11 @@ const mapStateToProps = ({global, setup, loginUser}) => {
     const {emailTemplates} = setup;
     return {
         teams: global.settings.teams,
-        teamUsers: getTeamUsers({emailTemplates}),
+        teamUsers: getPermissionTeamUsers({emailTemplates}),
         loginUser: loginUser,
         isSelectTeamDialogVisible: emailTemplates.ui.isSelectTeamDialogVisible,
         isPermissionVisible: emailTemplates.ui.isPermissionVisible,
         selectedUser: emailTemplates.selectedUser,
-        newTeam: emailTemplates.newTeam,
         selectedTeamName: getSelectedTeamName({global, emailTemplates}),
     };
 };
@@ -124,7 +126,7 @@ const mapDispatchToProps = {
     getUserFolderData,
     getAllUser,
     updateUsers,
-    setSelectedTeam,
+    setSelectedPermissionTeam,
     updateTeam,
     setPermissionVisible,
     setSelectedUser

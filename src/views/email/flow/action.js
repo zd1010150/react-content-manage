@@ -26,7 +26,8 @@ import {
   EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
   EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
   EMAIL_TEMPLATES_UPDATE_TEMPLATE,
-  EMAIL_TEMPLATES_PERMISSION_VISIBLE
+  EMAIL_TEMPLATES_PERMISSION_VISIBLE,
+  EMAIL_TEMPLATES_SET_SELECTED_PERMISSION_DEPARTMENT
 } from "./actionType";
 
 const url = "/";
@@ -290,6 +291,10 @@ export const resetNewDepartment = () => ({
 /* Display the user */
 export const setSelectedTeam = id => ({
   type: EMAIL_TEMPLATES_SET_SELECTED_DEPARTMENT,
+  id
+});
+export const setSelectedPermissionTeam = id => ({
+  type: EMAIL_TEMPLATES_SET_SELECTED_PERMISSION_DEPARTMENT,
   id
 });
 export const setSeleteTeamDialogVisible = isSelectTeamDialogVisible => ({

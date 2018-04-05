@@ -4,6 +4,7 @@ import { DEFAULT_DEPAREMTN } from 'config/app.config';
 import { getTreeItemByKey } from 'utils/treeUtil';
 
 const getSelectedTeamId = state => state.emailTemplates.selectedDepartment.id;
+const getSelectedPermissionTeamId = state => state.emailTemplates.selectedPermissionDepartment.id;
 const getAllUsers = state => state.emailTemplates.allUsers;
 const getAllTeams = state => state.global.settings.teams;
 
@@ -36,5 +37,23 @@ export const getTeamUsers = createSelector(
     }
     return teamUser;
   },
+);
+
+//use for get selected team's users in permission section
+export const getPermissionTeamUsers = createSelector(
+    [
+        getSelectedPermissionTeamId,
+        getAllUsers,
+    ],
+    (teamId, allUsers) => {
+        if (_.isEmpty(allUsers)) {
+            return [];
+        }
+        const teamUser = allUsers.filter(user => Number(user.team_id) === Number(teamId));
+        if (_.isEmpty(teamUser)) {
+            return [];
+        }
+        return teamUser;
+    },
 );
 

@@ -28,6 +28,7 @@ import {
   EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
   EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
   EMAIL_TEMPLATES_PERMISSION_VISIBLE,
+  EMAIL_TEMPLATES_SET_SELECTED_PERMISSION_DEPARTMENT,
   EMAIL_TEMPLATES_UPDATE_TEMPLATE
 } from "./actionType";
 
@@ -308,6 +309,15 @@ const selectedDepartment = (state = { id: "" }, action) => {
       return state;
   }
 };
+const selectedPermissionDepartment = (state = { id: "" }, action) => {
+  const { type, ...payload } = action;
+  switch (type) {
+    case EMAIL_TEMPLATES_SET_SELECTED_PERMISSION_DEPARTMENT:
+      return Object.assign({}, state, { ...payload });
+    default:
+      return state;
+  }
+};
 const selectedUser = (state = { id: "", name: "" }, action) => {
   const { type, ...payload } = action;
   switch (type) {
@@ -386,6 +396,7 @@ export default combineReducers({
   ui,
   newTeam,
   selectedDepartment,
+  selectedPermissionDepartment,
   allUsers,
   selectedUser,
   sortingTeams,
