@@ -12,13 +12,16 @@ const i18nPrefix = 'page.objectDetails';
 
 
 const defaultProps = {
+  data: [],
   objectId: Enums.PhantomID,
   objectType: Enums.ThemeTypes.Leads,
 };
 const propTypes = {
   intl: intlShape.isRequired,
+  data: PropTypes.array.isRequired,
   objectId: PropTypes.string.isRequired,
   objectType: PropTypes.string.isRequired,
+  tryFetch: PropTypes.func,
 };
 
 
@@ -29,7 +32,7 @@ class PrimaryDetails extends Component {
   }
 
   render() {
-    const { intl, theme, data, objectId } = this.props;
+    const { intl, theme, data, objectId, objectType } = this.props;
     const { formatMessage } = intl;
     const titleId = objectId === Enums.PhantomID ? 'newTitle' : 'editTitle';
 
@@ -37,7 +40,7 @@ class PrimaryDetails extends Component {
       <Panel
         panelTitle={formatMessage({ id: `${i18nPrefix}.primaryDetails.${titleId}` })}
         panelClasses={`${theme}-theme-panel`}
-        actionsRight={<ActionButtons theme={theme} />}
+        actionsRight={<ActionButtons {...this.props} />}
       >
         {data.map(record => (
           <FieldsSection

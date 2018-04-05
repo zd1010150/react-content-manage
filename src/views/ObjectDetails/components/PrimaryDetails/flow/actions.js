@@ -58,21 +58,35 @@ export const resetFieldValue = (code, fieldId) => ({
 });
 
 //
-export const trySaveLead = (id, type) => dispatch => post(getFetchUrl(id, type), {}, dispatch).then((data) => {
+export const extractFieldValues = data => {
+  const obj = {};
+  data.forEach(section => {
+    section.fields.forEach(field => {
+      const { name, initialValue, value } = field;
+      if (value !== initialValue) {
+        obj[name] = value;
+      }
+    });
+  });
+  console.dir(obj);
+  return obj;
+};
+
+export const trySaveClient = (id, type, allData) => dispatch => post(`/admin/${type}`, extractFieldValues(allData), dispatch).then((data) => {
   if (data) {
     console.log('save success');
   }
 });
 
 
-export const tryUpdateLead = (id, type) => dispatch => patch(getFetchUrl(id, type), {}, dispatch).then((data) => {
+export const tryUpdateClient = (id, type, allData) => dispatch => patch(`/admin/${type}/${id}`, extractFieldValues(allData), dispatch).then((data) => {
   if (data) {
-    console.log('save success');
+    console.log('update success');
   }
 });
 
 
-export const trySaveAndAddNewLead = (id, type) => dispatch => post(getFetchUrl(id, type), {}, dispatch).then((data) => {
+export const trySaveAndAddNewClient = (id, type) => dispatch => post(getFetchUrl(id, type), {}, dispatch).then((data) => {
   if (data) {
     console.log('save success');
   }

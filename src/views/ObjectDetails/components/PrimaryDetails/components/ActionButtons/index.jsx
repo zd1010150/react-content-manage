@@ -3,32 +3,38 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { FloatingActionButtons } from 'components/ui/index';
+import Enums from 'utils/EnumsManager';
 import {
-  trySaveLead,
-  tryUpdateLead,
-  trySaveAndAddNewLead,
+  trySaveClient,
+  tryUpdateClient,
+  trySaveAndAddNewClient,
   revertAllFields,
 } from '../../flow/actions';
 
-const defaultProps = {};
+const defaultProps = {
+};
 const propTypes = {
-
+  revertAllFields: PropTypes.func,
+  trySaveAndAddNewClient: PropTypes.func,
+  trySaveClient: PropTypes.func,
+  tryUpdateClient: PropTypes.func,
 };
 
 
 class ActionButtonsWrapper extends Component {
+  handleRevert = $ => this.props.revertAllFields()
+
   handleSave = $ => {
-    console.log('save');
+    const { data, objectId, objectType, trySaveClient, tryUpdateClient } = this.props;
+    if (objectId === Enums.PhantomID) {
+      return trySaveClient(objectId, objectType, data);
+    }
+    return tryUpdateClient(objectId, objectType, data);
   }
   
   handleSaveAndNew = $ => {
     console.log('savenadd');
-  }
-
-  handleRevert = $ => {
-    console.log('rev');
-    this.props.revertAllFields();
-  }
+  }  
 
   render() {
     const { theme } = this.props;
@@ -47,13 +53,14 @@ class ActionButtonsWrapper extends Component {
 
 ActionButtonsWrapper.defaultProps = defaultProps;
 ActionButtonsWrapper.propTypes = propTypes;
-const mapStateToProps = ({ global }) => ({
+const mapStateToProps = ({ global, objectDetails }) => ({  
   language: global.language,
+  data: objectDetails.primaryDetails.data,
 });
 const mapDispatchToProps = {
-  trySaveLead,
-  tryUpdateLead,
-  trySaveAndAddNewLead,
+  trySaveClient,
+  tryUpdateClient,
+  trySaveAndAddNewClient,
   revertAllFields,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ActionButtonsWrapper);
