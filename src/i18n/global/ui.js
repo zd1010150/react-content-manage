@@ -1,3 +1,19 @@
+import Enums from 'utils/EnumsManager';
+const {
+  Convert,
+  Delete,
+  Sharing,
+  FindDuplicates,
+} = Enums.DetailTools;
+const {
+  Opportunities,
+  TaskOpen,
+  TaskHistory,
+  EmailSent,
+  Attachments,
+  Logs,
+} = Enums.DetailModules;
+
 export default {
   zh: {
     button: {
@@ -24,9 +40,7 @@ export default {
       massUpdate: '批量更新',
       massDelete: '批量删除',
       addToCampaign: '添加到营销活动',
-      convert: '转化',
-      sharing: '分享给他人',
-      findDuplicates: '查询重复记录',
+      replace: '替换',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -49,15 +63,29 @@ export default {
       default: '默认部门',
     },
     labels: {
-      viewName: '视图名称'
+      viewName: '视图名称',
     },
     errors: {
-      inputRequired: '必填项'
+      inputRequired: '必填项',
     },
     criteria: {
       field: '字段',
       condition: '条件',
       value: '值',
+    },
+    detailTools: {
+      Convert: '转化',
+      Delete: '删除',
+      Sharing: '分享给其他用户',
+      FindDuplicates: '查询重复客户',
+    },
+    detailModules: {
+      Opportunities: 'Opportunities',
+      TaskOpen: '未完成的任务',
+      TaskHistory: '任务历史',
+      EmailSent: '已发送的邮件',
+      Attachments: '附件',
+      Logs: '日志',
     },
   },
   en: {
@@ -85,9 +113,7 @@ export default {
       massUpdate: 'Mass Update',
       massDelete: 'Mass Delete',
       addToCampaign: 'Add to Campaign',
-      convert: 'Convert',
-      sharing: 'Sharing',
-      findDuplicates: 'Find Duplicates'
+      replace: 'Replace',
     },
     input: {
       searchStore: 'Search entire store here...',
@@ -113,12 +139,26 @@ export default {
       viewName: 'View Name',
     },
     errors: {
-      inputRequired: 'The input is required.'
+      inputRequired: 'The input is required.',
     },
     criteria: {
       field: 'Field',
       condition: 'Condition',
       value: 'Value',
+    },
+    detailTools: {
+      Convert: 'Convert',
+      Delete: 'Delete',
+      Sharing: 'Sharing',
+      FindDuplicates: 'Find Duplicates',
+    },
+    detailModules: {
+      Opportunities: 'Opportunities',
+      TaskOpen: 'Task Open',
+      TaskHistory: 'Task History',
+      EmailSent: 'Email Sent',
+      Attachments: 'Attachments',
+      Logs: 'Logs',
     },
   },
 };

@@ -5,6 +5,7 @@ import orgChart from 'views/Setup/OrganisationChart/flow/reducer';
 import emailTemplates from 'views/email/emailTemplates/flow/reducer';
 import permissionPro from 'views/Setup/PermissionProfile/flow/reducer';
 import fields from 'views/Setup/Fields/flow/reducer/index';
+import layouts from 'views/Setup/PageLayout/flow/reducerIndex';
 
 export default combineReducers({
   users,
@@ -13,5 +14,6 @@ export default combineReducers({
   emailTemplates,
   permissionPro,
   fields,
+  layouts,
 });
 

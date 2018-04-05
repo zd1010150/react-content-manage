@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Tag, Icon } from 'antd';
 import classNames from 'classnames/bind';
 import styles from './index.less';
+
 const cx = classNames.bind(styles);
 
 import Enums from 'utils/EnumsManager';
@@ -17,8 +18,11 @@ const propTypes = {
   closable: PropTypes.bool,
   withIcon: PropTypes.bool,
   addonAfter: PropTypes.element,
+  tagField: PropTypes.string,
 };
-
+const defaultProps = {
+  tagField: 'name',
+};
 const SelectionPool = ({
   theme,
   users,
@@ -30,7 +34,6 @@ const SelectionPool = ({
   withIcon,
   addonAfter,
 }) => {
-  
   // Internal methods
   const _onTagClick = (e, item, isTeam) => {
     if (_.isFunction(onTagClick)) {
@@ -61,8 +64,7 @@ const SelectionPool = ({
   const collection = [...users, ...teams];
   return (
     <div className={cx('tagsContainer')}>
-      {collection.map(item => {
-
+      {collection.map((item) => {
         const isTeam = item.team_id === undefined;
         const key = isTeam ? `t${item.id}` : item.id;
         const cls = isTeam ? '' : `${theme}-theme-tag`;
@@ -88,4 +90,5 @@ const SelectionPool = ({
 };
 
 SelectionPool.propTypes = propTypes;
+SelectionPool.defaultProps = defaultProps;
 export default SelectionPool;

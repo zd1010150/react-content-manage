@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 const RightSiderFields = ({
   fromField, fromObjectType, toObjectType, fields, onChange, allFields, fieldCategory,
 }) => {
-  const from = _.isEmpty(allFields[fieldCategory]) ? {} : allFields[fieldCategory].filter(f => f.id === fromField.id)[0];
+  const from = _.isEmpty(allFields[fieldCategory]) ? { map_to: [] } : allFields[fieldCategory].filter(f => f.id === fromField.id)[0];
   const mappedFields = _.isEmpty(toObjectType) || _.isEmpty(from.map_to[toObjectType]) ? [] : from.map_to[toObjectType];
   const mappedFieldsId = mappedFields.map(f => f.id);
 

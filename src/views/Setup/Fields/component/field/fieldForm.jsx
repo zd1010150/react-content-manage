@@ -22,6 +22,10 @@ class FieldForm extends React.Component {
       onSubmit(formData);
     });
   }
+  onCancel() {
+    const { onCancel } = this.props;
+    onCancel();
+  }
   getAllValue(cb) {
     const { form, isDuplicate } = this.props;
     form.validateFieldsAndScroll((err, values) => {
@@ -33,21 +37,15 @@ class FieldForm extends React.Component {
   labelBlur(e) {
     const { value } = e.target;
     const {
-      action, prefix, form,
+      action, form,
     } = this.props;
+
     if (action === ADD && _.isEmpty(form.getFieldValue('originName'))) {
       form.setFieldsValue({
-        field_name: `${prefix}${toSnakeCase(value)}`,
-        originName: `${prefix}${toSnakeCase(value)}`,
+        field_name: `${toSnakeCase(value)}`,
+        originName: `${toSnakeCase(value)}`,
       });
-      this.checkName((isLabelDuplicate, recommendation) => {
-        if (isLabelDuplicate) {
-          form.setFieldsValue({
-            field_name: recommendation,
-            originName: recommendation,
-          });
-        }
-      });
+      this.checkName();
     }
   }
   labelChange(e) {
@@ -61,11 +59,19 @@ class FieldForm extends React.Component {
       originName: e.target.value,
     });
   }
-  checkName(cb) {
-    this.props.checkLabelDuplicate(this.props.objType, this.props.form.getFieldValue('field_name'), (isLabelDuplicate, recommendation) => {
-      this.props.setFieldLableisDuplicate(isLabelDuplicate);
-      if (_.isFunction(cb)) {
-        cb(isLabelDuplicate, recommendation);
+  checkName() {
+    const {
+      objType, checkLabelDuplicate, form, prefix, setFieldLableisDuplicate,
+    } = this.props;
+    checkLabelDuplicate(objType, `${prefix}${form.getFieldValue('field_name')}`, (isLabelDuplicate, suggestion) => {
+      setFieldLableisDuplicate(isLabelDuplicate);
+      if (isLabelDuplicate) {
+        const _suggestion = suggestion.slice(prefix.length);
+        form.setFieldsValue({
+          field_name: _suggestion,
+          originName: _suggestion,
+        });
+        setFieldLableisDuplicate(false);
       }
     });
   }
@@ -73,7 +79,7 @@ class FieldForm extends React.Component {
 
   render() {
     const {
-      editObject, action, intl, isDuplicate,
+      editObject, action, intl, isDuplicate, prefix, form,
     } = this.props;
     const { formatMessage, locale } = intl;
     const { Item: FormItem } = Form;
@@ -82,7 +88,13 @@ class FieldForm extends React.Component {
     const isCustom = editObject.category === fieldCategory.CUSTOM;
     return (
       <Form ref={(instance) => { this.instance = instance; }}>
-
+        <FormItem>
+          {
+                getFieldDecorator('id', {
+                    initialValue: editObject.id || '',
+                })(<Input type="hidden" />)
+          }
+        </FormItem>
         <FormItem
           {...FORM_LAYOUT_CONFIG}
           label={formatMessage({ id: 'page.fields.label' })}
@@ -108,10 +120,10 @@ class FieldForm extends React.Component {
                   rules: [
                       getExistRule('required', 'field_name', locale, { required: true }),
                   ],
-              })(<Input size="small" disabled={isEdit} onChange={e => this.nameChange(e)} onBlur={() => this.checkName()} />)
+              })(<Input size="small" addonBefore={editObject.category === fieldCategory.CUSTOM ? prefix : ''} disabled={isEdit} onChange={e => this.nameChange(e)} onBlur={() => this.checkName()} />)
             }
           {
-              isDuplicate ? formatMessage('page.fields.nameDuplicate') : ''
+              isDuplicate ? <span className="error-msg"> {formatMessage({ id: 'page.fields.nameDuplicate' }, { value: form.getFieldValue('field_name') }) }</span> : ''
             }
 
         </FormItem>
@@ -122,6 +134,20 @@ class FieldForm extends React.Component {
                     })(<Input type="hidden" />)
                 }
         </FormItem>
+
+        {
+              editObject.type === 'long_text' ?
+                <FormItem
+                  {...FORM_LAYOUT_CONFIG}
+                  label={formatMessage({ id: 'page.fields.length' })}
+                >
+                  {
+                          getFieldDecorator('length', {
+                              initialValue: editObject.length || '',
+                          })(<InputNumber disabled={isEdit} min={0} />)
+                      }
+                </FormItem> : ''
+          }
         {
                 editObject.type === 'text' ?
                   <FormItem
@@ -129,9 +155,9 @@ class FieldForm extends React.Component {
                     label={formatMessage({ id: 'page.fields.length' })}
                   >
                     {
-                            getFieldDecorator('formatMessage', {
+                            getFieldDecorator('length', {
                                 initialValue: editObject.length || '',
-                            })(<InputNumber disabled={isEdit} />)
+                            })(<InputNumber disabled={isEdit} min={0} max={255} />)
                         }
                   </FormItem> : ''
             }
@@ -142,9 +168,9 @@ class FieldForm extends React.Component {
                     label={formatMessage({ id: 'page.fields.length' })}
                   >
                     {
-                            getFieldDecorator('formatMessage', {
+                            getFieldDecorator('precision', {
                                 initialValue: editObject.precision || '',
-                            })(<InputNumber disabled={isEdit} />)
+                            })(<InputNumber disabled={isEdit} min={0} max={100} />)
                         }
                   </FormItem> : ''
             }
@@ -155,9 +181,9 @@ class FieldForm extends React.Component {
                     label={formatMessage({ id: 'page.fields.scale' })}
                   >
                     {
-                            getFieldDecorator('formatMessage', {
+                            getFieldDecorator('scale', {
                                 initialValue: editObject.scale || '',
-                            })(<InputNumber disabled={isEdit} />)
+                            })(<InputNumber disabled={isEdit} min={0} max={100} />)
                         }
                   </FormItem> : ''
             }
@@ -167,7 +193,7 @@ class FieldForm extends React.Component {
         >
           {
                     getFieldDecorator('helper_text', {
-                        initialValue: editObject.helper_text || '',
+                        initialValue: editObject.helpText || '',
                     })(<Input.TextArea />)
                 }
         </FormItem>
@@ -195,8 +221,8 @@ class FieldForm extends React.Component {
         {
             isEdit ?
               <FormItem {...FORM_FOOTER_CONFIG}>
+                <Button type="danger" size="small" className="mr-lg" onClick={() => { this.onCancel(); }}><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
                 <Button type="primary" size="small" htmlType="submit" onClick={() => { this.onSubmit(); }}><Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' })}</Button>
-                <Button type="danger" size="small" className="ml-sm"><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
               </FormItem> :
                 ''
           }
@@ -207,6 +233,7 @@ class FieldForm extends React.Component {
 }
 FieldForm.defaultProps = {
   onSubmit: () => {},
+  onCancel: () => {},
 };
 FieldForm.propTypes = {
   intl: intlShape.isRequired,
@@ -214,6 +241,7 @@ FieldForm.propTypes = {
   action: PropTypes.string.isRequired,
   editObject: PropTypes.object.isRequired,
   onSubmit: PropTypes.func,
+  onCancel: PropTypes.func,
   checkLabelDuplicate: PropTypes.func,
   prefix: PropTypes.string.isRequired,
   setFieldLableisDuplicate: PropTypes.func.isRequired,

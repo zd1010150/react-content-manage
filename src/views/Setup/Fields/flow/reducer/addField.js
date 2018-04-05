@@ -5,16 +5,30 @@ import {
   SETUP_FIELDS_SET_ADDED_ATTR,
   SETUP_FIELDS_RESET_ADDED_ATTR,
   SETUP_FIELDS_SET_OBJECT_LAYOUT,
-  SETUP_FIELDS_SET_FIELD_LABEL_IS_DUPLICATE } from '../actionType';
+  SETUP_FIELDS_SET_FIELD_LABEL_IS_DUPLICATE,
+  SETUP_FIELDS_DELETE_PICKLIST_VALUE,
+  SETUP_FIELDS_ADD_PICKLIST_VALUE,
+} from '../actionType';
 import { fieldCategory } from '../objectTypeHelper';
 
 
 const originState = {
   objType: '',
   field: {
-    name: '', notnull: 0, type: '', label: '', length: 0, scale: 2, precision: 4, helpText: '', description: '', category: fieldCategory.CUSTOM,
+    name: '',
+    notnull: 0,
+    type: '',
+    label: '',
+    length: 0,
+    scale: 2,
+    precision: 4,
+    helpText: '',
+    description: '',
+    category: fieldCategory.CUSTOM,
+    id: '',
   },
   picklist: [],
+  deactiveList: [],
   appendPageLayoutIds: [],
 };
 
@@ -28,6 +42,10 @@ const addedField = (state = { ...originState }, action) => {
       return Object.assign({}, state, { ...payload });
     case SETUP_FIELDS_RESET_ADDED_ATTR:
       return Object.assign({}, originState, { ...payload });
+    case SETUP_FIELDS_DELETE_PICKLIST_VALUE:
+      return Object.assign({}, state, { picklist: payload.picklist });
+    case SETUP_FIELDS_ADD_PICKLIST_VALUE:
+      return Object.assign({}, state, { picklist: state.picklist.slice().concat([payload.val]) });
     default:
       return state;
   }

@@ -19,6 +19,7 @@ import {
   Fields,
   ObjectDetails,
   FindDuplicates,
+  Layouts,
 } from 'views/index';
 
 import { ObjectFilter } from '../index';
@@ -44,6 +45,7 @@ const MainContent = () => (
     <Route path="/setup/email/campaign/" component={EmailTemplatesCampaign} />
     <Route path="/setup/company-info/permissions" component={PermissionProfile} />
     <Route path="/setup/:objectType/fields" component={Fields} />
+    <Route path="/setup/:objectType/pageLayout" component={Layouts} />
   </Switch>
 );
 
