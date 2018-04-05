@@ -49,9 +49,9 @@ const CustomField = ({
   options,
   readOnly,
   required,
+  size,
   type,
   value,
-  ...others,
 }) => {
 
   const _onChange = (id, value) => {
@@ -87,6 +87,11 @@ const CustomField = ({
   } = Enums.FieldTypes;
 
   let field = null;
+  const others = {
+    size,
+    onBlur: e => _onBlur(),
+  };
+
   switch (type) {
     case Date:
       field = (
@@ -168,10 +173,10 @@ const CustomField = ({
       break;
     case PickList:
       field = (
-        <Select
-          {...others}
+        <Select          
           className={baseCls}
-          onChange={value => onChange(id, value)}
+          onChange={value => _onChange(id, value)}
+          {...others}
         >
           {options.map(option => <Option key={option.id}>{option.option_value}</Option>)}
         </Select>
@@ -180,11 +185,10 @@ const CustomField = ({
     case Text:
       field = (
         <Input
-          {...others}
+          className={baseCls}
           value={value}
-          className={cx('customField')}
-          onChange={e => onChange(id, e.target.value)}
-          onBlur={e => _onBlur()}
+          onChange={e => _onChange(id, e.target.value)}
+          {...others}
         />
       );
       break;
