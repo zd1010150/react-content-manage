@@ -27,10 +27,10 @@ import { ObjectFilter } from '../index';
 const MainContent = () => (
   <Switch>
     <Route path="/:objectType/views/:viewId" component={ObjectFilter} />
-    <Route path="/:objectType/details/:objectId" component={ObjectDetails} />
     <Route path="/leads/convert/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/sharing/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
+    <Route path="/:objectType/:objectId" component={ObjectDetails} />
 
     <Route path="/leads" component={Leads} />
     <Route path="/setup/company-info/dd-demo" component={DDDemo} />
