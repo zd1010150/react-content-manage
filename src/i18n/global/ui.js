@@ -6,6 +6,7 @@ const {
   FindDuplicates,
 } = Enums.DetailTools;
 const {
+  Opportunities,
   TaskOpen,
   TaskHistory,
   EmailSent,
@@ -79,6 +80,7 @@ export default {
       FindDuplicates: '查询重复客户',
     },
     detailModules: {
+      Opportunities: 'Opportunities',
       TaskOpen: '未完成的任务',
       TaskHistory: '任务历史',
       EmailSent: '已发送的邮件',
@@ -151,6 +153,7 @@ export default {
       FindDuplicates: 'Find Duplicates',
     },
     detailModules: {
+      Opportunities: 'Opportunities',
       TaskOpen: 'Task Open',
       TaskHistory: 'Task History',
       EmailSent: 'Email Sent',
