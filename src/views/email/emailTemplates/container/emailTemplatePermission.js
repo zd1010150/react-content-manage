@@ -15,7 +15,11 @@ import {
     setSelectedPermissionTeam,
     updateTeam,
     setPermissionVisible,
-    setSelectedUser
+    setSelectedUser,
+    addPermissionTeam,
+    addPermissionUser,
+    removeEntityFromSelection,
+    updateShareFolderData
 } from '../../flow/action';
 import {getPermissionTeamUsers, getSelectedTeamName} from '../../flow/reselect';
 
@@ -27,8 +31,28 @@ class EmailTemplatePermission extends React.Component {
     }
 
     //Todo add team to permission list
-    addPermissionTeam = (selectedKeys) => {
-        console.log(selectedKeys)
+    handleDoubleClickTeam = (selectedKeys, teamName) => {
+        const {addPermissionTeam} = this.props;
+        const selectTeam = {id: selectedKeys, name: teamName};
+        addPermissionTeam(selectTeam);
+
+    }
+
+    handleDoubleClickUser = (selectedKeys, item) => {
+        const {addPermissionUser} = this.props;
+        const selectUser = {id: selectedKeys, name: item.name, team_id: true};
+        addPermissionUser(selectUser);
+    }
+
+    handleTagClose = (itemId, isTeam) => {
+        this.props.removeEntityFromSelection({itemId, isTeam})
+    }
+
+    save = () => {
+        const {updateShareFolderData, addedPermissionDepartment, addedPermissionUser} = this.props;
+        const shareToTeams = addedPermissionDepartment.map((item)=>item.id)
+        const shareToUsers = addedPermissionUser.map((item)=>item.id)
+        updateShareFolderData({shareToTeams, shareToUsers})
     }
 
     render() {
@@ -46,8 +70,12 @@ class EmailTemplatePermission extends React.Component {
             selectedTeamName,
             isPermissionVisible,
             setPermissionVisible,
-            setSelectedUser
+            setSelectedUser,
+            addPermissionTeam,
+            addedPermissionDepartment,
+            addedPermissionUser
         } = this.props;
+        console.log('teamUsers', teamUsers)
         const {formatMessage} = this.props.intl;
         const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {
             setPermissionVisible(!isPermissionVisible)
@@ -57,6 +85,9 @@ class EmailTemplatePermission extends React.Component {
                 <div>{formatMessage({id: 'page.emailTemplates.permissionTitle'})}</div>
                 <SelectionPool
                     theme={Enums.ThemeTypes.Email}
+                    teams={addedPermissionDepartment}
+                    users={addedPermissionUser}
+                    onTagClose={this.handleTagClose}
                     closable
                     withIcon
                 />
@@ -68,8 +99,7 @@ class EmailTemplatePermission extends React.Component {
                 }
                 {
                     isPermissionVisible &&
-                    <Button className="email-theme-btn mt-sm" size="small" onClick={() => {
-                    }}><Icon type="save"/>{ formatMessage({id: 'page.emailTemplates.save'}) }</Button>
+                    <Button className="email-theme-btn mt-sm" size="small" onClick={this.save}><Icon type="save"/>{ formatMessage({id: 'page.emailTemplates.save'}) }</Button>
                 }
                 {
                     isPermissionVisible &&
@@ -82,7 +112,7 @@ class EmailTemplatePermission extends React.Component {
                         <Col className="gutter-row field-label" span={12}>
                             <Department
                                 canDoubleClick={true}
-                                handleDoubleClick={this.addPermissionTeam}
+                                handleDoubleClick={this.handleDoubleClickTeam}
                                 teams={teams}
                                 setTeams={setTeams}
                                 setSelectedTeam={setSelectedPermissionTeam}
@@ -94,7 +124,7 @@ class EmailTemplatePermission extends React.Component {
                                 theme={Enums.ThemeTypes.Email}
                                 title='Click Chart to Choose Department'
                                 users={teamUsers}
-                                onTagDoubleClick={this.handleUserSelection}
+                                onTagDoubleClick={this.handleDoubleClickUser}
                             />
                         </Col>
                     </Row>
@@ -118,6 +148,8 @@ const mapStateToProps = ({global, setup, loginUser}) => {
         isPermissionVisible: emailTemplates.ui.isPermissionVisible,
         selectedUser: emailTemplates.selectedUser,
         selectedTeamName: getSelectedTeamName({global, emailTemplates}),
+        addedPermissionDepartment: emailTemplates.addedPermissionDepartment,
+        addedPermissionUser: emailTemplates.addedPermissionUser
     };
 };
 
@@ -129,7 +161,11 @@ const mapDispatchToProps = {
     setSelectedPermissionTeam,
     updateTeam,
     setPermissionVisible,
-    setSelectedUser
+    setSelectedUser,
+    addPermissionTeam,
+    addPermissionUser,
+    removeEntityFromSelection,
+    updateShareFolderData
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplatePermission));

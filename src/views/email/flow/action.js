@@ -27,7 +27,10 @@ import {
   EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
   EMAIL_TEMPLATES_UPDATE_TEMPLATE,
   EMAIL_TEMPLATES_PERMISSION_VISIBLE,
-  EMAIL_TEMPLATES_SET_SELECTED_PERMISSION_DEPARTMENT
+  EMAIL_TEMPLATES_SET_SELECTED_PERMISSION_DEPARTMENT,
+  EMAIL_TEMPLATES_ADD_PERMISSION_DEPARTMENT,
+  EMAIL_TEMPLATES_ADD_PERMISSION_USER,
+  EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION
 } from "./actionType";
 
 const url = "/";
@@ -220,6 +223,26 @@ export const updateTemplateData = ({
   });
 };
 
+export const updateShareFolderData = ({
+                                       shareToUsers,
+                                       shareToTeams,
+                                       cb
+                                   }) => (dispatch, getState) => {
+    post(
+        `/admin/email_folders/me/1/share`,
+        { share_to_users: shareToUsers, share_to_teams: shareToTeams },
+        dispatch
+    ).then(data => {
+        if (!_.isEmpty(data)) {
+
+            console.log("data", data);
+            if (_.isFunction(cb)) {
+                cb();
+            }
+        }
+    });
+};
+
 export const deleteTemplate = ({ templateId, folderId, cb }) => (
   dispatch,
   getState
@@ -297,6 +320,19 @@ export const setSelectedPermissionTeam = id => ({
   type: EMAIL_TEMPLATES_SET_SELECTED_PERMISSION_DEPARTMENT,
   id
 });
+export const addPermissionTeam = payload => ({
+  type: EMAIL_TEMPLATES_ADD_PERMISSION_DEPARTMENT,
+  payload
+});
+export const addPermissionUser = payload => ({
+  type: EMAIL_TEMPLATES_ADD_PERMISSION_USER,
+  payload
+});
+export const removeEntityFromSelection = payload => ({
+  type: EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION,
+  payload
+});
+
 export const setSeleteTeamDialogVisible = isSelectTeamDialogVisible => ({
   type: EMAIL_TEMPLATES_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
   isSelectTeamDialogVisible

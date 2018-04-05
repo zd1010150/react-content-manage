@@ -27,7 +27,7 @@ class Department extends React.Component {
                     onSelect={selectedKeys => this.selectDepartment(selectedKeys)}
                     teams={teams}
                     setTeams={setTeams}
-                    onDbClick={selectedKeys => handleDoubleClick(selectedKeys)}
+                    onDbClick={(selectedKeys, name) => handleDoubleClick(selectedKeys, name)}
                     defaultExpandAll
                 />}
                 {!canDoubleClick &&

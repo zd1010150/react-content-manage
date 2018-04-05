@@ -29,6 +29,9 @@ import {
   EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
   EMAIL_TEMPLATES_PERMISSION_VISIBLE,
   EMAIL_TEMPLATES_SET_SELECTED_PERMISSION_DEPARTMENT,
+  EMAIL_TEMPLATES_ADD_PERMISSION_DEPARTMENT,
+  EMAIL_TEMPLATES_ADD_PERMISSION_USER,
+  EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION,
   EMAIL_TEMPLATES_UPDATE_TEMPLATE
 } from "./actionType";
 
@@ -318,6 +321,44 @@ const selectedPermissionDepartment = (state = { id: "" }, action) => {
       return state;
   }
 };
+const addedPermissionDepartment = (state = [], action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case EMAIL_TEMPLATES_ADD_PERMISSION_DEPARTMENT:
+      let isDuplicated = false;
+      state.map(item => {
+        if (item.id === payload.id) {
+          isDuplicated = true;
+        }
+      });
+      return isDuplicated ? state : [...state, payload];
+    case EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION:
+      return payload.isTeam
+        ? state.filter(item => item.id !== payload.itemId)
+        : state;
+    default:
+      return state;
+  }
+};
+const addedPermissionUser = (state = [], action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case EMAIL_TEMPLATES_ADD_PERMISSION_USER:
+      let isDuplicated = false;
+      state.map(item => {
+        if (item.id === payload.id) {
+          isDuplicated = true;
+        }
+      });
+      return isDuplicated ? state : [...state, payload];
+    case EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION:
+      return payload.isTeam
+        ? state
+        : state.filter(item => item.id !== payload.itemId);
+    default:
+      return state;
+  }
+};
 const selectedUser = (state = { id: "", name: "" }, action) => {
   const { type, ...payload } = action;
   switch (type) {
@@ -408,5 +449,7 @@ export default combineReducers({
   editFolders,
   deletedFolders,
   newTemplate,
-  editTemplate
+  editTemplate,
+  addedPermissionDepartment,
+  addedPermissionUser
 });
