@@ -21,7 +21,7 @@ import AddForm from '../component/tableView/addForm';
 const { Item: FormItem } = Form;
 class LayoutsTableView extends React.Component {
   componentDidMount() {
-
+    this.props.fetchAllLayouts(this.props.objectType);
   }
   add() {
 
@@ -56,16 +56,17 @@ class LayoutsTableView extends React.Component {
         icon="save"
         onClick={() => this.add()}
       >
-        { formatMessage({ id: 'global.ui.button.add' })}
+        { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'page.layouts.layout' }) })}
                    </Button>);
       actions.push(<Button
         key="cancel"
         className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`)}
         size="small"
-        icon="close"
+        icon="edit"
         onClick={() => this.assignmentLayout()}
       >
-        pagelayout assignment
+        { formatMessage({ id: 'page.layouts.assingmentLayout' }) }
+
                    </Button>);
 
       return actions;
@@ -89,7 +90,7 @@ class LayoutsTableView extends React.Component {
                   <tr key={l.id}>
                     <td>
                       <Icon className={`${classType}-theme-icon`} type="edit" onClick={() => this.editLayout(l)} />
-                      <Icon className="pl-lg" type="delete" onClick={() => this.deleteLayout(l)} />
+                      <Icon className="pl-sm" type="delete" onClick={() => this.deleteLayout(l)} />
                     </td>
                     <td> { l.name }</td>
                     <td> { l.created_by_user } {l.created_at}</td>

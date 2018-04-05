@@ -8,7 +8,7 @@ import { setCurrentObject } from '../flow/action';
 import { ASSIGN_LAYOUT_TO_DEPARTMENT, LAYOUT_EDIT } from '../flow/pageAction';
 import AssignDepartmentContainer from './assignDepartmentContainer';
 import EditContainer from './editContainer';
-import TableView from './tableView';
+import TableView from './tableViewContainer';
 
 class PageLayoutIndexView extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class PageLayoutIndexView extends React.Component {
   }
   setObjectType(props) {
     const { match, setCurrentObject } = props;
-    setCurrentObject({ objType: match.params.objectType });
+    setCurrentObject(match.params.objectType);
   }
   getView(props) {
     const { location } = props;
