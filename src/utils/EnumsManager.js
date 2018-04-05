@@ -29,6 +29,22 @@ const BaseEnums = Object.freeze({
     Email: 'email',
   }),
 
+  DetailTools: Object.freeze({
+    Convert: 'convert',
+    Delete: 'delete',
+    Sharing: 'sharing',
+    FindDuplicates: 'findDuplicates',
+  }),
+
+  DetailModules: Object.freeze({
+    Opportunities: 'opportunities',
+    TaskOpen: 'taskOpen',
+    TaskHistory: 'taskHistory',
+    EmailSent: 'emailSent',
+    Attachments: 'attachments',
+    Logs: 'logs',
+  }),
+
 });
 
 const EnumsManager = Object.freeze({
@@ -52,13 +68,7 @@ const EnumsManager = Object.freeze({
 
   // Transfer to array will facilitate the proptypes checking by oneof and use JS array methods
   // The following xxInArray properties serve the same purpose like this one.
-  ThemeTypesInArray: Object.freeze([
-    BaseEnums.ThemeTypes.Leads,
-    BaseEnums.ThemeTypes.Accounts,
-    BaseEnums.ThemeTypes.Opportunities,
-    BaseEnums.ThemeTypes.Report,
-    BaseEnums.ThemeTypes.Email,
-  ]),
+  ThemeTypesInArray: Object.freeze(_.values(BaseEnums.ThemeTypes)),
 
   SortOrders: Object.freeze({
     ascend: 'asc',
@@ -67,17 +77,7 @@ const EnumsManager = Object.freeze({
 
   FieldTypes: BaseEnums.FieldTypes,
 
-  FieldTypesInArray: Object.freeze([
-    BaseEnums.FieldTypes.Date,
-    BaseEnums.FieldTypes.DateTime,
-    BaseEnums.FieldTypes.Email,
-    BaseEnums.FieldTypes.LongText,
-    BaseEnums.FieldTypes.Lookup,
-    BaseEnums.FieldTypes.Number,
-    BaseEnums.FieldTypes.PickList,
-    BaseEnums.FieldTypes.Text,
-    BaseEnums.FieldTypes.Display,
-  ]),
+  FieldTypesInArray: Object.freeze(_.values(BaseEnums.FieldTypes)),
 
   FieldOperationTypes: Object.freeze({
     Edit: 'edit',
@@ -87,13 +87,7 @@ const EnumsManager = Object.freeze({
 
   ObjectTypes: BaseEnums.ObjectTypes,
   
-  ObjectTypesInArray: Object.freeze([
-    BaseEnums.ObjectTypes.Leads,
-    BaseEnums.ObjectTypes.Accounts,
-    BaseEnums.ObjectTypes.Opportunities,
-    BaseEnums.ObjectTypes.Email,
-    BaseEnums.ObjectTypes.Report,
-  ]),
+  ObjectTypesInArray: Object.freeze(_.values(BaseEnums.ObjectTypes)),
 
   ObjectTypesThemesMapping: Object.freeze({
     [BaseEnums.ObjectTypes.Leads]: BaseEnums.ThemeTypes.Leads,
@@ -116,6 +110,15 @@ const EnumsManager = Object.freeze({
   RootTeamId: 0,
 
   NoTeamId: -1,
+
+  DetailTools: BaseEnums.DetailTools,
+
+  DetailToolsInArray: Object.freeze(_.values(BaseEnums.DetailTools)),
+
+  DetailModules: BaseEnums.DetailModules,
+
+  DetailModulesInArray: Object.freeze(_.values(BaseEnums.DetailModules)),
+
 });
 
 export default EnumsManager;
