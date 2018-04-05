@@ -12,8 +12,9 @@ const allLayouts = ( state=[], action) => {
         case SETUP_LAYOUT_SET_ALL_LAYOUTS:
             return payload.layouts || [];
         default:
-
+            return state;
     }
+};
 const addLayout = (state = { isShowDialog: false, existingLayout: '', layoutName: '' }, action) => {
     const { type, ...payload } = action;
     switch (type) {

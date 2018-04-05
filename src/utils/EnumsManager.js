@@ -29,6 +29,21 @@ const BaseEnums = Object.freeze({
     Email: 'email',
   }),
 
+  DetailTools: Object.freeze({
+    Convert: 'convert',
+    Delete: 'delete',
+    Sharing: 'sharing',
+    FindDuplicates: 'findDuplicates',
+  }),
+
+  DetailModules: Object.freeze({
+    TaskOpen: 'taskOpen',
+    TaskHistory: 'taskHistory',
+    EmailSent: 'emailSent',
+    Attachments: 'attachments',
+    Logs: 'logs',
+  }),
+
 });
 
 const EnumsManager = Object.freeze({
@@ -116,6 +131,15 @@ const EnumsManager = Object.freeze({
   RootTeamId: 0,
 
   NoTeamId: -1,
+
+  DetailTools: BaseEnums.DetailTools,
+
+  DetailToolsInArray: Object.freeze(_.values(BaseEnums.DetailTools)),
+
+  DetailModules: BaseEnums.DetailModules,
+
+  DetailModulesInArray: Object.freeze(_.values(BaseEnums.DetailModules)),
+
 });
 
 export default EnumsManager;

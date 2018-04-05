@@ -1,3 +1,18 @@
+import Enums from 'utils/EnumsManager';
+const {
+  Convert,
+  Delete,
+  Sharing,
+  FindDuplicates,
+} = Enums.DetailTools;
+const {
+  TaskOpen,
+  TaskHistory,
+  EmailSent,
+  Attachments,
+  Logs,
+} = Enums.DetailModules;
+
 export default {
   zh: {
     button: {
@@ -57,6 +72,19 @@ export default {
       condition: '条件',
       value: '值',
     },
+    detailTools: {
+      Convert: '转化',
+      Delete: '删除',
+      Sharing: '分享给其他用户',
+      FindDuplicates: '查询重复客户',
+    },
+    detailModules: {
+      TaskOpen: '未完成的任务',
+      TaskHistory: '任务历史',
+      EmailSent: '已发送的邮件',
+      Attachments: '附件',
+      Logs: '日志',
+    },
   },
   en: {
     button: {
@@ -115,6 +143,19 @@ export default {
       field: 'Field',
       condition: 'Condition',
       value: 'Value',
+    },
+    detailTools: {
+      Convert: 'Convert',
+      Delete: 'Delete',
+      Sharing: 'Sharing',
+      FindDuplicates: 'Find Duplicates',
+    },
+    detailModules: {
+      TaskOpen: 'Task Open',
+      TaskHistory: 'Task History',
+      EmailSent: 'Email Sent',
+      Attachments: 'Attachments',
+      Logs: 'Logs',
     },
   },
 };
