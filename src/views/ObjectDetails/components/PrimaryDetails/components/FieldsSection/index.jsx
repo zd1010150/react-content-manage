@@ -5,7 +5,14 @@ import { Row, Col } from 'antd';
 
 import { Section, CustomField } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
-import { setActiveField, resetActiveField, setFieldValue, resetFieldValue } from '../../flow/actions';
+const { DateOnly, Display } = Enums.FieldTypes;
+import {
+  setActiveField,
+  resetActiveField,
+  setFieldValue,
+  resetFieldValue,
+  tryFetchFieldOptions,
+} from '../../flow/actions';
 
 const defaultProps = {
   code: 'code',
@@ -24,21 +31,18 @@ const propTypes = {
 class FieldsSection extends Component {
   handleBlur = $ => this.props.resetActiveField()
 
-  handleChange = (id, value) => {
-    console.log(`changing fieldId: ${id} and its value -> ${value}`);
-    const { code, setFieldValue } = this.props;
-    setFieldValue(code, id, value);
+  handleChange = (id, value) => this.props.setFieldValue(this.props.code, id, value)
+
+  handleDoubleClick = id => this.props.setActiveField(this.props.code, id)
+
+  handleDropdownOpen = (id, options) => {
+    if (!options || options.length < 1) {
+      const { code, tryFetchFieldOptions } = this.props;
+      tryFetchFieldOptions(code, 1);
+    }
   }
 
-  handleDoubleClick = id => {
-    const { code, setActiveField } = this.props;
-    setActiveField(code, id);
-  }
-
-  handleRevertClick = id => {
-    const { code, resetFieldValue } = this.props;
-    resetFieldValue(code, id);
-  }
+  handleRevertClick = id => this.props.resetFieldValue(this.props.code, id)
 
   render() {
     const { code, title, fields, columns } = this.props;
@@ -47,6 +51,9 @@ class FieldsSection extends Component {
       xs: Enums.AntdGridMax,
     };
 
+    // TODO: will be replaced shortly by props
+    const dateFormat = 'YYYY-MM-DD';
+    const timeFormat = 'YYYY-MM-DD HH:mm:ss';
     return (
       <Section
         key={code}
@@ -55,12 +62,16 @@ class FieldsSection extends Component {
       >
         <Row>
           {fields.map((field, i) => (
-            <Col key={i} {...colLayout}>
+            <Col key={field.key} {...colLayout}>
               <CustomField
+                key={field.key}
                 {...field}
-                type={field.active ? field.type : Enums.FieldTypes.Display}
+                lookupDisplayKey={'name'}
+                format={field.type === DateOnly ? dateFormat : timeFormat}
+                type={field.active ? field.type : Display}
                 onChange={this.handleChange}
                 onDoubleClick={this.handleDoubleClick}
+                onDropdownOpen={this.handleDropdownOpen}
                 onRevertClick={this.handleRevertClick}
                 onBlur={this.handleBlur}
               />
@@ -75,13 +86,16 @@ class FieldsSection extends Component {
 
 FieldsSection.defaultProps = defaultProps;
 FieldsSection.propTypes = propTypes;
-const mapStateToProps = ({ objectDetails }) => ({
+const mapStateToProps = ({ global, objectDetails }) => ({
+  language: global.language,
   data: objectDetails.primaryDetails.data,
+  // TODO: find global setting / companyinfo for date/datetime format
 });
 const mapDispatchToProps = {
   setActiveField,
   resetActiveField,
   setFieldValue,
   resetFieldValue,
+  tryFetchFieldOptions,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FieldsSection);

@@ -6,9 +6,10 @@ export const setTools = tools => ({
   payload: { tools },
 });
 
-export const tryDelete = (id, objectType) => dispatch => httpDelete(`/admin/${objectType}/${id}`, {}, dispatch).then((data) => {
-  if (data && !_.isEmpty(data.data)) {
-    console.log('delete success');
-    // dispatch(deleteSuccess());
-  }
-});
+export const tryDeleteEntity = (id, objectType) => dispatch =>
+    httpDelete(`/admin/${objectType}/${id}`, {}, dispatch).then((data) => {
+      if (data && !_.isEmpty(data.data)) {
+        console.log('delete success');
+        // dispatch(deleteSuccess());
+      }
+    });

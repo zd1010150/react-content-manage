@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { Button } from 'antd';
+import { Button, Popconfirm } from 'antd';
 
 import Enums from 'utils/EnumsManager';
 
@@ -12,8 +12,8 @@ const { Leads, Accounts, Opportunities, Report, Email } = Enums.ObjectTypes;
 const { Convert, Delete, Sharing, FindDuplicates } = Enums.DetailTools;
 
 const renderToolByCode = (code, formatMessage, clickHandler) => {
-  const i18nPrefix = 'global.ui.detailTools';
-  const text = formatMessage({ id: `${i18nPrefix}.${code}` });
+  const i18nPrefix = 'global.ui';
+  const text = formatMessage({ id: `${i18nPrefix}.detailTools.${code}` });
 
   switch(code) {
     case Convert:
@@ -34,14 +34,21 @@ const renderToolByCode = (code, formatMessage, clickHandler) => {
       );
     case Delete:
       return (
-        <Button
-          className="ml-sm"
-          key={code}
-          size="small"
-          onClick={e => clickHandler()}
+        <Popconfirm
+          placement="bottomRight"
+          title={formatMessage({ id: `${i18nPrefix}.dialog.deleteTitle` })}
+          onConfirm={e => clickHandler()}
+          okText={formatMessage({ id: `${i18nPrefix}.button.ok` })}
+          cancelText={formatMessage({ id: `${i18nPrefix}.button.cancel` })}
         >
-          {text}
-        </Button>
+          <Button
+            className="ml-sm"
+            key={code}
+            size="small"
+          >
+            {text}
+          </Button>
+        </Popconfirm>
       );
     default:
       return null;

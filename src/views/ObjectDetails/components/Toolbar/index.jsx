@@ -5,7 +5,7 @@ import { Row } from 'antd';
 
 import Enums from 'utils/EnumsManager';
 import { DetailTopButtons } from 'components/ui/index';
-import { setTools, tryDelete } from './flow/actions';
+import { setTools, tryDeleteEntity } from './flow/actions';
 
 
 const defaultProps = {
@@ -29,10 +29,7 @@ const propTypes = {
 
 
 class Toolbar extends Component {
-  handleDelete = id => {
-    console.log(`deleting id is ${id}`);
-    this.props.tryDelete(id, this.props.objectType);
-  }
+  handleDelete = id => this.props.tryDeleteEntity(id, this.props.objectType)
 
   render () {
     const { objectId, objectType, tools } = this.props;
@@ -57,6 +54,6 @@ const mapStateToProps = ({ global, objectDetails }) => ({
   tools: objectDetails.toolbar.tools,
 });
 const mapDispatchToProps = {
-  tryDelete,
+  tryDeleteEntity,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);
