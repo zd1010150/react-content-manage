@@ -37,12 +37,12 @@ const BaseEnums = Object.freeze({
   }),
 
   DetailModules: Object.freeze({
-    Opportunities: 'opportunities',
-    TaskOpen: 'taskOpen',
-    TaskHistory: 'taskHistory',
-    EmailSent: 'emailSent',
-    Attachments: 'attachments',
-    Logs: 'logs',
+    opportunities: 'opportunities',
+    taskOpen: 'taskOpen',
+    taskHistory: 'taskHistory',
+    emailSent: 'emailSent',
+    attachments: 'attachments',
+    logs: 'logs',
   }),
 
 });
