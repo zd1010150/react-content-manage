@@ -49,10 +49,11 @@ class EmailTemplatePermission extends React.Component {
     }
 
     save = () => {
-        const {updateShareFolderData, addedPermissionDepartment, addedPermissionUser} = this.props;
+        const {updateShareFolderData, addedPermissionDepartment, addedPermissionUser, selectedFolder} = this.props;
         const shareToTeams = addedPermissionDepartment.map((item)=>item.id)
         const shareToUsers = addedPermissionUser.map((item)=>item.id)
-        updateShareFolderData({shareToTeams, shareToUsers})
+        const folderId = selectedFolder.id;
+        updateShareFolderData({folderId, shareToTeams, shareToUsers})
     }
 
     render() {
@@ -73,13 +74,11 @@ class EmailTemplatePermission extends React.Component {
             setSelectedUser,
             addPermissionTeam,
             addedPermissionDepartment,
-            addedPermissionUser
+            addedPermissionUser,
+            selectedFolder,
+            isCurrentUser
         } = this.props;
-        console.log('teamUsers', teamUsers)
         const {formatMessage} = this.props.intl;
-        const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {
-            setPermissionVisible(!isPermissionVisible)
-        }}><Icon type="edit"/>{ formatMessage({id: 'page.emailTemplates.hideDepartments'}) }</Button></div>;
         return (
             <div className="pl-lg pt-md pb-lg">
                 <div>{formatMessage({id: 'page.emailTemplates.permissionTitle'})}</div>
@@ -92,7 +91,7 @@ class EmailTemplatePermission extends React.Component {
                     withIcon
                 />
                 {
-                    !isPermissionVisible &&
+                    !isPermissionVisible && selectedFolder.id && isCurrentUser() &&
                     <Button className="email-theme-btn mt-sm" size="small" onClick={() => {
                         setPermissionVisible(true)
                     }}><Icon type="user"/>{ formatMessage({id: 'page.emailTemplates.addNewUser'}) }</Button>

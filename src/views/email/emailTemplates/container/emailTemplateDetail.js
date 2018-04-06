@@ -2,7 +2,7 @@
 import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import {intlShape, injectIntl} from 'react-intl';
-import {Row, Col, Button, Icon, Radio, Table, Popconfirm} from 'antd';
+import {Row, Col, Button, Icon, Radio, Table, Popconfirm, Modal} from 'antd';
 import {Panel} from 'components/ui/index';
 import {setTeams} from 'store/global/action';
 import {updateUsers} from 'views/Setup/Users/flow/action';
@@ -22,7 +22,7 @@ import {
 } from '../../flow/action';
 import {getTeamUsers, getSelectedTeamName} from '../../flow/reselect';
 import {Tabs} from 'antd';
-import { withRouter } from "react-router";
+import {withRouter} from "react-router";
 import styles from '../emailTemplates.less';
 const cx = classNames.bind(styles);
 const RadioGroup = Radio.Group;
@@ -92,9 +92,9 @@ const TabSwitcher = ({formatMessage, setPermissionSettingVisible, isPermissionSe
     </Row>
 )
 
-const Templates = ({templates, pagination, columns, formatMessage, isSharedByVisible, loginUser, selectedUser}) => (
+const Templates = ({templates, pagination, columns, formatMessage, isSharedByVisible, isCurrentUser, selectedUser}) => (
     <Fragment>
-        {!isSharedByVisible && loginUser.id === selectedUser.id &&
+        {!isSharedByVisible && isCurrentUser() &&
         <div style={{textAlign: 'right', height: 30, margin: '10px 15px'}}>
             <NavLink to='/setup/email/templates-creation'>
                 <Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {
@@ -110,12 +110,41 @@ const Templates = ({templates, pagination, columns, formatMessage, isSharedByVis
     </Fragment>
 )
 
-const TemplatePermission = () => (
-    <EmailTemplatePermission />
+const TemplatePermission = ({isCurrentUser, selectedFolder}) => (
+    <EmailTemplatePermission isCurrentUser={isCurrentUser} selectedFolder={selectedFolder}/>
 )
 
 class EmailTemplateDetail extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {visible: false}
+    }
     componentDidMount() {
+
+    }
+
+    showModal = () => {
+        this.setState({
+            visible: true,
+        });
+    }
+    handleOk = (e) => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    }
+    handleCancel = (e) => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    }
+
+
+    isCurrentUser = () => {
+        const {selectedUser, loginUser} = this.props;
+        return loginUser.id === selectedUser.id
     }
 
     render() {
@@ -145,18 +174,35 @@ class EmailTemplateDetail extends React.Component {
                 key: 'id',
                 render: record => (
                     <span>
-            <Icon type="edit" onClick={() => {
-                fetchTemplateData({templateId: record.id, cb: history.push('template-edit/' + record.id)});
+                         {
+                             this.isCurrentUser() &&
+                             <Icon type="edit" onClick={() => {
+                                 fetchTemplateData({
+                                     templateId: record.id,
+                                     cb: history.push('template-edit/' + record.id)
+                                 });
 
-            }}/>
-            <Popconfirm
-                title='Are you sure to delete it?'
-                onConfirm={() => deleteTemplate({templateId: record.id, folderId: selectedFolder.id})}
-            >
-                <Icon type="delete" className="danger pl-lg"/>
-            </Popconfirm>
+                             }}/>
+                         }
+                        {
+                            !this.isCurrentUser() &&
+                            <Icon type="eye-o" onClick={() => {
+                                fetchTemplateData({templateId: record.id, cb: this.showModal()});
 
-          </span>
+                            }}/>
+                        }
+
+                        {
+                            this.isCurrentUser() && <Popconfirm
+                                title='Are you sure to delete it?'
+                                onConfirm={() => deleteTemplate({templateId: record.id, folderId: selectedFolder.id})}
+                            >
+                                <Icon type="delete" className="danger pl-lg"/>
+                            </Popconfirm>
+                        }
+
+
+                </span>
                 ),
             }, {
                 title: formatMessage({id: 'page.emailTemplates.templateName'}),
@@ -179,7 +225,17 @@ class EmailTemplateDetail extends React.Component {
         ];
         return (
             <Panel panelClasses="email-theme-panel" actionsLeft={actionsLeft}
-                   actionsRight={(isSharedByVisible || loginUser.id !== selectedUser.id) ? null : actionsRight}>
+                   actionsRight={(isSharedByVisible || !this.isCurrentUser()) ? null : actionsRight}>
+                <Modal
+                    title="Basic Modal"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                >
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                </Modal>
                 <Folders
                     formatMessage={formatMessage}
                     setSelectedFolderData={setSelectedFolderData}
@@ -200,9 +256,9 @@ class EmailTemplateDetail extends React.Component {
                                    columns={columns}
                                    formatMessage={formatMessage}
                                    isSharedByVisible={isSharedByVisible}
-                                   loginUser={loginUser}
+                                   isCurrentUser={this.isCurrentUser}
                                    selectedUser={selectedUser}/> :
-                        <TemplatePermission />
+                        <TemplatePermission isCurrentUser={this.isCurrentUser} selectedFolder={selectedFolder}/>
                 }
             </Panel>
         );

@@ -30,7 +30,9 @@ import {
   EMAIL_TEMPLATES_SET_SELECTED_PERMISSION_DEPARTMENT,
   EMAIL_TEMPLATES_ADD_PERMISSION_DEPARTMENT,
   EMAIL_TEMPLATES_ADD_PERMISSION_USER,
-  EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION
+  EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION,
+  EMAIL_TEMPLATES_SET_PERMISSION_DEPARTMENTS,
+  EMAIL_TEMPLATES_SET_PERMISSION_USERS
 } from "./actionType";
 
 const url = "/";
@@ -56,15 +58,21 @@ export const getUserFolderData = userId => dispatch =>
   get(`/admin/email_folders/user/${userId}`, {}, dispatch).then(data => {
     //data will be {own: {data: []}, shared_by: {data: []}}
     console.log("1111", data);
-    if (data.own && !_.isEmpty(data.own.data)) {
-      dispatch(setUserFolderData(data.own.data));
-    } else {
-      dispatch(setUserFolderData([]));
-    }
-    if (data.shared_by && !_.isEmpty(data.shared_by.data)) {
-      dispatch(setSharedFolderData(data.shared_by.data));
-    } else {
-      dispatch(setSharedFolderData([]));
+    if (!_.isEmpty(data)) {
+      dispatch(setTemplatesData([]));
+      dispatch(setPermissionTeams([]));
+      dispatch(setPermissionUsers([]));
+      dispatch(setSelectedFolder({}));
+      if (data.own && !_.isEmpty(data.own.data)) {
+        dispatch(setUserFolderData(data.own.data));
+      } else {
+        dispatch(setUserFolderData([]));
+      }
+      if (data.shared_by && !_.isEmpty(data.shared_by.data)) {
+        dispatch(setSharedFolderData(data.shared_by.data));
+      } else {
+        dispatch(setSharedFolderData([]));
+      }
     }
   });
 
@@ -92,11 +100,27 @@ export const setEditFolderData = editFolders => ({
   editFolders
 });
 
-//Set Selected Folder
-export const setSelectedFolderData = selectedFolder => ({
+export const setSelectedFolder = selectedFolder => ({
   type: EMAIL_TEMPLATES_SET_SELECTED_FOLDER,
   selectedFolder
 });
+
+//Set Selected Folder
+export const setSelectedFolderData = selectedFolder => (dispatch, getState) => {
+  dispatch(setSelectedFolder(selectedFolder));
+
+  const sharedToTeams = selectedFolder.shared_to_teams.map(item => ({
+    id: item.id,
+    name: item.name
+  }));
+  const shardToUsers = selectedFolder.shared_to_users.map(item => ({
+    id: item.id,
+    name: item.name,
+    team_id: true
+  }));
+  dispatch(setPermissionTeams(sharedToTeams));
+  dispatch(setPermissionUsers(shardToUsers));
+};
 
 export const uploadFolders = cb => (dispatch, getState) => {
   const state = getState();
@@ -224,23 +248,26 @@ export const updateTemplateData = ({
 };
 
 export const updateShareFolderData = ({
-                                       shareToUsers,
-                                       shareToTeams,
-                                       cb
-                                   }) => (dispatch, getState) => {
-    post(
-        `/admin/email_folders/me/1/share`,
-        { share_to_users: shareToUsers, share_to_teams: shareToTeams },
-        dispatch
-    ).then(data => {
-        if (!_.isEmpty(data)) {
-
-            console.log("data", data);
-            if (_.isFunction(cb)) {
-                cb();
-            }
-        }
-    });
+  folderId,
+  shareToUsers,
+  shareToTeams,
+  cb
+}) => (dispatch, getState) => {
+  console.log("folderId", folderId);
+  const state = getState();
+  post(
+    `/admin/email_folders/me/${folderId}/share`,
+    { share_to_users: shareToUsers, share_to_teams: shareToTeams },
+    dispatch
+  ).then(data => {
+    if (!_.isEmpty(data)) {
+      console.log("data", data);
+      dispatch(getUserFolderData(state.loginUser.id));
+      if (_.isFunction(cb)) {
+        cb();
+      }
+    }
+  });
 };
 
 export const deleteTemplate = ({ templateId, folderId, cb }) => (
@@ -326,6 +353,14 @@ export const addPermissionTeam = payload => ({
 });
 export const addPermissionUser = payload => ({
   type: EMAIL_TEMPLATES_ADD_PERMISSION_USER,
+  payload
+});
+export const setPermissionTeams = payload => ({
+  type: EMAIL_TEMPLATES_SET_PERMISSION_DEPARTMENTS,
+  payload
+});
+export const setPermissionUsers = payload => ({
+  type: EMAIL_TEMPLATES_SET_PERMISSION_USERS,
   payload
 });
 export const removeEntityFromSelection = payload => ({

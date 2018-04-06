@@ -32,6 +32,8 @@ import {
   EMAIL_TEMPLATES_ADD_PERMISSION_DEPARTMENT,
   EMAIL_TEMPLATES_ADD_PERMISSION_USER,
   EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION,
+  EMAIL_TEMPLATES_SET_PERMISSION_DEPARTMENTS,
+  EMAIL_TEMPLATES_SET_PERMISSION_USERS,
   EMAIL_TEMPLATES_UPDATE_TEMPLATE
 } from "./actionType";
 
@@ -332,6 +334,8 @@ const addedPermissionDepartment = (state = [], action) => {
         }
       });
       return isDuplicated ? state : [...state, payload];
+    case EMAIL_TEMPLATES_SET_PERMISSION_DEPARTMENTS:
+      return payload;
     case EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION:
       return payload.isTeam
         ? state.filter(item => item.id !== payload.itemId)
@@ -351,6 +355,8 @@ const addedPermissionUser = (state = [], action) => {
         }
       });
       return isDuplicated ? state : [...state, payload];
+    case EMAIL_TEMPLATES_SET_PERMISSION_USERS:
+      return payload;
     case EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION:
       return payload.isTeam
         ? state
