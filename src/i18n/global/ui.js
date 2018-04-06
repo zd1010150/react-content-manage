@@ -6,12 +6,12 @@ const {
   FindDuplicates,
 } = Enums.DetailTools;
 const {
-  Opportunities,
-  TaskOpen,
-  TaskHistory,
-  EmailSent,
-  Attachments,
-  Logs,
+  opportunities,
+  taskOpen,
+  taskHistory,
+  emailSent,
+  attachments,
+  logs,
 } = Enums.DetailModules;
 
 export default {
@@ -57,7 +57,8 @@ export default {
     dialog: {
       info: '提示',
       warning: '警告',
-      deleteTitle: '确定删除这条记录',
+      deleteTitle: '确定删除这条记录？',
+      revertTitle: '所有修改后的值将会被重置，您确定吗？',
     },
     tree: {
       default: '默认部门',
@@ -74,18 +75,18 @@ export default {
       value: '值',
     },
     detailTools: {
-      Convert: '转化',
-      Delete: '删除',
-      Sharing: '分享给其他用户',
-      FindDuplicates: '查询重复客户',
+      [Convert]: '转化',
+      [Delete]: '删除',
+      [Sharing]: '分享给其他用户',
+      [FindDuplicates]: '查询重复记录',
     },
     detailModules: {
-      Opportunities: 'Opportunities',
-      TaskOpen: '未完成的任务',
-      TaskHistory: '任务历史',
-      EmailSent: '已发送的邮件',
-      Attachments: '附件',
-      Logs: '日志',
+      [opportunities]: 'Opportunities',
+      [taskOpen]: '未完成的任务',
+      [taskHistory]: '任务历史',
+      [emailSent]: '已发送的邮件',
+      [attachments]: '附件',
+      [logs]: '日志',
     },
   },
   en: {
@@ -130,7 +131,8 @@ export default {
     dialog: {
       info: 'Info',
       warning: 'Warning',
-      deleteTitle: 'Are you sure to delete this record?',
+      deleteTitle: 'Are you sure to delete this record ?',
+      revertTitle: 'Are you sure to revert all values ?',
     },
     tree: {
       default: 'No Department',
@@ -147,18 +149,18 @@ export default {
       value: 'Value',
     },
     detailTools: {
-      Convert: 'Convert',
-      Delete: 'Delete',
-      Sharing: 'Sharing',
-      FindDuplicates: 'Find Duplicates',
+      [Convert]: 'Convert',
+      [Delete]: 'Delete',
+      [Sharing]: 'Sharing',
+      [FindDuplicates]: 'Find Duplicates',
     },
     detailModules: {
-      Opportunities: 'Opportunities',
-      TaskOpen: 'Task Open',
-      TaskHistory: 'Task History',
-      EmailSent: 'Email Sent',
-      Attachments: 'Attachments',
-      Logs: 'Logs',
+      [opportunities]: 'Opportunities',
+      [taskOpen]: 'Task Open',
+      [taskHistory]: 'Task History',
+      [emailSent]: 'Email Sent',
+      [attachments]: 'Attachments',
+      [logs]: 'Logs',
     },
   },
 };

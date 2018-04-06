@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, Input, InputNumber, DatePicker } from 'antd';
+import moment from 'moment';
+import { Select, Input, InputNumber, DatePicker, Row, Col, Icon, Tooltip } from 'antd';
 const { TextArea } = Input;
 const Option = Select.Option;
-import moment from 'moment';
 import classNames from 'classnames/bind';
 import styles from './index.less';
 const cx = classNames.bind(styles);
@@ -12,53 +12,86 @@ import { DisplayField, EmailInput } from './index';
 import { getRange } from 'utils/common';
 import Enums from 'utils/EnumsManager';
 
+//presets
+const {
+  DateOnly,
+  DateTime,
+  Email,
+  LongText,
+  Lookup,
+  NumberInput,
+  PickList,
+  TextInput,
+  Display,
+} = Enums.FieldTypes;
+
+
 const defaultProps = {
-  type: '',
-  size: 'small',
+  initialValue: '',
   options: [],
+  size: 'small',
+  type: '',
 };
 const propTypes = {
-  type: PropTypes.oneOf(Enums.FieldTypesInArray).isRequired,
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
-  defaultValue: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.array,
-  ]),
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.array,
-  ]),
-  label: PropTypes.string,
-  options: PropTypes.array,
+  active: PropTypes.bool.isRequired,  
+  helpText: PropTypes.string,
+  id: PropTypes.number.isRequired,
+  initialValue: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   onChange: PropTypes.func,
+  onDoubleClick: PropTypes.func,
+  onRevertClick: PropTypes.func,
+  options: PropTypes.array,
+  readOnly: PropTypes.bool.isRequired,
+  required: PropTypes.bool.isRequired,
+  size: PropTypes.oneOf(['small', 'medium', 'large']),
+  type: PropTypes.oneOf(Enums.FieldTypesInArray).isRequired,
+  value: PropTypes.string,
 };
 
-const Fields = ({
+
+const CustomField = ({
+  active,
+  helpText,
   id,
-  type,
+  initialValue,
   label,
-  options,
+  name,
+  onBlur,
   onChange,
-  ...others,
+  onDoubleClick,
+  onRevertClick,
+  options,
+  readOnly,
+  required,
+  size,
+  type,
+  value,
 }) => {
 
-  const {
-    Date,
-    DateTime,
-    Email,
-    LongText,
-    Lookup,
-    Number,
-    PickList,
-    Text,
-    Display,
-  } = Enums.FieldTypes;
+  const _onChange = (id, value) => {
+    if (_.isFunction(onChange)) {
+      onChange(id, value);
+    }
+  };  
+
+  const _onBlur = $ => {
+    if (_.isFunction(onBlur)) {
+      onBlur();
+    }
+  };
+
+  const baseCls = cx('customField');  
 
   let field = null;
+  const others = {
+    size,
+    onBlur: e => _onBlur(),
+  };
+
   switch (type) {
-    case Date:
+    case DateOnly:
       field = (
         <DatePicker
           {...others}
@@ -117,7 +150,7 @@ const Fields = ({
         </Select>
       );
       break;
-    case Number:
+    case NumberInput:
       // Scale is how many digits will show after the dot
       // Precision is how many digits for the number, including the decimal part
       const { precision, scale } = others;
@@ -138,53 +171,61 @@ const Fields = ({
       break;
     case PickList:
       field = (
-        <Select
+        <Select          
+          className={baseCls}
+          onChange={value => _onChange(id, value)}
           {...others}
-          className={cx('customField')}
-          mode="tags"
-          style={{ width: '100%' }}
-          onChange={values => onChange(id, values)}
         >
           {options.map(option => <Option key={option.id}>{option.option_value}</Option>)}
         </Select>
       );
       break;
-    case Text:
+    case TextInput:
       field = (
         <Input
+          className={baseCls}
+          value={value}
+          onChange={e => _onChange(id, e.target.value)}
           {...others}
-          className={cx('customField')}
-          onChange={e => onChange(id, e.target.value)}
         />
       );
       break;
     case Display:
       field = (
         <DisplayField
-          {...others}
-          className={cx('customField')}
-          label={'testabc'}
-          helpText={'tooltip of test'}
-          value={'test value'}
-          isLocked={true}
-          isValueChanged={true}
-          onReloadClick={()=>console.log('clicking reload')}
-          onDoubleClick={()=>console.log('on double click')}
+          className={baseCls}
+          id={id}
+          isValueChanged={value !== initialValue}
+          readOnly={readOnly}
+          value={value}
+          onRevertClick={onRevertClick}
+          onDoubleClick={onDoubleClick}
         />
       );
       break;
     default:
-      throw new Error('Type is not found.');
+      throw new Error('The type is not found in custom field.');
   }
 
   return (
-    <div>
-      {label && <label>{label}</label>}
-      {field}
-    </div>
+    <Row className={cx('row')}>
+      <Col xs={24} sm={8} style={{ textAlign: 'right' }}>
+        <span className={required ? cx('required') : ''}>
+          {label}
+        </span>
+        {!helpText ? <Tooltip title={helpText}>
+          <Icon
+            size="small"
+            type="question-circle"
+            className={cx('helpIcon')}
+          />
+        </Tooltip> : <div className={cx('iconPlaceholder')} />}
+      </Col>
+      <Col xs={24} sm={16}>{field}</Col>
+    </Row>
   );
 };
 
-Fields.defaultProps = defaultProps;
-Fields.propTypes = propTypes;
-export default Fields;
+CustomField.defaultProps = defaultProps;
+CustomField.propTypes = propTypes;
+export default CustomField;

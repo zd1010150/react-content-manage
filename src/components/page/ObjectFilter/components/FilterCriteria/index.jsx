@@ -90,8 +90,8 @@ class FilterCriteriaWrapper extends Component {
       siderSelection,
     } = this.props;
 
-    const { object } = match.params;
-    const theme = getThemeByType(object);
+    const { objectType } = match.params;
+    const theme = getThemeByType(objectType);
 
     return (
       <FilterCriteria

@@ -1,14 +1,14 @@
 const BaseEnums = Object.freeze({
   
   FieldTypes: Object.freeze({
-    Date: 'date',
+    DateOnly: 'date',
     DateTime: 'datetime',
     Email: 'email',
     LongText: 'long_text',
     Lookup: 'lookup',
-    Number: 'number',
+    NumberInput: 'number',
     PickList: 'picklist',
-    Text: 'text',
+    TextInput: 'text',
     // for display only field
     Display: 'display',
   }),
@@ -100,6 +100,7 @@ const EnumsManager = Object.freeze({
   // This is used to avoid conflicts and make each one become unique in global action types pool
   ReduxActionTypePrefix: Object.freeze({
     VIEWFILTER: 'VIEW_FILTER_',
+    VIEWDETAILS: 'VIEW_DETAILS_',
   }),
 
   ViewVisibilityIds: Object.freeze({
@@ -110,6 +111,27 @@ const EnumsManager = Object.freeze({
   RootTeamId: 0,
 
   NoTeamId: -1,
+
+  DetailActions: Object.freeze([
+    {
+      key: 'convert',
+      path: 'convert',
+    },
+    {
+      key: 'delete',
+      path: '',
+    },
+    {
+      key: 'sharing',
+      path: 'sharing',
+    },
+    {
+      key: 'findDuplicates',
+      path: 'find',
+    },
+  ]),
+
+  AntdGridMax: 24,
 
   DetailTools: BaseEnums.DetailTools,
 

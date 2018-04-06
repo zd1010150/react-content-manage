@@ -3,6 +3,12 @@ import { toUtc } from 'utils/dateTimeUtils';
 import Enums from 'utils/EnumsManager';
 import { SAVE_FAILED, SAVE_SUCCESS } from './actionTypes';
 
+const {
+  DateOnly,
+  DateTime,
+} = Enums.FieldTypes;
+
+
 // Format redux to cater for API data format requirement
 const mapDataToAPI = (object_type, data) => {
   const { name, fields, filterCriteria, visibilities } = data;
@@ -17,9 +23,9 @@ const mapDataToAPI = (object_type, data) => {
     let newValue = filter.value;
     // TODO: replace the format with the value from backend
     // TODO: replace offset with user info timezone, need to consider undefined
-    if (filter.type === Enums.FieldTypes.Date
-        || filter.type === Enums.FieldTypes.DateTime) {
-      newValue = toUtc(value, '+1100', filter.type === Enums.FieldTypes.Date ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss');
+    if (filter.type === DateOnly
+        || filter.type === DateTime) {
+      newValue = toUtc(value, '+1100', filter.type === DateOnly ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss');
     }
 
     return {

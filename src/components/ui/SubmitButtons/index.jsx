@@ -17,7 +17,6 @@ const SubmitButtons = ({ intl, onSaveClick }) => {
     <Row style={{ margin: '30px 15px 20px' }}>
       <Button
         className="ml-sm lead-theme-btn"
-        size="small"
         onClick={onSaveClick}
       >
         <Icon type="save" size="small" />
@@ -25,7 +24,6 @@ const SubmitButtons = ({ intl, onSaveClick }) => {
       </Button>
       <Button
         className="ml-sm"
-        size="small"
       >
         <Link to="/leads">
           <Icon type="close" size="small" />
