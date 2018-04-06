@@ -14,7 +14,7 @@ import {
 import { setTools } from '../../Toolbar/flow/actions';
 
 const getFetchUrl = (id, type) => {
-  if (_.isEmpty(id) || id === Enums.PhantomID) {
+  if (_.isNil(id) || id === Enums.PhantomID) {
     return `/admin/${type}/create`;
   }
   return `/admin/${type}/${id}/page_layout`;
@@ -79,8 +79,12 @@ export const resetFieldValue = (code, fieldId) => ({
 
 export const trySaveClient = (id, type, allData) => dispatch => 
     post(`/admin/${type}`, extractFieldValues(allData), dispatch).then((data) => {
-      if (data) {
+      if (data && !_.isEmpty(data.data)) {
         console.log('save success');
+        // refetch data by object id
+        // but i don't think that's a good idea, it makes more sense to stay in this page.
+        // TODO: discuss to decide the behavior
+        dispatch(tryFetch(data.data.id, type));
         // TODO: think about what user want/normally to do next after add/update a lead
         // if they want to stay in this page, then we may need backend to respond with tools and modules
         // dispatch(setTools(tools));
@@ -90,8 +94,12 @@ export const trySaveClient = (id, type, allData) => dispatch =>
 
 export const tryUpdateClient = (id, type, allData) => dispatch => 
     patch(`/admin/${type}/${id}`, extractFieldValues(allData), dispatch).then((data) => {
-      if (data) {
+      if (data && !_.isEmpty(data.data)) {
         console.log('update success');
+        // refetch data by object id
+        // but i don't think that's a good idea, it makes more sense to stay in this page.
+        // TODO: discuss to decide the behavior
+        dispatch(tryFetch(data.data.id, type));
       }
     });
 
