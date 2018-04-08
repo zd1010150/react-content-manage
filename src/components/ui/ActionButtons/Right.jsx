@@ -9,7 +9,7 @@ const defaultProps = {
 };
 const propTypes = {
   intl: intlShape.isRequired,
-  theme: PropTypes.oneOf(Enums.ThemeTypes),
+  theme: PropTypes.oneOf(Enums.ThemeTypesInArray),
 };
 
 const RightActions = ({ intl, theme, permissions }) => {
