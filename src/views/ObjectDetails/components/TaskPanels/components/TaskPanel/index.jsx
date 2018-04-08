@@ -81,8 +81,74 @@ const getColumnsByModule = (module, intl) => {
       break;
     case opportunities:
     case emailSent:
+      columns = [
+        {
+          dataIndex: 'subject',
+          title: formatMessage({ id: `${i18nPrefix}.subject` }),
+          sorter: true,
+        },
+        {
+          dataIndex: 'sent_date',
+          title: formatMessage({ id: `${i18nPrefix}.sentDate` }),
+          sorter: true,
+        },
+        {
+          dataIndex: 'open_date',
+          title: formatMessage({ id: `${i18nPrefix}.openDate` }),
+          sorter: true,
+        },
+        {
+          dataIndex: 'open_times',
+          title: formatMessage({ id: `${i18nPrefix}.openTimes` }),
+          sorter: true,
+        },
+        {
+          dataIndex: 'last_open',
+          title: formatMessage({ id: `${i18nPrefix}.lastOpenAt` }),
+          sorter: true,
+        },
+      ];
     case attachments:
+      columns = [
+        {
+          dataIndex: 'title',
+          title: formatMessage({ id: `${i18nPrefix}.title` }),
+          sorter: true,
+        },
+        {
+          dataIndex: 'type',
+          title: formatMessage({ id: `${i18nPrefix}.type` }),
+          sorter: true,
+        },
+        {
+          dataIndex: 'uploaded_at',
+          title: formatMessage({ id: `${i18nPrefix}.uploadAt` }),
+          sorter: true,
+        },
+        {
+          dataIndex: 'created_by',
+          title: formatMessage({ id: `${i18nPrefix}.createBy` }),
+          sorter: true,
+        },
+      ];
     case logs:
+      columns = [
+        {
+          dataIndex: 'date',
+          title: formatMessage({ id: `${i18nPrefix}.date` }),
+          sorter: true,
+        },
+        {
+          dataIndex: 'user',
+          title: formatMessage({ id: `${i18nPrefix}.user` }),
+          sorter: true,
+        },
+        {
+          dataIndex: 'action',
+          title: formatMessage({ id: `${i18nPrefix}.action` }),
+          sorter: true,
+        },
+      ];
       break;
     default:
       console.log('The module is not found.');
