@@ -10,7 +10,7 @@ const Sections = _ => (
       style={{background: '#fff'}}
       title="collapsible section example without body"
       titleStyle={{background: '#09c', color: '#fff'}}
-      body={null} />
+    />
     <br /><br />
     <h4>Collapsible section with body</h4>
     <Section
@@ -18,14 +18,18 @@ const Sections = _ => (
       style={{background: '#fff'}}
       titleStyle={{background: '#09c', color: '#fff'}}
       title="collapsible section example with body"
-      body={<Button>I'm part of the section body</Button>} />
+    >
+      <Button>I'm part of the section body</Button>
+    </Section>
     <br /><br />
     <h4>Normal Section Example</h4>
     <Section
       style={{background: '#fff'}}
       titleStyle={{background: '#09c', color: '#fff'}}
       title="collapsible section example without body"
-      body={<p>This is a paragraph in body</p>} />
+    >
+      <p>This is a paragraph in body</p>
+    </Section>
   </div>
 );
 

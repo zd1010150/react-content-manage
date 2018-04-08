@@ -24,10 +24,10 @@ class DeleteConfirmDialog extends React.Component {
       intl, modelConfig, visible, children,
     } = this.props;
     const { formatMessage } = intl;
-    const footer = (<div>
-      <Button type="danger" size="small" onClick={() => this.onOk()}><Icon type="delete" />{formatMessage({ id: 'global.ui.button.delete' })}</Button>
-      <Button className="mr-lg" size="small" onClick={() => this.onCancel()}><Icon type="close" />{formatMessage({ id: 'global.ui.button.cancel' })}</Button>
-                    </div>);
+    const footer = [
+      <Button type="danger" size="small" onClick={() => this.onOk()}><Icon type="delete" />{formatMessage({ id: 'global.ui.button.delete' })}</Button>,
+      <Button className="mr-lg" size="small" onClick={() => this.onCancel()}><Icon type="close" />{formatMessage({ id: 'global.ui.button.cancel' })}</Button>,
+    ];
     const config = Object.assign({}, {
       footer,
       title: formatMessage({ id: 'global.ui.dialog.warning' }),

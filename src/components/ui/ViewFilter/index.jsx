@@ -4,7 +4,7 @@ import { intlShape, injectIntl } from 'react-intl';
 import { Select, Col } from 'antd';
 const Option = Select.Option;
 import classNames from 'classnames/bind';
-import styles from './ViewFilter.less';
+import styles from './index.less';
 const cx = classNames.bind(styles);
 
 const defaultProps = {

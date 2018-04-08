@@ -2,6 +2,7 @@
 import React from 'react';
 import { Input } from 'antd';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 const Search = Input.Search;
 class FieldMappingInput extends React.Component {
@@ -9,7 +10,8 @@ class FieldMappingInput extends React.Component {
     const {
       field, fields, onSearch, onClick, onBlur, isEditing, disabled,
     } = this.props;
-    const value = fields.reduce((labelStr, f) => labelStr += `${f.field_label},`, '');
+
+    const value = _.isEmpty(fields) ? '' : fields.reduce((labelStr, f) => labelStr += `${f.field_label},`, '');
     return (
       <div>
         {

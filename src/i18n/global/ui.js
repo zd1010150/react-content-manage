@@ -1,3 +1,19 @@
+import Enums from 'utils/EnumsManager';
+const {
+  Convert,
+  Delete,
+  Sharing,
+  FindDuplicates,
+} = Enums.DetailTools;
+const {
+  opportunities,
+  taskOpen,
+  taskHistory,
+  emailSent,
+  attachments,
+  logs,
+} = Enums.DetailModules;
+
 export default {
   zh: {
     button: {
@@ -24,6 +40,7 @@ export default {
       massUpdate: '批量更新',
       massDelete: '批量删除',
       addToCampaign: '添加到营销活动',
+      replace: '替换',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -40,21 +57,36 @@ export default {
     dialog: {
       info: '提示',
       warning: '警告',
-      deleteTitle: '确定删除这条记录',
+      deleteTitle: '确定删除这条记录？',
+      revertTitle: '所有修改后的值将会被重置，您确定吗？',
     },
     tree: {
       default: '默认部门',
     },
     labels: {
-      viewName: '视图名称'
+      viewName: '视图名称',
     },
     errors: {
-      inputRequired: '必填项'
+      inputRequired: '必填项',
     },
     criteria: {
       field: '字段',
       condition: '条件',
       value: '值',
+    },
+    detailTools: {
+      [Convert]: '转化',
+      [Delete]: '删除',
+      [Sharing]: '分享给其他用户',
+      [FindDuplicates]: '查询重复记录',
+    },
+    detailModules: {
+      [opportunities]: 'Opportunities',
+      [taskOpen]: '未完成的任务',
+      [taskHistory]: '任务历史',
+      [emailSent]: '已发送的邮件',
+      [attachments]: '附件',
+      [logs]: '日志',
     },
   },
   en: {
@@ -82,6 +114,7 @@ export default {
       massUpdate: 'Mass Update',
       massDelete: 'Mass Delete',
       addToCampaign: 'Add to Campaign',
+      replace: 'Replace',
     },
     input: {
       searchStore: 'Search entire store here...',
@@ -98,7 +131,8 @@ export default {
     dialog: {
       info: 'Info',
       warning: 'Warning',
-      deleteTitle: 'Are you sure to delete this record?',
+      deleteTitle: 'Are you sure to delete this record ?',
+      revertTitle: 'Are you sure to revert all values ?',
     },
     tree: {
       default: 'No Department',
@@ -107,12 +141,26 @@ export default {
       viewName: 'View Name',
     },
     errors: {
-      inputRequired: 'The input is required.'
+      inputRequired: 'The input is required.',
     },
     criteria: {
       field: 'Field',
       condition: 'Condition',
       value: 'Value',
+    },
+    detailTools: {
+      [Convert]: 'Convert',
+      [Delete]: 'Delete',
+      [Sharing]: 'Sharing',
+      [FindDuplicates]: 'Find Duplicates',
+    },
+    detailModules: {
+      [opportunities]: 'Opportunities',
+      [taskOpen]: 'Task Open',
+      [taskHistory]: 'Task History',
+      [emailSent]: 'Email Sent',
+      [attachments]: 'Attachments',
+      [logs]: 'Logs',
     },
   },
 };

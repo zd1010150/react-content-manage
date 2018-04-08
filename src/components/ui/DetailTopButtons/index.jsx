@@ -1,0 +1,96 @@
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { injectIntl, intlShape } from 'react-intl';
+import { Link } from 'react-router-dom';
+import { Button } from 'antd';
+
+import Enums from 'utils/EnumsManager';
+
+// presets
+const { Leads, Accounts, Opportunities, Report, Email } = Enums.ObjectTypes;
+
+const { Convert, Delete, Sharing, FindDuplicates } = Enums.DetailTools;
+
+const renderToolByCode = (code, formatMessage, clickHandler) => {
+  const i18nPrefix = 'global.ui.detailTools';
+  const text = formatMessage({ id: `${i18nPrefix}.${code}` });
+
+  switch(code) {
+    case Convert:
+    case Sharing:
+    case FindDuplicates:
+      const link = '';
+      // const link = `../../${type}/${path}/${id}`;
+      return (
+        <Button
+          className="ml-sm"
+          key={code}
+          size="small"
+        >
+          <Link to={link}>
+            {text}
+          </Link>
+        </Button>
+      );
+    case Delete:
+      return (
+        <Button
+          className="ml-sm"
+          key={code}
+          size="small"
+          onClick={e => clickHandler()}
+        >
+          {text}
+        </Button>
+      );
+    default:
+      return null;
+  }
+};
+
+
+const propTypes = {
+  intl: intlShape.isRequired,
+  type: PropTypes.oneOf(Enums.ObjectTypesInArray).isRequired,
+  tools: PropTypes.arrayOf(
+    PropTypes.shape({
+      code: PropTypes.string.isRequired,
+      sequence: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  id: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]).isRequired,
+  onDelete: PropTypes.func,
+};
+
+
+const DetailTopButtons = ({ intl, type, tools, id, onDelete }) => {
+  const { formatMessage } = intl;
+
+  const _onDelete = $ => {
+    if (_.isFunction(onDelete)) {
+      onDelete(id);
+    }
+  };
+
+  switch(type) {
+    case Leads:
+    case Accounts:
+      return (
+        <Fragment>
+          {tools.map(tool => renderToolByCode(tool.code, formatMessage, _onDelete))}
+        </Fragment>
+      );
+    case Opportunities:
+    case Report:
+    case Email:
+    default:
+      return null;
+  }
+};
+
+
+DetailTopButtons.propTypes = propTypes;
+export default injectIntl(DetailTopButtons);

@@ -5,6 +5,20 @@ import { Input, DatePicker, InputNumber, Icon } from 'antd';
 
 import Enums from 'utils/EnumsManager';
 
+
+const {
+  DateOnly,
+  DateTime,
+  Email,
+  LongText,
+  Lookup,
+  NumberInput,
+  PickList,
+  TextInput,
+  Display,
+} = Enums.FieldTypes;
+
+
 const propTypes = {
   displayNum: PropTypes.number.isRequired,
   type: PropTypes.oneOf(Enums.FieldTypesInArray).isRequired,
@@ -28,24 +42,23 @@ const ValueCriteriaField = ({
   datetimeFormat = 'YYYY-MM-DD HH:mm:ss',
 }) => {
 
-  const { FieldTypes } = Enums;
   switch (type) {
-    case FieldTypes.Date:
-    case FieldTypes.DateTime:
+    case DateOnly:
+    case DateTime:
       return (
         <DatePicker
           allowClear={false}
           style={{ width: '100%' }}
           size="small"
-          format={type === FieldTypes.DateTime ? datetimeFormat : dateFormat}
-          showTime={type === FieldTypes.DateTime}
+          format={type === DateTime ? datetimeFormat : dateFormat}
+          showTime={type === DateTime}
           onChange={(date, dateString) => handleValueChange(displayNum, dateString)}
           // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
           // In this way we can use string outside, and only convert to certain time format in reducer.
           value={moment(value ? value : Date.now())}
         />
       );
-    case FieldTypes.Number:
+    case NumberInput:
       // TODO: add scale and precision as restriction rules
       return (
         <InputNumber
@@ -54,8 +67,8 @@ const ValueCriteriaField = ({
           onChange={value => handleValueChange(displayNum, value)}
         />
       );
-    case FieldTypes.PickList:
-    case FieldTypes.Lookup:
+    case PickList:
+    case Lookup:
       // TODO: replace with a customized component to enable select value from right side bar
       return (
         <Input
@@ -65,9 +78,9 @@ const ValueCriteriaField = ({
           value={value}
         />
       );
-    case FieldTypes.Email:
-    case FieldTypes.LongText:
-    case FieldTypes.Text:
+    case Email:
+    case LongText:
+    case TextInput:
       return <Input size="small" onChange={e => handleValueChange(displayNum, e.target.value)} value={value} />;
     default:
       throw Error('No such type in ValueCriteriaField component.');

@@ -40,3 +40,41 @@ export const getMappedTypes = createSelector([getGlobalTypes], (globalTypes) => 
   });
   return result;
 });
+
+const unvisibleUserReducer = setup => setup.fields.picklist.manageList.unvisibleUsers;
+const visibleUsersReducer = setup => setup.fields.picklist.manageList.visibleUsers;
+const selecteTeamIdReducer = setup => setup.fields.picklist.selectedTeam.selectedTeamId;
+
+export const getTeamUser = createSelector([
+  visibleUsersReducer,
+  selecteTeamIdReducer,
+  unvisibleUserReducer,
+], (visibleUsers, teamId, unvisibleUsers) => {
+  if (_.isEmpty(`${teamId}`)) {
+    return [];
+  }
+  const unvisibleIds = unvisibleUsers.map(v => `${v.id}`);
+
+  const teamUser = visibleUsers.filter(user => (Number(user.team_id) === Number(teamId) && unvisibleIds.indexOf(`${user.id}`) < 0));
+  if (_.isEmpty(teamUser)) {
+    return [];
+  }
+  return teamUser;
+});
+
+const manageListReducer = setup => setup.fields.picklist.manageList;
+export const getTeams = createSelector([
+  manageListReducer,
+], (manageList) => {
+  const { unvisibleTeams, visibleTeams } = manageList;
+  if (_.isEmpty(`${visibleTeams}`)) {
+    return [];
+  }
+  const unvisibleIds = unvisibleTeams.map(v => `${v.id}`);
+
+  const teams = visibleTeams.filter(user => (unvisibleIds.indexOf(`${user.id}`) < 0));
+  if (_.isEmpty(teams)) {
+    return [];
+  }
+  return teams;
+});

@@ -1,61 +1,91 @@
 /* eslint-disable no-shadow */
-import React, { Fragment } from 'react';
+import React from 'react';
 import _ from 'lodash';
-import classNames from 'classnames/bind';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
-import { Button, Icon, Radio, Col, Row, Table, Tag } from 'antd';
+import { Button, Col, Row, Table, Tag } from 'antd';
 import { connect } from 'react-redux';
 import { Panel } from 'components/ui/index';
-import { objTypeAndClassTypeMap, PAGE_ACTION } from 'config/app.config';
+import { objTypeAndClassTypeMap, PAGE_ACTION, PICKLIST_FIELD_TYPE } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
-import { setAddedFieldAttr, resetAddedFieldAttr, fetchBackground, duplicatFilter, setFieldLableisDuplicate } from '../flow/action';
-import { FIELD_ADD, FIELD_TYPE_SELECT } from '../flow/pageAction';
-import { getMappedTypes } from '../flow/reselect';
+import {
+  setAddedFieldAttr,
+  resetAddedFieldAttr,
+  fetchBackground,
+  duplicatFilter,
+  setFieldLableisDuplicate,
+  deletePickListValue,
+  addPickListValue,
+  sortPicklistValueToRemote,
+  replacePickListValueToRemote,
+  saveFieldToRemote,
+} from '../flow/action';
+import { FIELD_TYPE_SELECT } from '../flow/pageAction';
 import FieldForm from '../component/field/fieldForm';
+import PickListValue from '../component/field/picklistValue';
 
-const { ADD, EDIT } = PAGE_ACTION;
-const RadioGroup = Radio.Group;
+const { ADD } = PAGE_ACTION;
 
-class FieldAddSelecteTypeContainer extends React.Component {
+class FieldAddContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    if (_.isEmpty(props.addedField.field.type)) {
+      const { history, objectType } = props;
+      history.push(`/setup/${objectType}/fields?action=${FIELD_TYPE_SELECT}`);
+    }
+  }
   componentDidMount() {
     this.props.fetchBackground(this.props.objectType);
   }
-    onTypesChange = (e) => {
-      this.props.setAddedFieldAttr({ field: { type: e.target.value } });
-    }
+
     save = () => {
-      const { isDuplicate } = this.props;
+      const {
+        isDuplicate, saveFieldToRemote, objectType, addedField, history, resetAddedFieldAttr, fieldPrefix,
+      } = this.props;
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err && !isDuplicate) {
-          debugger;
-          console.log(values);
+          const create_data = Object.assign(values, {
+            field_name: `${fieldPrefix}${values.field_name}`,
+            crm_data_type: addedField.field.type,
+            notnull: _.isEmpty(values.notnull) ? false : values.notnull,
+          });
+          const picklist = addedField.picklist;
+          const append_page_layout_ids = addedField.appendPageLayoutIds;
+          saveFieldToRemote(objectType, { create_data, picklist, append_page_layout_ids }, () => {
+            history.push(`/setup/${objectType}/fields`);
+            resetAddedFieldAttr(objectType);
+          });
         }
       });
     }
     cancel =() => {
       const { history, resetAddedFieldAttr, objectType } = this.props;
-      history.push(`/setup/fields?objectType=${objectType}`);
+      history.push(`/setup/${objectType}/fields`);
       resetAddedFieldAttr(objectType);
     }
-    onSelectChange = (selectedRowKeys, selectedRows) => {
-      console.log(selectedRowKeys, selectedRowKeys);
+    onSelectChange = (selectedRowKeys) => {
+      const { setAddedFieldAttr } = this.props;
+      setAddedFieldAttr({ appendPageLayoutIds: selectedRowKeys });
     }
     goPrevious() {
       const { history, objectType } = this.props;
-      history.push(`/setup/fields?objectType=${objectType}&action=${FIELD_TYPE_SELECT}`);
+      history.push(`/setup/${objectType}/fields?action=${FIELD_TYPE_SELECT}`);
     }
     render() {
-      const { formatMessage, locale } = this.props.intl;
+      const { formatMessage } = this.props.intl;
       const {
         addedField,
         objectType,
-        types,
         layouts,
         fieldPrefix,
         duplicatFilter,
         isDuplicate,
         setFieldLableisDuplicate,
+        deletePickListValue,
+        setAddedFieldAttr,
+        addPickListValue,
+        sortPicklistValueToRemote,
+        replacePickListValueToRemote,
       } = this.props;
       const classType = objTypeAndClassTypeMap[objectType];
       const rowSelection = {
@@ -70,8 +100,8 @@ class FieldAddSelecteTypeContainer extends React.Component {
           title: formatMessage({ id: 'page.fields.department' }),
           key: 'department',
           render: (text, record) => {
-            if (_.isEmpty(record.assigned_to_teams.data)) {
-              return record.assigned_to_teams.data.map(t => <Tag>{t.name}</Tag>);
+            if (!_.isEmpty(record.assigned_to_teams.data)) {
+              return record.assigned_to_teams.data.map(t => <Tag key={t.id}>{t.name}</Tag>);
             }
             return '';
           },
@@ -79,11 +109,39 @@ class FieldAddSelecteTypeContainer extends React.Component {
       ];
       return (
         <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'global.properNouns.users' })} contentClasses="pt-lg pb-lg">
-          <FieldForm isDuplicate={isDuplicate} setFieldLableisDuplicate={setFieldLableisDuplicate} action={ADD} editObject={addedField.field} ref={(c) => { this.form = c; }} objType={objectType} prefix={fieldPrefix} checkLabelDuplicate={duplicatFilter} />
+          <FieldForm
+            isDuplicate={isDuplicate}
+            setFieldLableisDuplicate={setFieldLableisDuplicate}
+            action={ADD}
+            editObject={addedField.field}
+            ref={(c) => { this.form = c; }}
+            objType={objectType}
+            prefix={fieldPrefix}
+            checkLabelDuplicate={duplicatFilter}
+          />
+
+          {
+              addedField.field.type === PICKLIST_FIELD_TYPE ?
+                <div className="panel-section">
+                  <div className="section-header">Default Fields</div>
+                  <div className="section-content  mt-lg mb-lg">
+                    <PickListValue
+                      objectType={objectType}
+                      action={ADD}
+                      editObject={addedField}
+                      setAddedFieldAttr={setAddedFieldAttr}
+                      deletePickListValue={deletePickListValue}
+                      addPickListValue={addPickListValue}
+                      sortPicklistValueToRemote={sortPicklistValueToRemote}
+                      replacePickListValueToRemote={replacePickListValueToRemote}
+                    />
+                  </div>
+                </div> : ''
+            }
           <div className="panel-section">
             <div className="section-header">Default Fields</div>
             <div className="section-content  mt-lg mb-lg">
-              <Table rowSelection={rowSelection} columns={columns} dataSource={layouts} />
+              <Table rowSelection={rowSelection} columns={columns} dataSource={layouts} rowKey="id" pagination={false} />
             </div>
           </div>
           <Row className="pt-lg pl-lg pr-lg">
@@ -91,7 +149,7 @@ class FieldAddSelecteTypeContainer extends React.Component {
               <Button
                 key="cancel"
                 type="danger"
-                icon=""
+                icon="left"
                 size="small"
                 onClick={() => this.goPrevious()}
               >{ formatMessage({ id: 'global.ui.button.previous' })}
@@ -113,7 +171,7 @@ class FieldAddSelecteTypeContainer extends React.Component {
     }
 }
 
-FieldAddSelecteTypeContainer.propTypes = {
+FieldAddContainer.propTypes = {
   intl: intlShape.isRequired,
   objectType: PropTypes.string.isRequired,
 };
@@ -127,7 +185,6 @@ const mapStateToProps = ({ setup, global }) => {
     addedField,
     isDuplicate,
     objectType: addedField.objType,
-    types: getMappedTypes({ global }),
     fieldPrefix: global.settings.fields.cstm_attribute_prefix,
     layouts: backgroundInfo.layouts,
   };
@@ -138,6 +195,11 @@ const mapDispatchToProps = {
   fetchBackground,
   duplicatFilter,
   setFieldLableisDuplicate,
+  deletePickListValue,
+  addPickListValue,
+  sortPicklistValueToRemote,
+  replacePickListValueToRemote,
+  saveFieldToRemote,
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldAddSelecteTypeContainer)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldAddContainer)));
 

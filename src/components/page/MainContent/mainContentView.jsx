@@ -19,13 +19,21 @@ import {
   NewCampaign,
   PermissionProfile,
   Fields,
+  ObjectDetails,
+  FindDuplicates,
+  Layouts,
 } from 'views/index';
 
 import { ObjectFilter } from '../index';
 
 const MainContent = () => (
   <Switch>
-    <Route path="/:object/views/:viewId" component={ObjectFilter} />
+    <Route path="/:objectType/views/:viewId" component={ObjectFilter} />
+    <Route path="/leads/convert/:objectId" component={FindDuplicates} />
+    <Route path="/:objectType/sharing/:objectId" component={FindDuplicates} />
+    <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
+    <Route path="/:objectType/:objectId" component={ObjectDetails} />
+
     <Route path="/leads" component={Leads} />
     <Route path="/setup/company-info/dd-demo" component={DDDemo} />
     <Route path="/setup/company-info/drag-preveiw" component={DragPreview} />
@@ -42,6 +50,7 @@ const MainContent = () => (
     <Route path="/setup/email-campaign/new" component={NewCampaign}/>
     <Route path="/setup/company-info/permissions" component={PermissionProfile} />
     <Route path="/setup/:objectType/fields" component={Fields} />
+    <Route path="/setup/:objectType/pageLayout" component={Layouts} />
   </Switch>
 );
 
