@@ -26,7 +26,7 @@ class ActionButtonsWrapper extends Component {
 
   handleSave = $ => {
     const { data, objectId, objectType, trySaveClient, tryUpdateClient } = this.props;
-    if (objectId === Enums.PhantomID) {
+    if (objectId === Enums.PhantomId) {
       return trySaveClient(objectId, objectType, data);
     }
     return tryUpdateClient(objectId, objectType, data);

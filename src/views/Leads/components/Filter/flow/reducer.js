@@ -3,12 +3,12 @@ import { SET_VIEWS, SET_ACTIVE_ID } from './actionTypes';
 import Enums from 'utils/EnumsManager';
 
 const viewAll = {
-  id: Enums.PhantomID,
+  id: Enums.PhantomId,
   view_name: "All",
 };
 
 const initialState = {
-  activeId: Enums.PhantomID,
+  activeId: Enums.PhantomId,
   options: [viewAll],
 };
 const filter = (state = initialState, action) => {

@@ -14,7 +14,7 @@ import {
 import { setTools } from '../../Toolbar/flow/actions';
 
 const getFetchUrl = (id, type) => {
-  if (_.isNil(id) || id === Enums.PhantomID) {
+  if (_.isNil(id) || id === Enums.PhantomId) {
     return `/admin/${type}/create`;
   }
   return `/admin/${type}/${id}/page_layout`;

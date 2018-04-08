@@ -34,7 +34,7 @@ class MainLayout extends React.Component {
       // const isDevMode = process.env.NODE_ENV === 'development' ? true : false;
       return (
         <div>
-          { !this.hasLoggedIn() ? (
+          { this.hasLoggedIn() ? (
             <Redirect to="/auth/login" />
                 ) : (
                   <Layout>

@@ -30,7 +30,7 @@ const RightActions = ({ intl, theme, permissions }) => {
       {theme !== 'lead' ? 
         null : (
           <Button {...btnSettings} >
-            <Link to={`/leads/${Enums.PhantomID}`}>{btnWords}</Link>
+            <Link to={`/leads/${Enums.PhantomId}`}>{btnWords}</Link>
           </Button>
         )
       }

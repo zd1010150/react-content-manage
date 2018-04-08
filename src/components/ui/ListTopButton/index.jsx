@@ -10,7 +10,7 @@ const cx = classNames.bind(styles);
 import Enums from 'utils/EnumsManager';
 
 const defaultProps = {
-  viewId: Enums.PhantomID,
+  viewId: Enums.PhantomId,
   object: 'leads',
 };
 const propTypes = {
@@ -24,7 +24,7 @@ const propTypes = {
 
 const ListTopButtons = ({ intl, object, viewId }) => {
   const { formatMessage } = intl;
-  const shouldEditDisabled = viewId === Enums.PhantomID ? true : false;
+  const shouldEditDisabled = viewId === Enums.PhantomId ? true : false;
   
   return (
     <Fragment>
@@ -34,7 +34,7 @@ const ListTopButtons = ({ intl, object, viewId }) => {
         </Link>
       </Button>
       <Button size="small" className={cx('button')}>
-        <Link to={`/${object}/views/${Enums.PhantomID}`}>
+        <Link to={`/${object}/views/${Enums.PhantomId}`}>
           {formatMessage({ id: 'global.ui.button.createNew' })}
         </Link>
       </Button>

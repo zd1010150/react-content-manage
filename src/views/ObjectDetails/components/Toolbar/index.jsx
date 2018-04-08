@@ -10,7 +10,7 @@ import { setTools, tryDeleteEntity } from './flow/actions';
 
 const defaultProps = {
   objectType: Enums.ObjectTypes.Leads,
-  objectId: Enums.PhantomID,
+  objectId: Enums.PhantomId,
   tools: [],
 };
 const propTypes = {
