@@ -1,6 +1,6 @@
-import Toolbar from '../components/Toolbar/index';
-import PrimaryDetails from '../components/PrimaryDetails/index';
-import TaskPanels from '../components/TaskPanels/index';
+import Toolbar from './Toolbar/index';
+import PrimaryDetails from './PrimaryDetails/index';
+import TaskPanels from './TaskPanels/index';
 
 export {
   Toolbar,

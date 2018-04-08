@@ -49,6 +49,11 @@ export default {
     },
     table: {
       action: '操作',
+      dueAt: '截止时间',
+      dueOn: '截止日期',
+      lastModifiedAt: '最后更新时间',
+      subject: '主题',
+      status: '状态',
     },
     select: {
       label: '视图',
@@ -122,7 +127,12 @@ export default {
       inputIdNumber: 'Please input correct id number',
     },
     table: {
-      action: 'Action',
+      action: 'Actions',
+      dueAt: 'Due Time',
+      dueOn: 'Due Date',
+      lastModifiedAt: 'Last Modified Date/Time',
+      subject: 'Subject',
+      status: 'Status',
     },
     select: {
       label: 'view',
