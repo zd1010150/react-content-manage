@@ -50,3 +50,44 @@
 }
 
 .make-theme-btn-hover-classes();
+
+
+
+
+
+.theme-section-field-hover-classes(@theme){
+  @selector : ~'.@{theme}-section-field-hover'; /*获取selector*/
+  @theme-color-value-name: '@{theme}-theme-color'; /*获取变量名*/
+  @theme-color-value: @@theme-color-value-name; /*获取变量名对应的值*/
+  @{selector}{
+    border-bottom: 3px solid fade(@theme-color-value, 50%);
+  }
+}
+
+.make-theme-section-field-hover-classes(@i: length(@themes)) when (@i > 0) {
+  .make-theme-section-field-hover-classes(@i - 1);
+  @theme: extract(@themes, @i);
+  .theme-section-field-hover-classes(@theme)
+}
+
+.make-theme-section-field-hover-classes();
+
+
+
+.theme-section-hover-classes(@theme){
+  @selector : ~'.@{theme}-section-wrapper-hover'; /*获取selector*/
+  @theme-color-value-name: '@{theme}-theme-color'; /*获取变量名*/
+  @theme-color-value: @@theme-color-value-name; /*获取变量名对应的值*/
+  @{selector}{
+    background-color: fade(@theme-color-value, 10%);
+    border-top: 10px solid @theme-color-value;
+  }
+}
+
+.make-theme-section-hover-classes(@i: length(@themes)) when (@i > 0) {
+  .make-theme-section-hover-classes(@i - 1);
+  @theme: extract(@themes, @i);
+  .theme-section-hover-classes(@theme)
+}
+
+.make-theme-section-hover-classes();

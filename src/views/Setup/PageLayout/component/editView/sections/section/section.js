@@ -3,13 +3,14 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
-import { Card, Button, Modal } from 'antd';
+import { PAGE_ACTION } from 'config/app.config';
+import { Icon, Modal } from 'antd';
 import { DragSource } from 'react-dnd';
 import { ItemTypes } from '../../../../flow/edit/itemType';
 import Field from './field';
 import SectionTd from './section-td';
 import styles from '../../../../index.less';
-import { EDIT } from '../../../../flow/edit/operateType';
+
 
 const { confirm } = Modal;
 const cx = classNames.bind(styles);
@@ -28,7 +29,16 @@ const collect = (connect, monitor) => ({
 class Section extends React.Component {
   buildTable(props) {
     const {
-      allFields, rows, cols, fields, moveBetweenSection, addFieldToSection, code, setCanDrop,
+      allFields,
+      rows,
+      cols,
+      fields,
+      moveFieldsBetweenSection,
+      deleteFromSection,
+      addFieldToSection,
+      code,
+      setCanDrop,
+      theme,
     } = props;
     const trs = [];
     const table = [];
@@ -37,7 +47,18 @@ class Section extends React.Component {
     for (let i = 0; i < _rows; i++) {
       tds = [];
       for (let j = 0; j < cols; j++) {
-        tds.push(<SectionTd classes={`section-table-col-${cols}`} setCanDrop={setCanDrop} key={`${i}${j}`} x={i} y={j} allFields={allFields} sectionCode={code} moveBetweenSection={moveBetweenSection} addFieldToSection={addFieldToSection} />);
+        tds.push(<SectionTd
+          classes={`section-table-col-${cols}`}
+          setCanDrop={setCanDrop}
+          key={`${i}${j}`}
+          theme={theme}
+          x={i}
+          y={j}
+          allFields={allFields}
+          sectionCode={code}
+          moveFieldsBetweenSection={moveFieldsBetweenSection}
+          addFieldToSection={addFieldToSection}
+        />);
       }
       table.push(tds);
     }
@@ -54,11 +75,13 @@ class Section extends React.Component {
             x={i}
             y={columnIndex}
             allFields={allFields}
+            theme={theme}
             sectionCode={code}
-            moveBetweenSection={moveBetweenSection}
+            moveFieldsBetweenSection={moveFieldsBetweenSection}
             addFieldToSection={addFieldToSection}
           >
             <Field
+              theme={theme}
               setCanDrop={setCanDrop}
               id={f.id}
               label={f.label}
@@ -67,6 +90,7 @@ class Section extends React.Component {
               isSystem={f.isSystem}
               pageRequired={f.pageRequired}
               pageReadonly={f.pageReadonly}
+              deleteFromSection={deleteFromSection}
             />
           </SectionTd>);
       }
@@ -74,7 +98,7 @@ class Section extends React.Component {
     for (let i = 0; i < _rows; i++) {
       trs.push(<tr key={i} className={i === _rows - 1 ? cx('section-table-last-tr') : ''}>{ table[i] }</tr>);
     }
-    return <table className={cx('section-table')}><tbody>{trs}</tbody></table>;
+    return <table className={cx(`section-table-cols-${cols}`)}><tbody>{trs}</tbody></table>;
   }
   deleteSection() {
     const {
@@ -93,21 +117,22 @@ class Section extends React.Component {
       code, label, sequence, cols,
     } = this.props;
     this.props.toggleSectionAddEditDialog({
-      isShow: true, code, label, sequence, operate: EDIT, cols,
+      isShow: true, code, label, sequence, operate: PAGE_ACTION.EDIT, cols,
     });
   }
   render() {
     const {
-      label, connectDragSource, isDragging,
+      label, connectDragSource, isDragging, theme,
     } = this.props;
     const table = this.buildTable(this.props);
-    const deleteBtn = <Button type="primary" shape="circle" icon="delete" onClick={this.deleteSection.bind(this)} />;
-    const editBtn = <Button type="primary" shape="circle" icon="edit" onClick={this.editSection.bind(this)} />;
-    const operation = <div>{deleteBtn}{editBtn}</div>;
-    return connectDragSource(<div className={cx('card-wrapper')}><Card title={label} extra={operation} style={{ width: '100%' }} className={classNames(isDragging ? cx('section-dragging') : '')}>
-      { table }
-    </Card>
-    </div>);
+    const deleteBtn = <Icon type="delete" onClick={this.deleteSection.bind(this)} />;
+    const editBtn = <Icon className={`${theme}-theme-icon ml-sm`} type="edit" onClick={this.editSection.bind(this)} />;
+    return connectDragSource(<div className="panel-section pb-none">
+      <div className="section-header"><span className={cx('section-header-title')}>{label}</span> <div className={cx('section-header-action')}>{deleteBtn}{editBtn}</div></div>
+      <div className="section-content">
+        { table }
+      </div>
+                             </div>);
   }
 }
 
@@ -125,16 +150,18 @@ Section.propTypes = {
   cols: PropTypes.number,
   label: PropTypes.string,
   fields: PropTypes.object,
-  moveBetweenSection: PropTypes.func.isRequired,
+  moveFieldsBetweenSection: PropTypes.func.isRequired,
   addFieldToSection: PropTypes.func.isRequired,
   allFields: PropTypes.array,
   sections: PropTypes.array,
+  theme: PropTypes.string.isRequired,
   connectDragSource: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,
   toggleSectionAddEditDialog: PropTypes.func.isRequired,
   deleteSection: PropTypes.func.isRequired,
   fieldCanDrop: PropTypes.bool.isRequired,
   setCanDrop: PropTypes.func.isRequired,
+  deleteFromSection: PropTypes.func.isRequired,
 };
 
 

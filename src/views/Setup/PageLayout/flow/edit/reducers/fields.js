@@ -22,6 +22,7 @@ const initFilels = (fields, sections) => {
     type: item.crm_data_type,
     is_layout_required: Boolean(item.notnull),
     isSelected: allSelectedFiledIds.indexOf(item.id) > -1,
+    isSystem: Boolean(item.is_sys_auto),
   }));
 };
 const addFieldToSection = (state, { fieldId }) => state.map((item) => {

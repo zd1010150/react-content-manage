@@ -1,4 +1,4 @@
-
+@import "~assets/less/theme.less";
 
 .field-btn-dragging{
   background-color: #fff;
@@ -25,4 +25,48 @@
 .sider-view-wrapper{
   height: 100%;
   overflow: auto;
+}
+
+.section-table-cols-1{
+  width: 50%;
+}
+.section-table-cols-2{
+  width: 100%;
+}
+.section-table-col-2{
+  width: 50%;
+}
+.section-table-col-1{
+  width: 100%;
+}
+.field-label{
+  width: 33%;
+  box-sizing: border-box;
+  text-align: right;
+  font-weight: 700;
+  display: inline-block;
+}
+.field-sample-value{
+  width: 66%;
+  box-sizing: border-box;
+  text-align: left;
+  display: inline-block;
+}
+.section-field-over-mask{
+  border-bottom: 3px solid red;
+}
+.field-action,.section-header-action{
+  display: inline-block;
+  float: right;
+  cursor: pointer;
+}
+.field:hover{
+  background-color: @crm-hover-color;
+  cursor: move;
+}
+.section-wrapper-last{
+  height: 30px;
+}
+.section-table-last-tr td{
+  height: 10px;
 }

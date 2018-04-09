@@ -8,30 +8,34 @@ import styles from './index.less';
 
 const cx = classNames.bind(styles);
 
+let ticking = false;
+
+
 /* if you want to using this component and recustomize the width ,Please using add  this.props.settingRightSider({ width: 300 }); in your componentDidMount method */
 class RightSider extends React.Component {
   state={
     marginTop: 0,
   }
+  componentDidMount() {
+    window.addEventListener('scroll', this.onScroll);
+  }
   componentWillUnmount() {
     this.props.toggleRightSider(true);
+    window.removeEventListener('scroll', this.onScroll);
   }
-  componentDidMount() {
-    let ticking = false;
-    const scrollHandler = (e) => {
-      ticking = false;
-      this.setState({
-        marginTop: `-${window.scrollY}px`,
+
+  onScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        this.setState({
+          marginTop: `-${window.scrollY}px`,
+        });
+        ticking = false;
       });
-    };
-    const onScroll = (e) => {
-      if (!ticking) {
-        window.requestAnimationFrame(scrollHandler.bind(this, e));
-        ticking = true;
-      }
-    };
-    window.addEventListener('scroll', onScroll);
+      ticking = true;
+    }
   }
+
   render() {
     const {
       collapsed, width,

@@ -1,31 +1,33 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Input, Radio } from 'antd';
-import { ADD } from '../../../../flow/edit/operateType';
+import { Modal } from 'antd';
+import AddEditForm from './section-edit-add-form';
+import { PAGE_ACTION } from 'config/app.config';
 
-const RadioGroup = Radio.Group;
+
 class sectionEditAddDialog extends React.Component {
-  setAttr(attrs) {
-    this.props.setSectionAttr(attrs);
-  }
   save() {
     const {
-      operate, sequence, label, code, addSection, updateSection, toggleSectionAddEditDialog, cols,
+      operate, sequence, code, addSection, updateSection, toggleSectionAddEditDialog,
     } = this.props;
-    if (operate === ADD) {
-      addSection({ label, sequence, cols });
-    } else {
-      updateSection({ label, sectionCode: code, cols }); //
-    }
-    toggleSectionAddEditDialog({ isShow: false });
+    this.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        if (operate === PAGE_ACTION.ADD) {
+          addSection({ label: values.label, sequence, cols: values.cols });
+        } else {
+          updateSection({ label: values.label, sectionCode: code, cols: values.cols }); //
+        }
+        toggleSectionAddEditDialog({ isShow: false });
+      }
+    });
   }
   cancel() {
     this.props.toggleSectionAddEditDialog({ isShow: false });
   }
   render() {
     const {
-      isShow, label, cols,
+      isShow, label, cols, code,
     } = this.props;
     return (
       <Modal
@@ -34,11 +36,7 @@ class sectionEditAddDialog extends React.Component {
         onOk={this.save.bind(this)}
         onCancel={this.cancel.bind(this)}
       >
-        <p><Input placeholder="输入section名" defaultValue={label} value={label} onInput={e => this.setAttr({ label: e.target.value })} /></p>
-        <RadioGroup onChange={e => this.setAttr({ cols: e.target.value })} value={cols}>
-          <Radio value={1}>col 1</Radio>
-          <Radio value={2}>col 2</Radio>
-        </RadioGroup>
+        <AddEditForm code={code} label={label} cols={cols} ref={c => this.form = c } key={Math.random()}/>
       </Modal>
     );
   }
@@ -46,22 +44,16 @@ class sectionEditAddDialog extends React.Component {
 
 sectionEditAddDialog.defaultProps = {
   isShow: false,
-  label: '',
-  sequence: 0,
-  cols: 1,
-  code: '',
-  operate: 'add',
 };
 sectionEditAddDialog.propTypes = {
   isShow: PropTypes.bool,
-  label: PropTypes.string,
-  sequence: PropTypes.number,
-  cols: PropTypes.number,
-  code: PropTypes.string,
-  operate: PropTypes.string,
+  label: PropTypes.string.isRequired,
+  sequence: PropTypes.number.isRequired,
+  cols: PropTypes.number.isRequired,
+  code: PropTypes.string.isRequired,
+  operate: PropTypes.string.isRequired,
   addSection: PropTypes.func.isRequired,
   updateSection: PropTypes.func.isRequired,
-  setSectionAttr: PropTypes.func.isRequired,
   toggleSectionAddEditDialog: PropTypes.func.isRequired,
 };
 

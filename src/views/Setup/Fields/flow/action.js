@@ -7,6 +7,7 @@ import {
   SETUP_FIELDS_SELECT_FIELD,
   SETUP_FIELDS_CHANGE_MAPPING_FIELD_STATUS,
   SETUP_FIELDS_SET_ADDED_ATTR,
+  SETUP_FIELDS_SET_FIELD_ATTR,
   SETUP_FIELDS_RESET_ADDED_ATTR,
   SETUP_FIELDS_SET_OBJECT_LAYOUT,
   SETUP_FIELDS_SET_FIELD_LABEL_IS_DUPLICATE,
@@ -65,6 +66,12 @@ export const setReplaceDialog = args => ({
   ...args,
 });
 /* addField actions */
+
+export const setFieldAttr = args => ({
+  type: SETUP_FIELDS_SET_FIELD_ATTR,
+  ...args,
+});
+
 export const setFieldLableisDuplicate = isDuplicate => ({
   type: SETUP_FIELDS_SET_FIELD_LABEL_IS_DUPLICATE,
   isDuplicate,

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import shallowEqual from './shallowEqual';
 import { Panel } from 'components/ui/index';
 import { Button } from 'antd';
-import { OPERATES, MODULES, TOOLS, SECTIONS } from '../../../flow/edit/operateType';
+
+import { ItemTypes } from '../../../flow/edit/itemType';
 
 const styles = {
   padding: '0.5rem 1rem',
@@ -18,9 +19,10 @@ class Box extends Component {
   }
   getPreviewImg(operateType, title, theme) {
     switch (operateType) {
-      case TOOLS:
+      case ItemTypes.TOOL:
+      case ItemTypes.SECTION_FIELD:
         return (<Button size="small" className={`${theme}-theme-btn`} >{title}</Button>);
-      case MODULES:
+      case ItemTypes.MODULE:
       default:
         return (<Panel panelClasses={`${theme}-theme-panel`} panelTitle={title} />);
     }
@@ -37,7 +39,7 @@ class Box extends Component {
 Box.propTypes = {
   title: PropTypes.string.isRequired,
   canDrop: PropTypes.bool.isRequired,
-  type: PropTypes.oneOf(OPERATES).isRequired,
+  type: PropTypes.oneOf(Object.keys(ItemTypes)).isRequired,
   theme: PropTypes.string.isRequired,
 };
 export default Box;

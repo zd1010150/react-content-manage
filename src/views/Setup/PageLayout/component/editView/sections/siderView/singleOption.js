@@ -40,6 +40,7 @@ class singleField extends React.Component {
       connectDragSource, isDragging, label, isLayoutRequired, isSelected,
     } = this.props;
     return connectDragSource(<div><Button
+      size="small"
       className={classNames('btn-ellipse', 'mt-sm', cx('field-btn'), isDragging ? cx('field-btn-dragging') : '')}
       disabled={isLayoutRequired || isSelected}
     >

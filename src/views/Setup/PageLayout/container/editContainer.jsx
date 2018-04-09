@@ -101,7 +101,7 @@ class EditContainer extends React.Component {
         case TOOLS:
           return <ToolViewSider />;
         case SECTIONS:
-          return <SectionViewSider />;
+          return <SectionViewSider theme={theme} />;
         default:
           return <ModuleViewSider />;
       }

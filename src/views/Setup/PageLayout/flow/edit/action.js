@@ -86,7 +86,7 @@ export const deleteFromSection = args => ({
   ...args,
 });
 
-export const moveBetweenSection = args => ({
+export const moveFieldsBetweenSection = args => ({
   type: SETUP_LAYOUT_EDIT_MOVE_BETWEEN_SECTION,
   ...args,
 });

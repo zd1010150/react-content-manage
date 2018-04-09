@@ -42,7 +42,7 @@ const initSection = (sections) => {
       })),
       'y',
     );
-    return getRowsAndCols(Object.assign({}, section, { fields: newFields }));
+    return getRowsAndCols(Object.assign({}, section, { fields: newFields, cols: section.columns }));
   });
 };
 
