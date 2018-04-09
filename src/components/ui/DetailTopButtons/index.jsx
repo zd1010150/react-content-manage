@@ -27,27 +27,20 @@ const renderToolByCode = (code, formatMessage, clickHandler) => {
           key={code}
           size="small"
         >
-          <Link to={link}>
-            {text}
-          </Link>
+          <Link to={link}>{text}</Link>
         </Button>
       );
     case Delete:
       return (
         <Popconfirm
-          placement="bottomRight"
-          title={formatMessage({ id: `${i18nPrefix}.dialog.deleteTitle` })}
+          key={code}
+          cancelText={formatMessage({ id: `${i18nPrefix}.button.cancel` })}
           onConfirm={e => clickHandler()}
           okText={formatMessage({ id: `${i18nPrefix}.button.ok` })}
-          cancelText={formatMessage({ id: `${i18nPrefix}.button.cancel` })}
+          placement="bottomRight"
+          title={formatMessage({ id: `${i18nPrefix}.dialog.deleteTitle` })}
         >
-          <Button
-            className="ml-sm"
-            key={code}
-            size="small"
-          >
-            {text}
-          </Button>
+          <Button className="ml-sm" size="small">{text}</Button>
         </Popconfirm>
       );
     default:

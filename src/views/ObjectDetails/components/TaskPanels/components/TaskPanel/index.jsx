@@ -2,7 +2,8 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { Table, Button, Icon } from 'antd';
+import { Link } from 'react-router-dom';
+import { Table, Button, Icon, Popconfirm } from 'antd';
 import classNames from 'classnames/bind';
 import styles from './index.less';
 const cx = classNames.bind(styles);
@@ -163,8 +164,18 @@ const getColumnsByModule = (module, intl) => {
         const { id } = record;
         return (
           <Fragment>
-            <Icon size="small" type="edit" />
-            <Icon size="small" type="delete" />
+            <Link to="#">
+              <Icon size="small" type="edit" />
+            </Link>
+            <Popconfirm
+              placement="right"
+              title={formatMessage({ id: `global.ui.dialog.deleteTitle` })}
+              okText="Yes"
+              cancelText="No"
+              onConfirm={$ => console.log(`${module}` + ' test')}
+            >
+              <Icon className="ml-sm" size="small" type="delete" />
+            </Popconfirm>
           </Fragment>
         );
       }
