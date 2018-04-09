@@ -14,7 +14,7 @@ const currentObjectType = (state = '', action) => {
 };
 const setupLayouts = combineReducers({
   tableView: tableViewReducer,
-  edit: editReducer,
+  editView: editReducer,
   currentObjectType,
 });
 export default setupLayouts;

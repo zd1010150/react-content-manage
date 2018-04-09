@@ -3,12 +3,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames/bind';
 import { DropTarget } from 'react-dnd';
-import { ItemTypes } from '../../flow/itemType';
-import styles from '../../DD-demo.less';
-
-const cx = classNames.bind(styles);
+import { ItemTypes } from '../../../flow/edit/itemType';
 
 const bodyWrapperTarget = {
   canDrop(props) {
@@ -18,7 +14,7 @@ const bodyWrapperTarget = {
 };
 const collect = (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver({shallow: false}),
+  isOver: monitor.isOver({ shallow: true }),
   canDrop: monitor.canDrop(),
 });
 
@@ -30,10 +26,11 @@ class bodyWrapper extends React.Component {
   }
   render() {
     const { connectDropTarget, isOver } = this.props;
-    console.log("dandan",isOver);
-    return connectDropTarget(<div id="dandan-wrapper" style={{ backgroundColor: isOver ? 'red' : '#ffff', padding: '50px' }}>
-        {isOver}<br/> {this.props.children}
-                             </div>);
+    return connectDropTarget(
+        <div className="drag-body-wrapper" style={{ backgroundColor: isOver ? 'rgba(200,200,200,.5)' : '#ffff',}}>
+          {this.props.children}
+        </div>
+    );
   }
 }
 

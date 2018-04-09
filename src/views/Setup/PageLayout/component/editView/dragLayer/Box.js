@@ -1,0 +1,43 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import shallowEqual from './shallowEqual';
+import { Panel } from 'components/ui/index';
+import { Button } from 'antd';
+import { OPERATES, MODULES, TOOLS, SECTIONS } from '../../../flow/edit/operateType';
+
+const styles = {
+  padding: '0.5rem 1rem',
+  cursor: 'move',
+};
+
+class Box extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState)
+    );
+  }
+  getPreviewImg(operateType, title, theme) {
+    switch (operateType) {
+      case TOOLS:
+        return (<Button size="small" className={`${theme}-theme-btn`} >{title}</Button>);
+      case MODULES:
+      default:
+        return (<Panel panelClasses={`${theme}-theme-panel`} panelTitle={title} />);
+    }
+  }
+  render() {
+    const {
+      title, canDrop, type, theme,
+    } = this.props;
+    const backgroundColor = canDrop ? 'green' : 'red';
+
+    return <div>{this.getPreviewImg(type, title, theme)}</div>;
+  }
+}
+Box.propTypes = {
+  title: PropTypes.string.isRequired,
+  canDrop: PropTypes.bool.isRequired,
+  type: PropTypes.oneOf(OPERATES).isRequired,
+  theme: PropTypes.string.isRequired,
+};
+export default Box;
