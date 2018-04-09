@@ -23,6 +23,7 @@ import {
   SETUP_LAYOUT_EDIT_SORT_TOOLS,
   SETUP_LAYOUT_EDIT_DELETE_TOOLS,
   SETUP_LAYOUT_EDIT_SET_CURRENT_LAYOUT,
+  SETUP_LAYOUT_EDIT_FIELD,
 } from './actionType';
 /* sider draglayer action */
 export const setCanDrop = canDrop => ({
@@ -126,6 +127,10 @@ export const setAllSections = sections => ({
   sections,
 });
 
+export const setEditField = args => ({
+  type: SETUP_LAYOUT_EDIT_FIELD,
+  ...args,
+});
 export const setAllFields = (fields, sections) => ({
   type: SETUP_LAYOUT_EDIT_SET_ALL_FIELDS,
   fields,

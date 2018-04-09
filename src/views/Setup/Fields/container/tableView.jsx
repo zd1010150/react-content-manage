@@ -144,7 +144,7 @@ class FieldsTableView extends React.Component {
     const getMappingTd = (field, fieldProp, mappingFields, fieldCategory) => {
       if (!_.isEmpty(mappingFields)) {
         return Object.keys(mappingFields).map((objType) => {
-          if (!field.can_be_mapped) return <td key="none"> Cannot be mapped</td>;
+          if (!field.can_be_mapped) return <td key={objType}> Cannot be mapped</td>;
           let fields = [];
           if (!_.isEmpty(field[fieldProp][objType])) {
             if (fieldProp === 'map_from') {

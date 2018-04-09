@@ -38,6 +38,7 @@ class Section extends React.Component {
       addFieldToSection,
       code,
       setCanDrop,
+        setEditField,
       theme,
     } = props;
     const trs = [];

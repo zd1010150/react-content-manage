@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { DragSource } from 'react-dnd';
-import { Icon } from 'antd';
+import { Icon, Modal, Checkbox } from 'antd';
 import classNames from 'classnames/bind';
 import { ItemTypes } from '../../../../flow/edit/itemType';
 import styles from '../../../../index.less';

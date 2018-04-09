@@ -16,6 +16,16 @@ const ui = (state = {
     cols: 1,
     code: '',
   },
+  fieldEditDialog: {
+    isShow: false,
+      fieldLabel: '',
+    fieldId: '',
+    sectionCode: '',
+    requiredValue: '',
+    requiredDisable: false,
+    readOnlyValue: '',
+    readOnlyDisable: false,
+  },
   fieldCanDrop: true,
   currentTab: OPERATES[1],
 }, action) => {

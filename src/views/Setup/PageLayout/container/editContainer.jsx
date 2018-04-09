@@ -121,7 +121,7 @@ class EditContainer extends React.Component {
                   <Button icon="close" type="default" size="small" className="ml-sm" onClick={() => this.cancel()}>{formatMessage({ id: 'global.ui.button.cancel' })}</Button>
                 </Col>
               </Row>
-              <Divider/>
+              <Divider />
               <Row className="pl-lg pr-lg">
                 { OPERATES.map(o => (
                   <Col span={24} key={o}>
@@ -131,7 +131,7 @@ class EditContainer extends React.Component {
                   </Col>
                   )) }
               </Row>
-              <Divider/>
+              <Divider />
               <Row className=" pb-lg pl-lg pr-lg">
                 <Col span={24}>
                   <div className={cx('sider-view-wrapper')}>

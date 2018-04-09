@@ -209,7 +209,7 @@ class FieldForm extends React.Component {
         </FormItem>
         <FormItem {...FORM_FOOTER_CONFIG}>
           {
-                  getFieldDecorator('notnull')(<Checkbox disabled={isEdit}  checked={editObject.notnull} onChange={e => setFieldAttr({ notnull: e.target.checked })}>
+                  getFieldDecorator('notnull')(<Checkbox disabled={isEdit} checked={editObject.notnull} onChange={e => setFieldAttr({ notnull: e.target.checked })}>
                     <span>{ formatMessage({ id: 'page.fields.notNullTip1' }) }</span>
                     <span className="error-msg">({ formatMessage({ id: 'page.fields.notNullTip2' }) })</span>
                   </Checkbox>)
@@ -232,6 +232,7 @@ class FieldForm extends React.Component {
 FieldForm.defaultProps = {
   onSubmit: () => {},
   onCancel: () => {},
+  setFieldAttr: () => {},
 };
 FieldForm.propTypes = {
   intl: intlShape.isRequired,
@@ -243,7 +244,7 @@ FieldForm.propTypes = {
   checkLabelDuplicate: PropTypes.func,
   prefix: PropTypes.string.isRequired,
   setFieldLableisDuplicate: PropTypes.func.isRequired,
-  setFieldAttr: PropTypes.func.isRequired,
+  setFieldAttr: PropTypes.func,
   isDuplicate: PropTypes.bool.isRequired,
 };
 

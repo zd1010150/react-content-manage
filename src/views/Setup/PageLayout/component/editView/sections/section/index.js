@@ -22,7 +22,8 @@ import {
   updateSection,
   setSectionAttr,
   addFieldToSection,
-    deleteFromSection
+  deleteFromSection,
+  setEditField,
 } from '../../../../flow/edit/action';
 
 const cx = classNames.bind(styles);
@@ -46,11 +47,12 @@ class ToolContainer extends React.Component {
       setSectionAttr,
       addFieldToSection,
       uiDialog,
-        deleteFromSection,
+      deleteFromSection,
+      setEditField,
     } = this.props;
     const { formatMessage } = intl;
     const theme = objTypeAndClassTypeMap[objectType];
-    debugger;
+
     return (
       <Panel
         panelClasses={classNames(`${theme}-theme-panel`)}
@@ -82,6 +84,7 @@ class ToolContainer extends React.Component {
                         addFieldToSection={addFieldToSection}
                         moveFieldsBetweenSection={moveFieldsBetweenSection}
                         deleteFromSection={deleteFromSection}
+                        setEditField={setEditField}
                       />
                     </SectionWrapper>))
             }
@@ -128,7 +131,8 @@ const mapDispatchToProps = {
   updateSection,
   setSectionAttr,
   addFieldToSection,
-    deleteFromSection,
+  deleteFromSection,
+  setEditField,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ToolContainer));

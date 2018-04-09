@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
 import React from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Modal } from 'antd';
 import AddEditForm from './section-edit-add-form';
@@ -7,6 +8,11 @@ import { PAGE_ACTION } from 'config/app.config';
 
 
 class sectionEditAddDialog extends React.Component {
+  componentWillReceiveProps() {
+    if (!_.isEmpty(this.form && this.form.resetFields)) { // 更新form表单里的值
+      this.form.resetFields();
+    }
+  }
   save() {
     const {
       operate, sequence, code, addSection, updateSection, toggleSectionAddEditDialog,
@@ -36,7 +42,7 @@ class sectionEditAddDialog extends React.Component {
         onOk={this.save.bind(this)}
         onCancel={this.cancel.bind(this)}
       >
-        <AddEditForm code={code} label={label} cols={cols} ref={c => this.form = c } key={Math.random()}/>
+        <AddEditForm code={code} label={label} cols={cols} ref={c => this.form = c}/>
       </Modal>
     );
   }

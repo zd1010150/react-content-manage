@@ -58,7 +58,7 @@ class FieldEditContainer extends React.Component {
     const {
       updateFieldToRemote, objectType, history, addedField, fieldPrefix,
     } = this.props;
-    if (addedField.category === fieldCategory.CUSTOM) {
+    if (addedField.field.category === fieldCategory.CUSTOM) {
       data.field_label = `${fieldPrefix}${field.field_label}`;
     }
     updateFieldToRemote(field.id, data, () => {
