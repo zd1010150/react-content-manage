@@ -15,6 +15,7 @@ import Fields from './Setup/Fields';
 import ObjectDetails from './ObjectDetails/index';
 import FindDuplicates from './FindDuplicates/index';
 import Layouts from './Setup/PageLayout';
+import ObjectTask from './ObjectTask/index';
 
 export {
   Leads,
@@ -34,4 +35,5 @@ export {
   ObjectDetails,
   FindDuplicates,
   Layouts,
+  ObjectTask,
 };

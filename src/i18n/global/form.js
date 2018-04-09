@@ -9,7 +9,7 @@ export default {
     workingHourEnd: '结束时间',
     field_label: '字段标签',
     field_name: 'API',
-    layout_name: '布局名',
+    layout_name: '布局名',    
   },
   en: {
     userName: 'User Name',

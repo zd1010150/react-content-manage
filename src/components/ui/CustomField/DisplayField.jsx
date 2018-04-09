@@ -60,8 +60,8 @@ const DisplayField = ({
         readOnly
         ? null
         : <span className={cx('placeholder')}>
-          {formatMessage({ id: `${i18nPrefix}.placeholder` })}
-        </span>
+            {formatMessage({ id: `${i18nPrefix}.placeholder` })}
+          </span>
       )}
       {isValueChanged && (
         <Icon

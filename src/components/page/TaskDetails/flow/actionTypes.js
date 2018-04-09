@@ -1,0 +1,3 @@
+export const SET_TASK_ASSIGNEE = 'SET_TASK_ASSIGNEE';
+export const SET_TASK_FIELD = 'SET_TASK_FIELD';
+export const SET_TASK_FIELDS = 'SET_TASK_FIELDS';

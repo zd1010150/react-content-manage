@@ -10,6 +10,7 @@ import fields from 'views/Setup/Fields/i18n';
 import selectionPool from 'components/ui/SelectionPool/i18n';
 import objectDetails from 'views/ObjectDetails/i18n';
 import layouts from 'views/Setup/PageLayout/i18n';
+import taskDetails from 'components/page/TaskDetails/i18n';
 
 export default {
   comInfo,
@@ -24,4 +25,5 @@ export default {
   selectionPool,
   objectDetails,
   layouts,
+  taskDetails,
 };

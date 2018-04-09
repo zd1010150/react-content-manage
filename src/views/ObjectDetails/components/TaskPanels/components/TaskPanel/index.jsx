@@ -21,37 +21,21 @@ const {
   ThemeTypesInArray,
 } = Enums;
 const {
-  attachments,
-  emailSent,
-  logs,
-  opportunities,
-  taskOpen,
-  taskHistory,
+  Attachments,
+  EmailSent,
+  Logs,
+  Opportunities,
+  TaskOpen,
+  TaskHistory,
 } = DetailModules;
 // presets
-const configs = [
-  {
-    key: taskOpen,
-    addPagePath: `/leads/opentask/${PhantomId}`,
-    editPagePath: `/leads/opentask/id`,
-    editUrl: `/admin/`,
-    deleteUrl: `/admin/`,
-    fetchUrl: `/admin/`,
-  },
-  {
-    key: taskHistory,
-    addPagePath: `/leads/opentask/${PhantomId}`,
-    fetchUrl: ``,
-  },
-];
-
 const getColumnsByModule = (module, intl) => {
   const { formatMessage } = intl;
   const i18nPrefix = 'global.ui.table';
   let columns = [];
   switch(module) {
-    case taskOpen:
-    case taskHistory:
+    case TaskOpen:
+    case TaskHistory:
       columns = [
         {
           dataIndex: 'subject',
@@ -80,8 +64,8 @@ const getColumnsByModule = (module, intl) => {
         },
       ];
       break;
-    case opportunities:
-    case emailSent:
+    case Opportunities:
+    case EmailSent:
       columns = [
         {
           dataIndex: 'subject',
@@ -109,7 +93,7 @@ const getColumnsByModule = (module, intl) => {
           sorter: true,
         },
       ];
-    case attachments:
+    case Attachments:
       columns = [
         {
           dataIndex: 'title',
@@ -132,7 +116,7 @@ const getColumnsByModule = (module, intl) => {
           sorter: true,
         },
       ];
-    case logs:
+    case Logs:
       columns = [
         {
           dataIndex: 'date',
@@ -155,7 +139,7 @@ const getColumnsByModule = (module, intl) => {
       console.log('The module is not found.');
   };
   // TODO: need to add checking about permissions of edit and delete to decide whether shows 'Action' column
-  if (module !== logs) {
+  if (module !== Logs) {
     columns.unshift({
       key: 'actions',
       className: cx('firstCol'),
