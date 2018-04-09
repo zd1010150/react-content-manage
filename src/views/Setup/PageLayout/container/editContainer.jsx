@@ -4,7 +4,7 @@ import _ from 'lodash';
 import classNames from 'classnames/bind';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
-import { Button, Radio, Row, Col, Divider, Layout, Header, Content, Footer } from 'antd';
+import { Button, Radio, Row, Col, Divider, Layout } from 'antd';
 import { connect } from 'react-redux';
 import { RightSider } from 'components/page/index';
 import { objTypeAndClassTypeMap, FORM_LAYOUT_CONFIG } from 'config/app.config';
@@ -32,6 +32,7 @@ import {
 import { OPERATES, MODULES, TOOLS, PREVIEW, SECTIONS } from '../flow/edit/operateType';
 
 const cx = classNames.bind(styles);
+const { Header, Content } = Layout;
 
 class EditContainer extends React.Component {
   componentDidMount() {
@@ -111,34 +112,37 @@ class EditContainer extends React.Component {
             getMainView()
           }
         <RightSider>
-          <Row className="pt-lg pl-lg pr-lg">
-            <Col span={24}>
-              <Button icon="layout" size="small" className={`${theme}-theme-btn ml-sm`} onClick={() => this.preview()}>{formatMessage({ id: 'global.ui.button.preview' })}</Button>
-              <Button icon="save" type="danger" size="small" className="ml-sm" onClick={() => this.save()}>{formatMessage({ id: 'global.ui.button.save' })}</Button>
-              <Button icon="close" type="default" size="small" className="ml-sm" onClick={() => this.cancel()}>{formatMessage({ id: 'global.ui.button.cancel' })}</Button>
-
-              <Divider />
-            </Col>
-          </Row>
-          <Row className="pl-lg pr-lg">
-            { OPERATES.map(o => (
-              <Col span={24} key={o}>
-                <Radio className={`${theme}-theme-radio mt-sm`} value={o} checked={o === currentTab} onChange={(e) => { this.changeTab(e); }}>
-                  { formatMessage({ id: `page.layouts.operates.${o}` })}
-                </Radio>
-              </Col>
-          )) }
-          </Row>
-          <Row className=" pb-lg pl-lg pr-lg">
-            <Col span={24}>
-              <Divider />
-              <div className={cx('sider-view-wrapper')}>
-              {
-                  getSiderView()
-                }
-              </div>
-            </Col>
-          </Row>
+          <Layout>
+            <Content>
+              <Row className=" pt-lg pl-lg pr-lg">
+                <Col span={24}>
+                  <Button icon="layout" size="small" className={`${theme}-theme-btn ml-sm`} onClick={() => this.preview()}>{formatMessage({ id: 'global.ui.button.preview' })}</Button>
+                  <Button icon="save" type="danger" size="small" className="ml-sm" onClick={() => this.save()}>{formatMessage({ id: 'global.ui.button.save' })}</Button>
+                  <Button icon="close" type="default" size="small" className="ml-sm" onClick={() => this.cancel()}>{formatMessage({ id: 'global.ui.button.cancel' })}</Button>
+                </Col>
+              </Row>
+              <Divider/>
+              <Row className="pl-lg pr-lg">
+                { OPERATES.map(o => (
+                  <Col span={24} key={o}>
+                    <Radio className={`${theme}-theme-radio mt-sm`} value={o} checked={o === currentTab} onChange={(e) => { this.changeTab(e); }}>
+                      { formatMessage({ id: `page.layouts.operates.${o}` })}
+                    </Radio>
+                  </Col>
+                  )) }
+              </Row>
+              <Divider/>
+              <Row className=" pb-lg pl-lg pr-lg">
+                <Col span={24}>
+                  <div className={cx('sider-view-wrapper')}>
+                    {
+                          getSiderView()
+                      }
+                  </div>
+                </Col>
+              </Row>
+            </Content>
+          </Layout>
         </RightSider>
         <DragLayer canDrop={canDrop} theme={theme} intl={intl} />
       </BodyWrapper>

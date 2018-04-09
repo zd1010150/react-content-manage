@@ -30,10 +30,10 @@ const BaseEnums = Object.freeze({
   }),
 
   DetailTools: Object.freeze({
-    Convert: 'convert',
-    Delete: 'delete',
-    Sharing: 'sharing',
-    FindDuplicates: 'findDuplicates',
+    Convert: 'Convert',
+    Delete: 'Delete',
+    Sharing: 'Sharing',
+    FindDuplicates: 'FindDuplicates',
   }),
 
   DetailModules: Object.freeze({
