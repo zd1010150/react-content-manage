@@ -50,7 +50,7 @@ const BaseEnums = Object.freeze({
 const EnumsManager = Object.freeze({
   LocalStorageKey: 'crmLoginUser',
 
-  PhantomID: '0000-0000',
+  PhantomId: '0000-0000',
 
   DefaultPageConfigs: Object.freeze({
     PageSizeSmall: 10,

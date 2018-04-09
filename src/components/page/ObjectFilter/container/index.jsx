@@ -49,7 +49,7 @@ class ObjectFilter extends Component {
     const i18nPrefix = 'page.objectFilter';
 
     const { viewId } = match.params;
-    const panelTitleI18nId = viewId === Enums.PhantomID ? 'general.newTitle' : 'general.existTitle';
+    const panelTitleI18nId = viewId === Enums.PhantomId ? 'general.newTitle' : 'general.existTitle';
 
     return (
       <Panel panelClasses="lead-theme-panel" panelTitle={formatMessage({ id: `${i18nPrefix}.${panelTitleI18nId}` })}>

@@ -18,7 +18,7 @@ export const fetchByParams = (
   per_page = Enums.DefaultPageConfigs.PageSize,
   orderBy = '',
   sortedBy = '',
-  activeId = Enums.PhantomID,
+  activeId = Enums.PhantomId,
 ) => dispatch => get(getUrlByViewId(activeId, 'leads'), { page, per_page, orderBy, sortedBy }, dispatch).then(json => {
   console.log(`fetching -> page:${page}, per_page:${per_page}, orderBy:${orderBy}, sortedBy:${sortedBy}, activeId:${activeId}`);
   if (json && (!_.isEmpty(json.index))) {
