@@ -10,6 +10,7 @@ import classNames from 'classnames/bind';
 import styles from './index.less';
 const cx = classNames.bind(styles);
 
+import { AssigneeModal } from 'components/page/index';
 import { setFieldValue } from '../../flow/actions';
 // presets
 const colLayout = {
@@ -31,7 +32,7 @@ const propTypes = {
 
 class TaskFields extends Component {
   state = {
-    assignModalVisible: false,
+    assigneeModalVisible: false,
     subjectModalVisible: false,
   }
 
@@ -39,9 +40,10 @@ class TaskFields extends Component {
   
   handleFieldChange = (field, value) => this.props.setFieldValue(field, value)
 
-  handleSearchIconClick = $ => this.setState({ assignModalVisible: true })
+  handleSearchIconClick = $ => this.setState({ assigneeModalVisible: true })
 
   render() {
+    const { assigneeModalVisible, subjectModalVisible } = this.state;
     const {
       intl,
       assignTo,
@@ -70,6 +72,9 @@ class TaskFields extends Component {
               onChange={e => this.handleFieldChange('assignTo', e.target.value)}
               placeholder="Please select a value from the list"
               value={assignTo}
+            />
+            <AssigneeModal
+              visible={assigneeModalVisible}
             />
           </Col>
           <Col {...colLayout}>
