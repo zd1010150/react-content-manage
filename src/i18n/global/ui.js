@@ -6,12 +6,12 @@ const {
   FindDuplicates,
 } = Enums.DetailTools;
 const {
-  opportunities,
-  taskOpen,
-  taskHistory,
-  emailSent,
-  attachments,
-  logs,
+  Opportunities,
+  TaskOpen,
+  TaskHistory,
+  EmailSent,
+  Attachments,
+  Logs,
 } = Enums.DetailModules;
 
 export default {
@@ -96,12 +96,12 @@ export default {
       [FindDuplicates]: '查询重复记录',
     },
     detailModules: {
-      [opportunities]: 'Opportunities',
-      [taskOpen]: '未完成的任务',
-      [taskHistory]: '任务历史',
-      [emailSent]: '已发送的邮件',
-      [attachments]: '附件',
-      [logs]: '日志',
+      [Opportunities]: 'Opportunities',
+      [TaskOpen]: '未完成的任务',
+      [TaskHistory]: '任务历史',
+      [EmailSent]: '已发送的邮件',
+      [Attachments]: '附件',
+      [Logs]: '日志',
     },
   },
   en: {
@@ -185,12 +185,12 @@ export default {
       [FindDuplicates]: 'Find Duplicates',
     },
     detailModules: {
-      [opportunities]: 'Opportunities',
-      [taskOpen]: 'Task Open',
-      [taskHistory]: 'Task History',
-      [emailSent]: 'Email Sent',
-      [attachments]: 'Attachments',
-      [logs]: 'Logs',
+      [Opportunities]: 'Opportunities',
+      [TaskOpen]: 'Task Open',
+      [TaskHistory]: 'Task History',
+      [EmailSent]: 'Email Sent',
+      [Attachments]: 'Attachments',
+      [Logs]: 'Logs',
     },
   },
 };

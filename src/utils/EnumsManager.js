@@ -30,19 +30,19 @@ const BaseEnums = Object.freeze({
   }),
 
   DetailTools: Object.freeze({
-    Convert: 'convert',
-    Delete: 'delete',
-    Sharing: 'sharing',
-    FindDuplicates: 'findDuplicates',
+    Convert: 'Convert',
+    Delete: 'Delete',
+    Sharing: 'Sharing',
+    FindDuplicates: 'FindDuplicates',
   }),
 
   DetailModules: Object.freeze({
-    opportunities: 'opportunities',
-    taskOpen: 'taskOpen',
-    taskHistory: 'taskHistory',
-    emailSent: 'emailSent',
-    attachments: 'attachments',
-    logs: 'logs',
+    Opportunities: 'Opportunities',
+    TaskOpen: 'TaskOpen',
+    TaskHistory: 'TaskHistory',
+    EmailSent: 'EmailSent',
+    Attachments: 'Attachments',
+    Logs: 'Logs',
   }),
 
 });

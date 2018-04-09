@@ -36,7 +36,7 @@ const propTypes = {
   format: PropTypes.string,
   helpText: PropTypes.string,
   id: PropTypes.number.isRequired,
-  initialValue: PropTypes.string.isRequired,
+  initialValue: PropTypes.string,
   label: PropTypes.string.isRequired,
   lookupDisplayKey: PropTypes.string,
   name: PropTypes.string.isRequired,
