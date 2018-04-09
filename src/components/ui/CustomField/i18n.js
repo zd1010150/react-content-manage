@@ -1,8 +1,10 @@
 export default {
   zh: {
-    message: '请在修改值之前选定一个字段',
+    message: '输入的内容不符合Email的格式',
+    placeholder: '双击可进行修改',
   },
   en: {
-    message: 'Please select a field first.',
+    message: 'The input is not a valid Email.',
+    placeholder: 'Double-click to edit',
   },
 };

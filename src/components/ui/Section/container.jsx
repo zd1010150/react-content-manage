@@ -23,14 +23,18 @@ class Section extends Component {
     collapsed: false,
   }
 
-  handleClick = () => this.setState({
-    collapsed: !this.state.collapsed
-  })
+  handleClick = e => {
+    e.stopPropagation();
+    this.setState({
+      collapsed: !this.state.collapsed
+    })
+  }
 
   render() {
     const { collapsed } = this.state;
-    const { title, body, collapsible, style, titleStyle } = this.props;
+    const { title, body, collapsible, style, titleStyle, children } = this.props;
     
+    const ChildrenNode = children;
     return (
       <div className={cx('section')} style={style}>
         <SectionTitle
@@ -40,7 +44,13 @@ class Section extends Component {
           collapsed={collapsed}
           collapsible={collapsible}
         />
-        {body && !collapsed && <SectionBody body={body} />}
+        {children && !collapsed && (
+          <div className={cx('body')}>
+            {typeof children === 'function'
+              ? <ChildrenNode />
+              : ChildrenNode }
+          </div>
+        )}
       </div>
     );
   }

@@ -13,7 +13,19 @@ import {
 import { toTimezone } from 'utils/dateTimeUtils';
 import Enums from 'utils/EnumsManager';
 
-const { FieldTypes } = Enums;
+const {
+  DateOnly,
+  DateTime,
+  Email,
+  LongText,
+  Lookup,
+  NumberInput,
+  PickList,
+  TextInput,
+  Display,
+} = Enums.FieldTypes;
+
+
 const formatData = data => {
   if (!_.isArray(data)) return [];
 
@@ -23,17 +35,17 @@ const formatData = data => {
     let newValue = value;
     // TODO: replace the format with the value from backend
     // TODO: replace offset with user info timezone, need to consider undefined
-    if (crm_data_type === FieldTypes.Date
-        || crm_data_type === FieldTypes.DateTime) {
-      newValue = toTimezone(value, '+1100', crm_data_type === Enums.FieldTypes.Date ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss');
+    if (crm_data_type === DateOnly
+        || crm_data_type === DateTime) {
+      newValue = toTimezone(value, '+1100', crm_data_type === DateOnly ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss');
     }
 
     // Attach options to Picklist and Lookup field for RightSider
     let extraProperties = {};
-    if (crm_data_type === FieldTypes.PickList) {
+    if (crm_data_type === PickList) {
       extraProperties.options = picklists;
     }
-    if (crm_data_type === FieldTypes.Lookup) {
+    if (crm_data_type === Lookup) {
       extraProperties.options = [];
     }
 
@@ -49,8 +61,8 @@ const formatData = data => {
 };
 
 const initialSider = {
-  siderDisplayNum: Enums.PhantomID,
-  siderFieldId: Enums.PhantomID,
+  siderDisplayNum: Enums.PhantomId,
+  siderFieldId: Enums.PhantomId,
   siderOptions: [],
   siderSelection: [],
 };
@@ -86,8 +98,8 @@ const filterCriteria = (state = initialState, action) => {
       // TODO: when add a new filter, the default should be null, but before submit to backend, this id should be any available field id, NOT a phantom id
       const newFilter = {      
         displayNum: newDisplayNum,
-        fieldId: Enums.PhantomID,
-        conditionId: Enums.PhantomID,
+        fieldId: Enums.PhantomId,
+        conditionId: Enums.PhantomId,
         value: '',
         type: '',
       };
@@ -145,7 +157,7 @@ const filterCriteria = (state = initialState, action) => {
       // Get selected values based on value
       const activeFilter = state.filters.find(filter => filter.displayNum === state.siderDisplayNum);
       const values = activeFilter.value.split(',').map(value => value.trim());      
-      const optionKey = activeFilter.type === FieldTypes.Lookup
+      const optionKey = activeFilter.type === Lookup
                           ? 'name'
                           : 'option_value';
       const siderSelection = state.siderOptions.filter(option => values.indexOf(option[optionKey]) !== -1);
@@ -167,7 +179,7 @@ const filterCriteria = (state = initialState, action) => {
     case INSERT_SIDER_SELECTION:
       const currentFilter = state.filters.find(filter => filter.displayNum === state.siderDisplayNum);
       const currentValues = currentFilter.value.split(',').map(value => value.trim());
-      const targetKey = currentFilter.type === FieldTypes.Lookup
+      const targetKey = currentFilter.type === Lookup
                           ? 'name'
                           : 'option_value';
       const unaddedSelection = state.siderSelection.filter(option => currentValues.indexOf(option[targetKey]) === -1);
