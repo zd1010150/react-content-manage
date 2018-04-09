@@ -13,7 +13,6 @@ import {
     getUserFolderData,
     getAllUser,
     setSelectedPermissionTeam,
-    updateTeam,
     setPermissionVisible,
     setSelectedUser,
     addPermissionTeam,
@@ -67,7 +66,6 @@ class EmailTemplatePermission extends React.Component {
             getUserFolderData,
             getAllUser,
             updateUsers,
-            updateTeam,
             selectedTeamName,
             isPermissionVisible,
             setPermissionVisible,
@@ -115,7 +113,6 @@ class EmailTemplatePermission extends React.Component {
                                 teams={teams}
                                 setTeams={setTeams}
                                 setSelectedTeam={setSelectedPermissionTeam}
-                                updateTeam={updateTeam}
                             />
                         </Col>
                         <Col className="gutter-row field-value" span={12}>
@@ -158,7 +155,6 @@ const mapDispatchToProps = {
     getAllUser,
     updateUsers,
     setSelectedPermissionTeam,
-    updateTeam,
     setPermissionVisible,
     setSelectedUser,
     addPermissionTeam,

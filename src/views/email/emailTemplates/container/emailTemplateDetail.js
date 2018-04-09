@@ -152,7 +152,8 @@ class EmailTemplateDetail extends React.Component {
         const {
             setEditFolderViewVisible, setPermissionSettingVisible, isPermissionSettingVisible,
             isSharedByVisible, templates, templatesDataTablePagination, queryByPaging, setSharedByVisible,
-            setSelectedFolderData, selectedFolder, userFolders, sharedFolders, selectedUser, loginUser, deleteTemplate, fetchTemplateData, history
+            setSelectedFolderData, selectedFolder, userFolders, sharedFolders, selectedUser, loginUser, deleteTemplate, fetchTemplateData, history,
+            editTemplate
         } = this.props;
         const actionsLeft = <div><Radios selectedUser={selectedUser} setSharedByVisible={setSharedByVisible}/></div>;
         const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {
@@ -187,7 +188,7 @@ class EmailTemplateDetail extends React.Component {
                         {
                             !this.isCurrentUser() &&
                             <Icon type="eye-o" onClick={() => {
-                                fetchTemplateData({templateId: record.id, cb: this.showModal()});
+                                fetchTemplateData({templateId: record.id, cb: () => this.showModal(), cbErr: ()=> alert('no access')});
 
                             }}/>
                         }
@@ -232,9 +233,7 @@ class EmailTemplateDetail extends React.Component {
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                 >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                    <div dangerouslySetInnerHTML={{__html: editTemplate.content}}></div>
                 </Modal>
                 <Folders
                     formatMessage={formatMessage}
@@ -285,6 +284,7 @@ const mapStateToProps = ({global, setup, loginUser}) => {
         sharedFolders: emailTemplates.sharedFolders,
         selectedFolder: emailTemplates.selectedFolder,
         selectedUser: emailTemplates.selectedUser,
+        editTemplate: emailTemplates.editTemplate
     };
 };
 

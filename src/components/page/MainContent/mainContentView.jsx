@@ -32,7 +32,6 @@ const MainContent = () => (
     <Route path="/leads/convert/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/sharing/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
-    <Route path="/:objectType/:objectId" component={ObjectDetails} />
 
     <Route path="/leads" component={Leads} />
     <Route path="/setup/company-info/dd-demo" component={DDDemo} />
@@ -51,6 +50,7 @@ const MainContent = () => (
     <Route path="/setup/company-info/permissions" component={PermissionProfile} />
     <Route path="/setup/:objectType/fields" component={Fields} />
     <Route path="/setup/:objectType/pageLayout" component={Layouts} />
+    <Route path="/:objectType/:objectId" component={ObjectDetails} exact/>
   </Switch>
 );
 

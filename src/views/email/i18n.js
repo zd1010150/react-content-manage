@@ -41,11 +41,19 @@ export default {
       sharedBy: '共享者：',
       permissionTitle: '访问权限',
       addNewUser: '添加用户权限',
+
+      attachFiles: '添加附件',
+      chooseCloudAttachment: '选择云附件',
+      attachLocalFiles: '上传本地文件',
+      fileName: '文件名',
+      chooseFile: '选择文件',
+      chooseFolder: '选择文件夹',
+
       emailCampaignsSeparator: '............................................................................................',
       emailCampaign: '活动邮件',
       campaignName: '名称',
       subscriberList: '订阅者列表',
-      type: '种类',
+
       startDate: '开始日期',
       endDate: '截止日期',
       status: '状态',
@@ -60,11 +68,14 @@ export default {
       schedulesDescription: '( 邮件活动开始日期和截止日期如下 )',
       ongingCampaign: '持续的活动',
 
-      commonUserSeparator: '................................................................................................',
+      commonUseSeparator: '................................................................................................',
+      name: '名称',
+      type: '种类',
       createdDate: '创建日期',
       createdBy: '创建者',
       save: '保存',
       cancel: '取消',
+      description: '详情'
 
   },
   en: {
@@ -109,11 +120,22 @@ export default {
       sharedBy: 'By: ',
       permissionTitle: 'Permission to Access',
       addNewUser: 'Add New User',
+
+      attachFiles: 'Attach Files',
+      chooseCloudAttachment: 'Choose Cloud Attachment',
+      attachLocalFiles: 'Attach File from Local',
+      fileName: 'File Name',
+      chooseFile: 'Choose File',
+      chooseFolder: 'Choose Folder',
+
+
+
+
       emailCampaignsSeparator: '............................................................................................',
       emailCampaign: 'Email Campaigns',
       campaignName: 'Campaign Name',
       subscriberList: 'Subscriber List',
-      type: 'Type',
+
       startDate: 'Start Date',
       endDate: 'End Date',
       status: 'Status',
@@ -132,9 +154,12 @@ export default {
 
 
       commonUseSeparator: '................................................................................................',
+      name: 'Name',
+      type: 'Type',
       createdDate: 'Created Date',
       createdBy: 'Created By',
       save: 'Save',
       cancel: 'Cancel',
+      description: 'Description'
   },
 };

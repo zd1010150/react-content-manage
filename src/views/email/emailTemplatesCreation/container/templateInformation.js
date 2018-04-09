@@ -18,62 +18,12 @@ import {
     setEditTemplateContent
 } from '../flow/action';
 import {connect} from 'react-redux';
+import {SelectComponent, SelectComponentVertical, InputComponent} from '../component/formController';
 import {Panel} from 'components/ui/index';
 import classNames from 'classnames/bind';
 import TemplateContent from './templateContent';
 import styles from '../emailTemplatesCreation.less';
 const cx = classNames.bind(styles);
-const Option = Select.Option;
-
-const InputComponent = ({disableApiInput, value, label, updateTemplate}) => {
-    return <Row className={`pt-lg ${cx('new-template-input-row')}`}>
-        <Col className="gutter-row field-label" span={4}>
-            {label}
-        </Col>
-        <Col className="gutter-row field-value" span={20}>
-            {
-                !!value && <Input disabled={disableApiInput} value={value} onChange={(e) => {
-                    updateTemplate(e.target.value)
-                }}/>
-            }
-            {
-                !value && <Input disabled={disableApiInput} onChange={(e) => {
-                    updateTemplate(e.target.value)
-                }}/>
-            }
-
-        </Col>
-    </Row>
-}
-
-const SelectComponent = ({defaultFolderName, userFolders, selectedFolder, label, editTemplate, updateTemplate}) => {
-    return <Row className={`pt-lg ${cx('new-template-input-row')}`}>
-        <Col className="gutter-row field-label" span={4}>
-            {label}
-        </Col>
-        <Col className="gutter-row field-value" span={20}>
-            <Select onChange={(value) => {
-                updateTemplate(value)
-            }} defaultValue={defaultFolderName} className="full-width">
-                {userFolders && userFolders.map((folder) =>
-                    <Option key={folder.id} value={folder.id}>{folder.name}</Option>
-                )}
-            </Select>
-        </Col>
-    </Row>
-}
-
-const SelectComponentVertical = ({label, onChange}) => {
-    return <Fragment>
-        <div>
-            {label}
-        </div>
-        <Select onChange={onChange} defaultValue="Zhejiang" className="full-width">
-            <Option value="Zhejiang">Zhejiang</Option>
-            <Option value="Jiangsu">Jiangsu</Option>
-        </Select>
-    </Fragment>
-}
 
 const BasicInfo = ({
                        disableApiInput,
@@ -86,14 +36,14 @@ const BasicInfo = ({
                        userFolders, selectedFolder, formatMessage
                    }) => {
     return <Fragment>
-        <SelectComponent defaultFolderName={defaultFolderName} editTemplate={editTemplate}
-                         updateTemplate={setTemplateFolder} userFolders={userFolders}
+        <SelectComponent defaultValue={defaultFolderName} editTemplate={editTemplate}
+                         onChange={setTemplateFolder} items={userFolders}
                          selectedFolder={selectedFolder} label={formatMessage({id: 'page.emailTemplates.folder'})}/>
-        <InputComponent value={editTemplate.name} updateTemplate={setTemplateName}
+        <InputComponent value={editTemplate.name} onChange={setTemplateName}
                         label={formatMessage({id: 'page.emailTemplates.emailTemplatesName'})}/>
-        <InputComponent disableApiInput={disableApiInput} value={editTemplate.api_name} updateTemplate={setTemplateApiName}
+        <InputComponent disableInput={disableApiInput} value={editTemplate.api_name} onChange={setTemplateApiName}
                         label={formatMessage({id: 'page.emailTemplates.emailTemplateApiName'})}/>
-        <InputComponent value={editTemplate.description} updateTemplate={setTemplateDescription}
+        <InputComponent value={editTemplate.description} onChange={setTemplateDescription}
                         label={formatMessage({id: 'page.emailTemplates.newTemplateDescription'})}/>
     </Fragment>
 }

@@ -52,8 +52,7 @@ Department.propTypes = {
     intl: intlShape.isRequired,
     teams: PropTypes.array.isRequired,
     setTeams: PropTypes.func.isRequired,
-    setSelectedTeam: PropTypes.func.isRequired,
-    updateTeam: PropTypes.func.isRequired,
+    setSelectedTeam: PropTypes.func.isRequired
 };
 
 export default injectIntl(Department);

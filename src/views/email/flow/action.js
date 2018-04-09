@@ -5,52 +5,37 @@ import EnumsManager from "utils/EnumsManager";
 import _ from "lodash";
 import {
   EMAIL_TEMPLATES_EDIT_FOLDER_VIEW_VISIBLE,
-  EMAIL_TEMPLATES_RESET_NEW_DEPARMENT,
-  EMAIL_TEMPLATES_SET_NEW_DEPARTMENT_NAME,
-  EMAIL_TEMPLATES_SET_SELECTED_DEPARTMENT,
-  EMAIL_TEMPLATES_SET_USER,
-  EMAIL_TEMPLATES_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
-  EMAIL_TEMPLATES_SET_SELECT_USER,
-  EMAIL_TEMPLATES_SET_SORTING_TEAM,
   EMAIL_TEMPLATES_PERMISSION_VIEW_VISIBLE,
-  EMAIL_TEMPLATES_SET_TEMPLATES,
-  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS,
   EMAIL_TEMPLATES_SHARED_BY_VISIBLE,
   EMAIL_TEMPLATES_DEPARTMENT_VISIBLE,
-  EMAIL_TEMPLATES_SET_USER_FOLDERS,
-  EMAIL_TEMPLATES_SET_SHARED_FOLDERS,
-  EMAIL_TEMPLATES_SET_SELECTED_FOLDER,
-  EMAIL_TEMPLATES_SET_EDIT_FOLDERS,
-  EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
-  EMAIL_TEMPLATES_SET_NEW_ORDER,
-  EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
-  EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
-  EMAIL_TEMPLATES_UPDATE_TEMPLATE,
   EMAIL_TEMPLATES_PERMISSION_VISIBLE,
-  EMAIL_TEMPLATES_SET_SELECTED_PERMISSION_DEPARTMENT,
-  EMAIL_TEMPLATES_ADD_PERMISSION_DEPARTMENT,
-  EMAIL_TEMPLATES_ADD_PERMISSION_USER,
-  EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION,
-  EMAIL_TEMPLATES_SET_PERMISSION_DEPARTMENTS,
-  EMAIL_TEMPLATES_SET_PERMISSION_USERS
+  EMAIL_TEMPLATES_SET_SELECTED_DEPARTMENT,
+  EMAIL_TEMPLATES_SET_USER,
+  EMAIL_TEMPLATES_SET_SELECT_USER,
+  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS
 } from "./actionType";
 
+import { updateTemplate, setTemplatesData } from "./emailTemplateFlow/action";
+import {
+  setUserFolderData,
+  setSharedFolderData,
+  setSelectedFolder,
+  setEditFolderData,
+  deleteUserFolderData,
+  setNewOrder,
+  updateFolderName,
+  createUserFolder
+} from "./folderFlow/action";
+import {
+  setSelectedPermissionTeam,
+  addPermissionTeam,
+  setPermissionTeams,
+  addPermissionUser,
+  setPermissionUsers,
+  removeEntityFromSelection
+} from "./folderPermissionFlow/action";
+
 const url = "/";
-
-export const createUserFolder = payload => ({
-  type: EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
-  payload
-});
-
-export const updateFolderName = ({ id, name }) => ({
-  type: EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
-  payload: { id, name }
-});
-
-export const setNewOrder = userFolders => ({
-  type: EMAIL_TEMPLATES_SET_NEW_ORDER,
-  userFolders
-});
 
 export const sortValues = array => dispatch => dispatch(setNewOrder(array));
 
@@ -75,35 +60,6 @@ export const getUserFolderData = userId => dispatch =>
       }
     }
   });
-
-//Set User Folders
-export const setUserFolderData = userFolders => ({
-  type: EMAIL_TEMPLATES_SET_USER_FOLDERS,
-  userFolders
-});
-
-//Delete User Folders
-export const deleteUserFolderData = id => ({
-  type: EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
-  id
-});
-
-//Set Shared Folders
-export const setSharedFolderData = sharedFolders => ({
-  type: EMAIL_TEMPLATES_SET_SHARED_FOLDERS,
-  sharedFolders
-});
-
-//Set edited Folders
-export const setEditFolderData = editFolders => ({
-  type: EMAIL_TEMPLATES_SET_EDIT_FOLDERS,
-  editFolders
-});
-
-export const setSelectedFolder = selectedFolder => ({
-  type: EMAIL_TEMPLATES_SET_SELECTED_FOLDER,
-  selectedFolder
-});
 
 //Set Selected Folder
 export const setSelectedFolderData = selectedFolder => (dispatch, getState) => {
@@ -167,17 +123,6 @@ export const setPermissionSettingVisible = isPermissionSettingVisible => ({
   isPermissionSettingVisible
 });
 
-//Update new template
-export const updateTemplate = payload => ({
-  type: EMAIL_TEMPLATES_UPDATE_TEMPLATE,
-  payload
-});
-//Set Templates
-export const setTemplatesData = templates => ({
-  type: EMAIL_TEMPLATES_SET_TEMPLATES,
-  templates
-});
-
 const setPaginations = (perPage, currentPage, total) => ({
   type: EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS,
   perPage,
@@ -208,17 +153,21 @@ export const createTemplateData = ({
   });
 };
 
-export const fetchTemplateData = ({ templateId, cb }) => (
+export const fetchTemplateData = ({ templateId, cb, cbErr }) => (
   dispatch,
   getState
 ) => {
   get(`/admin/email_templates/${templateId}`, dispatch).then(data => {
+    console.log("data", data);
     if (!_.isEmpty(data)) {
       dispatch(updateTemplate(data.data));
-      console.log("data", data);
-    }
-    if (_.isFunction(cb)) {
-      cb();
+      if (_.isFunction(cb)) {
+        cb();
+      }
+    } else {
+      if (_.isFunction(cbErr)) {
+        cbErr();
+      }
     }
   });
 };
@@ -237,9 +186,9 @@ export const updateTemplateData = ({
     { name, api_name: apiName, content, folder_id: folderId, description },
     dispatch
   ).then(data => {
+    console.log("data", data);
     if (!_.isEmpty(data)) {
       dispatch(queryByPaging({ folderId }));
-      console.log("data", data);
       if (_.isFunction(cb)) {
         cb();
       }
@@ -331,71 +280,23 @@ export const queryByPaging = ({ perPage, currentPage, folderId }) => (
   });
 };
 
-export const setNewDepartName = name => ({
-  type: EMAIL_TEMPLATES_SET_NEW_DEPARTMENT_NAME,
-  name
-});
-export const resetNewDepartment = () => ({
-  type: EMAIL_TEMPLATES_RESET_NEW_DEPARMENT
-});
 /* Display the user */
 export const setSelectedTeam = id => ({
   type: EMAIL_TEMPLATES_SET_SELECTED_DEPARTMENT,
   id
 });
-export const setSelectedPermissionTeam = id => ({
-  type: EMAIL_TEMPLATES_SET_SELECTED_PERMISSION_DEPARTMENT,
-  id
-});
-export const addPermissionTeam = payload => ({
-  type: EMAIL_TEMPLATES_ADD_PERMISSION_DEPARTMENT,
-  payload
-});
-export const addPermissionUser = payload => ({
-  type: EMAIL_TEMPLATES_ADD_PERMISSION_USER,
-  payload
-});
-export const setPermissionTeams = payload => ({
-  type: EMAIL_TEMPLATES_SET_PERMISSION_DEPARTMENTS,
-  payload
-});
-export const setPermissionUsers = payload => ({
-  type: EMAIL_TEMPLATES_SET_PERMISSION_USERS,
-  payload
-});
-export const removeEntityFromSelection = payload => ({
-  type: EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION,
-  payload
-});
 
-export const setSeleteTeamDialogVisible = isSelectTeamDialogVisible => ({
-  type: EMAIL_TEMPLATES_SET_SELECTED_USER_TEAM_DIALOG_VISIBLE,
-  isSelectTeamDialogVisible
-});
-
+/* set the selected user to show his folder */
 export const setSelectedUser = user => ({
   type: EMAIL_TEMPLATES_SET_SELECT_USER,
   user
 });
 
+/* set all users*/
 export const setAllUser = users => ({
   type: EMAIL_TEMPLATES_SET_USER,
   users
 });
-/* Sort teams */
-export const setSortingTeam = sortingTeams => ({
-  type: EMAIL_TEMPLATES_SET_SORTING_TEAM,
-  sortingTeams
-});
-export const addDepartment = (name, parentId, cb) => dispatch =>
-  post("/admin/teams", { name, parent_id: parentId }, dispatch).then(data => {
-    if (!_.isEmpty(data)) {
-      dispatch(fetchTeams());
-    }
-    if (_.isFunction(cb)) {
-      cb();
-    }
-  });
 
 export const getAllUser = () => dispatch =>
   get("/admin/users/all", {}, dispatch).then(data => {
@@ -403,35 +304,14 @@ export const getAllUser = () => dispatch =>
       dispatch(setAllUser(data.data));
     }
   });
-export const deleteDepartment = id => dispatch =>
-  httpDelete(`/admin/teams/${id}`, {}, dispatch).then(data => {
-    if (!_.isEmpty(data)) {
-      dispatch(fetchTeams());
-      dispatch(getAllUser());
-      dispatch(setSelectedTeam(DEFAULT_DEPAREMTN.id));
-    }
-  });
 
-export const updateTeam = (id, name, cb) => dispatch =>
-  patch(`/admin/teams/${id}`, { name }, dispatch).then(data => {
-    if (!_.isEmpty(data)) {
-      dispatch(fetchTeams());
-    }
-    if (_.isFunction(cb)) {
-      cb();
-    }
-  });
-
-export const sortDepartment = cb => (dispatch, getState) =>
-  patch(
-    "/admin/teams/struct/sort",
-    { teams: getState().global.settings.teams },
-    dispatch
-  ).then(data => {
-    if (!_.isEmpty(data)) {
-      dispatch(fetchTeams());
-    }
-    if (_.isFunction(cb)) {
-      cb();
-    }
-  });
+export {
+  setEditFolderData,
+  deleteUserFolderData,
+  updateFolderName,
+  createUserFolder,
+  setSelectedPermissionTeam,
+  addPermissionTeam,
+  addPermissionUser,
+  removeEntityFromSelection
+};

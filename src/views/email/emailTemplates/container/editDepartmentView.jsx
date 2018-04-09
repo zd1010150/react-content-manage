@@ -12,7 +12,6 @@ import {
     getUserFolderData,
     getAllUser,
     setSelectedTeam,
-    updateTeam,
     setDepartmentVisible,
     setSelectedUser
 } from '../../flow/action';
@@ -40,7 +39,6 @@ class EditView extends React.Component {
             getUserFolderData,
             getAllUser,
             updateUsers,
-            updateTeam,
             selectedTeamName,
             isDepartmentVisible,
             setDepartmentVisible,
@@ -60,7 +58,6 @@ class EditView extends React.Component {
                                 teams={teams}
                                 setTeams={setTeams}
                                 setSelectedTeam={setSelectedTeam}
-                                updateTeam={updateTeam}
                             />
                         </Col>
                         <Col className="gutter-row field-value" span={12}>
@@ -107,7 +104,6 @@ const mapDispatchToProps = {
     getAllUser,
     updateUsers,
     setSelectedTeam,
-    updateTeam,
     setDepartmentVisible,
     setSelectedUser
 };
