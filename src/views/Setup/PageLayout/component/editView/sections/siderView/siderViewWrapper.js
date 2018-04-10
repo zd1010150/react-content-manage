@@ -40,7 +40,7 @@ class SectionSiderViewWrapper extends React.Component {
     const {
       isOver, connectDropTarget, canDrop, theme,
     } = this.props;
-    return connectDropTarget(<div className={classNames(cx('fields'), 'pl-lg', 'pr-lg', isOver ? (canDrop ? `${theme}-sider-view-can-drop` : 'sider-view-cant-drop') : '')}>
+    return connectDropTarget(<div className={classNames(cx('fields'), 'pl-lg', 'pr-lg','pb-lg',  isOver ? (canDrop ? `${theme}-sider-view-can-drop` : 'sider-view-cant-drop') : '')}>
       {
             this.props.children
         }
