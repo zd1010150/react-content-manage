@@ -12,7 +12,7 @@ class moduleSiderView extends React.Component {
     const {
       selectedModules,
       deleteModule,
-        theme,
+      theme,
     } = this.props;
     return (
       <SideViewWrapper deleteModule={deleteModule} theme={theme}>

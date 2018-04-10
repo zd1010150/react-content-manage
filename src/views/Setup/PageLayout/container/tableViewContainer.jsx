@@ -38,7 +38,7 @@ class LayoutsTableView extends React.Component {
   }
   editLayout(layout) {
     const { setCurrentLayout, history, objectType } = this.props;
-    setCurrentLayout({ id: layout.id });
+    setCurrentLayout({ id: layout.id, name: layout.name });
     history.push(`/setup/${objectType}/pageLayout?action=${LAYOUT_EDIT}`);
   }
   deleteLayout(layout) {
