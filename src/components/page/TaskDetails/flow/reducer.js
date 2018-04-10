@@ -1,4 +1,9 @@
-import { SET_TASK_FIELD, SET_TASK_FIELDS, SET_TASK_ASSIGNEE } from './actionTypes';
+import {
+  SET_TASK_ASSIGNEE,
+  SET_TASK_ASSIGNEES,
+  SET_TASK_FIELD,
+  SET_TASK_FIELDS,
+} from './actionTypes';
 
 const initialState = {
   assignees: [],
@@ -20,15 +25,33 @@ const taskDetails = (state = initialState, action) => {
       };
 
 
+    case SET_TASK_ASSIGNEES:
+      const { assignees } = action.payload;      
+      return {
+        ...state,
+        // TODO: remove default value for assignees
+        assignees: [{ id: 1, fullName: 'xyz', team: 'abc' }, { id: 2, fullName: 'xyz2', team: 'edf'}],
+      };
+
+
+    case SET_TASK_FIELD:
+      const { field, value } = action.payload;
+      return {
+        ...state,
+        [field]: value,
+      };
+
+
     case SET_TASK_FIELDS:
       const { data } = action.payload;
+      // TODO: remove the default values for data
       const {
-        assignTo,
-        status,
-        subject,
-        priority,
-        dueDate,
-        comments,
+        assignTo = 'xyz',
+        status = 'new',
+        subject = 'pending email',
+        priority = 'high',
+        dueDate = '1900-12-30',
+        comments = 'test',
       } = data;
 
       return {
@@ -39,14 +62,6 @@ const taskDetails = (state = initialState, action) => {
         priority,
         dueDate,
         comments,
-      };
-
-
-    case SET_TASK_FIELD:
-      const { field, value } = action.payload;
-      return {
-        ...state,
-        [field]: value,
       };
 
 

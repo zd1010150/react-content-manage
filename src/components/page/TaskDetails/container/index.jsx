@@ -51,7 +51,10 @@ class TaskDetails extends Component {
         panelClasses={`${theme}-theme-panel`}
       >
         <Row style={{ margin: '10px 15px' }}>
-          <Fields />
+          <Fields
+            objectId={objectId}
+            objectType={objectType}
+          />
         </Row>
         <Row style={{ margin: '10px 15px' }}>
           <Actions

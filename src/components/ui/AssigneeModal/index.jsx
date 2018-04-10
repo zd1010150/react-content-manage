@@ -11,13 +11,12 @@ import { FloatingLabelInput, StyledModal } from 'components/ui/index';
 
 const defaultProps = {
   data: [],
-  selectedId: 2,  // test
   visible: false,
 };
 const propTypes = {
   data: PropTypes.array.isRequired,
   onRowClick: PropTypes.func,
-  selectedId: PropTypes.number,
+  value: PropTypes.string,
   visible: PropTypes.bool.isRequired,
 };
 
@@ -41,8 +40,8 @@ class AssigneeModal extends Component {
   handleFilterChange = value => this.setState({ searchText: value })
 
   addHighlightCls = record => {
-    const { selectedId } = this.props;
-    if (record.id === selectedId) {
+    const { value } = this.props;
+    if (record.fullName === value) {
       return `cursor-pointer ${cx('selected')}`;
     }
     return 'cursor-pointer';
@@ -76,7 +75,7 @@ class AssigneeModal extends Component {
 
   render() {
     const { searchText } = this.state;
-    const { intl, data, selectedId, visible } = this.props;
+    const { intl, data, value, visible } = this.props;
     const { formatMessage } = intl;
     const i18nPrefix = 'page.assigneeModal';
 
@@ -92,10 +91,10 @@ class AssigneeModal extends Component {
         visible={visible}
       >
         <FloatingLabelInput
-          labelText="Search"
+          labelText={formatMessage({ id: `${i18nPrefix}.label` })}
           labelColor="#000"
           handleChange={this.handleFilterChange}
-          placeholder="Filter in table by Name/Team"
+          placeholder={formatMessage({ id: `${i18nPrefix}.placeholder` })}
           addonAfter={<Icon size="small" type="search" />}
           value={searchText}
         />

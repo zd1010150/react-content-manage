@@ -13,7 +13,6 @@ import ObjectFilter from './ObjectFilter/index';
 import RightSider from './RightSider/index';
 import FilterCriteria from './FilterCriteria/index';
 import TaskDetails from './TaskDetails/index';
-import AssigneeModal from './AssigneeModal/index';
 
 export {
   TopPanel,
@@ -31,5 +30,4 @@ export {
   RightSider,
   FilterCriteria,
   TaskDetails,
-  AssigneeModal,
 };

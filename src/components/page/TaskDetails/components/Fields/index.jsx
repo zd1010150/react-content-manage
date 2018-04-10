@@ -10,8 +10,8 @@ import classNames from 'classnames/bind';
 import styles from './index.less';
 const cx = classNames.bind(styles);
 
-import { AssigneeModal } from 'components/page/index';
-import { setFieldValue } from '../../flow/actions';
+import { AssigneeModal } from 'components/ui/index';
+import { tryFetchTask, setFieldValue } from '../../flow/actions';
 // presets
 const colLayout = {
   sm: 12,
@@ -36,6 +36,11 @@ class TaskFields extends Component {
     subjectModalVisible: false,
   }
 
+  componentDidMount() {
+    const { objectId, objectType, tryFetchTask } = this.props;
+    tryFetchTask(objectId, objectType);
+  }
+
   handleAssigneeModalCancel = $ => this.setState({ assigneeModalVisible: false })
 
   handleAssigneeModalOpen = $ => this.setState({ assigneeModalVisible: true })
@@ -56,6 +61,7 @@ class TaskFields extends Component {
     const {
       intl,
       assignTo,
+      assignees,
       comments,
       dueDate,
       priority,
@@ -85,10 +91,10 @@ class TaskFields extends Component {
               value={assignTo}
             />
             <AssigneeModal
-              data={[{ id: 1, fullName: 'xyz', team: 'abc' }, { id: 2, fullName: 'xyz2', team: 'edf'}]}
-              selectedId={2}
+              data={assignees}
               onCancel={this.handleAssigneeModalCancel}
               onRowClick={this.handleRowClick}
+              value={assignTo}
               visible={assigneeModalVisible}
             />
           </Col>
@@ -124,6 +130,7 @@ class TaskFields extends Component {
             <Select
               style={{ width: '100%' }}
               onChange={value => this.handleFieldChange('priority', value)}
+              value={priority}
             >
               {priorities.map(priority => <Option key={priority.id} value={priority.name}>{priority.name}</Option>)}
             </Select>
@@ -166,6 +173,7 @@ const mapStateToProps = ({ global, taskDetails }) => ({
   priorities: global.settings.priorities,
   statuses: global.settings.taskStatuses,
   assignTo: taskDetails.assignTo,
+  assignees: taskDetails.assignees,
   comments: taskDetails.comments,
   dueDate: taskDetails.dueDate,
   priority: taskDetails.priority,
@@ -174,5 +182,6 @@ const mapStateToProps = ({ global, taskDetails }) => ({
 });
 const mapDispatchToProps = {
   setFieldValue,
+  tryFetchTask,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TaskFields));
