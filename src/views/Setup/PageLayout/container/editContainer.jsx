@@ -51,11 +51,6 @@ class EditContainer extends React.Component {
       this.fetchDetail();
     }
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.location !== this.props.location) {
-      this.fetchDetail(nextProps);
-    }
-  }
   fetchDetail() {
     const { fetchLayoutDetail, layoutId } = this.props;
     if (!_.isEmpty(`${layoutId}`)) {
