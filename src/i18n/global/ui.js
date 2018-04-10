@@ -65,6 +65,9 @@ export default {
       type: '类型',
       uploadAt: '上传时间',
       user: '用户',
+      fullName: '用户名',
+      team: '所属团队',
+      workHour: '工作时间',
     },
     select: {
       label: '视图',
@@ -155,6 +158,9 @@ export default {
       type: 'Type',
       uploadAt: 'Uploaded Date',
       user: 'User',
+      fullName: 'Full Name',
+      team: 'Team',
+      workHour: 'Working Hour',
     },
     select: {
       label: 'view',

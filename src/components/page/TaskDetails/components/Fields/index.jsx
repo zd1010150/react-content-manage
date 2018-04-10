@@ -36,12 +36,21 @@ class TaskFields extends Component {
     subjectModalVisible: false,
   }
 
-  handleBarsIconClick = $ => this.setState({ subjectModalVisible: true })
+  handleAssigneeModalCancel = $ => this.setState({ assigneeModalVisible: false })
+
+  handleAssigneeModalOpen = $ => this.setState({ assigneeModalVisible: true })
+
+  handleSubjectModalCancel = $ => this.setState({ subjectModalVisible: false })
+
+  handleSubjectModalOpen = $ => this.setState({ subjectModalVisible: true })
   
   handleFieldChange = (field, value) => this.props.setFieldValue(field, value)
 
-  handleSearchIconClick = $ => this.setState({ assigneeModalVisible: true })
-
+  handleRowClick = (id, name) => {
+    this.props.setFieldValue('assignTo', name);
+    return this.setState({ assigneeModalVisible: false });
+  }
+  
   render() {
     const { assigneeModalVisible, subjectModalVisible } = this.state;
     const {
@@ -66,19 +75,27 @@ class TaskFields extends Component {
       <Fragment>
         <Row className={rowCls} gutter={24}>
           <Col {...colLayout}>
-            <div className={labelCls}>{formatMessage({ id: `${i18nPrefix}.assignTo` })}</div>
+            <div className={labelCls}>
+              {formatMessage({ id: `${i18nPrefix}.assignTo` })}
+            </div>
             <Input
-              addonAfter={<Icon onClick={this.handleSearchIconClick} size="small" type="search" />}
+              addonAfter={<Icon className="cursor-pointer" onClick={this.handleAssigneeModalOpen} size="small" type="search" />}
               onChange={e => this.handleFieldChange('assignTo', e.target.value)}
               placeholder="Please select a value from the list"
               value={assignTo}
             />
             <AssigneeModal
+              data={[{ id: 1, fullName: 'xyz', team: 'abc' }, { id: 2, fullName: 'xyz2', team: 'edf'}]}
+              selectedId={2}
+              onCancel={this.handleAssigneeModalCancel}
+              onRowClick={this.handleRowClick}
               visible={assigneeModalVisible}
             />
           </Col>
           <Col {...colLayout}>
-            <div className={labelCls}>{formatMessage({ id: `${i18nPrefix}.status` })}</div>
+            <div className={labelCls}>
+              {formatMessage({ id: `${i18nPrefix}.status` })}
+            </div>
             <Select
               onChange={value => this.handleFieldChange('status', value)}
               style={{ width: '100%' }}
@@ -90,16 +107,20 @@ class TaskFields extends Component {
         </Row>
         <Row className={rowCls} gutter={24}>
           <Col {...colLayout}>
-            <div className={labelCls}>{formatMessage({ id: `${i18nPrefix}.subject` })}</div>
+            <div className={labelCls}>
+              {formatMessage({ id: `${i18nPrefix}.subject` })}
+            </div>
             <Input
-              addonAfter={<Icon onClick={this.handleBarsIconClick} size="small" type="bars" />}
+              addonAfter={<Icon className="cursor-pointer" onClick={this.handleBarsIconClick} size="small" type="bars" />}
               onChange={e => this.handleFieldChange('subject', e.target.value)}
               placeholder="Please select or add a new value from the list"
               value={subject}
             />
           </Col>
           <Col {...colLayout}>
-            <div className={labelCls}>{formatMessage({ id: `${i18nPrefix}.priority` })}</div>
+            <div className={labelCls}>
+              {formatMessage({ id: `${i18nPrefix}.priority` })}
+            </div>
             <Select
               style={{ width: '100%' }}
               onChange={value => this.handleFieldChange('priority', value)}
@@ -110,7 +131,9 @@ class TaskFields extends Component {
         </Row>
         <Row className={rowCls} gutter={24}>
           <Col {...colLayout}>
-            <div className={labelCls}>{formatMessage({ id: `${i18nPrefix}.dueDate` })}</div>
+            <div className={labelCls}>
+              {formatMessage({ id: `${i18nPrefix}.dueDate` })}
+            </div>
             <DatePicker
               format="YYYY-MM-DD"
               onChange={(date, dateString) => this.handleFieldChange('dueDate', dateString)}
@@ -121,7 +144,9 @@ class TaskFields extends Component {
           </Col>
         </Row>
         <Row className={rowCls}>
-          <div style={{ fontWeight: 700 }}>{formatMessage({ id: `${i18nPrefix}.comments` })}</div>
+          <div style={{ fontWeight: 700 }}>
+            {formatMessage({ id: `${i18nPrefix}.comments` })}
+          </div>
           <TextArea
             autosize={{ minRows: 10, maxRows: 15 }}
             onChange={e => this.handleFieldChange('comments', e.target.value)}
@@ -137,6 +162,7 @@ class TaskFields extends Component {
 TaskFields.defaultProps = defaultProps;
 TaskFields.propTypes = propTypes;
 const mapStateToProps = ({ global, taskDetails }) => ({
+  language: global.language,
   priorities: global.settings.priorities,
   statuses: global.settings.taskStatuses,
   assignTo: taskDetails.assignTo,
