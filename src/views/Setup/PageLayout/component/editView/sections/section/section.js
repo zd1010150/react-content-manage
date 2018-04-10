@@ -38,7 +38,7 @@ class Section extends React.Component {
       addFieldToSection,
       code,
       setCanDrop,
-        setEditField,
+      setEditField,
       theme,
     } = props;
     const trs = [];
@@ -92,6 +92,7 @@ class Section extends React.Component {
               pageRequired={f.pageRequired}
               pageReadonly={f.pageReadonly}
               deleteFromSection={deleteFromSection}
+              setEditField={setEditField}
             />
           </SectionTd>);
       }
@@ -163,6 +164,7 @@ Section.propTypes = {
   fieldCanDrop: PropTypes.bool.isRequired,
   setCanDrop: PropTypes.func.isRequired,
   deleteFromSection: PropTypes.func.isRequired,
+  setEditField: PropTypes.func.isRequired,
 };
 
 

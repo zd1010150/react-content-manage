@@ -39,8 +39,8 @@ class sectionEditAddDialog extends React.Component {
       <Modal
         title="Basic Modal"
         visible={isShow}
-        onOk={this.save.bind(this)}
-        onCancel={this.cancel.bind(this)}
+        onOk={() => this.save()}
+        onCancel={() => this.cancel()}
       >
         <AddEditForm code={code} label={label} cols={cols} ref={c => this.form = c}/>
       </Modal>

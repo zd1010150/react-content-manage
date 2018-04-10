@@ -26,9 +26,7 @@ export const setAddLayout = args => ({
 });
 
 export const fetchAllLayouts = objType => dispatch => get(`/admin/page_layouts/object/${objType}`, {}, dispatch).then((data) => {
-  if (!_.isEmpty(data.data)) {
-    dispatch(setAllLayout({ layouts: data.data }));
-  }
+  dispatch(setAllLayout({ layouts: data.data || [] }));
 });
 
 export const saveLayoutName = (objType, form, cb) => dispatch => post(`/admin/page_layouts/object/${objType}`, { ...form }, dispatch).then((data) => {

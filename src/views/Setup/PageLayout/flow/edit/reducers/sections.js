@@ -12,6 +12,7 @@ import {
   SETUP_LAYOUT_EDIT_DELETE_SECTION,
   SETUP_LAYOUT_EDIT_UPDATE_SECTION,
   SETUP_LAYOUT_EDIT_MOVE_SECTION,
+  SETUP_LAYOUT_CHANGE_FIELD_ATTR,
 } from '../actionType';
 import { DEFAULT_SECTION_CODE } from '../config';
 
@@ -213,6 +214,8 @@ const converColsOfSection = (state, { sectionCode, cols }) => {
   }
   return Object.assign({}, converSection, { fields: newFields, cols, rows: Math.ceil(allSectionFields.length / cols) });
 };
+
+
 const updateSection = (state, { label, sectionCode, cols }) => state.map((section) => {
   if (section.code === sectionCode) {
     if (section.cols !== cols) {
@@ -223,6 +226,42 @@ const updateSection = (state, { label, sectionCode, cols }) => state.map((sectio
   return section;
 });
 
+const updateFieldAttr = (fields, fieldId, attr) => {
+  let y,
+    x,
+    f,
+    colFields,
+    flag = false,
+    newTargetColumnFields = [];
+  for (const col in fields) {
+    if (flag) break;
+    colFields = fields[col];
+    for (let i = 0; i < colFields.length; i++) {
+      f = colFields[i];
+      if (f.id === fieldId) {
+        y = col;
+        x = i;
+        flag = true;
+        break;
+      }
+    }
+  }
+  const targetColumn = fields[y];
+  newTargetColumnFields = targetColumn.slice(0);
+  newTargetColumnFields[x] = Object.assign({}, targetColumn[x], { ...attr });
+  return Object.assign({}, fields, { [y]: newTargetColumnFields });
+};
+
+const changeFieldAttr = (state, {
+  sectionCode, fieldId, requiredValue, readOnlyValue,
+}) => state.map((section) => {
+  if (section.code === sectionCode) {
+    return Object.assign({}, section, {
+      fields: updateFieldAttr(section.fields, fieldId, { pageRequired: requiredValue, pageReadonly: readOnlyValue }),
+    });
+  }
+  return section;
+});
 
 const sections = (state = [], action) => {
   const { type, ...payload } = action;
@@ -243,6 +282,8 @@ const sections = (state = [], action) => {
       return moveSection(state, payload);
     case SETUP_LAYOUT_EDIT_UPDATE_SECTION:
       return updateSection(state, payload);
+    case SETUP_LAYOUT_CHANGE_FIELD_ATTR:
+      return changeFieldAttr(state, payload);
     default:
       return state;
   }

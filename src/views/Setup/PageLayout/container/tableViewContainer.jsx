@@ -24,6 +24,11 @@ class LayoutsTableView extends React.Component {
   componentDidMount() {
     this.props.fetchAllLayouts(this.props.objectType);
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.objectType !== this.props.objectType) {
+      this.props.fetchAllLayouts(nextProps.objectType);
+    }
+  }
   add() {
     const { setAddLayout } = this.props;
     setAddLayout({ isShowDialog: true });
@@ -33,7 +38,7 @@ class LayoutsTableView extends React.Component {
   }
   editLayout(layout) {
     const { setCurrentLayout, history, objectType } = this.props;
-    setCurrentLayout({ id: layout.id});
+    setCurrentLayout({ id: layout.id });
     history.push(`/setup/${objectType}/pageLayout?action=${LAYOUT_EDIT}`);
   }
   deleteLayout(layout) {

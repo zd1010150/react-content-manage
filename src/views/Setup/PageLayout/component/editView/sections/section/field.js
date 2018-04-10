@@ -53,14 +53,34 @@ class field extends React.Component {
       });
     }
     editField=() => {
-
+      const {
+        id,
+        label,
+        pageRequired,
+        pageReadonly,
+        sectionCode,
+        isLayoutRequired,
+        isSystem,
+        setEditField,
+      } = this.props;
+      const requiredDisable = isSystem || isLayoutRequired;
+      const readOnlyDisable = isSystem || isLayoutRequired;
+      setEditField({
+        isShow: true,
+        fieldLabel: label,
+        fieldId: id,
+        sectionCode,
+        requiredValue: pageRequired,
+        requiredDisable,
+        readOnlyValue: pageReadonly,
+        readOnlyDisable,
+      });
     }
     render() {
       const {
         id,
         label,
         theme,
-        isLayoutRequired,
         pageRequired,
         pageReadonly,
         isSystem,
@@ -72,8 +92,10 @@ class field extends React.Component {
       return connectDragSource(<div className={classNames(cx('field'), isDragging ? cx('field-btn-dragging') : '')} id={id} onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
 
         <span className={classNames(cx('field-label'))}>
-          { pageReadonly ? <Icon type="lock" className="read-only" /> : '' }
-          {pageRequired ? <span className="error-msg">*</span> : '' }
+          { isSystem ? <Icon type="star-o" className={`${theme}-theme-icon pr-sm`} /> : ''}
+          { pageReadonly ? <Icon type="lock" className="read-only pr-sm" /> : '' }
+          {pageRequired ? <span className="error-msg pr-sm">*</span> : '' }
+
           {label} :
         </span>
         <span className={classNames(cx('field-sample-value'), 'pl-sm')}>
@@ -93,13 +115,14 @@ field.propTypes = {
   isSystem: PropTypes.bool.isRequired,
   isLayoutRequired: PropTypes.bool,
   theme: PropTypes.string.isRequired,
-  pageRequired: PropTypes.bool,
-  pageReadonly: PropTypes.bool,
+  pageRequired: PropTypes.bool.isRequired,
+  pageReadonly: PropTypes.bool.isRequired,
   sectionCode: PropTypes.string.isRequired,
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,
   connectDragPreview: PropTypes.func.isRequired,
   deleteFromSection: PropTypes.func.isRequired,
+  setEditField: PropTypes.func.isRequired,
 };
 
 

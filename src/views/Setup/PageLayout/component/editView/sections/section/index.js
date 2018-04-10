@@ -11,6 +11,8 @@ import { objTypeAndClassTypeMap } from 'config/app.config';
 import SectionWrapper from './section-wrapper';
 import Section from './section';
 import SectionEditAddDialog from './section-edit-add-dialog';
+import SectionFieldEditDialog from './section-field-edit-dialog';
+
 import styles from '../../../../index.less';
 import {
   toggleSectionAddEditDialog,
@@ -24,6 +26,7 @@ import {
   addFieldToSection,
   deleteFromSection,
   setEditField,
+  changeFieldAttr,
 } from '../../../../flow/edit/action';
 
 const cx = classNames.bind(styles);
@@ -49,6 +52,8 @@ class ToolContainer extends React.Component {
       uiDialog,
       deleteFromSection,
       setEditField,
+      fieldEditDialog,
+      changeFieldAttr,
     } = this.props;
     const { formatMessage } = intl;
     const theme = objTypeAndClassTypeMap[objectType];
@@ -98,6 +103,11 @@ class ToolContainer extends React.Component {
           setSectionAttr={setSectionAttr}
           toggleSectionAddEditDialog={toggleSectionAddEditDialog}
         />
+        <SectionFieldEditDialog
+          fieldEditDialog={fieldEditDialog}
+          setEditField={setEditField}
+          changeFieldAttr={changeFieldAttr}
+        />
       </Panel>);
   }
 }
@@ -118,6 +128,7 @@ const mapStateToProps = ({ setup }) => {
     sections,
     allFields: fields,
     uiDialog: ui.sectionAddEditDialog,
+    fieldEditDialog: ui.fieldEditDialog,
     fieldCanDrop: ui.fieldCanDrop,
   };
 };
@@ -133,6 +144,7 @@ const mapDispatchToProps = {
   addFieldToSection,
   deleteFromSection,
   setEditField,
+  changeFieldAttr,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ToolContainer));

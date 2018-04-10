@@ -4,6 +4,7 @@ import {
   SETUP_LAYOUT_EDIT_SET_SECTION_ATTRIBUTE,
   SETUP_LAYOUT_EDIT_SET_CAN_DROP,
   SETUP_LAYOUT_EDIT_SET_CURRENT_TAB,
+  SETUP_LAYOUT_EDIT_FIELD,
 } from '../actionType';
 
 
@@ -18,7 +19,7 @@ const ui = (state = {
   },
   fieldEditDialog: {
     isShow: false,
-      fieldLabel: '',
+    fieldLabel: '',
     fieldId: '',
     sectionCode: '',
     requiredValue: '',
@@ -38,6 +39,8 @@ const ui = (state = {
       return Object.assign({}, state, { fieldCanDrop: payload.canDrop });
     case SETUP_LAYOUT_EDIT_SET_CURRENT_TAB:
       return Object.assign({}, state, { currentTab: payload.tab });
+    case SETUP_LAYOUT_EDIT_FIELD:
+      return Object.assign({}, state, { fieldEditDialog: Object.assign({}, state.fieldEditDialog, { ...payload }) });
     default:
       return state;
   }

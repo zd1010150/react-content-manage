@@ -23,6 +23,8 @@ const initFilels = (fields, sections) => {
     is_layout_required: Boolean(item.notnull),
     isSelected: allSelectedFiledIds.indexOf(item.id) > -1,
     isSystem: Boolean(item.is_sys_auto),
+    pageRequired: item.is_sys_auto ? false : (!!item.notnull),
+    pageReadonly: Boolean(item.is_sys_auto),
   }));
 };
 const addFieldToSection = (state, { fieldId }) => state.map((item) => {
