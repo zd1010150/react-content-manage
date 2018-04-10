@@ -4,7 +4,7 @@ import _ from 'lodash';
 import classNames from 'classnames/bind';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
-import { Button, Icon, Modal, Form } from 'antd';
+import { Button, Icon, Modal } from 'antd';
 import { connect } from 'react-redux';
 import { Panel } from 'components/ui/index';
 import { objTypeAndClassTypeMap, FORM_LAYOUT_CONFIG } from 'config/app.config';
@@ -13,30 +13,46 @@ import {
   setEditLayout,
   setAddLayout,
   fetchAllLayouts,
+  saveLayoutName,
 } from '../flow/action';
-
+import { setCurrentLayout } from '../flow/edit/action';
 import { ASSIGN_LAYOUT_TO_DEPARTMENT, LAYOUT_EDIT } from '../flow/pageAction';
 import AddForm from '../component/tableView/addForm';
 
-const { Item: FormItem } = Form;
+
 class LayoutsTableView extends React.Component {
   componentDidMount() {
     this.props.fetchAllLayouts(this.props.objectType);
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.objectType !== this.props.objectType) {
+      this.props.fetchAllLayouts(nextProps.objectType);
+    }
+  }
   add() {
-
+    const { setAddLayout } = this.props;
+    setAddLayout({ isShowDialog: true });
   }
   assignmentLayout() {
 
   }
   editLayout(layout) {
-
+    const { setCurrentLayout, history, objectType } = this.props;
+    setCurrentLayout({ id: layout.id });
+    history.push(`/setup/${objectType}/pageLayout?action=${LAYOUT_EDIT}`);
   }
   deleteLayout(layout) {
 
   }
   saveAndNext() {
-
+    const { history, saveLayoutName, objectType } = this.props;
+    this.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        saveLayoutName(objectType, values, () => {
+          history.push(`/setup/${objectType}/pageLayout?action=${LAYOUT_EDIT}`);
+        });
+      }
+    });
   }
   render() {
     const { formatMessage } = this.props.intl;
@@ -93,7 +109,7 @@ class LayoutsTableView extends React.Component {
                       <Icon className="pl-sm" type="delete" onClick={() => this.deleteLayout(l)} />
                     </td>
                     <td> { l.name }</td>
-                    <td> { l.created_by_user } {l.created_at}</td>
+                    <td> { } {l.created_at}</td>
                     <td> { l.updated_at }</td>
                   </tr>
                 ))
@@ -104,7 +120,7 @@ class LayoutsTableView extends React.Component {
           visible={addLayout.isShowDialog}
           title="Create New PageLayout"
           footer={[
-            <Button onClick={() => this.saveAndNext()}> save and next</Button>,
+            <Button key="save" onClick={() => this.saveAndNext()}> save and next</Button>,
               ]}
           onCancel={() => setAddLayout({ isShowDialog: false })}
         >
@@ -136,5 +152,7 @@ const mapDispatchToProps = {
   fetchAllLayouts,
   setEditLayout,
   setAddLayout,
+  saveLayoutName,
+  setCurrentLayout,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(LayoutsTableView)));

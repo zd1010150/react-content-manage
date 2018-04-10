@@ -9,6 +9,7 @@ import { Panel } from 'components/ui/index';
 import { objTypeAndClassTypeMap, PAGE_ACTION, PICKLIST_FIELD_TYPE } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import {
+    setFieldAttr,
   setAddedFieldAttr,
   resetAddedFieldAttr,
   fetchBackground,
@@ -47,12 +48,13 @@ class FieldAddContainer extends React.Component {
           const create_data = Object.assign(values, {
             field_name: `${fieldPrefix}${values.field_name}`,
             crm_data_type: addedField.field.type,
-            notnull: _.isEmpty(values.notnull) ? false : values.notnull,
+            notnull: _.isEmpty(`${values.notnull}`) ? false : values.notnull,
           });
           const picklist = addedField.picklist;
           const append_page_layout_ids = addedField.appendPageLayoutIds;
           saveFieldToRemote(objectType, { create_data, picklist, append_page_layout_ids }, () => {
             history.push(`/setup/${objectType}/fields`);
+
             resetAddedFieldAttr(objectType);
           });
         }
@@ -86,6 +88,7 @@ class FieldAddContainer extends React.Component {
         addPickListValue,
         sortPicklistValueToRemote,
         replacePickListValueToRemote,
+          setFieldAttr,
       } = this.props;
       const classType = objTypeAndClassTypeMap[objectType];
       const rowSelection = {
@@ -118,6 +121,7 @@ class FieldAddContainer extends React.Component {
             objType={objectType}
             prefix={fieldPrefix}
             checkLabelDuplicate={duplicatFilter}
+            setFieldAttr={setFieldAttr}
           />
 
           {
@@ -200,6 +204,7 @@ const mapDispatchToProps = {
   sortPicklistValueToRemote,
   replacePickListValueToRemote,
   saveFieldToRemote,
+    setFieldAttr,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldAddContainer)));
 

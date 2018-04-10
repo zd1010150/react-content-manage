@@ -15,7 +15,7 @@ const SetupLayout = ({ rightSiderCollapsed, rightSiderWidth }) => (
     <Layout>
       <Content
         style={{
-            transition: 'margin-right 0.5s', background: '#fff', padding: 24, margin: 0, minHeight: 400, maxHeight: 1000, overflow: 'auto', marginRight: rightSiderCollapsed ? 0 : rightSiderWidth,
+            transition: 'margin-right 0.5s', padding: 24, margin: 0, minHeight: 400, maxHeight: 1000, overflow: 'auto', marginRight: rightSiderCollapsed ? 0 : rightSiderWidth,
                 }}
       >
         <MainContent />

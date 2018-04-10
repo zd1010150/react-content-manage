@@ -1,4 +1,5 @@
 import Enums from 'utils/EnumsManager';
+
 const {
   Convert,
   Delete,
@@ -42,6 +43,7 @@ export default {
       massDelete: '批量删除',
       addToCampaign: '添加到营销活动',
       replace: '替换',
+      preview: '预览',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -135,6 +137,7 @@ export default {
       massDelete: 'Mass Delete',
       addToCampaign: 'Add to Campaign',
       replace: 'Replace',
+      preview: 'Preview',
     },
     input: {
       searchStore: 'Search entire store here...',

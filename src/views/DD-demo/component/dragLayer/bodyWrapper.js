@@ -18,7 +18,7 @@ const bodyWrapperTarget = {
 };
 const collect = (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver({shallow: true}),
+  isOver: monitor.isOver({shallow: false}),
   canDrop: monitor.canDrop(),
 });
 
@@ -30,8 +30,9 @@ class bodyWrapper extends React.Component {
   }
   render() {
     const { connectDropTarget, isOver } = this.props;
-    return connectDropTarget(<div style={{ backgroundColor: isOver ? 'rgba(200,200,200,.5)' : '#ffff', padding: '50px' }}>
-      {this.props.children}
+    console.log("dandan",isOver);
+    return connectDropTarget(<div id="dandan-wrapper" style={{ backgroundColor: isOver ? 'red' : '#ffff', padding: '50px' }}>
+        {isOver}<br/> {this.props.children}
                              </div>);
   }
 }
@@ -44,4 +45,4 @@ bodyWrapper.propTypes = {
 };
 
 
-export default DropTarget(ItemTypes.FIELD, bodyWrapperTarget, collect)(bodyWrapper);
+export default DropTarget([...ItemTypes], bodyWrapperTarget, collect)(bodyWrapper);

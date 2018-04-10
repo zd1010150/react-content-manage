@@ -11,7 +11,7 @@ import { Panel } from 'components/ui/index';
 import { objTypeAndClassTypeMap } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import { toggleRightSider } from 'components/page/RightSider/flow/action';
-import { fetchFields, toggleEditingStatus, setSelectedFields, changeMapping, saveFieldsMapping, setAddedFieldAttr } from '../flow/action';
+import { fetchFields, toggleEditingStatus, setSelectedFields, changeMapping, saveFieldsMapping, setAddedFieldAttr, resetAddedFieldAttr } from '../flow/action';
 import { getToFieldsStatus } from '../flow/reselect';
 import { FIELD_TYPE_SELECT, FIELD_EDIT } from '../flow/pageAction';
 import FieldMappingInput from '../component/tableView/fieldMappingInput';
@@ -42,7 +42,7 @@ class FieldsTableView extends React.Component {
       field: {
         id: field.id,
         name: category === fieldCategory.CUSTOM ? field.field_name.slice(fieldPrefix.length) : field.field_name,
-        notnull: field.notnull,
+        notnull: Boolean(field.notnull),
         type: field.crm_data_type,
         label: field.field_label,
         length: field.length,
@@ -62,8 +62,10 @@ class FieldsTableView extends React.Component {
     });
   }
   addNewField() {
-    const { history, objectType } = this.props;
+    const { history, objectType, resetAddedFieldAttr } = this.props;
+    resetAddedFieldAttr(objectType);
     history.push(`/setup/${objectType}/fields?action=${FIELD_TYPE_SELECT}`);
+
   }
   coloseEditing() {
     const {
@@ -142,7 +144,7 @@ class FieldsTableView extends React.Component {
     const getMappingTd = (field, fieldProp, mappingFields, fieldCategory) => {
       if (!_.isEmpty(mappingFields)) {
         return Object.keys(mappingFields).map((objType) => {
-          if (!field.can_be_mapped) return <td> Cannot be mapped</td>;
+          if (!field.can_be_mapped) return <td key={objType}> Cannot be mapped</td>;
           let fields = [];
           if (!_.isEmpty(field[fieldProp][objType])) {
             if (fieldProp === 'map_from') {
@@ -276,5 +278,6 @@ const mapDispatchToProps = {
   changeMapping,
   saveFieldsMapping,
   setAddedFieldAttr,
+    resetAddedFieldAttr,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldsTableView)));
