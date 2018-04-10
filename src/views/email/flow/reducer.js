@@ -15,25 +15,10 @@ import {
   EMAIL_TEMPLATES_SET_NEW_DEPARTMENT_NAME,
   EMAIL_TEMPLATES_RESET_NEW_DEPARTMENT,
   EMAIL_TEMPLATES_SET_SELECTED_DEPARTMENT,
-  EMAIL_TEMPLATES_SET_SELECTED_PERMISSION_DEPARTMENT,
-  EMAIL_TEMPLATES_ADD_PERMISSION_DEPARTMENT,
-  EMAIL_TEMPLATES_SET_PERMISSION_DEPARTMENTS,
   EMAIL_TEMPLATES_SET_USER,
   EMAIL_TEMPLATES_SET_SELECT_USER,
-  EMAIL_TEMPLATES_ADD_PERMISSION_USER,
-  EMAIL_TEMPLATES_SET_PERMISSION_USERS,
   EMAIL_TEMPLATES_SET_SORTING_TEAM,
-  EMAIL_TEMPLATES_SET_TEMPLATES,
-  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS,
-  EMAIL_TEMPLATES_SET_USER_FOLDERS,
-  EMAIL_TEMPLATES_SET_SHARED_FOLDERS,
-  EMAIL_TEMPLATES_SET_SELECTED_FOLDER,
-  EMAIL_TEMPLATES_SET_EDIT_FOLDERS,
-  EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
-  EMAIL_TEMPLATES_SET_FOLDERS_ORDER,
-  EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
-  EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
-  EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION
+  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS
 } from "./actionType";
 
 import { templates } from "./emailTemplateFlow/reducer";
@@ -41,8 +26,14 @@ import {
   userFolders,
   sharedFolders,
   selectedFolder,
-  editFolders
+  editFolders,
+  deletedFolders
 } from "./folderFlow/reducer";
+import {
+    selectedPermissionDepartment,
+    addedPermissionDepartment,
+    addedPermissionUser
+} from "./folderPermissionFlow/reducer";
 
 const mockFolders = [
   {
@@ -210,16 +201,6 @@ const mockSelectedFolder = {
 //
 // }
 
-const deletedFolders = (state = [], action) => {
-  const { type, id } = action;
-  switch (type) {
-    case EMAIL_TEMPLATES_DELETE_USER_FOLDERS:
-      return id > 0 ? [...state, id] : [...state];
-    default:
-      return state;
-  }
-};
-
 const templatesDataTablePagination = (
   state = {
     perPage: EnumsManager.DefaultPageConfigs.PageSize,
@@ -249,57 +230,9 @@ const selectedDepartment = (state = { id: "" }, action) => {
       return state;
   }
 };
-const selectedPermissionDepartment = (state = { id: "" }, action) => {
-  const { type, ...payload } = action;
-  switch (type) {
-    case EMAIL_TEMPLATES_SET_SELECTED_PERMISSION_DEPARTMENT:
-      return Object.assign({}, state, { ...payload });
-    default:
-      return state;
-  }
-};
-const addedPermissionDepartment = (state = [], action) => {
-  const { type, payload } = action;
-  switch (type) {
-    case EMAIL_TEMPLATES_ADD_PERMISSION_DEPARTMENT:
-      let isDuplicated = false;
-      state.map(item => {
-        if (item.id === payload.id) {
-          isDuplicated = true;
-        }
-      });
-      return isDuplicated ? state : [...state, payload];
-    case EMAIL_TEMPLATES_SET_PERMISSION_DEPARTMENTS:
-      return payload;
-    case EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION:
-      return payload.isTeam
-        ? state.filter(item => item.id !== payload.itemId)
-        : state;
-    default:
-      return state;
-  }
-};
-const addedPermissionUser = (state = [], action) => {
-  const { type, payload } = action;
-  switch (type) {
-    case EMAIL_TEMPLATES_ADD_PERMISSION_USER:
-      let isDuplicated = false;
-      state.map(item => {
-        if (item.id === payload.id) {
-          isDuplicated = true;
-        }
-      });
-      return isDuplicated ? state : [...state, payload];
-    case EMAIL_TEMPLATES_SET_PERMISSION_USERS:
-      return payload;
-    case EMAIL_TEMPLATES_REMOVE_ENTITY_FROM_SELECTION:
-      return payload.isTeam
-        ? state
-        : state.filter(item => item.id !== payload.itemId);
-    default:
-      return state;
-  }
-};
+
+
+
 const selectedUser = (state = { id: "", name: "" }, action) => {
   const { type, ...payload } = action;
   switch (type) {

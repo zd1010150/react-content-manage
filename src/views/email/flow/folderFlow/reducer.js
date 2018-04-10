@@ -66,3 +66,12 @@ export const editFolders = (state = [], action) => {
     }
 };
 
+export const deletedFolders = (state = [], action) => {
+    const { type, id } = action;
+    switch (type) {
+        case EMAIL_TEMPLATES_DELETE_USER_FOLDERS:
+            return id > 0 ? [...state, id] : [...state];
+        default:
+            return state;
+    }
+};
