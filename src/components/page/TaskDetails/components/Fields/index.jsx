@@ -10,8 +10,13 @@ import classNames from 'classnames/bind';
 import styles from './index.less';
 const cx = classNames.bind(styles);
 
-import { AssigneeModal } from 'components/ui/index';
-import { tryFetchTask, setFieldValue } from '../../flow/actions';
+import { AssigneeModal, SubjectsModal } from 'components/ui/index';
+import {  
+  setFieldValue,
+  tryDeleteSubject,
+  tryFetchTask,
+  trySaveNewSubject,
+} from '../../flow/actions';
 // presets
 const colLayout = {
   sm: 12,
@@ -45,6 +50,10 @@ class TaskFields extends Component {
 
   handleAssigneeModalOpen = $ => this.setState({ assigneeModalVisible: true })
 
+  handleSaveSubject = value => this.props.trySaveNewSubject(value)
+
+  handleSubjectDelete = id => this.props.tryDeleteSubject(id)
+
   handleSubjectModalCancel = $ => this.setState({ subjectModalVisible: false })
 
   handleSubjectModalOpen = $ => this.setState({ subjectModalVisible: true })
@@ -64,11 +73,13 @@ class TaskFields extends Component {
       assignees,
       comments,
       dueDate,
+      globalSubjects,
+      mySubjects,
       priority,
       priorities,
       status,
       statuses,
-      subject,
+      subject,      
     } = this.props;
 
     const { formatMessage } = intl;
@@ -117,10 +128,18 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.subject` })}
             </div>
             <Input
-              addonAfter={<Icon className="cursor-pointer" onClick={this.handleBarsIconClick} size="small" type="bars" />}
+              addonAfter={<Icon className="cursor-pointer" onClick={this.handleSubjectModalOpen} size="small" type="bars" />}
               onChange={e => this.handleFieldChange('subject', e.target.value)}
               placeholder="Please select or add a new value from the list"
               value={subject}
+            />
+            <SubjectsModal              
+              globalSubjects={globalSubjects}
+              mySubjects={mySubjects}
+              onCancel={this.handleSubjectModalCancel}
+              onSaveSubject={this.handleSaveSubject}
+              onSubjectDelete={this.handleSubjectDelete}
+              visible={subjectModalVisible}
             />
           </Col>
           <Col {...colLayout}>
@@ -172,16 +191,21 @@ const mapStateToProps = ({ global, taskDetails }) => ({
   language: global.language,
   priorities: global.settings.priorities,
   statuses: global.settings.taskStatuses,
+
   assignTo: taskDetails.assignTo,
   assignees: taskDetails.assignees,
   comments: taskDetails.comments,
   dueDate: taskDetails.dueDate,
+  globalSubjects: taskDetails.globalSubjects,
+  mySubjects: taskDetails.mySubjects,
   priority: taskDetails.priority,
   status: taskDetails.status,
   subject: taskDetails.subject,
 });
 const mapDispatchToProps = {
   setFieldValue,
+  tryDeleteSubject,
   tryFetchTask,
+  trySaveNewSubject,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TaskFields));
