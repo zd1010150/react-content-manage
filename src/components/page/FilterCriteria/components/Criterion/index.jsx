@@ -68,7 +68,7 @@ const Criterion = ({
         <Select
           size="small"
           className={cx('select')}
-          value={fieldId === Enums.PhantomID ? '' : fieldId}
+          value={fieldId === Enums.PhantomId ? '' : fieldId}
           onChange={newFieldId => handleFieldChange(newFieldId, displayNum)}
         >
           {fields.map(field =>
@@ -80,7 +80,7 @@ const Criterion = ({
         <Select
           size="small"
           className={cx('select')}
-          value={conditionId === Enums.PhantomID ? '' : conditionId}
+          value={conditionId === Enums.PhantomId ? '' : conditionId}
           onChange={conditionId => handleConditionChange(conditionId, displayNum)}
         >
           {conditions.map(condition =>

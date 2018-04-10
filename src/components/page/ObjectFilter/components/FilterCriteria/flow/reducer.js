@@ -61,8 +61,8 @@ const formatData = data => {
 };
 
 const initialSider = {
-  siderDisplayNum: Enums.PhantomID,
-  siderFieldId: Enums.PhantomID,
+  siderDisplayNum: Enums.PhantomId,
+  siderFieldId: Enums.PhantomId,
   siderOptions: [],
   siderSelection: [],
 };
@@ -98,8 +98,8 @@ const filterCriteria = (state = initialState, action) => {
       // TODO: when add a new filter, the default should be null, but before submit to backend, this id should be any available field id, NOT a phantom id
       const newFilter = {      
         displayNum: newDisplayNum,
-        fieldId: Enums.PhantomID,
-        conditionId: Enums.PhantomID,
+        fieldId: Enums.PhantomId,
+        conditionId: Enums.PhantomId,
         value: '',
         type: '',
       };

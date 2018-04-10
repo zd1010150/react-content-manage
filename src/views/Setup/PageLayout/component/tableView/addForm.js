@@ -1,10 +1,7 @@
 /* eslint-disable no-shadow */
 import React from 'react';
-
-import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 import { Form, Select, Input } from 'antd';
-
 import { FORM_LAYOUT_CONFIG } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import { getExistRule } from 'utils/validateMessagesUtil';
@@ -20,7 +17,7 @@ class AddForm extends React.Component {
     } = this.props;
     const { getFieldDecorator } = form;
     const layoutsEl = getFieldDecorator('copy_page_layout_id')(<Select>
-      <Option value=""> ===none ==== </Option>
+      <Option value=""> --------none----</Option>
       {
             allLayouts.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)
         }
@@ -29,13 +26,13 @@ class AddForm extends React.Component {
       <Form>
         <FormItem
           {...FORM_LAYOUT_CONFIG}
-          label={formatMessage({ id: 'page.fields.label' })}
+          label={formatMessage({ id: 'page.layouts.existingLayout' })}
         >
           {layoutsEl}
         </FormItem>
         <FormItem
           {...FORM_LAYOUT_CONFIG}
-          label={formatMessage({ id: 'page.fields.name' })}
+          label={formatMessage({ id: 'global.form.layout_name' })}
         >
           {
                 getFieldDecorator('name', {

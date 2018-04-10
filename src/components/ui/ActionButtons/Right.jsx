@@ -9,7 +9,7 @@ const defaultProps = {
 };
 const propTypes = {
   intl: intlShape.isRequired,
-  theme: PropTypes.oneOf(Enums.ThemeTypes),
+  theme: PropTypes.oneOf(Enums.ThemeTypesInArray),
 };
 
 const RightActions = ({ intl, theme, permissions }) => {
@@ -30,7 +30,7 @@ const RightActions = ({ intl, theme, permissions }) => {
       {theme !== 'lead' ? 
         null : (
           <Button {...btnSettings} >
-            <Link to={`${theme}/${Enums.PhantomID}`}>{btnWords}</Link>
+            <Link to={`/leads/${Enums.PhantomId}`}>{btnWords}</Link>
           </Button>
         )
       }

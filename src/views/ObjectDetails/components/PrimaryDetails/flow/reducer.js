@@ -5,6 +5,7 @@ import {
   SET_FIELD_VALUE,
   RESET_FIELD_VALUE,
   REVERT_ALL_FIELDS,
+  SET_FIELD_OPTIONS,
   RESET,
 } from './actionTypes';
 
@@ -24,20 +25,30 @@ const mapFields = data => {
       crm_data_type,
       help_text,
       picklists,
+      lookup_own_field_name,
+      precision,
+      scale,
     } = meta;
+    
+    // TODO: convert value to locale string when type is date/datetime
+    // formattedValue = crm_data_type === dateonly || datetime ? toLocale...;
 
+    // lookup field value property name is varied by different model
     return {
+      active: false,
+      helpText: help_text,
       id, // used by lookup field for fetchinig data
       initialValue: value === undefined ? '' : value,
       key: id,
       label: field_label,
+      lookupDisplayKey: lookup_own_field_name,
       name: field_name,
       options: picklists,
+      precision,
       readOnly: page_readonly,
       required: page_required,
-      helpText: help_text,
+      scale,
       type: crm_data_type,
-      active: false,
       value: value === undefined ? '' : value,
     };
   });
@@ -155,6 +166,15 @@ const primaryDetails = (state = initialState, action) => {
         data: [...state.data],
       };
 
+
+    case SET_FIELD_OPTIONS:
+      const lookupField = findFieldById(action.payload.id, action.payload.code, state.data);
+      lookupField.options = action.payload.options;
+
+      return {
+        ...state,
+        data: [...state.data],
+      };
 
     case RESET:
       return initialState;

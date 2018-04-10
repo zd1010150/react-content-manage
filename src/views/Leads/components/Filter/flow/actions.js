@@ -13,7 +13,7 @@ const setViews = json => ({
 export const fetchViews = () => dispatch => get('/admin/list_views/object/leads', {}, dispatch).then(json => {
   if (json && (!_.isEmpty(json.data))) {
     dispatch(setViews(json))
-    dispatch(setActiveId(Enums.PhantomID));
+    dispatch(setActiveId(Enums.PhantomId));
   }
 });
 
@@ -28,7 +28,7 @@ export const fetchTableDataByView = (
   per_page = Enums.DefaultPageConfigs.PageSize,
   orderBy = '',
   sortedBy = '',
-  activeId = Enums.PhantomID,
+  activeId = Enums.PhantomId,
 ) => dispatch => get(getUrlByViewId(activeId, 'leads'), { page, per_page, orderBy, sortedBy }, dispatch).then(json => {
   if (json && (!_.isEmpty(json.index))) {
     dispatch(setTableData(json, { orderBy, sortedBy }));

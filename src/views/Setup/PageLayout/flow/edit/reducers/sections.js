@@ -3,9 +3,17 @@
 
 import _ from 'lodash';
 import { labelToCode } from 'utils/string';
-import { ADD_FIELD_TO_SECTION, DELETE_FROM_SECTION, MOVE_BETWEEN_SECTION, ADD_SECTION, DELETE_SECTION, UPDATE_SECTION, MOVE_SECTION } from '../actionType';
+import {
+  SETUP_LAYOUT_EDIT_SET_ALL_SECTIONS,
+  SETUP_LAYOUT_EDIT_ADD_FIELD_TO_SECTION,
+  SETUP_LAYOUT_EDIT_DELETE_FROM_SECTION,
+  SETUP_LAYOUT_EDIT_MOVE_BETWEEN_SECTION,
+  SETUP_LAYOUT_EDIT_ADD_SECTION,
+  SETUP_LAYOUT_EDIT_DELETE_SECTION,
+  SETUP_LAYOUT_EDIT_UPDATE_SECTION,
+  SETUP_LAYOUT_EDIT_MOVE_SECTION,
+} from '../actionType';
 import { DEFAULT_SECTION_CODE } from '../config';
-import { allSections } from '../mockData';
 
 const getRowsAndCols = (section) => {
   let rows = 0;
@@ -13,14 +21,27 @@ const getRowsAndCols = (section) => {
   _.forEach(fields, (value, key) => {
     rows = fields[key].length > rows ? fields[key].length : rows;
   });
-  // const cols = Object.keys(fields).length;
   return Object.assign({}, section, { rows });
 };
 
 const initSection = (sections) => {
   const sortedSection = _.sortBy(sections, ['sequence']);
   return sortedSection.map((section) => {
-    const newFields = _.groupBy(section.fields.map(f => Object.assign({}, f, { x: f.position[0], y: f.position[1] })), 'y');
+    const newFields = _.groupBy(
+      section.fields.map(f => ({
+        x: f.position[0],
+        y: f.position[1],
+        is_layout_required: Boolean(f.meta.notnull),
+        id: `${f.id}`,
+        label: f.meta.field_label,
+        type: f.meta.crm_data_type,
+        position: f.position,
+        pageRequired: Boolean(f.page_required),
+        pageReadonly: Boolean(f.page_readonly),
+        isSystem: Boolean(f.meta.is_sys_auto),
+      })),
+      'y',
+    );
     return getRowsAndCols(Object.assign({}, section, { fields: newFields }));
   });
 };
@@ -203,22 +224,24 @@ const updateSection = (state, { label, sectionCode, cols }) => state.map((sectio
 });
 
 
-const sections = (state = initSection(allSections), action) => {
+const sections = (state = [], action) => {
   const { type, ...payload } = action;
   switch (type) {
-    case ADD_FIELD_TO_SECTION:
+    case SETUP_LAYOUT_EDIT_SET_ALL_SECTIONS:
+      return initSection(payload.sections);
+    case SETUP_LAYOUT_EDIT_ADD_FIELD_TO_SECTION:
       return addFieldToSection(state, payload);
-    case DELETE_FROM_SECTION:
+    case SETUP_LAYOUT_EDIT_DELETE_FROM_SECTION:
       return deleteFieldFromSection(state, payload);
-    case MOVE_BETWEEN_SECTION:
+    case SETUP_LAYOUT_EDIT_MOVE_BETWEEN_SECTION:
       return moveField(state, payload);
-    case DELETE_SECTION:
+    case SETUP_LAYOUT_EDIT_DELETE_SECTION:
       return deleteSection(state, payload);
-    case ADD_SECTION:
+    case SETUP_LAYOUT_EDIT_ADD_SECTION:
       return addSection(state, payload);
-    case MOVE_SECTION:
+    case SETUP_LAYOUT_EDIT_MOVE_SECTION:
       return moveSection(state, payload);
-    case UPDATE_SECTION:
+    case SETUP_LAYOUT_EDIT_UPDATE_SECTION:
       return updateSection(state, payload);
     default:
       return state;

@@ -1,4 +1,5 @@
 import Enums from 'utils/EnumsManager';
+
 const {
   Convert,
   Delete,
@@ -41,6 +42,7 @@ export default {
       massDelete: '批量删除',
       addToCampaign: '添加到营销活动',
       replace: '替换',
+      preview: '预览',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -49,6 +51,21 @@ export default {
     },
     table: {
       action: '操作',
+      createBy: '创建人',
+      date: '日期',
+      dueAt: '截止时间',
+      dueOn: '截止日期',
+      lastModifiedAt: '最后更新时间',
+      lastOpenAt: '最后开启的时间',
+      openDate: '开启时间',
+      openTimes: '开启的次数',
+      sentDate: '发送时间',
+      subject: '主题',
+      status: '状态',
+      title: '标题',
+      type: '类型',
+      uploadAt: '上传时间',
+      user: '用户',
     },
     select: {
       label: '视图',
@@ -115,6 +132,7 @@ export default {
       massDelete: 'Mass Delete',
       addToCampaign: 'Add to Campaign',
       replace: 'Replace',
+      preview: 'Preview',
     },
     input: {
       searchStore: 'Search entire store here...',
@@ -122,7 +140,22 @@ export default {
       inputIdNumber: 'Please input correct id number',
     },
     table: {
-      action: 'Action',
+      action: 'Actions',
+      createBy: 'Created By',
+      date: 'Date',
+      dueAt: 'Due Time',
+      dueOn: 'Due Date',
+      lastModifiedAt: 'Last Modified Date/Time',
+      lastOpenAt: 'Last Open At',
+      openDate: 'Date Open',
+      openTimes: '# Times Opened',
+      sentDate: 'Date Sent',
+      subject: 'Subject',
+      status: 'Status',
+      title: 'Title',
+      type: 'Type',
+      uploadAt: 'Uploaded Date',
+      user: 'User',
     },
     select: {
       label: 'view',

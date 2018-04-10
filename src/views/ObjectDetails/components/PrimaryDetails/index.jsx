@@ -13,7 +13,7 @@ const i18nPrefix = 'page.objectDetails';
 
 const defaultProps = {
   data: [],
-  objectId: Enums.PhantomID,
+  objectId: Enums.PhantomId,
   objectType: Enums.ThemeTypes.Leads,
 };
 const propTypes = {
@@ -34,7 +34,7 @@ class PrimaryDetails extends Component {
   render() {
     const { intl, theme, data, objectId, objectType } = this.props;
     const { formatMessage } = intl;
-    const titleId = objectId === Enums.PhantomID ? 'newTitle' : 'editTitle';
+    const titleId = objectId === Enums.PhantomId ? 'newTitle' : 'editTitle';
 
     return (
       <Panel

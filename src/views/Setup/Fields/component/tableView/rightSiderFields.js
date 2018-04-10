@@ -21,7 +21,7 @@ const RightSiderFields = ({
       <h2>map <span className="error-msg">{ fromField.field_label }</span> to {toObjectType} </h2>
       {
             fields.map(f =>
-              (<Row key={f.id} className="pt-lg pr-lg pb-sm">
+              (<Row key={f.id} className="pr-lg pt-sm">
                 <Col span={24}>
                   <Checkbox
                     value={f.id}

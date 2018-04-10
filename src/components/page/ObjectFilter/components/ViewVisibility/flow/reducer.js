@@ -17,7 +17,7 @@ const initialState = {
   teams: [],
   flatTeams: [],
   usersInTeam: [],
-  selectedTeamId: Enums.PhantomID,
+  selectedTeamId: Enums.PhantomId,
   selectedUsers: [],
   selectedTeams: [],
 };

@@ -36,7 +36,7 @@ class PageLayoutIndexView extends React.Component {
     }
   }
   render() {
-    return (<div>{this.getView(this.props)}</div>);
+    return (<div className="edit-container-wrapper">{this.getView(this.props)}</div>);
   }
 }
 
