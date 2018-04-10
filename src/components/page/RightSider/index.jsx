@@ -7,7 +7,7 @@ import styles from './index.less';
 
 
 const cx = classNames.bind(styles);
-
+const TOPHEIGHT = 46;
 let ticking = false;
 
 
@@ -27,8 +27,9 @@ class RightSider extends React.Component {
   onScroll = () => {
     if (!ticking) {
       window.requestAnimationFrame(() => {
+        let marginTop = Number(window.scrollY) > TOPHEIGHT ? TOPHEIGHT : window.scrollY ;
         this.setState({
-          marginTop: `-${window.scrollY}px`,
+          marginTop: `-${marginTop}px`,
         });
         ticking = false;
       });

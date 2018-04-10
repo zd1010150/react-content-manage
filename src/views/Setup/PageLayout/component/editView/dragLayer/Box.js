@@ -17,11 +17,11 @@ class Box extends Component {
       !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState)
     );
   }
-  getPreviewImg(operateType, title, theme) {
+  getPreviewImg(operateType, title, theme, canDrop) {
     switch (operateType) {
       case ItemTypes.TOOL:
       case ItemTypes.SECTION_FIELD:
-        return (<Button size="small" className={`${theme}-theme-btn`} >{title}</Button>);
+        return (<Button size="small" className={`${theme}-theme-btn ${canDrop ? '' : 'danger-btn'}`} >{title}</Button>);
       case ItemTypes.MODULE:
       default:
         return (<Panel panelClasses={`${theme}-theme-panel`} panelTitle={title} />);
@@ -33,7 +33,7 @@ class Box extends Component {
     } = this.props;
     const backgroundColor = canDrop ? 'green' : 'red';
 
-    return <div>{this.getPreviewImg(type, title, theme)}</div>;
+    return <div>{this.getPreviewImg(type, title, theme, canDrop)}</div>;
   }
 }
 Box.propTypes = {

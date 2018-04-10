@@ -97,9 +97,9 @@ class EditContainer extends React.Component {
     const getSiderView = () => {
       switch (currentTab) {
         case MODULES:
-          return <ModuleViewSider />;
+          return <ModuleViewSider theme={theme} />;
         case TOOLS:
-          return <ToolViewSider />;
+          return <ToolViewSider theme={theme} />;
         case SECTIONS:
           return <SectionViewSider theme={theme} />;
         default:
@@ -113,8 +113,8 @@ class EditContainer extends React.Component {
           }
         <RightSider>
           <Layout>
-            <Content>
-              <Row className=" pt-lg pl-lg pr-lg">
+            <Content style={{ backgroundColor: '#fff' }}>
+              <Row className="pt-lg pl-lg pr-lg">
                 <Col span={24}>
                   <Button icon="layout" size="small" className={`${theme}-theme-btn ml-sm`} onClick={() => this.preview()}>{formatMessage({ id: 'global.ui.button.preview' })}</Button>
                   <Button icon="save" type="danger" size="small" className="ml-sm" onClick={() => this.save()}>{formatMessage({ id: 'global.ui.button.save' })}</Button>
@@ -132,7 +132,7 @@ class EditContainer extends React.Component {
                   )) }
               </Row>
               <Divider />
-              <Row className=" pb-lg pl-lg pr-lg">
+              <Row>
                 <Col span={24}>
                   <div className={cx('sider-view-wrapper')}>
                     {

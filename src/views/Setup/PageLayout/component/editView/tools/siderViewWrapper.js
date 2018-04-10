@@ -25,9 +25,9 @@ const collect = (connect, monitor) => ({
 class ToolSiderViewWrapper extends React.Component {
   render() {
     const {
-      isOver, connectDropTarget,
+      isOver, connectDropTarget, theme,
     } = this.props;
-    return connectDropTarget(<div className={classNames(cx('fields'), isOver ? cx('sider-view-can-drop') : '')}>
+    return connectDropTarget(<div className={classNames(cx('fields'), 'pl-lg', 'pr-lg', 'pt-lg', 'pb-lg', isOver ? `${theme}-sider-view-can-drop` : '')}>
       {
             this.props.children
         }
@@ -38,6 +38,7 @@ ToolSiderViewWrapper.propTypes = {
   deleteTool: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   isOver: PropTypes.bool.isRequired,
+  theme: PropTypes.string.isRequired,
 };
 
 
