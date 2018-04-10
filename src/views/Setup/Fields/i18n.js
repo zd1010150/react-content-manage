@@ -12,6 +12,8 @@ export default {
     pageLaoyoutName: '布局名',
     department: '部门',
     addNewValue: '添加新的值',
+    mapFrom: '映射自{field}',
+    mapTo: '映射到{field}',
   },
   en: {
     label: 'Field Label',
@@ -25,5 +27,7 @@ export default {
     pageLaoyoutName: 'Page Layout Name',
     department: 'Departments',
     addNewValue: 'Add New Value',
+    mapFrom: 'Map From {field}',
+    mapTo: 'Map To {field}',
   },
 };
