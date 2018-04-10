@@ -20,12 +20,8 @@ import {getTeamUsers, getSelectedTeamName} from '../../flow/reselect';
 
 class EditView extends React.Component {
     componentDidMount() {
-        const {getAllUser, getUserFolderData, loginUser, setSelectedUser} = this.props;
+        const {getAllUser} = this.props;
         getAllUser();
-        // get current user's folders as default
-        getUserFolderData(loginUser.id);
-        // set the radio button content as current user's name
-        setSelectedUser(loginUser);
     }
 
     render() {
@@ -108,5 +104,5 @@ const mapDispatchToProps = {
     setSelectedUser
 };
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EditView));
+export default connect(mapStateToProps, mapDispatchToProps)(EditView);
 

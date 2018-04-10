@@ -251,5 +251,5 @@ const mapDispatchToProps = {
     uploadFolders
 };
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateEditFolder));
+export default connect(mapStateToProps, mapDispatchToProps)(EmailTemplateEditFolder);
 

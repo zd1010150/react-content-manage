@@ -300,5 +300,5 @@ const mapDispatchToProps = {
     fetchTemplateData
 };
 
-export default withRouter(injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateDetail)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateDetail));
 

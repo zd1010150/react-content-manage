@@ -34,6 +34,7 @@ const MainContent = () => (
     <Route path="/setup/company-info/company-info" component={CompanyInfo} />
     <Route path="/setup/company-info/users" component={Users} />
     <Route path="/setup/company-info/chart" component={OrganisationChart} />
+    <Route path="/user/email-setting" component={EmailTemplates} />
     <Route path="/setup/email/templates" component={EmailTemplates} />
     <Route path="/setup/email/template-edit/:templateId" component={EmailTemplatesCreation} />
     <Route path="/setup/email/templates-creation" component={EmailTemplatesCreation} />
