@@ -28,7 +28,10 @@ class CampaignList extends React.Component {
             isSharedByVisible, campaigns, templatesDataTablePagination, queryByPaging, setSharedByVisible,
             selectedUser, loginUser
         } = this.props;
-        const newCampaignBtn = <Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {}}><Icon type="plus"/>{ formatMessage({id: 'page.emailTemplates.newCampaign'}) }</Button>
+        const newCampaignBtn =
+            <NavLink to='/setup/email/campaign/new'>
+                <Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {}}><Icon type="plus"/>{ formatMessage({id: 'page.emailTemplates.newCampaign'}) }</Button>
+            </NavLink>
         const subscriberListBtn = <Button className="btn-ellipse ml-sm" size="small" onClick={() => {}}><Icon type="edit"/>{ formatMessage({id: 'page.emailTemplates.subscriberLists'}) }</Button>
         const unsubscriberListBtn = <Button className="btn-ellipse ml-sm" size="small" onClick={() => {}}><Icon type="user-delete"/>{ formatMessage({id: 'page.emailTemplates.unsubscriberList'}) }</Button>
         const actionsRight = <div>{newCampaignBtn}{subscriberListBtn}{unsubscriberListBtn}</div>
@@ -48,7 +51,10 @@ class CampaignList extends React.Component {
                 key: 'id',
                 render: record => (
                     <span>
-            <Icon type="edit" onClick={() => this.edit(record.id)}/>
+            <NavLink to={`/setup/email/campaign/edit/${record.id}`}>
+                <Icon type="edit"/>
+            </NavLink>
+
             <Icon type="delete" className="danger pl-lg" onClick={() => this.delete(record.id)}/>
           </span>
                 ),

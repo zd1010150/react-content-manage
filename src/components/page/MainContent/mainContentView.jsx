@@ -38,9 +38,9 @@ const MainContent = () => (
     <Route path="/setup/email/template-edit/:templateId" component={EmailTemplatesCreation} />
     <Route path="/setup/email/templates-creation" component={EmailTemplatesCreation} />
     <Route path="/email/new" component={NewEmail} />
-    <Route path="/setup/email-campaign/list" component={EmailCampaign} />
-    <Route path="/setup/email-campaign/edit/:campaignId" component={EditCampaign}/>
-    <Route path="/setup/email-campaign/new" component={NewCampaign}/>
+    <Route path="/setup/email/campaign" component={EmailCampaign} exact/>
+    <Route path="/setup/email/campaign/edit/:campaignId" component={EditCampaign}/>
+    <Route path="/setup/email/campaign/new" component={NewCampaign}/>
     <Route path="/setup/company-info/permissions" component={PermissionProfile} />
     <Route path="/setup/:objectType/fields" component={Fields} />
     <Route path="/setup/:objectType/pageLayout" component={Layouts} />

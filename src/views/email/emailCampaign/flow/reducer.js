@@ -5,6 +5,7 @@ import {
 
 const mockCampaign = [
     {
+        id: 0,
         name: '2018 Lottery',
         subscriberList: {
             id: 0,
