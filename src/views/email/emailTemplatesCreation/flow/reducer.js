@@ -11,7 +11,7 @@ import {
   EDIT_TEMPLATE_DESCRIPTION,
   EDIT_TEMPLATE_CONTENT
 } from "./actionType";
-import { EMAIL_TEMPLATES_UPDATE_TEMPLATE } from "../../flow/actionType";
+import { EMAIL_TEMPLATES_UPDATE_TEMPLATE } from "../../emailTemplates/flow/actionType";
 
 export const newTemplate = (state = {}, action) => {
   const { type, payload } = action;
