@@ -28,6 +28,7 @@ import {
   setCanDrop,
   setCurrentTab,
   fetchLayoutDetail,
+  updateLayoutDetail,
 } from '../flow/edit/action';
 import { OPERATES, MODULES, TOOLS, PREVIEW, SECTIONS } from '../flow/edit/operateType';
 
@@ -174,5 +175,6 @@ const mapDispatchToProps = {
   toggleRightSider,
   setCanDrop,
   fetchLayoutDetail,
+  updateLayoutDetail,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(EditContainer)));
