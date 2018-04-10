@@ -163,7 +163,6 @@ class SetupSider extends React.Component {
     }
     render() {
       const { intl, location } = this.props;
-      console.log(location.pathname, '***=====');
       return (
         <Sider width={250} className={cx('setupSider')}>
           <div className={cx('siderTitle')}>setup</div>

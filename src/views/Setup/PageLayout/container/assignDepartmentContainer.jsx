@@ -19,6 +19,9 @@ const cx = classNames.bind(styles);
 const { Option } = Select;
 
 class AssignDepartmentContainer extends React.Component {
+  state={
+    expandedKeys: null,
+  }
   onSubmit() {
     const { teamLayouts, objectType, saveAssigment } = this.props;
     saveAssigment(objectType, teamLayouts, () => {
@@ -46,7 +49,7 @@ class AssignDepartmentContainer extends React.Component {
     }
   }
   onExpand(expandedKeys) {
-    console.log(expandedKeys);
+    this.setState({ expandedKeys });
   }
   renderTreeNodes(teams, teamLayouts, allLayout) {
     return teams.map((item) => {
@@ -56,7 +59,7 @@ class AssignDepartmentContainer extends React.Component {
             <span className={cx('tree-title')}>{item.name}</span>
           </span>
           <div className={cx('tree-action')}>
-            <Select size="small" value={_.isEmpty(teamLayouts[`${item.id}`]) ? '' : teamLayouts[`${item.id}`]} onChange={value => this.props.setLayoutTeam(`${item.id}`, value)}>
+            <Select dropdownMatchSelectWidth={false} size="small" value={_.isEmpty(teamLayouts[`${item.id}`]) ? '' : teamLayouts[`${item.id}`]} onChange={value => this.props.setLayoutTeam(`${item.id}`, value)}>
               <Option value=""> Please select a Layout</Option>
               {
                       allLayout.map(l => <Option value={`${l.id}`} key={l.id}>{ l.name }</Option>)
@@ -92,8 +95,9 @@ class AssignDepartmentContainer extends React.Component {
           <Col span={24}>
             <Tree
               defaultExpandAll
-              expandedKeys={teamIds}
-              onExpand={this.onExpand}
+              autoExpandParent={false}
+              expandedKeys={this.state.expandedKeys || teamIds}
+              onExpand={(expandedKeys) => this.onExpand(expandedKeys)}
             >
               {this.renderTreeNodes(teams, teamLayouts, allLayout)}
             </Tree>
