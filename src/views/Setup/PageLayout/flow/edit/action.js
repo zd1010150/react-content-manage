@@ -150,4 +150,9 @@ export const fetchLayoutDetail = id => dispatch => get(`/admin/page_layouts/${id
     dispatch(setAllFields(data.all_fields.data, sections));
   }
 });
+export const updateLayoutDetail = (id, name, structure, cb) => patch(`/admin/page_layouts/${id}`, { name, structure }, dispatch).then((data) => {
+  if (_.isFunction(cb)) {
+    cb();
+  }
+});
 
