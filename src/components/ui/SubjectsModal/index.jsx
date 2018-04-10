@@ -46,9 +46,16 @@ class SubjectsModal extends Component {
   }
 
   _onSubjectDelete = id => {
-    const {onSubjectDelete} = this.props;
+    const { onSubjectDelete } = this.props;
     if (_.isFunction(onSubjectDelete)) {
       onSubjectDelete(id);
+    }
+  }
+
+  _onSubjectSelect = name => {
+    const { onSubjectSelect } = this.props;
+    if (_.isFunction(onSubjectSelect)) {
+      onSubjectSelect(name);
     }
   }
 
@@ -78,6 +85,7 @@ class SubjectsModal extends Component {
             <li
               key={subject.id}
               className={cx('subject')}
+              onClick={e => this._onSubjectSelect(subject.name)}
             >
               {subject.name}
             </li>
@@ -86,12 +94,16 @@ class SubjectsModal extends Component {
             <li
               key={subject.id}
               className={`${cx('subject')}`}
+              onClick={e => this._onSubjectSelect(subject.name)}
             >
               {subject.name}
               <Popconfirm
                 cancelText={formatMessage({ id: `global.ui.button.cancel` })}
                 okText={formatMessage({ id: `global.ui.button.ok` })}
-                onConfirm={e => this._onSubjectDelete(subject.id)}
+                onConfirm={e => {
+                  e.stopPropagation();
+                  this._onSubjectDelete(subject.id)
+                }}
                 title={formatMessage({ id: `global.ui.dialog.deleteTitle` })}
               >
                 <Icon

@@ -57,7 +57,12 @@ class TaskFields extends Component {
   handleSubjectModalCancel = $ => this.setState({ subjectModalVisible: false })
 
   handleSubjectModalOpen = $ => this.setState({ subjectModalVisible: true })
-  
+
+  handleSubjectSelect = name => {
+    this.props.setFieldValue('subject', name);
+    return this.setState({ subjectModalVisible: false });
+  }
+
   handleFieldChange = (field, value) => this.props.setFieldValue(field, value)
 
   handleRowClick = (id, name) => {
@@ -139,6 +144,7 @@ class TaskFields extends Component {
               onCancel={this.handleSubjectModalCancel}
               onSaveSubject={this.handleSaveSubject}
               onSubjectDelete={this.handleSubjectDelete}
+              onSubjectSelect={this.handleSubjectSelect}
               visible={subjectModalVisible}
             />
           </Col>
