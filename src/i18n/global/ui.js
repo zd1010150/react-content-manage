@@ -7,12 +7,12 @@ const {
   FindDuplicates,
 } = Enums.DetailTools;
 const {
-  opportunities,
-  taskOpen,
-  taskHistory,
-  emailSent,
-  attachments,
-  logs,
+  Opportunities,
+  TaskOpen,
+  TaskHistory,
+  EmailSent,
+  Attachments,
+  Logs,
 } = Enums.DetailModules;
 
 export default {
@@ -30,6 +30,7 @@ export default {
       edit: '编辑',
       addGoods: '添加商品',
       save: '保存',
+      saveAndNew: '保存并新建',
       search: '搜索',
       pay: '支付',
       next: '下一步',
@@ -43,11 +44,20 @@ export default {
       addToCampaign: '添加到营销活动',
       replace: '替换',
       preview: '预览',
+      selectFile: '选择文件',
+      upload: '开始上传',
+      uploading: '正在上传',
     },
     input: {
       searchStore: '在此搜索全站商品...',
       searchUser: '输入用户名搜索...',
       inputIdNumber: '请输入合法的身份证号',
+      datepicker: {
+        placeholder: '请选择日期',
+      },
+      datetimepicker: {
+        placeholder: '请选择日期和时间',
+      },
     },
     table: {
       action: '操作',
@@ -66,6 +76,9 @@ export default {
       type: '类型',
       uploadAt: '上传时间',
       user: '用户',
+      fullName: '用户名',
+      team: '所属团队',
+      workHour: '工作时间',
     },
     select: {
       label: '视图',
@@ -98,12 +111,12 @@ export default {
       [FindDuplicates]: '查询重复记录',
     },
     detailModules: {
-      [opportunities]: 'Opportunities',
-      [taskOpen]: '未完成的任务',
-      [taskHistory]: '任务历史',
-      [emailSent]: '已发送的邮件',
-      [attachments]: '附件',
-      [logs]: '日志',
+      [Opportunities]: 'Opportunities',
+      [TaskOpen]: '未完成的任务',
+      [TaskHistory]: '任务历史',
+      [EmailSent]: '已发送的邮件',
+      [Attachments]: '附件',
+      [Logs]: '日志',
     },
   },
   en: {
@@ -120,6 +133,7 @@ export default {
       edit: 'Edit',
       addGoods: 'Add Goods',
       save: 'Save',
+      saveAndNew: 'Save and Add New',
       search: 'Search',
       pay: 'Pay',
       next: 'Next',
@@ -133,11 +147,20 @@ export default {
       addToCampaign: 'Add to Campaign',
       replace: 'Replace',
       preview: 'Preview',
+      selectFile: 'Select File',
+      upload: 'Start Upload',
+      uploading: 'Uploading...',
     },
     input: {
       searchStore: 'Search entire store here...',
       searchUser: 'Search user name here...',
       inputIdNumber: 'Please input correct id number',
+      datepicker: {
+        placeholder: 'Please select a date',
+      },
+      datetimepicker: {
+        placeholder: 'Please select date and time',
+      },
     },
     table: {
       action: 'Actions',
@@ -156,6 +179,9 @@ export default {
       type: 'Type',
       uploadAt: 'Uploaded Date',
       user: 'User',
+      fullName: 'Full Name',
+      team: 'Team',
+      workHour: 'Working Hour',
     },
     select: {
       label: 'view',
@@ -188,12 +214,12 @@ export default {
       [FindDuplicates]: 'Find Duplicates',
     },
     detailModules: {
-      [opportunities]: 'Opportunities',
-      [taskOpen]: 'Task Open',
-      [taskHistory]: 'Task History',
-      [emailSent]: 'Email Sent',
-      [attachments]: 'Attachments',
-      [logs]: 'Logs',
+      [Opportunities]: 'Opportunities',
+      [TaskOpen]: 'Task Open',
+      [TaskHistory]: 'Task History',
+      [EmailSent]: 'Email Sent',
+      [Attachments]: 'Attachments',
+      [Logs]: 'Logs',
     },
   },
 };

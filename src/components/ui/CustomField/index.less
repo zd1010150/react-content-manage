@@ -9,10 +9,14 @@
   width: 100%;
 }
 
-.required:before {
-  content: '*';
-  margin-right: 5px;
-  color: red;
+.label {
+  line-height: 24px;
+  
+  &.required:before {
+    content: '*';
+    margin-right: 5px;
+    color: red;
+  }
 }
 
 .helpIcon {
@@ -27,6 +31,8 @@
 }
 
 .displayField {
+  line-height: 24px;
+
   .placeholder {
     color: #ccc;
   }
