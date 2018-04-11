@@ -175,7 +175,7 @@ class SetupSider extends React.Component {
             defaultSelectedKeys={[location.pathname]}
             defaultOpenKeys={[getParentUrl(location.pathname)]}
             selectedKeys={[location.pathname]}
-            style={{ height: '100%', borderRight: 0 }}
+            style={{ borderRight: 0 }}
           >
             {renderMenuItem(intl)}
           </Menu>
