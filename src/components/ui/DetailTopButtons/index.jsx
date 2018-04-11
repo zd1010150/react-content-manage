@@ -5,10 +5,7 @@ import { Link } from 'react-router-dom';
 import { Button, Popconfirm } from 'antd';
 
 import Enums from 'utils/EnumsManager';
-
-// presets
 const { Leads, Accounts, Opportunities, Report, Email } = Enums.ObjectTypes;
-
 const { Convert, Delete, Sharing, FindDuplicates } = Enums.DetailTools;
 
 const renderToolByCode = (code, formatMessage, clickHandler) => {
