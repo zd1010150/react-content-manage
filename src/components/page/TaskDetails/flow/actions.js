@@ -15,8 +15,9 @@ export const setTaskFields = data => ({
   });
 
 export const tryFetchTask = (id, objectType) => dispatch =>
-    get(`/admin/tasks`, {}, dispatch).then((data) => {
-      if (data) {
+    get(`/admin/tasks/${id}`, {}, dispatch).then((data) => {
+      if (data && !_.isEmpty(data.data)) {
+        debugger;
         dispatch(setTaskFields(data.data));
         dispatch(tryFetchAssignees(id, objectType));
         dispatch(tryFetchTaskSubjects());

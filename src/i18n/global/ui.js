@@ -49,6 +49,12 @@ export default {
       searchStore: '在此搜索全站商品...',
       searchUser: '输入用户名搜索...',
       inputIdNumber: '请输入合法的身份证号',
+      datepicker: {
+        placeholder: '请选择日期',
+      },
+      datetimepicker: {
+        placeholder: '请选择日期和时间',
+      },
     },
     table: {
       action: '操作',
@@ -143,6 +149,12 @@ export default {
       searchStore: 'Search entire store here...',
       searchUser: 'Search user name here...',
       inputIdNumber: 'Please input correct id number',
+      datepicker: {
+        placeholder: 'Please select a date',
+      },
+      datetimepicker: {
+        placeholder: 'Please select date and time',
+      },
     },
     table: {
       action: 'Actions',

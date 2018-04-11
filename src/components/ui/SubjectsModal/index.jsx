@@ -94,16 +94,17 @@ class SubjectsModal extends Component {
             <li
               key={subject.id}
               className={`${cx('subject')}`}
-              onClick={e => this._onSubjectSelect(subject.name)}
+              onClick={e => {
+                if (e.target == e.currentTarget) {
+                  this._onSubjectSelect(subject.name)
+                }
+              }}
             >
               {subject.name}
               <Popconfirm
                 cancelText={formatMessage({ id: `global.ui.button.cancel` })}
                 okText={formatMessage({ id: `global.ui.button.ok` })}
-                onConfirm={e => {
-                  e.stopPropagation();
-                  this._onSubjectDelete(subject.id)
-                }}
+                onConfirm={e => this._onSubjectDelete(subject.id)}
                 title={formatMessage({ id: `global.ui.dialog.deleteTitle` })}
               >
                 <Icon

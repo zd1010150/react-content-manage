@@ -74,15 +74,15 @@ class TaskFields extends Component {
     const { assigneeModalVisible, subjectModalVisible } = this.state;
     const {
       intl,
-      assignTo,
+      assigneeId,
       assignees,
       comments,
-      dueDate,
+      dueTime,
       globalSubjects,
       mySubjects,
-      priority,
+      priorityCode,
       priorities,
-      status,
+      statusCode,
       statuses,
       subject,      
     } = this.props;
@@ -104,13 +104,13 @@ class TaskFields extends Component {
               addonAfter={<Icon className="cursor-pointer" onClick={this.handleAssigneeModalOpen} size="small" type="search" />}
               onChange={e => this.handleFieldChange('assignTo', e.target.value)}
               placeholder="Please select a value from the list"
-              value={assignTo}
+              value={assigneeId}
             />
             <AssigneeModal
               data={assignees}
               onCancel={this.handleAssigneeModalCancel}
               onRowClick={this.handleRowClick}
-              value={assignTo}
+              value={assigneeId}
               visible={assigneeModalVisible}
             />
           </Col>
@@ -119,11 +119,11 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.status` })}
             </div>
             <Select
-              onChange={value => this.handleFieldChange('status', value)}
+              onChange={value => this.handleFieldChange('statusCode', value)}
               style={{ width: '100%' }}
-              value={status}
+              value={statusCode}
             >
-              {statuses.map(status => <Option key={status.id} value={status.name}>{status.name}</Option>)}
+              {statuses.map(status => <Option key={status.id} value={status.id}>{status.name}</Option>)}
             </Select>
           </Col>
         </Row>
@@ -154,10 +154,10 @@ class TaskFields extends Component {
             </div>
             <Select
               style={{ width: '100%' }}
-              onChange={value => this.handleFieldChange('priority', value)}
-              value={priority}
+              onChange={value => this.handleFieldChange('priorityCode', value)}
+              value={priorityCode}
             >
-              {priorities.map(priority => <Option key={priority.id} value={priority.name}>{priority.name}</Option>)}
+              {priorities.map(priority => <Option key={priority.id} value={priority.id}>{priority.name}</Option>)}
             </Select>
           </Col>
         </Row>
@@ -167,11 +167,12 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.dueDate` })}
             </div>
             <DatePicker
-              format="YYYY-MM-DD"
-              onChange={(date, dateString) => this.handleFieldChange('dueDate', dateString)}
-              placeholder="Please select a due date"
+              format="YYYY-MM-DD HH:mm:ss"
+              onChange={(date, dateString) => this.handleFieldChange('dueTime', dateString)}
+              placeholder={formatMessage({ id: 'global.ui.input.datetimepicker.placeholder' })}
+              showTime
               style={{ width: '100%' }}
-              value={moment(dueDate)}
+              value={moment(dueTime)}
             />
           </Col>
         </Row>
@@ -196,16 +197,16 @@ TaskFields.propTypes = propTypes;
 const mapStateToProps = ({ global, taskDetails }) => ({
   language: global.language,
   priorities: global.settings.priorities,
-  statuses: global.settings.taskStatuses,
+  statuses: global.settings.statuses,
 
-  assignTo: taskDetails.assignTo,
+  assigneeId: taskDetails.assignTo,
   assignees: taskDetails.assignees,
   comments: taskDetails.comments,
-  dueDate: taskDetails.dueDate,
+  dueTime: taskDetails.dueTime,
   globalSubjects: taskDetails.globalSubjects,
   mySubjects: taskDetails.mySubjects,
-  priority: taskDetails.priority,
-  status: taskDetails.status,
+  priorityCode: taskDetails.priorityCode,
+  statusCode: taskDetails.statusCode,
   subject: taskDetails.subject,
 });
 const mapDispatchToProps = {
