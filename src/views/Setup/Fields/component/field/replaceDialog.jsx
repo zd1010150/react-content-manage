@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Row, Col, Radio, Button } from 'antd';
 import { intlShape, injectIntl } from 'react-intl';
@@ -6,8 +7,20 @@ import { intlShape, injectIntl } from 'react-intl';
 import { DeleteConfirmDialog } from 'components/ui/index';
 
 class ReplaceDialog extends React.Component {
+  state={
+    isError: false,
+  }
   submitReplace() {
-    this.props.submitReplace(this.props.selectedOption);
+    if (_.isEmpty(this.props.selectedOption)) {
+      this.setState({
+        isError: true,
+      });
+    } else {
+      this.setState({
+        isError: false,
+      });
+      this.props.submitReplace(this.props.selectedOption);
+    }
   }
   cancelReplace() {
     this.props.setReplaceDialog({ isVisible: false });
@@ -17,7 +30,7 @@ class ReplaceDialog extends React.Component {
   }
   render() {
     const {
-      options, selectedOption, isVisible, intl, replacedValName
+      options, selectedOption, isVisible, intl, replacedValName,
     } = this.props;
     const { formatMessage } = intl;
 
@@ -58,6 +71,7 @@ class ReplaceDialog extends React.Component {
                         ))
               }
           </Row>
+          { this.state.isError && _.isEmpty(selectedOption.id) ? <p className="error-msg">{ formatMessage({ id: 'page.fields.mustChooseField' }) } </p> : '' }
           <p className="error-msg">{formatMessage({ id: 'page.fields.goEffectIn5' }) } </p>
         </div>
       </DeleteConfirmDialog>

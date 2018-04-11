@@ -87,9 +87,9 @@ class FieldEditContainer extends React.Component {
   }
   submitReplace() {
     const {
-        deletePickListValueToRemote, replaceDialog, fetchFieldDetailInfo, addedField, setReplaceDialog,
+      deletePickListValueToRemote, replaceDialog, fetchFieldDetailInfo, addedField, setReplaceDialog,
     } = this.props;
-      deletePickListValueToRemote(replaceDialog.replacedValId, replaceDialog.selectedOption.option_value, () => {
+    deletePickListValueToRemote(replaceDialog.replacedValId, replaceDialog.selectedOption.option_value, () => {
       fetchFieldDetailInfo(addedField.field.id);
       setReplaceDialog({
         isVisible: false,
@@ -228,7 +228,7 @@ const mapDispatchToProps = {
   updatePickListValueStatusToRemote,
   fetchFieldDetailInfo,
   setPickListValueManagement,
-    deletePickListValueToRemote,
+  deletePickListValueToRemote,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldEditContainer)));
 
