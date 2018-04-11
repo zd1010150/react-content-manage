@@ -5,7 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { Button } from 'antd';
+import { ScrollTop } from 'components/ui/index';
 import { syncStateAndLocalStorage } from 'utils/localStorage';
 import configureStore from './store/configureStore';
 import I18n from './i18n/index';
@@ -14,6 +14,7 @@ import 'antd/dist/antd.less'; // should before the customized style
 import './assets/less/index.less';
 import { ErrorNotification } from './components/page/index';
 import App from './App';
+
 
 const store = configureStore();
 
@@ -29,7 +30,6 @@ store.dispatch(fetchGlobalSetting()); // 获取全局配置,页面中大多数�
 // store.dispatch(fetchAccountInfo()); // 获取用户基本信息
 
 
-
 ErrorNotification(store);
 
 window.addEventListener('beforeunload', () => {
@@ -41,7 +41,9 @@ const AppView = () => (
   <Provider store={store}>
     <I18n>
       <BrowserRouter >
-        <App />
+        <ScrollTop>
+            <App />
+        </ScrollTop>
       </BrowserRouter>
     </I18n>
   </Provider>

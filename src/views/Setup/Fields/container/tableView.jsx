@@ -180,9 +180,9 @@ class FieldsTableView extends React.Component {
     ));
     return (
       <Fragment>
-        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions} contentClasses="pt-lg pb-lg" >
+        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.pageTitle' }, { type: formatMessage({ id: `global.properNouns.${objectType}` }) })} actionsRight={rightActions} contentClasses="pt-lg pb-lg" >
           <div className="panel-section">
-            <div className="section-header">Default Fields</div>
+            <div className="section-header">{ formatMessage({ id: 'page.fields.defaultFields' }, { type: formatMessage({ id: `global.properNouns.${objectType}` }) }) }</div>
             <div className="section-content  mt-lg mb-lg">
               <table style={{ width: '100%' }}>
                 <thead className="ant-table-thead">
@@ -195,12 +195,12 @@ class FieldsTableView extends React.Component {
                                                                 </th>))
                       }
                     {
-                          Object.keys(toFields).map(objType => <th key={objType} className={cx('field-map')}>
-                              {formatMessage({ id: 'page.fields.mapTo' }, { field: formatMessage({ id: `global.properNouns.${objType}` }) })}
+                          Object.keys(toFields).map(objType => (<th key={objType} className={cx('field-map')}>
+                            {formatMessage({ id: 'page.fields.mapTo' }, { field: formatMessage({ id: `global.properNouns.${objType}` }) })}
 
-                            </th>)
+                          </th>))
                       }
-                    <th className={cx('field-date-type')}>Date Type</th>
+                    <th className={cx('field-date-type')}>{ formatMessage({ id: 'page.fields.dataType' }) }</th>
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
@@ -212,7 +212,7 @@ class FieldsTableView extends React.Component {
             </div>
           </div>
           <div className="panel-section">
-            <div className="section-header">Customer Fields</div>
+            <div className="section-header">{ formatMessage({ id: 'page.fields.cstmFields' }, { type: formatMessage({ id: `global.properNouns.${objectType}` }) }) }</div>
             <div className="section-content  mt-lg mb-lg">
               <table style={{ width: '100%' }}>
                 <thead className="ant-table-thead">
@@ -225,7 +225,7 @@ class FieldsTableView extends React.Component {
                     {
                         Object.keys(toFields).map(objType => <th key={objType} className={cx('field-map')}>Map to {objType}</th>)
                     }
-                    <th className={cx('field-date-type')}>Date Type</th>
+                    <th className={cx('field-date-type')}>{ formatMessage({ id: 'page.fields.dataType' }) }</th>
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">

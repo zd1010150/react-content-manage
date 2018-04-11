@@ -147,7 +147,7 @@ class LayoutsTableView extends React.Component {
             <AddForm allLayouts={allLayouts} ref={(c) => { this.form = c; }} />
           </Modal>
           <DeleteConfirmDialog visible={this.state.deleteDialogVisible} onOk={() => this.confirmDelete()} onCancel={() => this.setState({ deleteDialogVisible: false })} >
-            <h3>一旦删除，就都无法恢复</h3>
+            <h3>{ formatMessage({ id: 'global.ui.dialog.deleteTitle' })}</h3>
           </DeleteConfirmDialog>
         </Panel>
 

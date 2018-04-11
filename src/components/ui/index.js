@@ -20,6 +20,7 @@ import SubmitButtons from './SubmitButtons/index';
 import { SelectionPool, SearchPool } from './SelectionPool/index';
 import DetailTopButtons from './DetailTopButtons/index';
 import FloatingActionButtons from './FloatingActionButtons/index';
+import ScrollTop from './ScrollTop/index';
 
 export {
   Upload,
@@ -46,4 +47,5 @@ export {
   SearchPool,
   DetailTopButtons,
   FloatingActionButtons,
+  ScrollTop,
 };
