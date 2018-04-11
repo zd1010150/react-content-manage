@@ -27,7 +27,7 @@ class bodyWrapper extends React.Component {
   render() {
     const { connectDropTarget, isOver } = this.props;
     return connectDropTarget(
-        <div className="drag-body-wrapper" style={{ backgroundColor: isOver ? 'rgba(200,200,200,.5)' : '#ffff',}}>
+        <div className="drag-body-wrapper">
           {this.props.children}
         </div>
     );

@@ -36,12 +36,16 @@ class FieldAddSelecteTypeContainer extends React.Component {
     } = this.props;
     const classType = objTypeAndClassTypeMap[objectType];
     return (
-      <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'global.properNouns.users' })} contentClasses="pt-lg pb-lg">
+      <Panel
+        panelClasses={`${classType}-theme-panel`}
+        panelTitle={formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.fields' }) })}
+        contentClasses="pt-lg pb-lg"
+      >
         <table style={{ width: '100%' }}>
           <thead className="ant-table-thead">
             <tr>
-              <th>Date Type</th>
-              <th >Description</th>
+              <th>{ formatMessage({ id: 'page.fields.dataType' }) }</th>
+              <th>{ formatMessage({ id: 'page.fields.description' }) }</th>
             </tr>
           </thead>
           <tbody className="ant-table-tbody">

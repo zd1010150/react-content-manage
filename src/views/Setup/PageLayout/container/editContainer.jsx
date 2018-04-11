@@ -6,6 +6,7 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import { Button, Radio, Row, Col, Divider, Layout } from 'antd';
 import { connect } from 'react-redux';
+import { EditBox } from 'components/ui/index';
 import { RightSider } from 'components/page/index';
 import { objTypeAndClassTypeMap, FORM_LAYOUT_CONFIG } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
@@ -22,6 +23,8 @@ import ToolViewSider from '../component/editView/tools/siderView';
 import SectionView from '../component/editView/sections/section/index';
 import SectionViewSider from '../component/editView/sections/siderView/siderView';
 
+import Preview from '../component/editView/preview/index';
+
 import styles from '../index.less';
 
 import {
@@ -29,6 +32,7 @@ import {
   setCurrentTab,
   fetchLayoutDetail,
   updateLayoutDetail,
+  setCurrentLayout,
 } from '../flow/edit/action';
 import { OPERATES, MODULES, TOOLS, PREVIEW, SECTIONS } from '../flow/edit/operateType';
 
@@ -47,11 +51,6 @@ class EditContainer extends React.Component {
       this.fetchDetail();
     }
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.location !== this.props.location) {
-      this.fetchDetail(nextProps);
-    }
-  }
   fetchDetail() {
     const { fetchLayoutDetail, layoutId } = this.props;
     if (!_.isEmpty(`${layoutId}`)) {
@@ -64,10 +63,49 @@ class EditContainer extends React.Component {
     setCurrentTab(e.target.value);
   }
   save() {
+    const {
+      updateLayoutDetail, layoutName, layoutId, sections, tools, modules,
+    } = this.props;
+    const mappedSections = sections.map((section) => {
+      let mappedFields = [];
+      if (!_.isEmpty(section.fields)) {
+        Object.keys(section.fields).forEach((colIndex) => {
+          mappedFields = [...mappedFields, ...section.fields[colIndex].map(f => ({
+            id: f.id,
+            page_required: f.pageRequired,
+            page_readonly: f.pageReadonly,
+            position: [f.x, f.y],
+          }))];
+        });
+      }
 
+      return {
+        code: section.code,
+        sequence: section.sequence,
+        columns: section.cols,
+        label: section.label,
+        fields: mappedFields,
+      };
+    });
+    const mappedTools = tools.map((tool, index) => ({
+      code: tool,
+      sequence: index,
+    }));
+    const mappedModules = modules.map((module, index) => ({
+      code: module,
+      sequence: index,
+    }));
+    updateLayoutDetail(layoutId, layoutName, {
+      sections: mappedSections,
+      tools: mappedTools,
+      modules: mappedModules,
+    }, () => {
+      this.cancel();
+    });
   }
   cancel() {
-
+    const { history, objectType } = this.props;
+    history.push(`/setup/${objectType}/pageLayout`);
   }
   preview() {
     const { setCurrentTab } = this.props;
@@ -80,9 +118,12 @@ class EditContainer extends React.Component {
       currentTab,
       setCanDrop,
       canDrop,
+      layoutName,
+      setCurrentLayout,
     } = this.props;
     const { formatMessage } = intl;
     const theme = objTypeAndClassTypeMap[objectType];
+
     const getMainView = () => {
       switch (currentTab) {
         case MODULES:
@@ -91,6 +132,8 @@ class EditContainer extends React.Component {
           return <ToolView />;
         case SECTIONS:
           return <SectionView />;
+        case PREVIEW:
+          return <Preview />;
         default:
           return <ModuleView />;
       }
@@ -103,8 +146,10 @@ class EditContainer extends React.Component {
           return <ToolViewSider theme={theme} />;
         case SECTIONS:
           return <SectionViewSider theme={theme} />;
+        case PREVIEW:
+          return '';
         default:
-          return <ModuleViewSider />;
+          return '';
       }
     };
     return (
@@ -116,6 +161,11 @@ class EditContainer extends React.Component {
           <Layout>
             <Content style={{ backgroundColor: '#fff' }}>
               <Row className="pt-lg pl-lg pr-lg">
+                <EditBox type="input" spanClasses={cx('layout-title')} value={layoutName} onBlur={value => setCurrentLayout({ name: value })} />
+
+              </Row>
+              <Divider />
+              <Row className="pl-lg pr-lg">
                 <Col span={24}>
                   <Button icon="layout" size="small" className={`${theme}-theme-btn ml-sm`} onClick={() => this.preview()}>{formatMessage({ id: 'global.ui.button.preview' })}</Button>
                   <Button icon="save" type="danger" size="small" className="ml-sm" onClick={() => this.save()}>{formatMessage({ id: 'global.ui.button.save' })}</Button>
@@ -164,10 +214,14 @@ const mapStateToProps = ({ setup }) => {
   } = setup.layouts;
 
   return {
+    tools: editView.tools,
+    modules: editView.modules,
+    sections: editView.sections,
     canDrop: editView.ui && editView.ui.fieldCanDrop,
     currentTab: editView.ui.currentTab,
     objectType: currentObjectType,
     layoutId: editView.layout.id,
+    layoutName: editView.layout.name,
   };
 };
 const mapDispatchToProps = {
@@ -176,5 +230,6 @@ const mapDispatchToProps = {
   setCanDrop,
   fetchLayoutDetail,
   updateLayoutDetail,
+  setCurrentLayout,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(EditContainer)));

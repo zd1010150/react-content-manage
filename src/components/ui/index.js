@@ -23,6 +23,7 @@ import FloatingActionButtons from './FloatingActionButtons/index';
 import AssigneeModal from './AssigneeModal/index';
 import SubjectsModal from './SubjectsModal/index';
 import DeleteConfirmButton from './DeleteConfirmBtn/index';
+import ScrollTop from './ScrollTop/index';
 
 export {
   Upload,
@@ -52,4 +53,5 @@ export {
   AssigneeModal,
   SubjectsModal,
   DeleteConfirmButton,
+  ScrollTop,
 };

@@ -72,7 +72,7 @@ class EditBox extends React.Component {
     }
     buildValue() {
       const {
-        type, isShowStatuLabel, isDisabled, inputClasses,
+        type, isShowStatuLabel, isDisabled, inputClasses,isShowEditIcon
       } = this.props;
       let valueEl;
       let iconEl;
@@ -89,6 +89,7 @@ class EditBox extends React.Component {
           iconEl = <Icon type="reload" className="ok" onClick={() => this.reset()} />;
         }
       }
+
       return <div className={cx('editbox-value-wrapper')}><span className={classNames(inputClasses, cx('editbox-value'))}> {valueEl}</span>{iconEl}</div>;
     }
 
@@ -111,6 +112,7 @@ class EditBox extends React.Component {
 EditBox.defaultProps = {
   isDisabled: false,
   isShowStatuLabel: true,
+    isShowEditIcon: false,
   onChange: (val) => { console.log('change', val); },
   onBlur: (val) => { console.log('blur', val); },
   onEditing: (val) => { console.log('editing', val); },

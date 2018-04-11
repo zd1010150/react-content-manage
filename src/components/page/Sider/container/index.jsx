@@ -163,7 +163,6 @@ class SetupSider extends React.Component {
     }
     render() {
       const { intl, location } = this.props;
-      console.log(location.pathname, '***=====');
       return (
         <Sider width={250} className={cx('setupSider')}>
           <div className={cx('siderTitle')}>setup</div>
@@ -176,7 +175,7 @@ class SetupSider extends React.Component {
             defaultSelectedKeys={[location.pathname]}
             defaultOpenKeys={[getParentUrl(location.pathname)]}
             selectedKeys={[location.pathname]}
-            style={{ height: '100%', borderRight: 0 }}
+            style={{ borderRight: 0 }}
           >
             {renderMenuItem(intl)}
           </Menu>

@@ -47,7 +47,7 @@ const tools = (state = [], action) => {
   const { type, ...payload } = action;
   switch (type) {
     case SETUP_LAYOUT_EDIT_SET_TOOLS:
-      return initTools(payload.modules);
+      return initTools(payload.tools);
     case SETUP_LAYOUT_EDIT_ADD_TOOLS:
       return addTools(state, payload.sequence, payload.code);
     case SETUP_LAYOUT_EDIT_DELETE_TOOLS:
