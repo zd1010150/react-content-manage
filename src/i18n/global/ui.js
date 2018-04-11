@@ -44,6 +44,9 @@ export default {
       addToCampaign: '添加到营销活动',
       replace: '替换',
       preview: '预览',
+      selectFile: '选择文件',
+      upload: '开始上传',
+      uploading: '正在上传',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -144,6 +147,9 @@ export default {
       addToCampaign: 'Add to Campaign',
       replace: 'Replace',
       preview: 'Preview',
+      selectFile: 'Select File',
+      upload: 'Start Upload',
+      uploading: 'Uploading...',
     },
     input: {
       searchStore: 'Search entire store here...',

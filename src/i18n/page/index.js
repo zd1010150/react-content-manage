@@ -13,6 +13,7 @@ import layouts from 'views/Setup/PageLayout/i18n';
 import taskDetails from 'components/page/TaskDetails/i18n';
 import assigneeModal from 'components/ui/AssigneeModal/i18n';
 import subjectsModal from 'components/ui/SubjectsModal/i18n';
+import attachments from 'views/ClientAttachments/i18n';
 
 export default {
   comInfo,
@@ -30,4 +31,5 @@ export default {
   taskDetails,
   assigneeModal,
   subjectsModal,
+  attachments,
 };

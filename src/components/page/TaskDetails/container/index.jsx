@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Row, Col, Button } from 'antd';
 
@@ -45,13 +46,7 @@ const propTypes = {
 
 
 class TaskDetails extends Component {
-  handleCancel = $ => {
-
-  }
-
-  handleDelete = (id, type) => {
-    
-  }
+  handleCancel = $ => this.props.history.goBack()
 
   handleSave = (id, type) => {
     const { taskDetails, trySaveNewTask, tryUpdateTask } = this.props;
@@ -110,4 +105,4 @@ const mapDispatchToProps = {
   trySaveNewTask,
   tryUpdateTask,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TaskDetails));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(TaskDetails)));

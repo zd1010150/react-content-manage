@@ -21,6 +21,7 @@ import {
   FindDuplicates,
   Layouts,
   ObjectTask,
+  ClientAttachments,
 } from 'views/index';
 
 import { ObjectFilter } from '../index';
@@ -46,6 +47,7 @@ const MainContent = () => (
     <Route path="/:objectType/sharing/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/tasks/:objectId" component={ObjectTask} />
+    <Route path="/:objectType/attachments/:objectId" component={ClientAttachments} />
     <Route path="/:objectType/:objectId" component={ObjectDetails} exact/>
     
     <Route path="/leads" component={Leads} exact />
