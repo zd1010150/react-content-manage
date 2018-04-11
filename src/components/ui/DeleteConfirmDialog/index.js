@@ -33,6 +33,7 @@ class DeleteConfirmDialog extends React.Component {
       title: formatMessage({ id: 'global.ui.dialog.warning' }),
       visible,
       wrapClassName: 'danger-dialog',
+      onCancel: () => { this.onCancel(); },
     }, modelConfig);
     return (
       <Modal {...config} >

@@ -48,7 +48,7 @@ class FieldAddContainer extends React.Component {
           const create_data = Object.assign(values, {
             field_name: `${fieldPrefix}${values.field_name}`,
             crm_data_type: addedField.field.type,
-            notnull: _.isEmpty(`${values.notnull}`) ? false : values.notnull,
+            notnull: _.isEmpty(values.notnull) ? false : values.notnull,
           });
           const picklist = addedField.picklist;
           const append_page_layout_ids = addedField.appendPageLayoutIds;

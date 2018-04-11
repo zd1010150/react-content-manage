@@ -21,7 +21,7 @@ class PreviewContainer extends React.Component {
     } = this.props;
     const theme = objTypeAndClassTypeMap[objectType];
     return (
-      <div className={classNames(cx('preview-wrapper'), 'pt-lg', 'pb-lg')}>
+      <div className={classNames(cx('preview-wrapper'))}>
         <Tools theme={theme} tools={tools} />
         <Sections theme={theme} sections={sections} />
         <Modules theme={theme} modules={modules} />

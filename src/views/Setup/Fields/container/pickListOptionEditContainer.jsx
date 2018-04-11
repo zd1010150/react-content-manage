@@ -105,21 +105,23 @@ class PickListOptionEditContainer extends React.Component {
     const classType = objTypeAndClassTypeMap[objectType];
 
     return (
-      <Panel panelClasses={`${classType}-theme-panel`} panelTitle="Updating Existing Value" contentClasses="pt-lg" >
+      <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.updateExistingValue' })}>
         <div className="panel-section">
-          <div className="section-header">Updating Existing Value</div>
-          <div className="section-content  mt-lg mb-lg">
+          <div className="section-content mb-lg">
+
             <FloatingLabelInput
+              labelText=""
               value={manageList.valueText}
               handleChange={val => setPickListValueManagement({ valueText: val })}
             />
+
           </div>
           <div className="section-header">
-              Restriciont <Icon type="plus-square-o" className={`${classType}-theme-icon`} style={{ float: 'right' }} onClick={() => { this.addRestriction(); }} />
+            {formatMessage({ id: 'page.fields.restriction' })} <Icon type="plus-square-o" className={`${classType}-theme-icon`} style={{ float: 'right' }} onClick={() => { this.addRestriction(); }} />
 
           </div>
           <div className="section-content  mt-lg">
-            <p>Restrict departments or users from viewing this value</p>
+            <p>{formatMessage({ id: 'page.fields.restrictionInfo' })}</p>
             <SelectionPool
               theme={classType}
               users={manageList.unvisibleUsers}
@@ -139,6 +141,7 @@ class PickListOptionEditContainer extends React.Component {
                           onTagClick={itemid => this.clickTeam(itemid)}
                           onTagDoubleClick={itemid => this.addItem(itemid, true)}
                         />
+                        <p>{formatMessage({ id: 'page.fields.doubleClickDepart' })}</p>
                       </Col>
                       <Col span={12}>
                         <SearchPool
@@ -147,6 +150,7 @@ class PickListOptionEditContainer extends React.Component {
                           users={teamUser}
                           onTagDoubleClick={itemid => this.addItem(itemid, false)}
                         />
+                        <p>{formatMessage({ id: 'page.fields.doubleClickUser' })}</p>
                       </Col>
                     </Row>
                       : ''

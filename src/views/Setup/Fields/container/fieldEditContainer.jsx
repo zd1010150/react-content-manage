@@ -17,7 +17,7 @@ import {
   deletePickListValue,
   addPickListValue,
   sortPicklistValueToRemote,
-  replacePickListValueToRemote,
+  deletePickListValueToRemote,
   updateFieldToRemote,
   addPickListValueToRemote,
   setReplaceDialog,
@@ -59,7 +59,7 @@ class FieldEditContainer extends React.Component {
       updateFieldToRemote, objectType, history, addedField, fieldPrefix,
     } = this.props;
     if (addedField.field.category === fieldCategory.CUSTOM) {
-      data.field_label = `${fieldPrefix}${field.field_label}`;
+      data.field_label = field.field_label;
     }
     updateFieldToRemote(field.id, data, () => {
       history.push(`/setup/${objectType}/fields`);
@@ -87,9 +87,9 @@ class FieldEditContainer extends React.Component {
   }
   submitReplace() {
     const {
-      replacePickListValueToRemote, replaceDialog, fetchFieldDetailInfo, addedField, setReplaceDialog,
+      deletePickListValueToRemote, replaceDialog, fetchFieldDetailInfo, addedField, setReplaceDialog,
     } = this.props;
-    replacePickListValueToRemote(replaceDialog.replacedValId, replaceDialog.selectedOption.option_value, () => {
+    deletePickListValueToRemote(replaceDialog.replacedValId, replaceDialog.selectedOption.option_value, () => {
       fetchFieldDetailInfo(addedField.field.id);
       setReplaceDialog({
         isVisible: false,
@@ -111,7 +111,6 @@ class FieldEditContainer extends React.Component {
       setAddedFieldAttr,
       addPickListValue,
       sortPicklistValueToRemote,
-      replacePickListValueToRemote,
       addPickListValueToRemote,
       replaceDialog,
       setReplaceDialog,
@@ -123,7 +122,7 @@ class FieldEditContainer extends React.Component {
 
     return (
       <Fragment>
-        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'global.properNouns.users' })} contentClasses="pt-lg pb-lg">
+        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.editField' })} contentClasses="pt-lg pb-lg">
           <FieldForm
             isDuplicate={isDuplicate}
             setFieldLableisDuplicate={setFieldLableisDuplicate}
@@ -140,10 +139,9 @@ class FieldEditContainer extends React.Component {
 
         {
           addedField.field.type === PICKLIST_FIELD_TYPE ?
-            <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'global.properNouns.users' })} contentClasses="pt-lg pb-lg">
+            <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.values' })} >
               <div className="panel-section">
-                <div className="section-header">Default Fields</div>
-                <div className="section-content  mt-lg mb-lg">
+                <div className="section-content">
                   <PickListValue
                     objectType={objectType}
                     action={EDIT}
@@ -152,7 +150,6 @@ class FieldEditContainer extends React.Component {
                     deletePickListValue={deletePickListValue}
                     addPickListValue={addPickListValue}
                     sortPicklistValueToRemote={sortPicklistValueToRemote}
-                    replacePickListValueToRemote={replacePickListValueToRemote}
                     addPickListValueToRemote={addPickListValueToRemote}
                     setReplaceDialog={setReplaceDialog}
                     updatePickListValueStatusToRemote={updatePickListValueStatusToRemote}
@@ -166,12 +163,12 @@ class FieldEditContainer extends React.Component {
         }
         {
               addedField.field.type === PICKLIST_FIELD_TYPE && !_.isEmpty(addedField.deactiveList) ?
-                <Panel panelClasses={`${classType}-theme-panel`} panelTitle="deactive" contentClasses="pt-lg pb-lg">
+                <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.deactiveValues' })} contentClasses="pt-lg pb-lg">
                   <table style={{ width: '100%' }}>
                     <thead className="ant-table-thead">
                       <tr>
-                        <th>Action</th>
-                        <th >Value</th>
+                        <th>{formatMessage({ id: 'global.ui.table.action' })}</th>
+                        <th>{formatMessage({ id: 'page.fields.value' })}</th>
                       </tr>
                     </thead>
                     <tbody className="ant-table-tbody">
@@ -179,8 +176,8 @@ class FieldEditContainer extends React.Component {
                           addedField.deactiveList.map(val => (
                             <tr key={val.id} >
                               <td>
-                                <Icon type="delete" className="pl-lg" onClick={() => this.deleteDeactiveList(val)} />
-                                <Icon type="check-square" className={`${classType}-theme-icon`} onClick={() => this.activeDeactivedVal(val)} />
+                                <Icon type="delete" className="pr-sm" onClick={() => this.deleteDeactiveList(val)} />
+                                <Icon type="check" className={`${classType}-theme-icon`} onClick={() => this.activeDeactivedVal(val)} />
                               </td>
                               <td>
                                 { val.option_value }
@@ -225,13 +222,13 @@ const mapDispatchToProps = {
   deletePickListValue,
   addPickListValue,
   sortPicklistValueToRemote,
-  replacePickListValueToRemote,
   updateFieldToRemote,
   addPickListValueToRemote,
   setReplaceDialog,
   updatePickListValueStatusToRemote,
   fetchFieldDetailInfo,
   setPickListValueManagement,
+  deletePickListValueToRemote,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldEditContainer)));
 

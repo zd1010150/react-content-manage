@@ -6,10 +6,6 @@ import { Button } from 'antd';
 
 import { ItemTypes } from '../../../flow/edit/itemType';
 
-const styles = {
-  padding: '0.5rem 1rem',
-  cursor: 'move',
-};
 
 class Box extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -20,6 +16,7 @@ class Box extends Component {
   getPreviewImg(operateType, title, theme, canDrop) {
     switch (operateType) {
       case ItemTypes.TOOL:
+        return (<Button size="small" className={canDrop ? '' : 'danger-btn'} >{title}</Button>);
       case ItemTypes.SECTION_FIELD:
         return (<Button size="small" className={`${theme}-theme-btn ${canDrop ? '' : 'danger-btn'}`} >{title}</Button>);
       case ItemTypes.MODULE:
@@ -31,8 +28,6 @@ class Box extends Component {
     const {
       title, canDrop, type, theme,
     } = this.props;
-    const backgroundColor = canDrop ? 'green' : 'red';
-
     return <div>{this.getPreviewImg(type, title, theme, canDrop)}</div>;
   }
 }

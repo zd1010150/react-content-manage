@@ -38,7 +38,7 @@ class Tool extends React.Component {
     } = this.props;
     const { formatMessage } = intl;
     return connectDragSource(<div className="module-panel">
-      <Button size="small" className={classNames(`${theme}-theme-btn`, 'mr-lg', isDragging ? cx('field-btn-dragging') : '')}>
+      <Button size="small" className={classNames('mr-sm', isDragging ? cx('field-btn-dragging') : '')}>
 
         {formatMessage({ id: `global.ui.detailTools.${code}` })}
       </Button>
