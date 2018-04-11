@@ -16,7 +16,10 @@ const defaultProps = {
 const propTypes = {
   data: PropTypes.array.isRequired,
   onRowClick: PropTypes.func,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   visible: PropTypes.bool.isRequired,
 };
 
@@ -41,7 +44,7 @@ class AssigneeModal extends Component {
 
   addHighlightCls = record => {
     const { value } = this.props;
-    if (record.fullName === value) {
+    if (record.id === value) {
       return `cursor-pointer ${cx('selected')}`;
     }
     return 'cursor-pointer';
@@ -50,16 +53,17 @@ class AssigneeModal extends Component {
   _onRowClick = e => {
     const { onRowClick } = this.props;
     if (_.isFunction(onRowClick)) {
-      const { id, name } = e.currentTarget.dataset;
-      onRowClick(id, name);
+      const { id } = e.currentTarget.dataset;
+      onRowClick(id);
     }
   }
 
-  renderColumns = formatMessage => {
+  renderColumns = $ => {
+    const { formatMessage } = this.props.intl;
     const i18nPrefix = 'global.ui.table';
     return [
       {
-        dataIndex: 'fullName',
+        dataIndex: 'name',
         title: formatMessage({ id: `${i18nPrefix}.fullName` }),
       },
       {
@@ -67,8 +71,9 @@ class AssigneeModal extends Component {
         title: formatMessage({ id: `${i18nPrefix}.team` }),
       },
       {
-        dataIndex: 'workHour',
+        key: 'workHour',
         title: formatMessage({ id: `${i18nPrefix}.workHour` }),
+        render: (text, record) => `${record.start_work_time} - ${record.end_work_time}`,
       },
     ];
   }
@@ -79,9 +84,9 @@ class AssigneeModal extends Component {
     const { formatMessage } = intl;
     const i18nPrefix = 'page.assigneeModal';
 
-    const columns = this.renderColumns(formatMessage);
-    const filteredData = data.filter(record => record.fullName.indexOf(searchText) !== -1
-                                                || record.team.indexOf(searchText) !== -1);
+    const columns = this.renderColumns();
+    // TODO: add team filter, because now the api miss team name field
+    const filteredData = data.filter(record => record.name.indexOf(searchText) !== -1);
 
     return (
       <StyledModal
@@ -106,7 +111,7 @@ class AssigneeModal extends Component {
           dataSource={filteredData}
           onRow={record => ({
             'data-id': record.id,
-            'data-name': record.fullName,
+            'data-name': record.name,
             onClick: this._onRowClick,
           })}
           pagination={false}

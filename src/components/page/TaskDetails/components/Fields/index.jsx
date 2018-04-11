@@ -5,13 +5,14 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Row, Col, Input, Icon, Select, DatePicker } from 'antd';
 const { TextArea } = Input;
-const { Option } = Select;
+const { Option, OptGroup } = Select;
 import classNames from 'classnames/bind';
 import styles from './index.less';
 const cx = classNames.bind(styles);
 
 import { AssigneeModal, SubjectsModal } from 'components/ui/index';
-import {  
+import {
+  setAssignee,
   setFieldValue,
   tryDeleteSubject,
   tryFetchTask,
@@ -65,8 +66,8 @@ class TaskFields extends Component {
 
   handleFieldChange = (field, value) => this.props.setFieldValue(field, value)
 
-  handleRowClick = (id, name) => {
-    this.props.setFieldValue('assignTo', name);
+  handleRowClick = id => {
+    this.props.setAssignee(Number(id));
     return this.setState({ assigneeModalVisible: false });
   }
   
@@ -82,6 +83,7 @@ class TaskFields extends Component {
       mySubjects,
       priorityCode,
       priorities,
+      recentAssignees,
       statusCode,
       statuses,
       subject,      
@@ -100,12 +102,23 @@ class TaskFields extends Component {
             <div className={labelCls}>
               {formatMessage({ id: `${i18nPrefix}.assignTo` })}
             </div>
-            <Input
-              addonAfter={<Icon className="cursor-pointer" onClick={this.handleAssigneeModalOpen} size="small" type="search" />}
-              onChange={e => this.handleFieldChange('assignTo', e.target.value)}
-              placeholder="Please select a value from the list"
+            <Select
+              onChange={value => {
+                if (value === 'moreOptions') {
+                  return this.handleAssigneeModalOpen();
+                }
+                return this.handleFieldChange('assigneeId', value)
+              }}
+              style={{ width: '100%' }}
               value={assigneeId}
-            />
+            >
+              <OptGroup label={formatMessage({ id: `${i18nPrefix}.recentOptions` })}>
+                {recentAssignees.map(assignee => <Option key={assignee.id} value={assignee.id}>{assignee.name}</Option>)}
+              </OptGroup>
+              <Option className={cx('moreOptions')} value="moreOptions">
+                <a>{formatMessage({ id: `${i18nPrefix}.moreOptions` })}</a>
+              </Option>
+            </Select>
             <AssigneeModal
               data={assignees}
               onCancel={this.handleAssigneeModalCancel}
@@ -181,7 +194,7 @@ class TaskFields extends Component {
             {formatMessage({ id: `${i18nPrefix}.comments` })}
           </div>
           <TextArea
-            autosize={{ minRows: 10, maxRows: 15 }}
+            autosize={{ minRows: 10, maxRows: 30 }}
             onChange={e => this.handleFieldChange('comments', e.target.value)}
             value={comments}
           />
@@ -199,17 +212,19 @@ const mapStateToProps = ({ global, taskDetails }) => ({
   priorities: global.settings.priorities,
   statuses: global.settings.statuses,
 
-  assigneeId: taskDetails.assignTo,
+  assigneeId: taskDetails.assigneeId,
   assignees: taskDetails.assignees,
   comments: taskDetails.comments,
   dueTime: taskDetails.dueTime,
   globalSubjects: taskDetails.globalSubjects,
   mySubjects: taskDetails.mySubjects,
   priorityCode: taskDetails.priorityCode,
+  recentAssignees: taskDetails.recentAssignees,
   statusCode: taskDetails.statusCode,
   subject: taskDetails.subject,
 });
 const mapDispatchToProps = {
+  setAssignee,
   setFieldValue,
   tryDeleteSubject,
   tryFetchTask,

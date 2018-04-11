@@ -6,6 +6,7 @@ import {
 
   SET_TASK_ASSIGNEE,
   SET_TASK_ASSIGNEES,
+  SET_TASK_RECENT_ASSIGNEES,
   SET_TASK_FIELD,  
   ADD_NEW_SUBJECT,
   SET_TASK_SUBJECTS,
@@ -21,6 +22,7 @@ const initialState = {
   comments: '',
   dueTime: '',
   priorityCode: PhantomId,
+  recentAssignees: [],
   statusCode: PhantomId,
   subject: '',
 };
@@ -66,7 +68,7 @@ const taskDetails = (state = initialState, action) => {
         mySubjects,
       };
 
-      
+
     case ADD_NEW_SUBJECT:
       const { newSubject } = action.payload;
       return {
@@ -83,10 +85,19 @@ const taskDetails = (state = initialState, action) => {
       }
 
     case SET_TASK_ASSIGNEE:
-      const { assignee } = action.payload;
+      const { assigneeId } = action.payload;      
+      const isInRecent = !!state.recentAssignees.find(assignee => assignee.id == assigneeId);
+      if (isInRecent) {
+        return {
+          ...state,
+          assigneeId,
+        };
+      }
+      const targetAssignee = state.assignees.find(assignee => assignee.id == assigneeId);
       return {
         ...state,
-        assigneeId: assignee,
+        assigneeId,
+        recentAssignees: [ targetAssignee, ...state.recentAssignees ],
       };
 
 
@@ -94,8 +105,7 @@ const taskDetails = (state = initialState, action) => {
       const { assignees } = action.payload;      
       return {
         ...state,
-        // TODO: remove default value for assignees
-        assignees: [{ id: 1, fullName: 'xyz', team: 'abc' }, { id: 2, fullName: 'xyz2', team: 'edf'}],
+        assignees,
       };
 
 
@@ -104,6 +114,14 @@ const taskDetails = (state = initialState, action) => {
       return {
         ...state,
         [field]: value,
+      };
+
+    
+    case SET_TASK_RECENT_ASSIGNEES:
+      const { recentAssignees } = action.payload;
+      return {
+        ...state,
+        recentAssignees,
       };
 
 

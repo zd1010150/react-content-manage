@@ -9,6 +9,8 @@ export default {
       priority: '优先级',
       dueDate: '截止日期',
       comments: '评论',
+      moreOptions: '更多选项...',
+      recentOptions: '最近选择过',
     },
   },
   en: {
@@ -21,6 +23,8 @@ export default {
       priority: 'Priority',
       dueDate: 'Due Date',
       comments: 'Comments',
+      moreOptions: 'More options...',
+      recentOptions: 'Recent Selections',
     },
   },
 };
