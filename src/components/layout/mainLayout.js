@@ -37,7 +37,7 @@ class MainLayout extends React.Component {
           { !this.hasLoggedIn() ? (
             <Redirect to="/auth/login" />
                 ) : (
-                  <Layout>
+                  <Layout style={{position: 'absolute', top: '0', bottom: '0', right: '0', left: '0'}}>
                     <TopPanel />
                     <Switch>
                       <Route path="/setup" component={SetupLayout} />
