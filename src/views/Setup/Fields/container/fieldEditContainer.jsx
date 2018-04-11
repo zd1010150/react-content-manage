@@ -17,7 +17,7 @@ import {
   deletePickListValue,
   addPickListValue,
   sortPicklistValueToRemote,
-  replacePickListValueToRemote,
+  deletePickListValueToRemote,
   updateFieldToRemote,
   addPickListValueToRemote,
   setReplaceDialog,
@@ -87,9 +87,9 @@ class FieldEditContainer extends React.Component {
   }
   submitReplace() {
     const {
-      replacePickListValueToRemote, replaceDialog, fetchFieldDetailInfo, addedField, setReplaceDialog,
+        deletePickListValueToRemote, replaceDialog, fetchFieldDetailInfo, addedField, setReplaceDialog,
     } = this.props;
-    replacePickListValueToRemote(replaceDialog.replacedValId, replaceDialog.selectedOption.option_value, () => {
+      deletePickListValueToRemote(replaceDialog.replacedValId, replaceDialog.selectedOption.option_value, () => {
       fetchFieldDetailInfo(addedField.field.id);
       setReplaceDialog({
         isVisible: false,
@@ -111,7 +111,6 @@ class FieldEditContainer extends React.Component {
       setAddedFieldAttr,
       addPickListValue,
       sortPicklistValueToRemote,
-      replacePickListValueToRemote,
       addPickListValueToRemote,
       replaceDialog,
       setReplaceDialog,
@@ -151,7 +150,6 @@ class FieldEditContainer extends React.Component {
                     deletePickListValue={deletePickListValue}
                     addPickListValue={addPickListValue}
                     sortPicklistValueToRemote={sortPicklistValueToRemote}
-                    replacePickListValueToRemote={replacePickListValueToRemote}
                     addPickListValueToRemote={addPickListValueToRemote}
                     setReplaceDialog={setReplaceDialog}
                     updatePickListValueStatusToRemote={updatePickListValueStatusToRemote}
@@ -224,13 +222,13 @@ const mapDispatchToProps = {
   deletePickListValue,
   addPickListValue,
   sortPicklistValueToRemote,
-  replacePickListValueToRemote,
   updateFieldToRemote,
   addPickListValueToRemote,
   setReplaceDialog,
   updatePickListValueStatusToRemote,
   fetchFieldDetailInfo,
   setPickListValueManagement,
+    deletePickListValueToRemote,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldEditContainer)));
 

@@ -116,6 +116,12 @@ export const replacePickListValueToRemote = (id, replace_value, cb) => dispatch 
     cb();
   }
 });
+
+export const deletePickListValueToRemote = (id, replace_value, cb) => dispatch => httpDelete(`/admin/picklists/${id}`, { replace_value }, dispatch).then((data) => {
+  if (_.isFunction(cb)) {
+    cb();
+  }
+});
 export const sortPicklistValueToRemote = (ids, cb) => dispatch => patch('/admin/picklists/sort', { ids }, dispatch).then((data) => {
   if (_.isFunction(cb)) {
     cb();

@@ -176,7 +176,6 @@ PickListValue.propTypes = {
   deletePickListValue: PropTypes.func.isRequired,
   addPickListValue: PropTypes.func.isRequired,
   sortPicklistValueToRemote: PropTypes.func.isRequired,
-  replacePickListValueToRemote: PropTypes.func.isRequired,
   addPickListValueToRemote: PropTypes.func,
   setReplaceDialog: PropTypes.func,
   updatePickListValueStatusToRemote: PropTypes.func,
