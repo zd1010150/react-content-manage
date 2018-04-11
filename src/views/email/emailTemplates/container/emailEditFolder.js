@@ -21,21 +21,6 @@ import {
 import {getTeamUsers, getSelectedTeamName} from '../../flow/reselect';
 const cx = classNames.bind(styles);
 
-// const FolderInput = ({item, editFolders, setEditFolderData, deleteUserFolderData})=>{
-//     let canEdit = false;
-//     editFolders.forEach((folder)=>{
-//         if(folder.id === item.id){
-//             canEdit = true;
-//         }
-//     })
-//    return <Col className="pl-lg gutter-row field-label" span={6}>
-//        <div onClick={()=>{deleteUserFolderData(item.id)}}>
-//            <Icon className={cx(['folder-icon', 'folder-move'])} type="folder" /><span className="pl-sm"><Icon type="delete"/></span>
-//        </div>
-//        <Input size="small" disabled={!canEdit} addonAfter={!canEdit && <Icon onClick={() => {setEditFolderData(item)}} type="edit" />} defaultValue={item.name} />
-//    </Col>
-// }
-
 const ActionButtonGroup = ({saveEditFolder, setEditFolderViewVisible, formatMessage}) => {
     return <div className="pt-md pl-md pb-md">
         <Button className="email-theme-btn mr-md" onClick={saveEditFolder}><Icon type="save"/>{ formatMessage({id: 'page.emailTemplates.save'}) }</Button>
@@ -214,17 +199,6 @@ class EmailTemplateEditFolder extends React.Component {
         );
     }
 }
-
-{/*
- <FolderInput
- key={item.id}
- item={item}
- editFolders={editFolders}
- setEditFolderData={setEditFolderData}
- deleteUserFolderData={deleteUserFolderData}/>
- */
-}
-
 
 EmailTemplateEditFolder.propTypes = {
     intl: intlShape.isRequired,
