@@ -99,6 +99,9 @@ class PickListValue extends React.Component {
         fetchFieldDetailInfo,
       } = this.props;
       const isEdit = action === PAGE_ACTION.EDIT;
+      if (_.isEmpty(val)) {
+        return;
+      }
       if (!isEdit) {
         addPickListValue(val);
       } else {

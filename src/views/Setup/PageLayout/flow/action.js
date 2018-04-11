@@ -38,7 +38,7 @@ export const fetchAllLayouts = objType => dispatch => get(`/admin/page_layouts/o
 
 export const saveLayoutName = (objType, form, cb) => dispatch => post(`/admin/page_layouts/object/${objType}`, { ...form }, dispatch).then((data) => {
   if ((!_.isEmpty(data && data.data)) && _.isFunction(cb)) {
-    cb();
+    cb(data.data);
   }
 });
 

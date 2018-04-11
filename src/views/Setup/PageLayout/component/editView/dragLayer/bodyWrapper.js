@@ -7,7 +7,7 @@ import { DropTarget } from 'react-dnd';
 import { ItemTypes } from '../../../flow/edit/itemType';
 
 const bodyWrapperTarget = {
-  canDrop(props) {
+  canDrop() {
     return false;
   },
 
@@ -26,11 +26,9 @@ class bodyWrapper extends React.Component {
   }
   render() {
     const { connectDropTarget, isOver } = this.props;
-    return connectDropTarget(
-        <div className="drag-body-wrapper">
-          {this.props.children}
-        </div>
-    );
+    return connectDropTarget(<div className="drag-body-wrapper">
+      {this.props.children}
+                             </div>);
   }
 }
 

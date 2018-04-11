@@ -65,11 +65,14 @@ class LayoutsTableView extends React.Component {
       });
     }
     saveAndNext() {
-      const { history, saveLayoutName, objectType } = this.props;
+      const {
+        saveLayoutName, objectType, setAddLayout,
+      } = this.props;
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          saveLayoutName(objectType, values, () => {
-            history.push(`/setup/${objectType}/pageLayout?action=${LAYOUT_EDIT}`);
+          saveLayoutName(objectType, values, (layout) => {
+            setAddLayout({ isShowDialog: false });
+            this.editLayout(layout);
           });
         }
       });
