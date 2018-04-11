@@ -113,14 +113,14 @@ class LayoutsTableView extends React.Component {
 
       return (
 
-        <Panel panelClasses={`${classType}-theme-panel`} panelTitle="page Layout" actionsRight={rightActions} contentClasses="pt-lg pb-lg" >
+        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.layouts.pageLayout' })} actionsRight={rightActions} contentClasses="pt-lg pb-lg" >
           <table style={{ width: '100%' }}>
             <thead className="ant-table-thead">
               <tr>
-                <th>Action</th>
-                <th>Layout Name</th>
-                <th>Create By</th>
-                <th>Modified By</th>
+                <th>{formatMessage({ id: 'global.ui.table.action' })}</th>
+                <th>{formatMessage({ id: 'page.layouts.layoutName' })}</th>
+                <th>{formatMessage({ id: 'global.ui.table.createBy' })}</th>
+                <th>{formatMessage({ id: 'global.ui.table.lastModifiedAt' })}</th>
               </tr>
             </thead>
             <tbody className="ant-table-tbody" >

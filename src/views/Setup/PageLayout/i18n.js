@@ -1,6 +1,12 @@
 export default {
   zh: {
+    layoutDetail: '{type}详情',
+    tools: '工具栏',
+    modules: '模块',
+    sections: '内容块',
     layout: '布局',
+    pageLayout: '页面布局',
+    layoutName: '布局名',
     section: '内容块',
     assingmentLayout: '设置布局',
     existingLayout: '继承布局',
@@ -15,7 +21,13 @@ export default {
     },
   },
   en: {
+    layoutDetail: '{type} Detail',
+    tools: 'Tools',
+    modules: 'Modules',
+    sections: 'Sections',
     layout: 'Layout',
+    pageLayout: 'Page Layout',
+    layoutName: 'Layout Name',
     section: 'Section',
     assingmentLayout: 'Page Layout Assignment',
     existingLayout: 'Existing Layout',

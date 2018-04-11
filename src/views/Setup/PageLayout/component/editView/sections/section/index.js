@@ -61,7 +61,7 @@ class ToolContainer extends React.Component {
     return (
       <Panel
         panelClasses={classNames(`${theme}-theme-panel`)}
-        panelTitle="Lead detail"
+        panelTitle={formatMessage({ id: 'page.layouts.layoutDetail' }, { type: formatMessage({ id: `global.properNouns.${objectType}` }) })}
       >
         {
             sections.length < 1 ? (

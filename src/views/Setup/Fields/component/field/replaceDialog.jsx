@@ -17,7 +17,7 @@ class ReplaceDialog extends React.Component {
   }
   render() {
     const {
-      options, selectedOption, isVisible, intl,
+      options, selectedOption, isVisible, intl, replacedValName
     } = this.props;
     const { formatMessage } = intl;
 
@@ -38,12 +38,13 @@ class ReplaceDialog extends React.Component {
         onClick={() => this.submitReplace()}
       >{ formatMessage({ id: 'global.ui.button.replace' })}
       </Button>];
+
     return (
       <DeleteConfirmDialog visible={isVisible} modelConfig={{ footer: deleteFooter }}>
-          <div>
-            <p>please select a value to replace</p>
-            <Row>
-              {
+        <div>
+          <p>{ formatMessage({ id: 'page.fields.selectValueToReplace' }) } {replacedValName}</p>
+          <Row>
+            {
                 options.map(val => (
                   <Col span={24} key={val.id}>
                     <Radio
@@ -56,9 +57,9 @@ class ReplaceDialog extends React.Component {
                   </Col>
                         ))
               }
-            </Row>
-            <p className="error-msg">Change can take up to 5 mins to become effective.</p>
-          </div>
+          </Row>
+          <p className="error-msg">{formatMessage({ id: 'page.fields.goEffectIn5' }) } </p>
+        </div>
       </DeleteConfirmDialog>
 
 
@@ -73,6 +74,7 @@ ReplaceDialog.propTypes = {
   selectedOption: PropTypes.object.isRequired,
   setReplaceDialog: PropTypes.func.isRequired,
   submitReplace: PropTypes.func.isRequired,
+  replacedValName: PropTypes.string.isRequired,
 };
 export default injectIntl(ReplaceDialog);
 

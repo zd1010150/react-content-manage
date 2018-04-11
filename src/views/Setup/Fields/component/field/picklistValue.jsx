@@ -32,26 +32,29 @@ class PickListValue extends React.Component {
           this.onDeative(id);
           break;
         case Edit:
-        default:
           this.onEdit(id);
+          break;
+        default:
+          break;
       }
     }
     onDelete(id) {
       const {
-        action, deletePickListValue, editObject, setReplaceDialog,
+        action, editObject, setReplaceDialog,
       } = this.props;
       const isEdit = action === PAGE_ACTION.EDIT;
       if (!isEdit) {
-        const { formatMessage } = this.props.intl;
         this.setState({
           deleteDialogVisible: true,
           deleteId: id,
         });
       } else {
+        const replacedValue = editObject.picklist.filter(v => `${v.id}` === `${id}`)[0];
         setReplaceDialog({
           options: editObject.picklist.filter(v => `${v.id}` !== `${id}`),
           isVisible: true,
           replacedValId: id,
+          replacedValName: replacedValue.option_value,
         });
       }
     }

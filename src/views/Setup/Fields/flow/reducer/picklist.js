@@ -8,7 +8,7 @@ import {
 
 
 const replaceDialog = (state = {
-  isVisible: false, options: [], selectedOption: {}, replacedValId: '',
+  isVisible: false, options: [], selectedOption: {}, replacedValId: '', replacedValName: '',
 }, action) => {
   const { type, ...payload } = action;
   switch (type) {
