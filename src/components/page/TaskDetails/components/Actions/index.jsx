@@ -22,11 +22,6 @@ const buttons = [
     key: 'cancel',
     icon: 'close',
   },
-  {
-    cls: 'deleteBtn',
-    key: 'delete',
-    icon: 'delete',
-  },
 ];
 
 const propTypes = {

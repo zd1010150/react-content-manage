@@ -18,12 +18,12 @@ const initialState = {
   mySubjects: [],
 
   assignees: [],
-  assigneeId: PhantomId,
+  assigneeId: '',
   comments: '',
   dueTime: '',
-  priorityCode: PhantomId,
+  priorityCode: '',
   recentAssignees: [],
-  statusCode: PhantomId,
+  statusCode: '',
   subject: '',
 };
 

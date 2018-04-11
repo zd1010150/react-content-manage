@@ -11,6 +11,8 @@ import styles from './index.less';
 const cx = classNames.bind(styles);
 
 import { AssigneeModal, SubjectsModal } from 'components/ui/index';
+import Enums from 'utils/EnumsManager';
+const { PhantomId } = Enums;
 import {
   setAssignee,
   setFieldValue,
@@ -44,7 +46,9 @@ class TaskFields extends Component {
 
   componentDidMount() {
     const { objectId, objectType, tryFetchTask } = this.props;
-    tryFetchTask(objectId, objectType);
+    if (objectId !== PhantomId) {
+      return tryFetchTask(objectId, objectType);
+    }
   }
 
   handleAssigneeModalCancel = $ => this.setState({ assigneeModalVisible: false })

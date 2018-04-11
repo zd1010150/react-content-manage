@@ -5,9 +5,32 @@ import { connect } from 'react-redux';
 import { Row, Col, Button } from 'antd';
 
 import { Panel } from 'components/ui/index';
+import { toUtc } from 'utils/dateTimeUtils';
 import Enums from 'utils/EnumsManager';
 const { PhantomId, ThemeTypes, ThemeTypesInArray } = Enums;
 import { Actions, Fields } from '../components/index';
+import { trySaveNewTask, tryUpdateTask } from '../flow/actions';
+//
+const mapStoreToRequest = ({
+  assigneeId,
+  comments,
+  dueTime,
+  priorityCode,
+  statusCode,
+  subject,
+}, type) => {
+
+  return {
+    assign_to_user_id: assigneeId,
+    subject,
+    status_code: statusCode,
+    priority_code: priorityCode,
+    due_datetime: toUtc(dueTime, '+1100', 'YYYY-MM-DD HH:mm:ss'),
+    // TODO: backend needs to save this column, now the api doesn't accept value from this column
+    // comments,
+    taskable_type: type,
+  }
+};
 
 
 const defaultProps = {
@@ -31,7 +54,12 @@ class TaskDetails extends Component {
   }
 
   handleSave = (id, type) => {
-    
+    const { taskDetails, trySaveNewTask, tryUpdateTask } = this.props;
+    if (id === PhantomId) {      
+      trySaveNewTask(id, type, mapStoreToRequest(taskDetails, type));
+    } else {
+      tryUpdateTask(id, type, mapStoreToRequest(taskDetails, type));
+    }
   }
 
   handleSaveAndNew = (id, type) => {
@@ -74,10 +102,12 @@ class TaskDetails extends Component {
 
 TaskDetails.defaultProps = defaultProps;
 TaskDetails.propTypes = propTypes;
-const mapStateToProps = ({ global }) => ({
+const mapStateToProps = ({ global, taskDetails }) => ({
   language: global.language,
+  taskDetails,
 });
 const mapDispatchToProps = {
-
+  trySaveNewTask,
+  tryUpdateTask,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TaskDetails));

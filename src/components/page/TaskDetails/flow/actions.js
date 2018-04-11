@@ -19,7 +19,6 @@ export const setTaskFields = data => ({
 export const tryFetchTask = (id, objectType) => dispatch =>
     get(`/admin/tasks/${id}`, {}, dispatch).then((data) => {
       if (data && !_.isEmpty(data.data)) {
-        debugger;
         dispatch(setTaskFields(data.data));
         // TODO: move out from this part for better performance
         dispatch(tryFetchAssignees(id, objectType));
@@ -111,4 +110,22 @@ export const setAssignee = assigneeId => ({
 export const setFieldValue = (field, value) => ({
       type: SET_TASK_FIELD,
       payload: { field, value },
+    });
+
+
+//  
+export const trySaveNewTask = (id, type, taskData) => dispatch =>
+    post(`/admin/tasks/`, { ...taskData }, dispatch).then((data) => {
+      if (data && !_.isEmpty(data.data)) {
+        console.log(data);
+      }
+    });
+
+
+//
+export const tryUpdateTask = (id, type, taskData) => dispatch =>
+    patch(`/admin/tasks/${id}`, { ...taskData }, dispatch).then((data) => {
+      if (data && !_.isEmpty(data.data)) {
+        console.log(data);
+      }
     });
