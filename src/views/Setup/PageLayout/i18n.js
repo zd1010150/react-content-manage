@@ -19,6 +19,8 @@ export default {
       sections: '内容块',
       modules: '功能模块',
     },
+    pageLayoutAssignment: '分配布局到部门',
+    selectPageLayout: '请选择一个布局',
   },
   en: {
     layoutDetail: '{type} Detail',
@@ -40,5 +42,7 @@ export default {
       sections: 'Fields/Sections',
       modules: 'Modules',
     },
+    pageLayoutAssignment: 'Page Layout assignment',
+    selectPageLayout: 'Please select a page layout',
   },
 };

@@ -52,6 +52,7 @@ class AssignDepartmentContainer extends React.Component {
     this.setState({ expandedKeys });
   }
   renderTreeNodes(teams, teamLayouts, allLayout) {
+    const { formatMessage } = this.props.intl;
     return teams.map((item) => {
       const treeEl = (
         <div className={cx('tree-node-wrapper')}>
@@ -59,8 +60,8 @@ class AssignDepartmentContainer extends React.Component {
             <span className={cx('tree-title')}>{item.name}</span>
           </span>
           <div className={cx('tree-action')}>
-            <Select dropdownMatchSelectWidth={false} size="small" className={classNames('ant-select-no-border', cx('select-layout')) } value={_.isEmpty(teamLayouts[`${item.id}`]) ? '' : teamLayouts[`${item.id}`]} onChange={value => this.props.setLayoutTeam(`${item.id}`, value)}>
-              <Option value=""> Please select a Layout</Option>
+            <Select dropdownMatchSelectWidth={false} size="small" className={classNames('ant-select-no-border', cx('select-layout'))} value={_.isEmpty(teamLayouts[`${item.id}`]) ? '' : teamLayouts[`${item.id}`]} onChange={value => this.props.setLayoutTeam(`${item.id}`, value)}>
+              <Option value="">{formatMessage({ id: 'page.layouts.selectPageLayout' })}</Option>
               {
                       allLayout.map(l => <Option value={`${l.id}`} key={l.id}>{ l.name }</Option>)
                   }
@@ -90,14 +91,14 @@ class AssignDepartmentContainer extends React.Component {
     const { formatMessage } = intl;
     const theme = objTypeAndClassTypeMap[objectType];
     return (
-      <Panel panelClasses={`${theme}-theme-panel`} panelTitle="Page Layout assignment">
+      <Panel panelClasses={`${theme}-theme-panel`} panelTitle={formatMessage({ id: 'page.layouts.pageLayoutAssignment' })}>
         <Row className="pt-lg pb-lg pl-lg">
           <Col span={24}>
             <Tree
               defaultExpandAll
               autoExpandParent={false}
               expandedKeys={this.state.expandedKeys || teamIds}
-              onExpand={(expandedKeys) => this.onExpand(expandedKeys)}
+              onExpand={expandedKeys => this.onExpand(expandedKeys)}
             >
               {this.renderTreeNodes(teams, teamLayouts, allLayout)}
             </Tree>
