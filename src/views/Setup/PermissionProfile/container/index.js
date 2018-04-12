@@ -55,7 +55,13 @@ class permissionProfile extends Component {
       <Panel panelTitle={formatMessage({ id: 'page.permissionProfile.permissionProfile' })} >
         <div className="pl-lg pr-lg pt-lg pb-lg">
           <h4>Team</h4>
-          <Search className="input-material-theme" placeholder={formatMessage({ id: 'page.permissionProfile.inputTeam' })} readOnly onClick={() => { this.openDepartment(); }} value={selectedDepartment.department_name} />
+          <Search
+            className="input-material-theme"
+            placeholder={formatMessage({ id: 'page.permissionProfile.inputTeam' })}
+            readOnly
+            onClick={() => { this.openDepartment(); }}
+            value={selectedDepartment.department_name}
+          />
           <DepartmentDialog isDisplayDepartmentDialog={isDisplayDepartmentDialog} toggleDepartmentDialog={toggleDepartmentDialog} setDepartment={this.setDepartment.bind(this)} teams={teams} />
           <h4 className="pt-lg pb-lg">Description</h4>
           <TextArea rows={4} />
@@ -64,7 +70,15 @@ class permissionProfile extends Component {
           <div className="section-header">Tab Settings</div>
           <div className="section-content mt-lg mb-lg">
             {
-              permissions.tabs.map(t => <Checkbox key={t.value} value={t.value} onChange={e => this.changePermission(e)} checked={selectedDepartment.permissions.indexOf(t.value) > -1} >{t.label}</Checkbox>)
+              permissions.tabs.map(t =>
+                (<Checkbox
+                  key={t.value}
+                  value={t.value}
+                  onChange={e => this.changePermission(e)}
+                  checked={selectedDepartment.permissions.indexOf(t.value) > -1}
+                >
+                  {t.label}
+                 </Checkbox>))
             }
           </div>
         </div>
