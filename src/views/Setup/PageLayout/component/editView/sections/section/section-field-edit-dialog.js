@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { intlShape, injectIntl } from 'react-intl';
 import classNames from 'classnames/bind';
-import { Modal, Checkbox, Row, Col } from 'antd';
+import { Modal, Checkbox, Row, Col, Button } from 'antd';
 import styles from '../../../../index.less';
 
 const cx = classNames.bind(styles);
@@ -37,7 +37,10 @@ class SectionFieldEditDialog extends React.Component {
       <Modal
         title={formatMessage({ id: 'page.layouts.editField' })}
         visible={isShow}
-        onOk={() => this.save()}
+        footer={[
+          <Button key="save" size="small" icon="close" onClick={() => this.cancel()}> {formatMessage({ id: 'global.ui.button.cancel' })}</Button>,
+          <Button key="save" size="small" icon="save" type="danger" onClick={() => this.save()}> {formatMessage({ id: 'global.ui.button.save' })}</Button>,
+        ]}
         onCancel={() => this.cancel()}
       >
         <Row>

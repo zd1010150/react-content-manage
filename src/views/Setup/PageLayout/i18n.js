@@ -25,6 +25,8 @@ export default {
     editSectionDialogTitle: '编辑内容块',
     editField: '编辑字段',
     cancelEditing: '你还未保存你所做的更改，确定放弃？',
+    createNewPageLayout: '创建新布局',
+    saveAndNext: '保存并进行下一步',
   },
   en: {
     layoutDetail: '{type} Detail',
@@ -52,5 +54,7 @@ export default {
     editSectionDialogTitle: 'Edit Section',
     editField: 'Edit Field',
     cancelEditing: 'You haven\'t save your modification ,are you sure exit？',
+    createNewPageLayout: 'Create New Page Layout',
+    saveAndNext: 'Save and Next',
   },
 };

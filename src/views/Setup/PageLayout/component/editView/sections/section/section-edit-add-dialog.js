@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { PAGE_ACTION } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import { Modal } from 'antd';
+import { Modal, Button } from 'antd';
 import AddEditForm from './section-edit-add-form';
 
 
@@ -41,7 +41,10 @@ class sectionEditAddDialog extends React.Component {
       <Modal
         title={formatMessage({ id: `page.layouts.${operate === PAGE_ACTION.ADD ? 'addSectionDialogTitle' : 'editSectionDialogTitle'}` })}
         visible={isShow}
-        onOk={() => this.save()}
+        footer={[
+          <Button key="save" size="small" icon="close" onClick={() => this.cancel()}> {formatMessage({ id: 'global.ui.button.cancel' })}</Button>,
+          <Button key="save" size="small" icon="save" type="danger" onClick={() => this.save()}> {formatMessage({ id: 'global.ui.button.save' })}</Button>,
+        ]}
         onCancel={() => this.cancel()}
       >
         <AddEditForm code={code} label={label} cols={cols} ref={c => this.form = c} />

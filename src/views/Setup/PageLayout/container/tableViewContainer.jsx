@@ -141,9 +141,9 @@ class LayoutsTableView extends React.Component {
           </table>
           <Modal
             visible={addLayout.isShowDialog}
-            title="Create New PageLayout"
+            title={formatMessage({ id: 'page.layouts.createNewPageLayout' })}
             footer={[
-              <Button key="save" onClick={() => this.saveAndNext()}> save and next</Button>,
+              <Button key="save" size="small" type="danger" onClick={() => this.saveAndNext()}> {formatMessage({ id: 'page.layouts.saveAndNext' })}</Button>,
               ]}
             onCancel={() => setAddLayout({ isShowDialog: false })}
           >
