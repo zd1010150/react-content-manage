@@ -10,6 +10,7 @@ const initialState = {
   phone: '',
   leads: [],
   accounts: [],
+  hasSearched: false,
 };
 
 const duplicates = (state = initialState, action) => {
@@ -20,6 +21,7 @@ const duplicates = (state = initialState, action) => {
         ...state,
         accounts,
         leads,
+        hasSearched: true,
       }
 
     default:

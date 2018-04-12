@@ -56,7 +56,7 @@ const FilterField = ({
       <Col xs={24} sm={16}>
         <Input
           data-field={fieldKey}
-          placeholder="input here"
+          placeholder={label}
           size="small"
           value={value}
           onChange={_onValueChange}

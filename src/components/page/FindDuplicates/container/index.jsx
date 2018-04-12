@@ -2,16 +2,19 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl, intlShape } from 'react-intl';
-import { Row, Col, Button, Icon } from 'antd';
+import { withRouter } from 'react-router-dom';
+import { Row, Col, Button, Icon, notification } from 'antd';
 
 import { Panel, FilterField, FilterResultsTable } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
 const { ThemeTypes, ThemeTypesInArray } = Enums;
-const { Leads } = ThemeTypes;
+const { Leads, Accounts } = ThemeTypes;
 import { tryFindDuplicates } from '../flow/actions';
 
 
 // presets
+const i18n = 'global.ui';
+
 const baseFields = [
   'firstName', 'lastName', 'email', 'company', 'phone'
 ];
@@ -49,6 +52,8 @@ const propTypes = {
   accounts: PropTypes.array,
   leads: PropTypes.array,
 };
+
+
 class FindDuplicates extends Component {
   state = {
     checkedFields: [],
@@ -58,6 +63,17 @@ class FindDuplicates extends Component {
     company: '',
     phone: '',
   }
+
+  componentDidMount() {
+    // fetch lead/account data locally by id
+    // and set the value in 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // loop all fields value if changed then sync prop with state
+  }
+
+  handleCancelClick = $ => this.props.history.goBack()
 
   handleCheckChange = (field, checked) => {
     const { checkedFields } = this.state;
@@ -70,15 +86,20 @@ class FindDuplicates extends Component {
     this.setState({ checkedFields: newChecked });
   }
 
-  onSearchClick = $ => {
+  handleSearchClick = $ => {
     const { checkedFields } = this.state;
     let params = '';
     checkedFields.forEach(field => {
       const value = this.state[field];
       params += value ? `${mapFieldToRequest(field)}=${value}&` : '';
     }, this);
-    console.log(params);
-    this.props.tryFindDuplicates(params);
+    if (_.isEmpty(params)) {
+      return notification['warning']({
+        message: 'No rule has been setup',
+        description: 'Please add filter criteria in the top section.',
+      });
+    }
+    return this.props.tryFindDuplicates(params);
   }
 
   handleValueChange = (field, value) => {
@@ -99,9 +120,9 @@ class FindDuplicates extends Component {
 
   render() {
     const { checkedFields } = this.state;
-    const { intl, theme, leads, accounts } = this.props;
+    const { intl, accounts, leads, hasSearched, theme } = this.props;
     const { formatMessage } = intl;
-
+    
     return (
       <Fragment>
         <Panel
@@ -115,7 +136,7 @@ class FindDuplicates extends Component {
                   key={field}
                   checked={checkedFields.indexOf(field) !== -1}
                   fieldKey={field}
-                  label={field}
+                  label={formatMessage({ id: `${i18n}.table.${field}` })}
                   onCheckChange={this.handleCheckChange}
                   onValueChange={this.handleValueChange}
                   theme={Leads}
@@ -126,25 +147,34 @@ class FindDuplicates extends Component {
           </Row>
           <Row {...rowLayout} >
             <Col {...colLayout} style={{ textAlign: 'center' }}>
-              <Button className={`${theme}-theme-btn mr-sm`} size="small" onClick={this.onSearchClick}>
+              <Button
+                className={`${theme}-theme-btn mr-sm`}
+                disabled={checkedFields.length === 0}
+                size="small"
+                onClick={this.handleSearchClick}
+              >
                 <Icon size="small" type="search" />
-                {formatMessage({ id: `global.ui.button.search` })}
+                {formatMessage({ id: `${i18n}.button.search` })}
               </Button>
-              <Button size="small" onClick={this.onCancelClick}>
+              <Button size="small" onClick={this.handleCancelClick}>
                 <Icon size="small" type="close" />
-                {formatMessage({ id: `global.ui.button.cancel` })}
+                {formatMessage({ id: `${i18n}.button.cancel` })}
               </Button>
             </Col>
           </Row>
         </Panel>
-        <FilterResultsTable
-          data={leads}
-          theme="lead"
-        />
-        <FilterResultsTable
-          data={accounts}
-          theme="account"
-        />
+        {hasSearched && (
+          <Fragment>
+            <FilterResultsTable
+              data={leads}
+              theme={Leads}
+            />
+            <FilterResultsTable
+              data={accounts}
+              theme={Accounts}
+            />
+          </Fragment>
+        )}
       </Fragment>
     );
   }
@@ -155,10 +185,11 @@ FindDuplicates.defaultProps = defaultProps;
 FindDuplicates.propTypes = propTypes;
 const mapStateToProps = ({ global, duplicates }) => ({
   language: global.language,
-  leads: duplicates.leads,
   accounts: duplicates.accounts,
+  hasSearched: duplicates.hasSearched,
+  leads: duplicates.leads,
 });
 const mapDispatchToProps = {
   tryFindDuplicates,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(FindDuplicates));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withRouter(FindDuplicates)));

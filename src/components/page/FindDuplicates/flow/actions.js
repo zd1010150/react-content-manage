@@ -11,7 +11,6 @@ export const tryFindDuplicates = params => dispatch =>
     get(`/admin/leads/duplicates/search?${params}`, {}, dispatch).then((data) => {
       if (data
           && (!_.isEmpty(data.leads) || !_.isEmpty(data.accounts))) {
-        debugger;
         dispatch(setDuplicates(data.leads.data, data.accounts.data));
       }
     });
