@@ -13,6 +13,7 @@ import ObjectFilter from './ObjectFilter/index';
 import RightSider from './RightSider/index';
 import FilterCriteria from './FilterCriteria/index';
 import TaskDetails from './TaskDetails/index';
+import FindDuplicates from './FindDuplicates/index';
 
 export {
   TopPanel,
@@ -30,4 +31,5 @@ export {
   RightSider,
   FilterCriteria,
   TaskDetails,
+  FindDuplicates,
 };

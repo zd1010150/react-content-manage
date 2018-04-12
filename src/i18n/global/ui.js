@@ -47,6 +47,7 @@ export default {
       selectFile: '选择文件',
       upload: '开始上传',
       uploading: '正在上传',
+      mergeLead: '合并选中的潜在客户',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -79,6 +80,11 @@ export default {
       fullName: '用户名',
       team: '所属团队',
       workHour: '工作时间',
+      firstName: '名字',
+      lastName: '姓氏',
+      email: '电子邮件',
+      company: '公司',
+      phone: '电话号码',
     },
     select: {
       label: '视图',
@@ -150,6 +156,7 @@ export default {
       selectFile: 'Select File',
       upload: 'Start Upload',
       uploading: 'Uploading...',
+      mergeLead: 'Merge Leads',
     },
     input: {
       searchStore: 'Search entire store here...',
@@ -182,6 +189,11 @@ export default {
       fullName: 'Full Name',
       team: 'Team',
       workHour: 'Working Hour',
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      email: 'Email',
+      company: 'Company',
+      phone: 'Phone',
     },
     select: {
       label: 'view',
