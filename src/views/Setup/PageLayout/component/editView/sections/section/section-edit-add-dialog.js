@@ -1,10 +1,11 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 import _ from 'lodash';
+import { PAGE_ACTION } from 'config/app.config';
+import { intlShape, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Modal } from 'antd';
 import AddEditForm from './section-edit-add-form';
-import { PAGE_ACTION } from 'config/app.config';
 
 
 class sectionEditAddDialog extends React.Component {
@@ -33,16 +34,17 @@ class sectionEditAddDialog extends React.Component {
   }
   render() {
     const {
-      isShow, label, cols, code,
+      isShow, label, cols, code, intl, operate,
     } = this.props;
+    const { formatMessage } = intl;
     return (
       <Modal
-        title="Basic Modal"
+        title={formatMessage({ id: `page.layouts.${operate === PAGE_ACTION.ADD ? 'addSectionDialogTitle' : 'editSectionDialogTitle'}` })}
         visible={isShow}
         onOk={() => this.save()}
         onCancel={() => this.cancel()}
       >
-        <AddEditForm code={code} label={label} cols={cols} ref={c => this.form = c}/>
+        <AddEditForm code={code} label={label} cols={cols} ref={c => this.form = c} />
       </Modal>
     );
   }
@@ -52,6 +54,7 @@ sectionEditAddDialog.defaultProps = {
   isShow: false,
 };
 sectionEditAddDialog.propTypes = {
+  intl: intlShape.isRequired,
   isShow: PropTypes.bool,
   label: PropTypes.string.isRequired,
   sequence: PropTypes.number.isRequired,
@@ -64,4 +67,4 @@ sectionEditAddDialog.propTypes = {
 };
 
 
-export default sectionEditAddDialog;
+export default injectIntl(sectionEditAddDialog);

@@ -27,26 +27,29 @@ class topPanel extends React.Component {
   onLogoutClick = () => {
     this.props.tryLogout();
   }
-
-  render() {
-    const {
-      language, account, permissions, email,
-    } = this.props;
-    return (
-      <Header className={cx('header')}>
-        <div className={cx('siteTitle')}>logix crm</div>
-        <TopNav permissions={permissions} />
-        <UserSettings email={email} onClick={this.onLogoutClick} />
-        <Language language={language} onChange={language => this.changeLanguage(language)} />
-        <Link className={cx('setupBtn')} to="/setup/company-info/company-info"><Icon type="setting" />Setup</Link>
-        <Input.Search
-          className={classNames('input-material-theme bright')}
-          placeholder="search"
-          style={{ width: 200, marginTop: 7, float: 'right' }}
-        />
-      </Header>
-    );
-  }
+    onSearch = (keys) => {
+      console.log(keys);
+    }
+    render() {
+      const {
+        language, account, permissions, email,
+      } = this.props;
+      return (
+        <Header className={cx('header')}>
+          <div className={cx('siteTitle')}>logix crm</div>
+          <TopNav permissions={permissions} />
+          <UserSettings email={email} onClick={this.onLogoutClick} />
+          <Language language={language} onChange={language => this.changeLanguage(language)} />
+          <Link className={cx('setupBtn')} to="/setup/company-info/company-info"><Icon type="setting" />Setup</Link>
+          <Input.Search
+            onSearch={this.onSearch}
+            className={classNames('input-material-theme bright')}
+            placeholder="search"
+            style={{ width: 200, marginTop: 7, float: 'right' }}
+          />
+        </Header>
+      );
+    }
 }
 
 topPanel.propTypes = {

@@ -1,6 +1,8 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import { intlShape, injectIntl } from 'react-intl';
 import classNames from 'classnames/bind';
 import { Modal, Checkbox, Row, Col } from 'antd';
 import styles from '../../../../index.less';
@@ -22,6 +24,7 @@ class SectionFieldEditDialog extends React.Component {
     this.props.setEditField({ isShow: false });
   }
   render() {
+    const { formatMessage } = this.props.intl;
     const {
       isShow,
       fieldLabel,
@@ -32,7 +35,7 @@ class SectionFieldEditDialog extends React.Component {
     } = this.props.fieldEditDialog;
     return (
       <Modal
-        title="Basic Modal"
+        title={formatMessage({ id: 'page.layouts.editField' })}
         visible={isShow}
         onOk={() => this.save()}
         onCancel={() => this.cancel()}
@@ -55,10 +58,11 @@ class SectionFieldEditDialog extends React.Component {
 
 
 SectionFieldEditDialog.propTypes = {
+  intl: intlShape.isRequired,
   fieldEditDialog: PropTypes.object.isRequired,
   setEditField: PropTypes.func.isRequired,
   changeFieldAttr: PropTypes.func.isRequired,
 };
 
 
-export default SectionFieldEditDialog;
+export default injectIntl(SectionFieldEditDialog);
