@@ -141,6 +141,7 @@ const EnumsManager = Object.freeze({
 
   DetailModulesInArray: Object.freeze(_.values(BaseEnums.DetailModules)),
 
+  MaxDisplayResults: 20,
 });
 
 export default EnumsManager;

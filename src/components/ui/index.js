@@ -24,6 +24,8 @@ import AssigneeModal from './AssigneeModal/index';
 import SubjectsModal from './SubjectsModal/index';
 import DeleteConfirmButton from './DeleteConfirmBtn/index';
 import ScrollTop from './ScrollTop/index';
+import FilterField from './FilterField/index';
+import FilterResultsTable from './FilterResultsTable/index';
 
 export {
   Upload,
@@ -54,4 +56,6 @@ export {
   SubjectsModal,
   DeleteConfirmButton,
   ScrollTop,
+  FilterField,
+  FilterResultsTable,
 };
