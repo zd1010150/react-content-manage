@@ -103,7 +103,8 @@ class EditContainer extends React.Component {
         tools: mappedTools,
         modules: mappedModules,
       }, () => {
-        this.cancel();
+        const { history, objectType } = this.props;
+        history.push(`/setup/${objectType}/pageLayout`);
       });
     }
     cancel() {

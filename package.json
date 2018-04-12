@@ -10,7 +10,6 @@
     "babel-jest": "20.0.3",
     "babel-loader": "7.1.2",
     "babel-plugin-import": "^1.6.3",
-    "babel-polyfill": "^6.26.0",
     "babel-preset-react-app": "^3.1.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-runtime": "6.26.0",
@@ -37,7 +36,6 @@
     "less": "2.7.3",
     "less-loader": "^4.0.5",
     "less-vars-to-js": "^1.2.1",
-    "lodash": "^4.17.5",
     "moment": "^2.21.0",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "^3.2.0",
@@ -52,6 +50,7 @@
     "react-dnd-html5-backend": "^2.6.0",
     "react-dom": "^16.2.0",
     "react-intl": "^2.4.0",
+    "react-loadable": "^5.3.1",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
@@ -114,8 +113,8 @@
     "extends": "react-app"
   },
   "devDependencies": {
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "eslint-config-airbnb": "^16.1.0"
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "webpack-visualizer-plugin": "^0.1.11"
   }
 }
