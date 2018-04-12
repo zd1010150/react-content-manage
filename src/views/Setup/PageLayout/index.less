@@ -1,7 +1,7 @@
 @import "~assets/less/theme.less";
 
 .field-btn-dragging{
-  background-color: #fff;
+  background-color: fade(@secondary-dark-color, 10%);
 }
 .modules-wrapper{
   height: 100%;
@@ -13,9 +13,7 @@
 .tool-wrapper{
   display: inline-block;
 }
-.field-btn{
-  width: 100%;
-}
+
 .sider-view-can-drop{
   background-color: @crm-green;
 }
@@ -88,6 +86,16 @@
 
 .tools-preview-wrapper{
   text-align: right;
+}
+.tool-btn{
+  cursor: move;
+  color: @crm-white;
+  padding: 2px 6px;
+  font-weight: 400;
+  font-size: 12px;
+  border-radius: 4px;
+  line-height: 1.5;
+  background-color: @secondary-dark-color;
 }
 
 /* assignment*/

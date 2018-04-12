@@ -1,7 +1,6 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
 import { intlShape, injectIntl } from 'react-intl';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { DragSource } from 'react-dnd';
@@ -37,18 +36,15 @@ class singleOption extends React.Component {
       connectDragSource, isDragging, code, isSelected,
     } = this.props;
     const { formatMessage } = this.props.intl;
-    return connectDragSource(<div><Button
-      size="small"
-      className={classNames('btn-ellipse', 'mt-sm', cx('field-btn'), isDragging ? cx('field-btn-dragging') : '')}
-      disabled={isSelected}
-    >
+    return connectDragSource(<div className={classNames('sider-field', (isSelected) ? 'disabled' : '', 'mt-sm', isDragging ? cx('field-btn-dragging') : '')}>
       {formatMessage({ id: `global.ui.detailModules.${code}` })}
-                             </Button></div>);
+                             </div>);
   }
 }
 
 
 singleOption.propTypes = {
+  intl: intlShape.isruleset,
   code: PropTypes.string.isRequired,
   isSelected: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,

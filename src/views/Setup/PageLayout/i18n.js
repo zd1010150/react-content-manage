@@ -21,6 +21,10 @@ export default {
     },
     pageLayoutAssignment: '分配布局到部门',
     selectPageLayout: '请选择一个布局',
+    addSectionDialogTitle: '新增内容块',
+    editSectionDialogTitle: '编辑内容块',
+    editField: '编辑字段',
+    cancelEditing: '你还未保存你所做的更改，确定放弃？',
   },
   en: {
     layoutDetail: '{type} Detail',
@@ -44,5 +48,9 @@ export default {
     },
     pageLayoutAssignment: 'Page Layout assignment',
     selectPageLayout: 'Please select a page layout',
+    addSectionDialogTitle: 'Add Section',
+    editSectionDialogTitle: 'Edit Section',
+    editField: 'Edit Field',
+    cancelEditing: 'You haven\'t save your modification ,are you sure exit？',
   },
 };

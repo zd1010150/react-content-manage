@@ -21,11 +21,11 @@ class DeleteConfirmDialog extends React.Component {
   }
   render() {
     const {
-      intl, modelConfig, visible, children,
+      intl, modelConfig, visible, children, confirmText,
     } = this.props;
     const { formatMessage } = intl;
     const footer = [
-      <Button type="danger" size="small" onClick={() => this.onOk()}><Icon type="delete" />{formatMessage({ id: 'global.ui.button.delete' })}</Button>,
+      <Button type="danger" size="small" onClick={() => this.onOk()}><Icon type="delete" />{formatMessage({ id: `global.ui.button.${confirmText}` })}</Button>,
       <Button className="mr-lg" size="small" onClick={() => this.onCancel()}><Icon type="close" />{formatMessage({ id: 'global.ui.button.cancel' })}</Button>,
     ];
     const config = Object.assign({}, {
@@ -48,11 +48,13 @@ DeleteConfirmDialog.defaultProps = {
   onCancel: null,
   modelConfig: {},
   children: null,
+  confirmText: 'delete',
 };
 
 DeleteConfirmDialog.propTypes = {
   intl: intlShape.isRequired,
   modelConfig: PropTypes.object,
+  confirmText: PropTypes.string,
   onOk: PropTypes.func,
   visible: PropTypes.bool,
   onCancel: PropTypes.func,

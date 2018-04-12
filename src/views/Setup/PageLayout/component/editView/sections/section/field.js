@@ -11,6 +11,7 @@ import styles from '../../../../index.less';
 const cx = classNames.bind(styles);
 const fieldSource = {
   beginDrag(props) {
+    console.log("dandan section field is dragging", props.id);
     return {
       label: props.label,
       fieldId: props.id,

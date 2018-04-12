@@ -116,3 +116,35 @@
 .sider-view-cant-drop{
   background-color: fade(@crm-red, 10%);
 }
+.sider-field{
+  color: @crm-white;
+  background-color: @secondary-dark-color;
+  text-align: center;
+  font-weight: 400;
+  padding: 2px 8px;
+  border-radius: 30px;
+  line-height: 14px;
+  cursor: move;
+  &.disabled{
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f5f5f5;
+    border-color: #d9d9d9;
+  }
+}
+
+.theme-sider-field-classes(@theme){
+  @selector : ~'.@{theme}-sider-field'; /*获取selector*/
+  @theme-color-value-name: '@{theme}-theme-color'; /*获取变量名*/
+  @theme-color-value: @@theme-color-value-name; /*获取变量名对应的值*/
+  @{selector}{
+    background-color: @theme-color-value;
+  }
+}
+
+.make-theme-sidebar-field-classes(@i: length(@themes)) when (@i > 0) {
+  .make-theme-sidebar-field-classes(@i - 1);
+  @theme: extract(@themes, @i);
+  .theme-sider-field-classes(@theme)
+}
+
+.make-theme-sidebar-field-classes();

@@ -30,13 +30,9 @@ class addSection extends React.Component {
       connectDragSource, isDragging, intl, theme,
     } = this.props;
     const { formatMessage } = intl;
-    return connectDragSource(<div>
-      <Button
-        size="small"
-        className={classNames(`${theme}-theme-btn`, 'btn-ellipse', 'mt-sm', cx('field-btn'), isDragging ? cx('field-btn-dragging') : '')}
-      >
+    return connectDragSource(<div className={classNames('sider-field',`${theme}-sider-field`, 'mt-sm', isDragging ? cx('field-btn-dragging') : '')}>
+
         { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'page.layouts.section'}) })}
-      </Button>
     </div>);
   }
 }

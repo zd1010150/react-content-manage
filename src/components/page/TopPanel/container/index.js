@@ -8,11 +8,13 @@ import Language from '../component/language';
 import TopNav from '../component/topStaticNav';
 import Welcome from '../component/welcomeMsg';
 import styles from '../TopPanel.less';
+
 const cx = classNames.bind(styles);
 
 import { tryLogout } from 'views/LoginForm/flow/actions';
 import UserSettings from '../component/UserSettings';
-import { Layout, Input, Button, Icon } from 'antd';
+import { Layout, Input, Icon } from 'antd';
+
 const { Header } = Layout;
 
 class topPanel extends React.Component {
@@ -25,25 +27,29 @@ class topPanel extends React.Component {
   onLogoutClick = () => {
     this.props.tryLogout();
   }
-
-  render() {
-    const { language, account, permissions, email } = this.props;
-    return (
-      <Header className={cx('header')}>
-        <div className={cx('siteTitle')}>logix crm</div>
-        <TopNav permissions={permissions} />
-        <UserSettings email={email} onClick={this.onLogoutClick} />
-        <Language language={language} onChange={(language) => this.changeLanguage(language) } />
-        <Button className={cx('setupBtn')} size="small" data-role="setup">
-          <Link to='/setup/company-info/company-info'><Icon type='setting' />Setup</Link>
-        </Button>
-        <Input.Search
-          placeholder="input search text"
-          style={{ width: 200, marginTop: 7, float: 'right' }}
-        />
-      </Header>
-    );
-  }
+    onSearch = (keys) => {
+      console.log(keys);
+    }
+    render() {
+      const {
+        language, account, permissions, email,
+      } = this.props;
+      return (
+        <Header className={cx('header')}>
+          <div className={cx('siteTitle')}>logix crm</div>
+          <TopNav permissions={permissions} />
+          <UserSettings email={email} onClick={this.onLogoutClick} />
+          <Language language={language} onChange={language => this.changeLanguage(language)} />
+          <Link className={cx('setupBtn')} to="/setup/company-info/company-info"><Icon type="setting" />Setup</Link>
+          <Input.Search
+            onSearch={this.onSearch}
+            className={classNames('input-material-theme bright')}
+            placeholder="search"
+            style={{ width: 200, marginTop: 7, float: 'right' }}
+          />
+        </Header>
+      );
+    }
 }
 
 topPanel.propTypes = {

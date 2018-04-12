@@ -12,7 +12,7 @@ const SubMainLayout = ({ rightSiderCollapsed, rightSiderWidth }) => (
   <Layout>
     <Content
       style={{
-                background: '#fff', padding: 24, margin: 0, minHeight: 280, transition: 'margin-right 0.5s', marginRight: rightSiderCollapsed ? 0 : rightSiderWidth,
+                background: '#fff', padding: 24, margin: 0, overflow: 'auto', transition: 'margin-right 0.5s', marginRight: rightSiderCollapsed ? 0 : rightSiderWidth,
             }}
       className="main-content-body"
     >
