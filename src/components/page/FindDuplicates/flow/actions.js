@@ -1,6 +1,6 @@
 import { get } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
-import { SET_DUPLICATES, SET_FIELDS, SET_ROW_SELECTION } from './actionTypes';
+import { SET_DUPLICATES, SET_FIELDS, SET_ROW_SELECTION, RESET } from './actionTypes';
 
 export const setDuplicates = (leads, accounts) => ({
       type: SET_DUPLICATES,
@@ -35,3 +35,7 @@ export const tryFetchClientDetails = id => dispatch =>
         dispatch(setFields(data.data));
       }
     });
+
+
+//
+export const reset = $ => ({ type: RESET });

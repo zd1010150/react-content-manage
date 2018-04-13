@@ -9,7 +9,7 @@ import { Panel, FilterField, FilterResultsTable } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
 const { PhantomId, ThemeTypes, ThemeTypesInArray } = Enums;
 const { Leads, Accounts } = ThemeTypes;
-import { setRowSelection, tryFetchClientDetails, tryFindDuplicates } from '../flow/actions';
+import { setRowSelection, tryFetchClientDetails, tryFindDuplicates, reset } from '../flow/actions';
 
 
 // presets
@@ -92,6 +92,10 @@ class FindDuplicates extends Component {
         phone,
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.reset();
   }
 
   getChangedFields = (nextProps, state) => {
@@ -251,5 +255,6 @@ const mapDispatchToProps = {
   setRowSelection,
   tryFetchClientDetails,
   tryFindDuplicates,
+  reset,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withRouter(FindDuplicates)));

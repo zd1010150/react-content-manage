@@ -2,6 +2,7 @@ import {
   SET_DUPLICATES,
   SET_FIELDS,
   SET_ROW_SELECTION,
+  RESET,
 } from './actionTypes';
 
 const initialState = {
@@ -54,7 +55,12 @@ const duplicates = (state = initialState, action) => {
         selectedRowKeys,
       };
 
-      
+    
+    case RESET:
+      console.log('reseting');
+      return initialState;
+
+
     default:
       return state;
   }
