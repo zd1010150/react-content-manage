@@ -66,8 +66,8 @@ class EditView extends React.Component {
           selectedTeamName={selectedTeamName}
         /> : ''}
 
-        <Row className="pt-lg">
-          <Col className="gutter-row field-label" span={12}>
+        <Row>
+          <Col className="gutter-row field-label pr-lg" span={8}>
             <Department
               teams={teams}
               setTeams={setTeams}
@@ -77,7 +77,7 @@ class EditView extends React.Component {
               updateTeam={updateTeam}
             />
           </Col>
-          <Col className="gutter-row field-value" span={12}>
+          <Col className="gutter-row field-value pl-lg" span={16}>
             <User
               teamUsers={teamUsers}
               isSelectTeamDialogVisible={isSelectTeamDialogVisible}

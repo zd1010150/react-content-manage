@@ -1,24 +1,29 @@
 import React from 'react';
-import { Layout } from 'antd';
+import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {
   MainContent,
 } from '../page/index';
+import styles from './layout.less';
 
-const { Content } = Layout;
+const cx = classNames.bind(styles);
+
 const SubMainLayout = ({ rightSiderCollapsed, rightSiderWidth }) => (
-  <Layout>
-    <Content
-      style={{
-                background: '#fff', padding: 24, margin: 0, overflow: 'auto', transition: 'margin-right 0.5s', marginRight: rightSiderCollapsed ? 0 : rightSiderWidth,
+
+  <div
+    className={cx('content-wrapper')}
+    style={{ padding: 24,
+          margin: 0,
+          overflow: 'auto',
+          transition: 'margin-right 0.5s',
+          marginRight: rightSiderCollapsed ? 0 : rightSiderWidth,
             }}
-      className="main-content-body"
-    >
-      <MainContent />
-    </Content>
-  </Layout>
+  >
+    <MainContent />
+  </div>
+
 );
 
 SubMainLayout.propTypes = {

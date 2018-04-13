@@ -1,0 +1,43 @@
+@import "~assets/less/theme.less";
+.body-wrapper{
+  position: absolute;
+  top:0px;
+  bottom:0px;
+  right:0px;
+  left:0px;
+}
+.header-wrapper{
+  position: absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  height:@top-height;
+  line-height: @top-height;
+  background-color: @primary-color;
+}
+.content-wrapper{
+  position: absolute;
+  top: @top-height;
+  bottom:@bottom-height;
+  left:0px;
+  right:0px;
+}
+.footer-wrapper{
+  position: absolute;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  height:@bottom-height;
+}
+.setup-content-layout-wrapper{
+  margin: 0;
+  transition: margin-right 0.5s;
+  padding: 4px 15px 15px 15px;
+  overflow: auto;
+  position: absolute;
+  left: @sider-width;
+  right: 0px;
+  top:0px;
+  right:0px;
+  bottom:0px;
+}

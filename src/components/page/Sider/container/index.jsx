@@ -164,7 +164,7 @@ class SetupSider extends React.Component {
     render() {
       const { intl, location } = this.props;
       return (
-        <Sider width={250} className={cx('setupSider')}>
+        <div className={cx('setupSider')}>
           <div className={cx('siderTitle')}>setup</div>
           <Menu
             theme="dark"
@@ -179,7 +179,7 @@ class SetupSider extends React.Component {
           >
             {renderMenuItem(intl)}
           </Menu>
-        </Sider>
+        </div>
       );
     }
 }

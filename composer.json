@@ -1,0 +1,47 @@
+{
+  "name": "crm",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": ["react", "crm"],
+  "license": "proprietary",
+  "type": "project",
+  "require-dev": {
+    "tools/deploy": "^1.0"
+  },
+  "repositories": [
+    {
+      "url": "git@c7git.acy.svr:tools/deploy.git",
+      "type": "git"
+    }
+  ],
+  "scripts": {
+    "vbump:major": "vendor/bin/bump_version.sh -t major",
+    "vbump:minor": "vendor/bin/bump_version.sh -t minor",
+    "vbump:patch": "vendor/bin/bump_version.sh -t patch",
+    "deploy:staging": "vendor/bin/deploy_version.sh",
+    "deploy:production": "vendor/bin/deploy_version.sh -e production",
+    "assets:rebuild": [
+      "which node || (command -v nvm || (curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | sh); source ~/.bashrc; source ~/.nvm/nvm.sh; nvm install node)",
+      "node --version",
+      "npm --version",
+      "npm install",
+      "npm run build"
+    ],
+    "ci:deploy": [
+      "git fetch --all --tags",
+      "git checkout $CI_BUILD_REF",
+      "git pull origin $CI_BUILD_REF",
+      "composer install --no-dev",
+      "@assets:rebuild"
+    ],
+    "ci:deploy:test": [
+      "git fetch --all --tags",
+      "git pull origin master",
+      "composer install --no-dev",
+      "@assets:rebuild"
+    ]
+  },
+  "config": {
+    "preferred-install": "dist"
+  }
+}

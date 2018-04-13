@@ -35,7 +35,9 @@ class topPanel extends React.Component {
         language, account, permissions, email,
       } = this.props;
       return (
-        <Header className={cx('header')}>
+        <div
+          className={cx('header')}
+        >
           <div className={cx('siteTitle')}>logix crm</div>
           <TopNav permissions={permissions} />
           <UserSettings email={email} onClick={this.onLogoutClick} />
@@ -47,7 +49,7 @@ class topPanel extends React.Component {
             placeholder="search"
             style={{ width: 200, marginTop: 7, float: 'right' }}
           />
-        </Header>
+        </div>
       );
     }
 }
