@@ -91,7 +91,7 @@ const FilterResultsTable = ({
     <Link to={`/123`}>
       <Button
         className={`${theme}-theme-btn`}
-        disabled={selectedRowKeys.length === 0 || (maxSelection && selectedRowKeys.length > maxSelection)}
+        disabled={selectedRowKeys.length < 2 || (maxSelection && selectedRowKeys.length > maxSelection)}
         size="small"
       >
         {formatMessage({ id: `${i18n}.button.mergeLead` })}

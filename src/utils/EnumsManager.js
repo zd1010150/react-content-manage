@@ -143,6 +143,17 @@ const EnumsManager = Object.freeze({
   DetailModulesInArray: Object.freeze(_.values(BaseEnums.DetailModules)),
 
   MaxDisplayResults: 20,
+
+  FindDupConfigs: Object.freeze({
+    BaseFields: Object.freeze([
+      'firstName',
+      'lastName',
+      'email',
+      'company',
+      'phone',
+    ]),
+    MaxSelection: 4,
+  }),
 });
 
 export default EnumsManager;

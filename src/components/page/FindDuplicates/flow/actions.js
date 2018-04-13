@@ -1,6 +1,5 @@
 import { get } from 'store/http/httpAction';
-import Enums from 'utils/EnumsManager';
-import { SET_DUPLICATES, SET_FIELDS, SET_ROW_SELECTION, RESET } from './actionTypes';
+import { RESET, SET_DUPLICATES, SET_FIELD, SET_FIELDS, SET_ROW_SELECTION, TOGGLE_CHECKBOX } from './actionTypes';
 
 export const setDuplicates = (leads, accounts) => ({
       type: SET_DUPLICATES,
@@ -30,10 +29,23 @@ export const setFields = data => ({
     });
 
 export const tryFetchClientDetails = id => dispatch =>
-    get(`/admin/leads/${id}`, {}, dispatch).then((data) => {
-      if (data && !_.isEmpty(data.data)) {
-        dispatch(setFields(data.data));
+    get(`/admin/leads/${id}/duplication_search_key_values`, {}, dispatch).then((data) => {
+      if (!_.isEmpty(data)) {
+        dispatch(setFields(data));
       }
+    });
+
+
+//
+export const toggleCheckbox = (checkedKey, checked) => ({
+      type: TOGGLE_CHECKBOX,
+      payload: { checkedKey, checked },
+    });
+
+//
+export const setFieldValue = (fieldKey, value) => ({
+      type: SET_FIELD,
+      payload: { fieldKey, value },
     });
 
 
