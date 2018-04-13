@@ -22,6 +22,7 @@ import {
   Layouts,
   ObjectTask,
   ClientAttachments,
+  MergeLeads,
 } from 'views/index';
 
 import { ObjectFilter } from '../index';
@@ -47,6 +48,7 @@ const MainContent = () => (
     <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
     <Route path="/leads/convert/find/:objectId" component={FindDuplicates} />
     <Route path="/leads/convert/convert/:objectId" component={FindDuplicates} />
+    <Route path="/leads/merge/" component={MergeLeads} />
     <Route path="/:objectType/tasks/:objectId" component={ObjectTask} />
     <Route path="/:objectType/attachments/:objectId" component={ClientAttachments} />
     <Route path="/:objectType/:objectId" component={ObjectDetails} exact/>

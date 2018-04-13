@@ -17,6 +17,7 @@ import FindDuplicates from './FindDuplicates/index';
 import Layouts from './Setup/PageLayout';
 import ObjectTask from './ObjectTask/index';
 import ClientAttachments from './ClientAttachments/index';
+import MergeLeads from './MergeLeads/index';
 
 export {
   Leads,
@@ -38,4 +39,5 @@ export {
   Layouts,
   ObjectTask,
   ClientAttachments,
+  MergeLeads,
 };
