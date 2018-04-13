@@ -60,12 +60,17 @@ const renderColumnsByTheme = (theme, formatMessage) => {
 const defaultProps = {
   canSelect: false,
   data: [],
+  maxSelection: 0,
+  selectedRowKeys: [],
   theme: Leads,
 };
 const propTypes = {
   intl: intlShape.isRequired,
   canSelect: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
+  maxSelection: PropTypes.number.isRequired,
+  onRowSelectionChange: PropTypes.func,
+  selectedRowKeys: PropTypes.array.isRequired,
   theme: PropTypes.oneOf([ Leads, Accounts ]).isRequired,
 };
 
@@ -74,6 +79,9 @@ const FilterResultsTable = ({
   intl,  
   canSelect,
   data,
+  maxSelection,
+  onRowSelectionChange,
+  selectedRowKeys,
   theme,
 }) => {
 
@@ -81,11 +89,28 @@ const FilterResultsTable = ({
   const columns = renderColumnsByTheme(theme, formatMessage);
   const mergeBtn = theme === Leads ? (
     <Link to={`/123`}>
-      <Button className={`${theme}-theme-btn`} size="small">
+      <Button
+        className={`${theme}-theme-btn`}
+        disabled={selectedRowKeys.length < 2 || (maxSelection && selectedRowKeys.length > maxSelection)}
+        size="small"
+      >
         {formatMessage({ id: `${i18n}.button.mergeLead` })}
       </Button>`
     </Link>
   ) : null;
+
+  // TODO: add selectAll checking to avoid when user select records over maxSelection
+  const rowSelection = canSelect ? {
+    selectedRowKeys,
+    getCheckboxProps: record => ({
+      disabled: maxSelection && selectedRowKeys.length >= maxSelection && selectedRowKeys.indexOf(record.id) === -1,
+    }),
+    onChange: (selectedRowKeys, selectedRows) => {
+      if (_.isFunction(onRowSelectionChange)) {
+        onRowSelectionChange(selectedRowKeys, selectedRows);
+      }
+    },
+  } : null;
 
   return (
     <Panel
@@ -106,6 +131,8 @@ const FilterResultsTable = ({
                       : data}
         pagination={false}
         rowKey="id"
+        rowSelection={rowSelection}
+        size="small"
       />
     </Panel>
   );
