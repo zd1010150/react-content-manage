@@ -101,6 +101,7 @@ const EnumsManager = Object.freeze({
   ReduxActionTypePrefix: Object.freeze({
     VIEWFILTER: 'VIEW_FILTER_',
     VIEWDETAILS: 'VIEW_DETAILS_',
+    DUPLICATES: 'DUPLICATES_',
   }),
 
   ViewVisibilityIds: Object.freeze({

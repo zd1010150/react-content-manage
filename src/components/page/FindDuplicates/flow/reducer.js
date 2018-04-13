@@ -1,5 +1,6 @@
 import {
   SET_DUPLICATES,
+  SET_FIELDS,
   SET_ROW_SELECTION,
 } from './actionTypes';
 
@@ -25,6 +26,25 @@ const duplicates = (state = initialState, action) => {
         leads,
         hasSearched: true,
       }
+
+    
+    case SET_FIELDS:
+      const { data } = action.payload;
+      const {
+        name,
+        last_name,
+        email,
+        company_name,
+        phone,
+      } = data;
+      return {
+        ...state,
+        firstName: name,
+        lastName: last_name,
+        email: email,
+        company: company_name,
+        phone,
+      };
 
 
     case SET_ROW_SELECTION:

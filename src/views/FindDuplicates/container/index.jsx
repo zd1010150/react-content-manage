@@ -6,11 +6,14 @@ import { FindDuplicates } from 'components/page/index';
 
 class FindDuplicatesWrapper extends Component {
   render() {
-    const { match } = this.props;
-    const { url } = match;
-
+    const { url, params } = this.props.match;
+    const { objectId } = params;
+    
     return (
-      <FindDuplicates withConvert={url.indexOf('/convert/find') !== -1}/>
+      <FindDuplicates
+        objectId={objectId}
+        withConvert={url.indexOf('/convert/find') !== -1}
+      />
     );
   }
 }

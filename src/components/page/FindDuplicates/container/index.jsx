@@ -7,9 +7,9 @@ import { Row, Col, Button, Icon, notification } from 'antd';
 
 import { Panel, FilterField, FilterResultsTable } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
-const { ThemeTypes, ThemeTypesInArray } = Enums;
+const { PhantomId, ThemeTypes, ThemeTypesInArray } = Enums;
 const { Leads, Accounts } = ThemeTypes;
-import { setRowSelection, tryFindDuplicates } from '../flow/actions';
+import { setRowSelection, tryFetchClientDetails, tryFindDuplicates } from '../flow/actions';
 
 
 // presets
@@ -46,6 +46,7 @@ const rowLayout = {
 const defaultProps = {
   accounts: [],
   leads: [],
+  objectId: PhantomId,
   theme: Leads,
   withConvert: false,
 };
@@ -53,6 +54,10 @@ const propTypes = {
   intl: intlShape.isRequired,  
   accounts: PropTypes.array.isRequired,
   leads: PropTypes.array.isRequired,
+  objectId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
   theme: PropTypes.oneOf(ThemeTypesInArray).isRequired,
   withConvert: PropTypes.bool.isRequired,
 };
@@ -69,12 +74,34 @@ class FindDuplicates extends Component {
   }
 
   componentDidMount() {
-    // fetch lead/account data locally by id
-    // and set the value in 
+    const { objectId, tryFetchClientDetails } = this.props;
+    tryFetchClientDetails(objectId);
   }
 
   componentWillReceiveProps(nextProps) {
-    // loop all fields value if changed then sync prop with state
+    // sync values when loaded first time
+    const changedFields = this.getChangedFields(nextProps, this.state);
+    if (changedFields.length > 0) {
+      const { firstName, lastName, email, company, phone } = nextProps;
+      this.setState({
+        checkedFields: changedFields,
+        firstName,
+        lastName,
+        email,
+        company,
+        phone,
+      });
+    }
+  }
+
+  getChangedFields = (nextProps, state) => {
+    let changedFields = [];
+    baseFields.forEach(elem => {
+      if (!_.isNil(nextProps[elem]) && nextProps[elem] !== state[elem]) {
+        changedFields.push(elem);
+      }
+    });
+    return changedFields;
   }
 
   handleCancelClick = $ => this.props.history.goBack()
@@ -214,9 +241,15 @@ const mapStateToProps = ({ global, duplicates }) => ({
   hasSearched: duplicates.hasSearched,
   leads: duplicates.leads,
   selectedRowKeys: duplicates.selectedRowKeys,
+  firstName: duplicates.firstName,
+  lastName: duplicates.lastName,
+  email: duplicates.email,
+  company: duplicates.company,
+  phone: duplicates.phone,
 });
 const mapDispatchToProps = {
   setRowSelection,
+  tryFetchClientDetails,
   tryFindDuplicates,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withRouter(FindDuplicates)));

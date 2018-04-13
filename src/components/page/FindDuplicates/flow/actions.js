@@ -1,6 +1,6 @@
 import { get } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
-import { SET_DUPLICATES, SET_ROW_SELECTION } from './actionTypes';
+import { SET_DUPLICATES, SET_FIELDS, SET_ROW_SELECTION } from './actionTypes';
 
 export const setDuplicates = (leads, accounts) => ({
       type: SET_DUPLICATES,
@@ -18,6 +18,20 @@ export const tryFindDuplicates = params => dispatch =>
 
 //
 export const setRowSelection = selectedRowKeys => ({
-  type: SET_ROW_SELECTION,
-  payload: { selectedRowKeys },
-});
+      type: SET_ROW_SELECTION,
+      payload: { selectedRowKeys },
+    });
+
+
+// Fetch five-field values of a specific lead for the find duplicate page
+export const setFields = data => ({
+      type: SET_FIELDS,
+      payload: { data },
+    });
+
+export const tryFetchClientDetails = id => dispatch =>
+    get(`/admin/leads/${id}`, {}, dispatch).then((data) => {
+      if (data && !_.isEmpty(data.data)) {
+        dispatch(setFields(data.data));
+      }
+    });
