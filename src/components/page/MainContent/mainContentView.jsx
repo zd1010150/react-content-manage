@@ -46,6 +46,7 @@ const MainContent = () => (
     <Route path="/leads/convert/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/sharing/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
+    <Route path="/leads/convert/find/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/tasks/:objectId" component={ObjectTask} />
     <Route path="/:objectType/attachments/:objectId" component={ClientAttachments} />
     <Route path="/:objectType/:objectId" component={ObjectDetails} exact/>

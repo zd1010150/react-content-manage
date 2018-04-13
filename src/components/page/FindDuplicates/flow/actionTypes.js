@@ -1,1 +1,2 @@
 export const SET_DUPLICATES = 'SET_DUPLICATES';
+export const SET_ROW_SELECTION = 'SET_ROW_SELECTION';

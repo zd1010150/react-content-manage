@@ -1,5 +1,6 @@
 import {
   SET_DUPLICATES,
+  SET_ROW_SELECTION,
 } from './actionTypes';
 
 const initialState = {
@@ -11,6 +12,7 @@ const initialState = {
   leads: [],
   accounts: [],
   hasSearched: false,
+  selectedRowKeys: [],
 };
 
 const duplicates = (state = initialState, action) => {
@@ -24,6 +26,15 @@ const duplicates = (state = initialState, action) => {
         hasSearched: true,
       }
 
+
+    case SET_ROW_SELECTION:
+      const { selectedRowKeys } = action.payload;
+      return {
+        ...state,
+        selectedRowKeys,
+      };
+
+      
     default:
       return state;
   }

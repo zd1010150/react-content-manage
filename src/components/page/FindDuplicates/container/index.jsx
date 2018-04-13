@@ -2,14 +2,14 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl, intlShape } from 'react-intl';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { Row, Col, Button, Icon, notification } from 'antd';
 
 import { Panel, FilterField, FilterResultsTable } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
 const { ThemeTypes, ThemeTypesInArray } = Enums;
 const { Leads, Accounts } = ThemeTypes;
-import { tryFindDuplicates } from '../flow/actions';
+import { setRowSelection, tryFindDuplicates } from '../flow/actions';
 
 
 // presets
@@ -44,13 +44,17 @@ const rowLayout = {
 
 
 const defaultProps = {
+  accounts: [],
+  leads: [],
   theme: Leads,
+  withConvert: false,
 };
 const propTypes = {
-  intl: intlShape.isRequired,
+  intl: intlShape.isRequired,  
+  accounts: PropTypes.array.isRequired,
+  leads: PropTypes.array.isRequired,
   theme: PropTypes.oneOf(ThemeTypesInArray).isRequired,
-  accounts: PropTypes.array,
-  leads: PropTypes.array,
+  withConvert: PropTypes.bool.isRequired,
 };
 
 
@@ -86,6 +90,8 @@ class FindDuplicates extends Component {
     this.setState({ checkedFields: newChecked });
   }
 
+  handleRowSelectionChange = keys => this.props.setRowSelection(keys)
+
   handleSearchClick = $ => {
     const { checkedFields } = this.state;
     let params = '';
@@ -120,7 +126,15 @@ class FindDuplicates extends Component {
 
   render() {
     const { checkedFields } = this.state;
-    const { intl, accounts, leads, hasSearched, theme } = this.props;
+    const {
+      intl,
+      accounts,
+      hasSearched,
+      leads,
+      selectedRowKeys,
+      theme,
+      withConvert,
+    } = this.props;
     const { formatMessage } = intl;
     
     return (
@@ -163,11 +177,22 @@ class FindDuplicates extends Component {
             </Col>
           </Row>
         </Panel>
+        {withConvert && (
+          <Link to="/leads">
+            <Button className={`${theme}-theme-btn mb-md`} style={{ width: '100%' }}>
+              {formatMessage({ id: `${i18n}.button.convert` })}
+            </Button>
+          </Link>
+        )}
         {hasSearched && (
           <Fragment>
             <FilterResultsTable
-              data={leads}
               theme={Leads}
+              data={leads}
+              maxSelection={4}
+              selectedRowKeys={selectedRowKeys}
+              onRowSelectionChange={this.handleRowSelectionChange}
+              canSelect
             />
             <FilterResultsTable
               data={accounts}
@@ -188,8 +213,10 @@ const mapStateToProps = ({ global, duplicates }) => ({
   accounts: duplicates.accounts,
   hasSearched: duplicates.hasSearched,
   leads: duplicates.leads,
+  selectedRowKeys: duplicates.selectedRowKeys,
 });
 const mapDispatchToProps = {
+  setRowSelection,
   tryFindDuplicates,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withRouter(FindDuplicates)));

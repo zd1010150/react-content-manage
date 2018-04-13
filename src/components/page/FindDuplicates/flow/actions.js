@@ -1,6 +1,6 @@
 import { get } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
-import { SET_DUPLICATES } from './actionTypes';
+import { SET_DUPLICATES, SET_ROW_SELECTION } from './actionTypes';
 
 export const setDuplicates = (leads, accounts) => ({
       type: SET_DUPLICATES,
@@ -14,3 +14,10 @@ export const tryFindDuplicates = params => dispatch =>
         dispatch(setDuplicates(data.leads.data, data.accounts.data));
       }
     });
+
+
+//
+export const setRowSelection = selectedRowKeys => ({
+  type: SET_ROW_SELECTION,
+  payload: { selectedRowKeys },
+});
