@@ -3,17 +3,21 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getStore } from 'utils/localStorage';
 import _ from 'lodash';
+import classNames from 'classnames/bind';
 import { Layout } from 'antd';
 import EnumsManager from 'utils/EnumsManager';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { loginSuccess } from 'views/LoginForm/flow/actions.js';
+import styles from './layout.less';
 
-import { TopPanel, CopyRight, } from '../page/index';
+
+import { TopPanel, CopyRight } from '../page/index';
 
 
 import SubMainLayout from './subMainLayout';
 import SetupLayout from './setupLayout';
 
+const cx = classNames.bind(styles);
 const { Footer } = Layout;
 class MainLayout extends React.Component {
     hasLoggedIn = () => {
@@ -37,14 +41,17 @@ class MainLayout extends React.Component {
           { !this.hasLoggedIn() ? (
             <Redirect to="/auth/login" />
                 ) : (
-                  <Layout style={{position: 'absolute', top: '0', bottom: '0', right: '0', left: '0'}}>
-                    <TopPanel />
+                  <div className={cx('body-wrapper')}>
+                      <div className={cx('header-wrapper')}>
+                          <TopPanel />
+                      </div>
                     <Switch>
                       <Route path="/setup" component={SetupLayout} />
                       <Route path="/" component={SubMainLayout} />
                     </Switch>
-                    <Footer ><CopyRight /></Footer>
-                  </Layout>
+                    <div className={cx('footer-wrapper')}><CopyRight />
+                    </div>
+                  </div>
             )}
         </div>
       );
