@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -32,13 +33,13 @@ class topPanel extends React.Component {
     }
     render() {
       const {
-        language, account, permissions, email,
+        language, account, permissions, email, logo
       } = this.props;
       return (
         <div
           className={cx('header')}
         >
-          <div className={cx('siteTitle')}>logix crm</div>
+          <div className={cx('siteTitle')}> <img src={logo} className={cx('crm-logo')} alt="company logo" /></div>
           <TopNav permissions={permissions} />
           <UserSettings email={email} onClick={this.onLogoutClick} />
           <Language language={language} onChange={language => this.changeLanguage(language)} />
@@ -65,6 +66,7 @@ const mapStateToProps = ({ loginUser, global }) => ({
   account: global.account,
   permissions: global.permissions,
   email: loginUser.email,
+  logo: global.companyLogo,
 });
 const mapDispatchToProp = {
   toggleLanguage,
