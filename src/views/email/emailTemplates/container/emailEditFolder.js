@@ -2,11 +2,7 @@
 import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import {intlShape, injectIntl} from 'react-intl';
-import {Row, Col, Button, Icon, Radio, Input} from 'antd';
 import {Panel} from 'components/ui/index';
-import classNames from 'classnames/bind';
-import Folder from '../component/folder';
-import styles from '../emailTemplates.less';
 import {
     setEditFolderViewVisible,
     setEditFolderData,
@@ -16,19 +12,10 @@ import {
     createUserFolder,
     uploadFolders
 } from '../../flow/action';
+import {EditFolder} from '../component';
 
 
 import {getTeamUsers, getSelectedTeamName} from '../../flow/reselect';
-const cx = classNames.bind(styles);
-
-const ActionButtonGroup = ({saveEditFolder, setEditFolderViewVisible, formatMessage}) => {
-    return <div className="pt-md pl-md pb-md">
-        <Button className="email-theme-btn mr-md" onClick={saveEditFolder}><Icon type="save"/>{ formatMessage({id: 'page.emailTemplates.save'}) }</Button>
-        <Button onClick={() => {
-            setEditFolderViewVisible(false)
-        }}><Icon type="close"/>{ formatMessage({id: 'page.emailTemplates.cancel'}) }</Button>
-    </div>
-}
 
 class EmailTemplateEditFolder extends React.Component {
     constructor(props) {
@@ -127,18 +114,11 @@ class EmailTemplateEditFolder extends React.Component {
 
     editFolderName = (e, item) => {
         this.props.updateFolderName({id: item.id, name: e.target.value})
-        // this.state.cards.map((card)=>{
-        //     if(card.id === item.id){
-        //         card.userName = e.target.value
-        //     }
-        // })
-        // this.setState({ userName: e.target.value });
     }
 
     saveEditFolder = () => {
         const {setEditFolderViewVisible, userFolders, uploadFolders} = this.props;
         let canSave = true;
-        console.log('123', _.uniqBy(userFolders, [name]).length)
         if(_.uniqBy(userFolders, 'name').length !== userFolders.length){
             alert('same file name')
             return false
@@ -151,7 +131,6 @@ class EmailTemplateEditFolder extends React.Component {
             }
         })
         if(canSave){
-            //Todo implement save
             uploadFolders(()=>{setEditFolderViewVisible(false)});
         }
     }
@@ -161,41 +140,22 @@ class EmailTemplateEditFolder extends React.Component {
         const {isOtherDragging} = this.state;
 
         const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteUserFolderData, createUserFolder, ...others} = this.props;
-        const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {createUserFolder({"name": "", id: this.state.tempId}); this.setState((prevState)=>{prevState.tempId-=1})
-        }}><Icon type="plus"/>{ formatMessage({id: 'page.emailTemplates.newFolder'}) }</Button></div>;
         return (
-            <Panel panelTitle={formatMessage({id: 'page.emailTemplates.editFolderTitle'})}
-                   panelClasses="email-theme-panel"
-                   actionsRight={actionsRight}>
-                <Row onMouseDown={this.handleItemSelection} className={cx('folders')}>
-                    {userFolders.map((item, key) =>
-                        <Col
-                            key={key}
-                            data-index={key}
-                            data-id={item.id}
-                            className="pl-lg mb-md gutter-row field-label"
-                            span={6}>
-                            <Folder
-                                key={item.id}
-                                item={item}
-                                deleteUserFolderData={deleteUserFolderData}
-                                setEditFolderData={setEditFolderData}
-
-                                editFolderName={this.editFolderName}
-                                id={item.id}
-                                index={key}
-                                moveCard={this.moveCard}
-                                isSelected={item.selected}
-                                isOtherDragging={isOtherDragging}
-                                clearDragging={this.clearDragging}
-                                setDragging={this.setDragging}
-                                {...others}
-                            />
-                        </Col>
-                    )}
-                </Row>
-                <ActionButtonGroup saveEditFolder={this.saveEditFolder} setEditFolderViewVisible={setEditFolderViewVisible} formatMessage={formatMessage}/>
-            </Panel>
+            <EditFolder userFolders={userFolders}
+                        editFolders={editFolders}
+                        setEditFolderViewVisible={setEditFolderViewVisible}
+                        setEditFolderData={setEditFolderData}
+                        deleteUserFolderData={deleteUserFolderData}
+                        createUserFolder={createUserFolder}
+                        isOtherDragging={isOtherDragging}
+                        formatMessage={formatMessage}
+                        editFolderName={this.editFolderName}
+                        moveCard={this.moveCard}
+                        clearDragging={this.clearDragging}
+                        setDragging={this.setDragging}
+                        handleItemSelection={this.handleItemSelection}
+                        saveEditFolder={this.saveEditFolder}
+                        {...others}/>
         );
     }
 }

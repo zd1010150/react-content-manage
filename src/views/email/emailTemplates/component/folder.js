@@ -150,6 +150,43 @@ class Card extends Component {
     }
 }
 
+/**
+ *
+ * @param setSelectedFolderData
+ * @param selectedFolder
+ * @param userFolders
+ * @param sharedFolders
+ * @param isSharedByVisible
+ * @returns {XML}
+ * @constructor
+ */
+export const Folders = ({formatMessage, setSelectedFolderData, selectedFolder, userFolders, sharedFolders, isSharedByVisible, queryByPaging}) => {
+    const folders = isSharedByVisible ? sharedFolders : userFolders;
+    return <div className={cx('folders')}>
+        {folders.map((item, index) =>
+            <div key={index} className={cx('folder')} style={{marginLeft: index > 0 ? 40 : 10}}>
+                <input onChange={() => {
+                    setSelectedFolderData(item);
+                    queryByPaging({folderId: item.id})
+                }} checked={selectedFolder && selectedFolder.id === item.id} id={index} value={item} type="radio"
+                       style={{visibility: 'hidden'}}/>
+                <label htmlFor={index}>
+                    <div>
+                        {selectedFolder && selectedFolder.id === item.id ?
+                            <Icon className={cx('folder-icon')} type="folder-open"/> :
+                            <Icon className={cx('folder-icon')} type="folder"/>}
+                        {item.shared_to_users && item.shared_to_teams && !isSharedByVisible && (item.shared_to_users.length > 0 || item.shared_to_teams.length > 0) &&
+                        <Icon type="export"/>}
+                    </div>
+                    <div>{item.name}</div>
+                    {isSharedByVisible && item.belonged_user &&
+                    <div>{formatMessage({id: 'page.emailTemplates.sharedBy'}) + item.belonged_user.name}</div>}
+                </label>
+            </div>
+        )}
+    </div>
+}
+
 Card.defaultProps = defaultProps;
 Card.propTypes = propTypes;
 export default _.flow(
