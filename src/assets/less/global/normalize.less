@@ -1,0 +1,138 @@
+@import "../theme.less";
+.pt-none{
+  padding-top: 0px;
+}
+.pt-sm{
+  padding-top: 5px;
+}
+.pt-md{
+  padding-top: 10px;
+}
+.pt-lg{
+  padding-top: 15px;
+}
+.pt-xlg{
+  padding-top: 20px;
+}
+.pl-sm{
+  padding-left: 5px;
+}
+.pl-md{
+  padding-left: 10px;
+}
+.pl-lg{
+  padding-left: 15px;
+}
+.pl-xlg{
+  padding-left: 20px;
+}
+.pb-none{
+  padding-bottom: 0px !important;
+}
+.pb-sm{
+  padding-bottom: 5px;
+}
+.pb-md{
+  padding-bottom: 10px;
+}
+.pb-lg{
+  padding-bottom: 15px;
+}
+.pb-xlg{
+  padding-bottom: 20px;
+}
+.pr-sm{
+  padding-right: 5px;
+}
+.pr-md{
+  padding-right: 10px;
+}
+.pr-lg{
+  padding-right: 15px;
+}
+.pr-xlg{
+  padding-right: 20px;
+}
+.ml-sm{
+  margin-left: 5px;
+}
+.ml-md{
+  margin-left: 10px;
+}
+.ml-lg{
+  margin-left: 15px;
+}
+.ml-xlg{
+  margin-left: 20px;
+}
+.mb-sm{
+  margin-bottom: 5px;
+}
+.mb-md{
+  margin-bottom: 10px;
+}
+.mb-lg{
+  margin-bottom: 15px;
+}
+.mb-xlg{
+  margin-bottom: 20px;
+}
+.mt-sm{
+  margin-top: 5px;
+}
+.mt-md{
+  margin-top: 10px;
+}
+.mt-lg{
+  margin-top: 15px;
+}
+.mt-xlg{
+  margin-top: 20px;
+}
+.mr-sm{
+  margin-right: 5px;
+}
+.mr-md{
+  margin-right: 10px;
+}
+.mr-lg{
+  margin-right: 15px;
+}
+.mr-xlg{
+  margin-right: 20px;
+}
+.full-width{
+  width: 100%;
+}
+.text-left{
+  text-align: left;
+}
+.text-right{
+  text-align: right;
+}
+.no-display{
+  display: none;
+}
+.error-msg{
+  color: @error-color;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+/*dannormal*/
+.theme-normal(@theme){
+  @selector : ~'.@{theme}-theme'; /*获取selector*/
+  @theme-color-value-name: '@{theme}-theme-color'; /*获取变量名*/
+  @theme-color-value: @@theme-color-value-name; /*获取变量名对应的值*/
+  @{selector}{
+    background-color: @theme-color-value !important;
+  }
+}
+
+.make-theme-normal-classes(@i: length(@themes)) when (@i > 0) {
+  .make-theme-normal-classes(@i - 1);
+  @theme: extract(@themes, @i);
+  .theme-normal(@theme)
+}
+
+.make-theme-normal-classes();

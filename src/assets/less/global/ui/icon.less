@@ -1,0 +1,32 @@
+
+@import "../../theme.less";
+
+.anticon{
+  font-weight: 900;
+  font-size: 14px;
+}
+.anticon.danger{
+  color: @error-color;
+}
+.anticon.ok{
+  color: @crm-green;
+}
+.anticon.read-only{
+  color: @crm-gold;
+}
+.theme-icon(@theme){
+  @selector : ~'.@{theme}-theme-icon'; /*获取selector*/
+  @theme-color-value-name: '@{theme}-theme-color'; /*获取变量名*/
+  @theme-color-value: @@theme-color-value-name; /*获取变量名对应的值*/
+  @{selector}{
+    color:@theme-color-value;
+  }
+}
+
+.make-theme-icon-classes(@i: length(@themes)) when (@i > 0) {
+  .make-theme-icon-classes(@i - 1);
+  @theme: extract(@themes, @i);
+  .theme-icon(@theme)
+}
+
+.make-theme-icon-classes();

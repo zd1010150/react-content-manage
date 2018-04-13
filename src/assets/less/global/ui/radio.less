@@ -1,0 +1,31 @@
+@import "../../theme.less";
+
+
+.theme-radio(@theme){
+  @selector : ~'.@{theme}-theme-radio'; /*获取selector*/
+  @theme-color-value-name: '@{theme}-theme-color'; /*获取变量名*/
+  @theme-color-value: @@theme-color-value-name; /*获取变量名对应的值*/
+  @{selector}{
+    .ant-radio-checked .ant-radio-inner{
+      border-color: @theme-color-value;
+      &:after{
+        background-color: @theme-color-value;
+      }
+    }
+    .ant-radio-input{
+      &:hover , &:focus {
+        & + .ant-radio-inner{
+          border-color: @theme-color-value;
+        }
+      }
+    }
+  }
+}
+
+.make-theme-radio-classes(@i: length(@themes)) when (@i > 0) {
+  .make-theme-radio-classes(@i - 1);
+  @theme: extract(@themes, @i);
+  .theme-radio(@theme);
+}
+
+.make-theme-radio-classes();

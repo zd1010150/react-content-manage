@@ -1,0 +1,18 @@
+@import "../theme.less";
+.editable-grid {
+  :global {
+    .ant-table-body th:first-child, .ant-table-body td:first-child  {
+      background-color: @primary-color;
+      width: 160px;
+      text-align: right;
+    }
+    .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+      padding: 16px 10px;
+    }
+  }
+
+  .category-title {
+    color: white;
+    line-height: 32px;
+  }
+}

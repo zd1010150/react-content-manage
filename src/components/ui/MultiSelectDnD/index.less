@@ -1,0 +1,79 @@
+@import "~assets/less/theme.less";
+
+.title {
+  font-weight: 700;
+  color: @secondary-dark-color;
+}
+
+.cardContainer {
+  padding: 10px 0;
+  border: 1px solid @secondary-dark-color;
+  background-color: @crm-hover-color;
+  box-shadow: @box-shadow-inset;
+  height: 200px;
+  overflow-y: auto;
+}
+.theme-multiselect(@theme){
+  @selector : @theme; /*获取selector*/
+  @theme-color-value-name: '@{theme}-theme-color'; /*获取变量名*/
+  @theme-color-value: @@theme-color-value-name; /*获取变量名对应的值*/
+  &.selected {
+      &.@{selector}{
+        background-color: @theme-color-value;
+      }
+
+  }
+  &.@{selector} {
+    .editBtn{
+      color: @theme-color-value;
+    }
+
+  }
+}
+
+.make-theme-multiselect-classes(@i: length(@themes)) when (@i > 0) {
+  .make-theme-multiselect-classes(@i - 1);
+  @theme: extract(@themes, @i);
+  .theme-multiselect(@theme);
+}
+
+
+
+.card {
+  padding: 3px 15px;
+  
+  &:hover, &.selected {
+    font-weight: 700;
+    color: @brk-text-white-color;
+  }
+
+  &:hover {
+    background-color: @secondary-dark-color;
+  }
+
+  i {
+    cursor: pointer;
+    margin-left: 5px;
+  }
+
+  .deactivateBtn {
+    color: @crm-red;
+  }
+
+  &.selected {
+    cursor: move;
+    background-color: @secondary-dark-color;
+    
+
+
+    i {
+      color: @brk-text-white-color !important;
+    }
+  }
+
+  .make-theme-multiselect-classes();
+
+  &.dragging {
+    opacity: .3;
+  }
+}

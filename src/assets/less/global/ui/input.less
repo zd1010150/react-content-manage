@@ -1,0 +1,43 @@
+@import '../../theme.less';
+.ant-input:focus{
+   box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 2px 0 rgba(0,0,0,.12);
+ }
+.floatingInputWrapper .ant-input-group-addon:last-child{
+  background-color: transparent;
+  border: none;
+  padding-top: 12px;
+}
+.input-material-theme.bright{
+  input{
+    color: @secondary-dark-color;
+    background-color: transparent;
+    border-bottom: 1px solid @secondary-dark-color;
+    &:focus{
+      border-bottom: 1px solid @crm-white !important;
+      color: @crm-white;
+    }
+  }
+  .anticon{
+    color: @secondary-dark-color;
+  }
+  input:focus + span .anticon{
+    color: @crm-white;
+  }
+}
+.input-material-theme{
+  position: relative;
+  display: inline-block;
+  input{
+    border-top: none;
+    border-left: none;
+    border-right:none;
+    border-radius: 0;
+    &:focus, &:active{
+      box-shadow: none;
+
+    }
+  }
+
+
+
+}

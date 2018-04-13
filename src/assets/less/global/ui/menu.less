@@ -1,0 +1,31 @@
+.ant-menu-inline .ant-menu-item{
+  font-size: 12px;
+}
+.ant-menu-dark .ant-menu-item > a{
+  color: #8e8e8e;
+}
+.ant-menu-dark .ant-menu-item-selected > a{
+  color: #fff;
+}
+.ant-menu-inline .ant-menu-item:not(:last-child){
+  margin-bottom: 0px;
+}
+.ant-menu-inline .ant-menu-item{
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+.ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title{
+  line-height: 30px;
+  height: 30px;
+}
+.ant-menu-inline .ant-menu-item-selected{
+  &:before{
+    content: '';
+    position: absolute;
+    right: -2px;
+    top: 6px;
+    border-right: 8px solid #f2f5f8;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+  }
+}

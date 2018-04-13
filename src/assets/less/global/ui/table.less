@@ -1,0 +1,125 @@
+@import "../../theme.less";
+
+.ant-table-thead > tr > th{
+  border-bottom: 2px solid #cad6e2;
+  color: @page-color-default;
+  &:first-child{
+    padding-left: 15px;
+  }
+
+}
+.ant-table-tbody > tr {
+   & > td{
+    &:first-child{
+      padding-left: 15px;
+    }
+  }
+  &:nth-of-type(odd) {
+    background-color: #f2f5f8;
+  }
+}
+
+.ant-pagination.mini {  
+  text-align: right;
+
+  .ant-pagination-total-text {
+    float: left;
+  }
+
+  .ant-pagination-prev {
+    margin-right: 5px;
+  }
+
+  .ant-pagination-prev, .ant-pagination-next {
+    border-radius: 15px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 2px 0 rgba(0,0,0,.12);
+    background-color: @brk-text-white-color;
+  }
+
+  .ant-pagination-item {
+    margin-right: 5px;
+    border-radius: 15px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 2px 0 rgba(0,0,0,.12);
+    
+    &:not(.ant-pagination-item-active) {
+      background-color: @brk-text-white-color;
+    }
+
+    a {
+      color: @secondary-dark-color;
+    }
+
+    &.ant-pagination-item-active {
+      background-color: @secondary-dark-color !important;
+      a {
+        color: @brk-text-white-color;
+      }
+    }
+  }
+
+  &.stickToRight {
+    position: fixed;
+    right: 3px;
+    top: 20%;
+    width: 200px;
+
+    .ant-pagination-total-text {
+      // float: right;
+      margin-right: 0;
+      position: absolute;
+      bottom: 32px;
+      right: 0;
+    }
+
+    .ant-pagination-total-text,
+    .ant-pagination-options {
+      background-color: @secondary-dark-color;
+      color: @brk-text-white-color;
+      padding: 0 15px 0;
+      border-radius: 15px 0 0 15px;
+    }
+    
+    .ant-pagination-options {
+      padding: 2px 15px 2px 30px;
+      .ant-select-selection {
+        color: @brk-text-white-color;
+        background-color: @secondary-dark-color;
+        .ant-select-arrow {
+          color: @brk-text-white-color;
+        }
+      }
+    }
+
+    .ant-pagination-prev,
+    .ant-pagination-item {
+      margin: 0 0 5px 150px;
+    }
+
+    .ant-pagination-prev {
+      .ant-pagination-item-link:after {
+        content: '\E61E';
+      }
+    }
+
+    .ant-pagination-next {
+      margin-left: 150px;
+      margin-bottom: 35px;
+      .ant-pagination-item-link:after {
+        content: '\E61D';
+      }
+    }
+
+    .ant-pagination-jump-prev,
+    .ant-pagination-jump-next {
+      margin-right: -2px;
+    }
+
+    .ant-pagination-jump-prev:focus:after,
+    .ant-pagination-jump-next:focus:after,
+    .ant-pagination-jump-prev:hover:after,
+    .ant-pagination-jump-next:hover:after {
+      transform: scale(0.66666667) rotate(90deg);
+      margin-left: 2px;
+    }
+  }
+}

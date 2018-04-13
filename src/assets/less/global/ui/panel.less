@@ -1,0 +1,69 @@
+@import "../../theme.less";
+
+.panel {
+  margin-bottom: 15px;
+  width:100%;
+  color:#4e4e4e;
+  border-radius: 5px;
+  background:#fff;
+  border-top:3px solid #4e4e4e;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  .panel-header{
+    padding: 6px 15px;
+    position: relative;
+    min-height: 32px;
+    border-bottom: @grey-border;
+    .panel-title{
+      float: left;
+    }
+    .panel-actions{
+      float:right;
+      &.panel-no-title-actions{
+        float: none;
+        width:100%;
+      }
+      .actions-left{
+        float: left;
+      }
+      .actions-right{
+        float:right;
+      }
+    }
+  }
+  .panel-content{
+    overflow: auto;
+    min-height: 20px;
+  }
+  .panel-section{
+    padding-bottom: 15px;
+    .section-header{
+      padding: 5px 15px;
+      font-size: 14px;
+      font-weight: 700;
+      background: #f2f5f8;
+    }
+    .section-content{
+      padding: 5px 15px;
+    }
+    .section-footer{
+      padding: 5px 15px;
+    }
+  }
+}
+
+.theme-panel(@theme){
+  @selector : ~'.panel.@{theme}-theme-panel'; /*获取selector*/
+  @theme-color-value-name: '@{theme}-theme-color'; /*获取变量名*/
+  @theme-color-value: @@theme-color-value-name; /*获取变量名对应的值*/
+  @{selector}{
+    border-top: 3px solid @theme-color-value;
+  }
+}
+
+.make-theme-panel-classes(@i: length(@themes)) when (@i > 0) {
+  .make-theme-panel-classes(@i - 1);
+  @theme: extract(@themes, @i);
+  .theme-panel(@theme)
+}
+
+.make-theme-panel-classes();

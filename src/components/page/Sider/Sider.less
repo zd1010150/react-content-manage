@@ -1,0 +1,28 @@
+@import "~assets/less/theme.less";
+
+.setupSider {
+  background-color: @page-color-default;
+  color: @brk-text-white-color;
+  font-size: 12px;
+  width: @sider-width;
+  position: absolute;
+  top: 0px;
+  bottom:0px;
+  left:0px;
+  .siderTitle {
+    background-color: inherit;
+    line-height: 20px;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .menuItem[role='menuitem'] {
+    margin: 0;
+    
+    .itemLink {
+      display: inline;
+    }
+  }
+}

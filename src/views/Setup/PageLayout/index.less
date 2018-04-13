@@ -1,0 +1,110 @@
+@import "~assets/less/theme.less";
+
+.field-btn-dragging{
+  background-color: fade(@secondary-dark-color, 10%);
+}
+.modules-wrapper{
+  height: 100%;
+  min-height: 600px;
+}
+.tools-wrapper{
+  min-height: 140px;
+}
+.tool-wrapper{
+  display: inline-block;
+}
+
+.sider-view-can-drop{
+  background-color: @crm-green;
+}
+.sider-view-cant-drop{
+  background-color: @crm-red;
+}
+.sider-view-cant-drop{
+  background-color: red;
+}
+.sider-view-wrapper{
+  height: 100%;
+  overflow: auto;
+}
+
+.section-table-cols-1{
+  width: 50%;
+}
+.section-table-cols-2{
+  width: 100%;
+}
+.section-table-col-2{
+  width: 50%;
+}
+.section-table-col-1{
+  width: 100%;
+}
+.field-label{
+  width: 33%;
+  box-sizing: border-box;
+  text-align: right;
+  font-weight: 700;
+  display: inline-block;
+}
+.field-sample-value{
+  width: 66%;
+  box-sizing: border-box;
+  text-align: left;
+  display: inline-block;
+}
+.section-field-over-mask{
+  border-bottom: 3px solid red;
+}
+.field-action,.section-header-action{
+  display: inline-block;
+  float: right;
+  cursor: pointer;
+}
+.field:hover{
+  background-color: @crm-hover-color;
+  cursor: move;
+}
+.section-wrapper-last{
+  height: 30px;
+}
+.section-table-last-tr td{
+  height: 10px;
+}
+
+.field-edit-dialog-label{
+  text-align: right;
+}
+
+.layout-title{
+  font-weight: 700;
+  font-size: 16px;
+}
+.preview-wrapper{
+  background-color: transparent;
+}
+
+.tools-preview-wrapper{
+  text-align: right;
+}
+.tool-btn{
+  cursor: move;
+  color: @crm-white;
+  padding: 2px 6px;
+  font-weight: 400;
+  font-size: 12px;
+  border-radius: 4px;
+  line-height: 1.5;
+  background-color: @secondary-dark-color;
+}
+
+/* assignment*/
+.tree-action{
+  display: inline-block;
+  position: absolute;
+  right:0px;
+  margin-right: 15px;
+}
+.select-layout:hover{
+  background-color: @crm-hover-color;
+}

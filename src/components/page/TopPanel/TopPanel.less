@@ -1,0 +1,40 @@
+@import "~assets/less/theme.less";
+
+.ant-dropdown-link{
+  background-color: transparent;
+  border: none;
+  &:active{
+    border: none;
+  }
+}
+
+.header {
+  color: @brk-text-white-color;
+  > div, > ul, input {
+    float: left;
+    font-size: 12px;
+  }
+
+  .siteTitle {
+    font-size: 18px;
+    margin-right: 50px;
+    text-transform: uppercase;
+  }
+
+  .setupBtn {
+    display: inline-block;
+    margin-left: 11px;
+    float:right;
+    background-color: transparent;
+    color: @brk-text-white-color;
+  }
+
+  [data-role='language'], [data-role='globalSearch'], [data-role='setup'] {
+    float: right;
+    margin-left: 10px;
+    > button {
+      padding: 0 6px;
+    }
+  }
+
+}

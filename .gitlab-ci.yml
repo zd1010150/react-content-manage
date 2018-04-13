@@ -1,0 +1,70 @@
+stages:
+  - build
+  - test
+  - connect
+  - deploy
+  - cleanup
+
+before_script:
+  # install ssh-agent
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  # run ssh-agent
+  - eval $(ssh-agent -s)
+  # add ssh key stored in DEPLOY_PRIVATE_KEY variable to the agent store
+  - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
+  # disable host key checking (NOTE: makes you susceptible to man-in-the-middle attacks)
+  # WARNING: use only in docker container, if you use it with shell you will overwrite your user's ssh config!
+  - mkdir -p ~/.ssh
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  
+
+# ci_test:
+#   stage: test
+#   before_script:
+#     # install ssh-agent
+#     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+#     # run ssh-agent
+#     - eval $(ssh-agent -s)
+#     # add ssh key stored in DEPENDENCIES_KEY variable to the agent store
+#     - ssh-add <(echo "$DEPENDENCIES_KEY")
+#     # disable host key checking (NOTE: makes you susceptible to man-in-the-middle attacks)
+#     # WARNING: use only in docker container, if you use it with shell you will overwrite your user's ssh config!
+#     - mkdir -p ~/.ssh
+#     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+#     - composer install
+#   script:
+#     - composer ci:test
+#   except:
+#     - /^staging$/
+#     - /^production$/
+
+deploy_test:
+  stage: deploy
+  # environment: testing #supported by gitlab 8.9+
+  script:
+    - ssh -T ci_deployer@$TESTING_SERVER "cd $TESTING_PROJECT_ROOT; composer ci:deploy:test"
+  only:
+    - master
+  except:
+    - /^staging$/
+    - /^production$/
+  when: on_success
+
+deploy_stage:
+  stage: deploy
+  # environment: staging
+  script:
+    - ssh -T ci_deployer@$STAGING_SERVER "sudo vpnc my_tunnel; export CI_BUILD_REF=\"master\"; cd $STAGING_PROJECT_ROOT; composer ci:deploy;sudo vpnc-disconnect;"
+  only:
+    - /^master$/
+    - /^staging$/
+  when: on_success
+
+deploy_production:
+  stage: deploy
+  # environment: production
+  script:
+    - ssh -T ci_deployer@$PRODUCTION_SERVER "sudo vpnc my_tunnel;export CI_BUILD_REF=\"production\"; cd $PRODUCTION_PROJECT_ROOT; composer ci:deploy;sudo vpnc-disconnect"
+  only:
+    - /^production$/
+  when: on_success

@@ -1,0 +1,78 @@
+@import "~assets/less/theme.less";
+
+.floatingInputWrapper {
+  position: relative;
+
+  label {
+    position: absolute;
+    line-height: 22px;
+    top: 10px;
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    z-index: 1;
+    transform: scale(1) translate(0px, 0px);
+    transform-origin: left top 0px;
+    pointer-events: none;
+    user-select: none;
+    color: rgba(0, 0, 0, 0.3);
+  }
+
+  label.toTop {
+    transform: scale(0.75) translate(0px, -20px);
+  }
+
+  .placeholder {
+    position: absolute;
+    opacity: 0;
+    color: rgba(0, 0, 0, 0.3);
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    bottom: 2px;
+
+    &.show {
+      opacity: 1;
+    }
+  }
+
+  input {
+    padding: 0;
+    position: relative;
+    border: none;
+    outline: none;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgba(0, 0, 0, 0.87);
+    height: 25px;
+    line-height: 25px;
+    opacity: 1;
+    margin-top: 10px;
+
+    &:focus {
+      box-shadow: none !important;
+    }
+  }
+
+  hr {
+    border: none;
+    border-bottom: 1px solid;
+    margin: 0;
+    position: absolute;
+    width: 100%;
+
+    &.default {
+      border-bottom-width: 2px;
+      transform: scaleX(0);
+      transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+
+      &.highlighted {
+        transform: scaleX(1);
+      }
+    }
+  }
+
+  button, button:hover {
+    background-color: transparent;
+    border-color: transparent;
+    color: @primary-color;
+    height: 25px;
+    margin-top: 10px;
+  }
+
+}
