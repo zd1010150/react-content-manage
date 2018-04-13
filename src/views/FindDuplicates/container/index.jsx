@@ -1,14 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
+import { FindDuplicates } from 'components/page/index';
 
-class FindDuplicates extends Component {
+
+class FindDuplicatesWrapper extends Component {
   render() {
-    return (
-      <div>find dup view</div>
+    return (      
+      <FindDuplicates />
     );
   }
 }
 
 
-export default FindDuplicates;
+export default FindDuplicatesWrapper;
