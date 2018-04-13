@@ -5,17 +5,9 @@ import { Row, Col, Button, Icon, Radio, Input, Modal, Popconfirm } from "antd";
 import {Panel, SelectionPool, SearchPool} from 'components/ui/index';
 import classNames from "classnames/bind";
 import Enums from 'utils/EnumsManager';
-import Folder from "../folder";
 import styles from "../../emailTemplates.less";
 import {
-    Folders,
-    Radios,
-    TabSwitcher,
-    Templates,
-    EmailTemplateButton,
-    EmailTemplateIcon,
     Department,
-    User
 } from "../../component";
 const cx = classNames.bind(styles);
 
@@ -36,7 +28,6 @@ const TemplatePermission = ({
                                 handleDoubleClickTeam,
                                 handleDoubleClickUser
                         }) => {
-
     return (
         <div className="pl-lg pt-md pb-lg">
             <div>{formatMessage({id: 'page.emailTemplates.permissionTitle'})}</div>

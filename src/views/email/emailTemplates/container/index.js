@@ -9,7 +9,7 @@ import {
     setSelectedUser
 } from '../../flow/action';
 import {connect} from 'react-redux';
-import EditView from './editDepartmentView';
+import EditView from './departmentView';
 import EmailTemplateDetail from './emailTemplateDetail';
 import EmailEditFolder from './emailEditFolder';
 import {withRouter} from "react-router";

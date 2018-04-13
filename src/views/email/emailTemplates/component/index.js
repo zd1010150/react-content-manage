@@ -11,6 +11,7 @@ import TemplateDetail from "./templateDetailComponent";
 import TemplatePermission from "./templatePermissionComponent";
 import Department from "./department";
 import User from "./user";
+import DepartmentComponent from "./departmentComponent";
 export {
   Radios,
   TabSwitcher,
@@ -24,5 +25,6 @@ export {
   TemplateDetail,
   TemplatePermission,
   Department,
-  User
+  User,
+  DepartmentComponent
 };

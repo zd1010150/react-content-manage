@@ -2,12 +2,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {intlShape, injectIntl} from 'react-intl';
-import {Row, Col, Button, Icon} from 'antd';
 import {Panel} from 'components/ui/index';
 import {setTeams} from 'store/global/action';
 import {updateUsers} from 'views/Setup/Users/flow/action';
-import Department from '../component/department';
-import User from '../component/user';
+import {DepartmentComponent} from '../component';
 import {
     getUserFolderData,
     getAllUser,
@@ -41,37 +39,23 @@ class EditView extends React.Component {
             setSelectedUser
         } = this.props;
         const {formatMessage} = this.props.intl;
-        const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {
-            setDepartmentVisible(!isDepartmentVisible)
-        }}><Icon type="edit"/>{ formatMessage({id: 'page.emailTemplates.hideDepartments'}) }</Button></div>;
         return (
-            <Panel panelTitle={formatMessage({id: 'page.emailTemplates.emailTemplates'})}
-                   panelClasses="email-theme-panel" contentClasses="pl-lg pr-lg" actionsRight={actionsRight}>
-                {
-                    isDepartmentVisible && <Row className="pt-lg pb-lg">
-                        <Col className="gutter-row field-label" span={12}>
-                            <Department
-                                teams={teams}
-                                setTeams={setTeams}
-                                setSelectedTeam={setSelectedTeam}
-                            />
-                        </Col>
-                        <Col className="gutter-row field-value" span={12}>
-                            <User
-                                teamUsers={teamUsers}
-                                isSelectTeamDialogVisible={isSelectTeamDialogVisible}
-                                teams={teams}
-                                selectedUser={selectedUser}
-                                getUserFolderData={getUserFolderData}
-                                getAllUser={getAllUser}
-                                updateUsers={updateUsers}
-                                selectedTeamName={selectedTeamName}
-                                setSelectedUser={setSelectedUser}
-                            />
-                        </Col>
-                    </Row>
-                }
-            </Panel>
+            <DepartmentComponent
+                teams={teams}
+                setSelectedTeam={setSelectedTeam}
+                setTeams={setTeams}
+                teamUsers={teamUsers}
+                isSelectTeamDialogVisible={isSelectTeamDialogVisible}
+                selectedUser={selectedUser}
+                getUserFolderData={getUserFolderData}
+                getAllUser={getAllUser}
+                updateUsers={updateUsers}
+                selectedTeamName={selectedTeamName}
+                isDepartmentVisible={isDepartmentVisible}
+                setDepartmentVisible={setDepartmentVisible}
+                setSelectedUser={setSelectedUser}
+                formatMessage={formatMessage}
+            />
         );
     }
 }
