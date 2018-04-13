@@ -28,16 +28,16 @@ const ListTopButtons = ({ intl, object, viewId }) => {
   
   return (
     <Fragment>
-      <Button size="small" className={cx('button')} disabled={shouldEditDisabled} >
-        <Link to={`/${object}/views/${viewId}`}>
+      <Link to={`/${object}/views/${viewId}`}>
+        <Button size="small" className={cx('button')} disabled={shouldEditDisabled} >
           {formatMessage({ id: 'global.ui.button.edit' })}
-        </Link>
-      </Button>
-      <Button size="small" className={cx('button')}>
-        <Link to={`/${object}/views/${Enums.PhantomId}`}>
+        </Button>
+      </Link>
+      <Link to={`/${object}/views/${Enums.PhantomId}`}>
+        <Button size="small" className={cx('button')}>
           {formatMessage({ id: 'global.ui.button.createNew' })}
-        </Link>
-      </Button>
+        </Button>
+      </Link>
     </Fragment>
   );
 };
