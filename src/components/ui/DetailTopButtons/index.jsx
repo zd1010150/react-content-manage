@@ -30,10 +30,9 @@ const renderToolByCode = (id, type, code, formatMessage, clickHandler) => {
     case Sharing:
     case FindDuplicates:
       return (
-        <Link to={`/${type}/${getSubPathByCode(code)}/${id}`}>
+        <Link key={code} to={`/${type}/${getSubPathByCode(code)}/${id}`}>
           <Button
             className="ml-sm"
-            key={code}
             size="small"
           >
             {text}
