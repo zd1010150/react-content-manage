@@ -108,7 +108,9 @@ class usersTableView extends React.Component {
       },
     };
     return (
-      <Panel panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions} contentClasses="pt-lg pb-lg">
+      <Panel panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions} contentClasses="pt-lg pb-lg pl-lg pr-lg">
+
+
         <FloatingLabelInput
           labelText={formatMessage({ id: 'page.users.searchUser' })}
           handleSearch={(value) => {

@@ -24,35 +24,34 @@ class topPanel extends React.Component {
     toggleLanguage(language);
     fetchGlobalSetting();
   }
-
   onLogoutClick = () => {
     this.props.tryLogout();
   }
-    onSearch = (keys) => {
-      console.log(keys);
-    }
-    render() {
-      const {
-        language, account, permissions, email, logo
-      } = this.props;
-      return (
-        <div
-          className={cx('header')}
-        >
-          <div className={cx('siteTitle')}> <img src={logo} className={cx('crm-logo')} alt="company logo" /></div>
-          <TopNav permissions={permissions} />
-          <UserSettings email={email} onClick={this.onLogoutClick} />
-          <Language language={language} onChange={language => this.changeLanguage(language)} />
-          <Link className={cx('setupBtn')} to="/setup/company-info/company-info"><Icon type="setting" />Setup</Link>
-          <Input.Search
-            onSearch={this.onSearch}
-            className={classNames('input-material-theme bright')}
-            placeholder="search"
-            style={{ width: 200, marginTop: 7, float: 'right' }}
-          />
-        </div>
-      );
-    }
+  onSearch = (keys) => {
+    console.log(keys);
+  }
+  render() {
+    const {
+      language, account, permissions, name, logo,
+    } = this.props;
+    return (
+      <div
+        className={cx('header')}
+      >
+        <div className={cx('siteTitle')}> <img src={logo} className={cx('crm-logo')} alt="company logo" /></div>
+        <TopNav permissions={permissions} />
+        <UserSettings name={name} logoutHandler={() => this.onLogoutClick()} />
+        <Language language={language} onChange={language => this.changeLanguage(language)} />
+        <Link className={cx('setupBtn')} to="/setup/company-info/company-info"><Icon type="setting" />Setup</Link>
+        <Input.Search
+          onSearch={this.onSearch}
+          className={classNames('input-material-theme bright')}
+          placeholder="search"
+          style={{ width: 200, marginTop: 7, float: 'right' }}
+        />
+      </div>
+    );
+  }
 }
 
 topPanel.propTypes = {
@@ -65,7 +64,7 @@ const mapStateToProps = ({ loginUser, global }) => ({
   language: global.language,
   account: global.account,
   permissions: global.permissions,
-  email: loginUser.email,
+  name: loginUser.name,
   logo: global.companyLogo,
 });
 const mapDispatchToProp = {

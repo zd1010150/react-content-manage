@@ -1,6 +1,7 @@
 import {
   LOGIN_SUCCESS, LOGINOROUT_FAILURE, LOGOUT_SUCCESS,
 } from './actionTypes';
+import { MY_SETTING_SET_AVATOR } from '../../MySetting/flow/actionType';
 import EnumsManager from '../../../utils/EnumsManager';
 import { setStore, getStore, removeStore } from '../../../utils/localStorage';
 
@@ -9,12 +10,16 @@ const initialState = getStore(EnumsManager.LocalStorageKey)
   : {};
 
 const loginUser = (state = initialState, action) => {
-  switch (action.type) {
+  const { type, ...payload } = action;
+  let user;
+  switch (type) {
     case LOGIN_SUCCESS:
-      const { data } = action.payload.json;
-      setStore(EnumsManager.LocalStorageKey, data);
-      return data;
-
+      setStore(EnumsManager.LocalStorageKey, payload);
+      return payload;
+    case MY_SETTING_SET_AVATOR:
+      user = Object.assign({}, state, { avator: action.avator });
+      setStore(EnumsManager.LocalStorageKey, user);
+      return user;
     case LOGOUT_SUCCESS:
     case LOGINOROUT_FAILURE:
       removeStore(EnumsManager.LocalStorageKey);

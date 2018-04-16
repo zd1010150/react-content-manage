@@ -22,6 +22,7 @@ import {
   Layouts,
   ObjectTask,
   ClientAttachments,
+  MySetting,
 } from 'views/index';
 
 import { ObjectFilter } from '../index';
@@ -42,6 +43,7 @@ const MainContent = () => (
     <Route path="/setup/:objectType/fields" component={Fields} />
     <Route path="/setup/:objectType/pageLayout" component={Layouts} />
 
+    <Route path="/my-setting" component={MySetting} />
     <Route path="/:objectType/views/:viewId" component={ObjectFilter} />
     <Route path="/:objectType/sharing/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
@@ -49,8 +51,8 @@ const MainContent = () => (
     <Route path="/leads/convert/convert/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/tasks/:objectId" component={ObjectTask} />
     <Route path="/:objectType/attachments/:objectId" component={ClientAttachments} />
-    <Route path="/:objectType/:objectId" component={ObjectDetails} exact/>
-    
+    <Route path="/:objectType/:objectId" component={ObjectDetails} exact />
+
     <Route path="/leads" component={Leads} exact />
   </Switch>
 );
