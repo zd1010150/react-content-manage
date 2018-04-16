@@ -1,4 +1,4 @@
-import { get } from 'store/http/httpAction';
+import { get, post } from 'store/http/httpAction';
 import { SET_DATA, SET_MERGED_DATA, SET_MASTER_RECORD } from './actionTypes';
 
 export const setData = (originalKeys, data) => ({
@@ -29,4 +29,13 @@ export const setMergedData = (key, value) => ({
 export const setMasterRecord = masterId => ({
       type: SET_MASTER_RECORD,
       payload: { masterId },
+    });
+
+
+//
+export const tryMergeLeads = data => dispatch =>
+    post('/admin/leads/merge', {}, dispatch).then((data) => {
+      if (data) {
+        debugger;
+      }
     });
