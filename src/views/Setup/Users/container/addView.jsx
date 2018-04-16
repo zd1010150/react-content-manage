@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 import _ from 'lodash';
+import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Panel } from 'components/ui/index';
@@ -12,7 +13,7 @@ import DepartmentDialog from '../component/departmentDialog';
 class addEditView extends React.Component {
   render() {
     const {
-      timeZones, moments, editUser, selectedDepartmentId, selectedDepartmentText, isDisplayDepartmentDialog, setDepartment, toggleDepartmentDialog, addUsers, updateUsers, teams,
+      timeZones, moments, editUser, selectedDepartmentId, selectedDepartmentText, isDisplayDepartmentDialog, setDepartment, toggleDepartmentDialog, addUsers, updateUsers, teams, history,
     } = this.props;
     const { formatMessage } = this.props.intl;
     return (
@@ -26,6 +27,7 @@ class addEditView extends React.Component {
           moments={moments}
           selectedDepartmentId={selectedDepartmentId}
           selectedDepartmentText={selectedDepartmentText}
+          onCancel={() => history.push('/setup/company-info/users')}
         />
         <DepartmentDialog isDisplayDepartmentDialog={isDisplayDepartmentDialog} toggleDepartmentDialog={toggleDepartmentDialog} setDepartment={setDepartment} teams={teams} />
       </Panel>
@@ -53,5 +55,5 @@ const mapDispatchToProps = {
   updateUsers,
   setEditUser,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(addEditView));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(addEditView)));
 

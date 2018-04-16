@@ -7,8 +7,7 @@ import { intlShape, injectIntl } from 'react-intl';
 import { Panel } from 'components/ui/index';
 import styles from '../index.less';
 import { FORM_LAYOUT_CONFIG, FORM_FOOTER_CONFIG } from 'config/app.config.js';
-import { getExistRule } from 'utils/validateMessagesUtil';
-import { passwordReg } from 'utils/regex';
+import { getExistRule, validator } from 'utils/validateMessagesUtil';
 
 const cx = classNames.bind(styles);
 
@@ -21,11 +20,12 @@ validateConfirmPwd() {
   const { form } = this.props;
   const newPwd = form.getFieldValue('password');
   const confirPwd = form.getFieldValue('password_confirmation');
-  const isConfirmError = newPwd === confirPwd;
+  const isConfirmError = newPwd !== confirPwd;
+
   this.setState({
     isConfirmError,
   });
-  return isConfirmError;
+  return !isConfirmError;
 }
 confirmPwdBlur() {
   this.validateConfirmPwd();
@@ -46,7 +46,7 @@ render() {
   const { Item: FormItem } = Form;
   const { getFieldDecorator } = form;
   return (
-    <Panel>
+    <Panel contentClasses="pt-lg">
       <Form ref={(instance) => { this.instance = instance; }}>
 
         <FormItem
@@ -71,10 +71,14 @@ render() {
                         initialValue: '',
                         rules: [
                             getExistRule('required', 'password', locale, { required: true }),
+                            {
+                                validator: validator.password(locale),
+                            },
                         ],
-                    })(<Input type="password" pattern={passwordReg} size="small" />)
-                }<span className="error-msg">{formatMessage({ id: 'page.mySetting.pwdTip' })}</span>
-          { this.state.isConfirmError ? <span className="error-msg">{formatMessage({ id: 'page.mySetting.confirmError' }) }</span> : '' }
+                    })(<Input size="small" />)
+                }
+          <span className="form-tip">{formatMessage({ id: 'page.mySetting.pwdTip' })}</span>
+          { this.state.isConfirmError ? <span className="form-tip error-msg">{formatMessage({ id: 'page.mySetting.confirmError' }) }</span> : '' }
         </FormItem>
         <FormItem
           {...FORM_LAYOUT_CONFIG}
@@ -85,10 +89,13 @@ render() {
                         initialValue: '',
                         rules: [
                             getExistRule('required', 'password', locale, { required: true }),
+                            {
+                                validator: validator.password(locale),
+                            },
                         ],
-                    })(<Input size="small" type="password" pattern={passwordReg} onBlur={() => this.confirmPwdBlur()} />)
+                    })(<Input size="small" onBlur={() => this.confirmPwdBlur()} />)
           }
-          { this.state.isConfirmError ? <span className="error-msg">{formatMessage({ id: 'page.mySetting.confirmError' }) }</span> : '' }
+          { this.state.isConfirmError ? <span className="form-tip error-msg">{formatMessage({ id: 'page.mySetting.confirmError' }) }</span> : '' }
         </FormItem>
 
         <FormItem {...FORM_FOOTER_CONFIG}>

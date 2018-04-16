@@ -40,6 +40,7 @@ class permissionProfile extends Component {
   }
   onSubmit() {
     const { savePermission, selectedDepartment } = this.props;
+
     savePermission({ team_id: selectedDepartment.department_id, permissions: selectedDepartment.permissions, description: '' });
   }
   onCancel() {
@@ -62,7 +63,7 @@ class permissionProfile extends Component {
             onClick={() => { this.openDepartment(); }}
             value={selectedDepartment.department_name}
           />
-          <DepartmentDialog isDisplayDepartmentDialog={isDisplayDepartmentDialog} toggleDepartmentDialog={toggleDepartmentDialog} setDepartment={this.setDepartment.bind(this)} teams={teams} />
+          <DepartmentDialog isDisplayDepartmentDialog={isDisplayDepartmentDialog} toggleDepartmentDialog={toggleDepartmentDialog} setDepartment={this.setDepartment.bind(this)} teams={teams} noDepartment={true} />
           <h4 className="pt-lg pb-lg">Description</h4>
           <TextArea rows={4} />
         </div>
@@ -116,7 +117,7 @@ class permissionProfile extends Component {
           </div>
         </div>
         <div className="pb-lg pl-lg">
-          <Button type="primary" htmlType="submit" onClick={() => { this.onSubmit(); }}><Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' })}</Button>
+          <Button type="primary" htmlType="submit" disabled={_.isEmpty(`${selectedDepartment.department_id}`)} onClick={() => { this.onSubmit(); }}><Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' })}</Button>
           <Button type="danger" className="ml-sm" onClick={() => { this.onCancel(); }}><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
         </div>
       </Panel>

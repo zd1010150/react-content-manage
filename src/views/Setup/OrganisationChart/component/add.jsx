@@ -24,12 +24,13 @@ class Add extends React.Component {
     this.props.setNewDepartName(value);
   }
   render() {
-    const { intl, selectedTeamName } = this.props;
+    const { intl, selectedTeamName, newTeam } = this.props;
     const { formatMessage } = intl;
     return (
-      <div>
+      <div className="pb-lg">
         <h4>{formatMessage({ id: 'page.organChart.addNewTip' }, { department: selectedTeamName })}</h4>
         <FloatingLabelInput
+          value={newTeam.name}
           labelText={formatMessage({ id: 'page.organChart.inputDeaprmentPlaceHolder' })}
           handleChange={value => this.onSearchableInputChange(value)}
           addonAfter={<span> <Icon type="save" className="danger pr-sm" onClick={() => { this.add(); }} /> <Icon type="close" onClick={() => { this.canceal(); }} /></span>}
