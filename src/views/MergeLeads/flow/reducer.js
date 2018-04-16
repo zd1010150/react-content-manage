@@ -1,6 +1,6 @@
 import Enums from 'utils/EnumsManager';
 import { toTimezone } from 'utils/dateTimeUtils';
-import { SET_DATA, SET_MERGED_DATA } from './actionTypes';
+import { SET_DATA, SET_MERGED_DATA, SET_MASTER_RECORD } from './actionTypes';
 const { FieldTypes, MasterKey } = Enums;
 const {
   DateOnly,
@@ -61,6 +61,26 @@ const mergence = (state = initialState, action) => {
         mergedData: {
           ...state.mergedData,
           [key]: value,
+        }
+      };
+
+    
+    case SET_MASTER_RECORD:
+      const { masterId } = action.payload;
+      const masterRecord = state.data.find(record => record.id === masterId);
+      const masteredFields = {};
+      state.keys.forEach(key => {
+        if (key.isFollowMaster) {
+          masteredFields[key.key] = masterRecord[key.key];
+        }
+      });
+      
+      return {
+        ...state,
+        mergedData: {
+          ...state.mergedData,
+          ...masteredFields,
+          master: masterId,
         }
       };
 

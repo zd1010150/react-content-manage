@@ -25,7 +25,7 @@ class MergeLeads extends Component {
   }
 
   render() {
-    const { intl } = this.props;
+    const { intl, data } = this.props;
     const { formatMessage } = intl;
     const i18n = 'page.mergeLeads';
 
@@ -36,7 +36,7 @@ class MergeLeads extends Component {
         contentClasses="pb-lg pl-lg pr-lg pt-sm"
       >
         <RadiosTable />
-        <div className="mt-lg"><Buttons /></div>
+        <div className="mt-lg"><Buttons canMerge={data.length > 0} /></div>
       </Panel>
     );
   }
@@ -46,6 +46,7 @@ class MergeLeads extends Component {
 const mapStateToProps = ({ language, mergence, duplicates }) => ({
   language: global.language,
   selectedLeadIds: duplicates.selectedRowKeys,
+  data: mergence.data,
 });
 const mapDispatchToProps = {
   tryFetchLeads,

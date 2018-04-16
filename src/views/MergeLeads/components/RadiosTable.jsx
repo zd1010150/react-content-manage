@@ -9,7 +9,7 @@ import Enums from 'utils/EnumsManager';
 import styles from './index.less';
 const cx = classNames.bind(styles);
 const { MasterKey, AntdGridMax } = Enums;
-import { setMergedData } from '../flow/actions';
+import { setMergedData, setMasterRecord } from '../flow/actions';
 
 
 const defaultProps = {
@@ -30,7 +30,11 @@ class RadiosTable extends Component {
     e.stopPropagation();
     const { dataset, checked } = e.target;
     const { key, value } = dataset;
-    this.props.setMergedData(key, value);
+    if (key) {
+      const { setMergedData, setMasterRecord } = this.props;
+      if (key === MasterKey) return setMasterRecord(Number(value));
+      return setMergedData(key, value);
+    }
   }
   
   render() {
@@ -108,5 +112,6 @@ const mapStateToProps = ({ mergence }) => ({
 });
 const mapDispatchToProps = {
   setMergedData,
+  setMasterRecord,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(RadiosTable));

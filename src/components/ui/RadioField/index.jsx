@@ -5,7 +5,7 @@ import React from 'react';
 import Enums from 'utils/EnumsManager';
 import styles from './index.less';
 const cx = classNames.bind(styles);
-const { FieldTypes } = Enums;
+const { FieldTypes, MasterKey } = Enums;
 const { Lookup } = FieldTypes;
 
 
@@ -45,8 +45,10 @@ const RadioField = ({
       <Radio
         className={isFollowMaster ? '' : 'lead-theme-radio'}
         data-key={key}
-        data-value={value}
-        checked={value === mergedValue}
+        data-value={key === MasterKey ? data.id : value}
+        checked={key === MasterKey
+                  ? data.id == mergedData[MasterKey]
+                  : value === mergedValue}
         disabled={isFollowMaster}
       >
         {value}

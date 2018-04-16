@@ -6,10 +6,12 @@ import { withRouter } from 'react-router-dom';
 
 
 const defaultProps = {
+  canMerge: false,
   mergedRecord: {},
 };
 const propTypes = {
   intl: intlShape.isRequired,
+  canMerge: PropTypes.bool.isRequired,
   mergedRecord: PropTypes.shape({
     masterId: PropTypes.number,
   }).isRequired,
@@ -25,7 +27,7 @@ class Buttons extends Component {
   }
 
   render() {
-    const { intl } = this.props;
+    const { intl, canMerge } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui.button';
 
@@ -33,6 +35,7 @@ class Buttons extends Component {
       <Fragment>
         <Button
           className="lead-theme-btn mr-sm"
+          disabled={!canMerge}
           size="small"
           onClick={this.onMergeClick}
         >

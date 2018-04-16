@@ -1,5 +1,5 @@
 import { get } from 'store/http/httpAction';
-import { SET_DATA, SET_MERGED_DATA } from './actionTypes';
+import { SET_DATA, SET_MERGED_DATA, SET_MASTER_RECORD } from './actionTypes';
 
 export const setData = (originalKeys, data) => ({
       type: SET_DATA,
@@ -10,9 +10,9 @@ export const tryFetchLeads = ids => dispatch =>
     get(`/admin/leads/merge/index?${ids}`, {}, dispatch).then((data) => {
       if (data
           && !_.isEmpty(data.index)
-          && !_.isEmpty(data.index.data)
+          && data.index.data
           && !_.isEmpty(data.selector_meta)
-          && !_.isEmpty(data.selector_meta.data)) {
+          && data.selector_meta.data) {
         dispatch(setData(data.selector_meta.data, data.index.data));
       }
     });
@@ -22,4 +22,11 @@ export const tryFetchLeads = ids => dispatch =>
 export const setMergedData = (key, value) => ({
       type: SET_MERGED_DATA,
       payload: { key, value },
+    });
+
+
+//
+export const setMasterRecord = masterId => ({
+      type: SET_MASTER_RECORD,
+      payload: { masterId },
     });
