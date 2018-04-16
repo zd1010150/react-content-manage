@@ -56,7 +56,6 @@ deploy_stage:
   script:
     - ssh -T ci_deployer@$STAGING_SERVER "sudo vpnc my_tunnel; export CI_BUILD_REF=\"master\"; cd $STAGING_PROJECT_ROOT; composer ci:deploy;sudo vpnc-disconnect;"
   only:
-    - /^master$/
     - /^staging$/
   when: on_success
 
