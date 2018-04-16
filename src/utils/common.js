@@ -50,3 +50,9 @@ export const getThemeByType = type => {
           ? Enums.ObjectTypesThemesMapping[typeInLowerCase]
           : '';
 };
+
+
+export const concatArrayParams = params => {
+  if (!_.isArray(params)) return '';
+  return params.reduce((accumulator, currentValue) => `${accumulator}&ids[]=${currentValue}`, '');
+};
