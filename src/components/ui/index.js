@@ -20,6 +20,12 @@ import SubmitButtons from './SubmitButtons/index';
 import { SelectionPool, SearchPool } from './SelectionPool/index';
 import DetailTopButtons from './DetailTopButtons/index';
 import FloatingActionButtons from './FloatingActionButtons/index';
+import AssigneeModal from './AssigneeModal/index';
+import SubjectsModal from './SubjectsModal/index';
+import DeleteConfirmButton from './DeleteConfirmBtn/index';
+import ScrollTop from './ScrollTop/index';
+import FilterField from './FilterField/index';
+import FilterResultsTable from './FilterResultsTable/index';
 
 export {
   Upload,
@@ -46,4 +52,10 @@ export {
   SearchPool,
   DetailTopButtons,
   FloatingActionButtons,
+  AssigneeModal,
+  SubjectsModal,
+  DeleteConfirmButton,
+  ScrollTop,
+  FilterField,
+  FilterResultsTable,
 };

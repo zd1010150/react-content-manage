@@ -10,16 +10,18 @@ import OrganisationChart from "./Setup/OrganisationChart";
 import EmailTemplates from "./email/emailTemplates";
 import EmailTemplatesCreation from "./email/emailTemplatesCreation";
 import {
-  EmailCampaign,
-  EditCampaign,
-  NewCampaign
-} from "./email/emailCampaign";
-import NewEmail from "./email/newEmail";
-import PermissionProfile from "./Setup/PermissionProfile";
-import Fields from "./Setup/Fields";
-import ObjectDetails from "./ObjectDetails/index";
-import FindDuplicates from "./FindDuplicates/index";
-import Layouts from "./Setup/PageLayout";
+    EmailCampaign,
+    EditCampaign,
+    NewCampaign
+} from './email/emailCampaign';
+import NewEmail from './email/newEmail';
+import PermissionProfile from './Setup/PermissionProfile';
+import Fields from './Setup/Fields';
+import ObjectDetails from './ObjectDetails/index';
+import FindDuplicates from './FindDuplicates/index';
+import Layouts from './Setup/PageLayout';
+import ObjectTask from './ObjectTask/index';
+import ClientAttachments from './ClientAttachments/index';
 
 export {
   Dashboard,
@@ -41,5 +43,7 @@ export {
   Fields,
   ObjectDetails,
   FindDuplicates,
-  Layouts
+  Layouts,
+  ObjectTask,
+  ClientAttachments
 };

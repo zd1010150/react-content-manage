@@ -47,7 +47,6 @@ class LoginForm extends Component {
             </Button>
           </FormItem>
         </div >
-        <CopyRight />
       </Form>
     );
   }

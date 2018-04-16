@@ -11,19 +11,19 @@ const toolbar = (state = initialState, action) => {
       // TODO: to be removed, only for test purpose
       const newTools = [
         {
-          code: 'convert',
+          code: 'Convert',
           sequence: 0,
         },
         {
-          code: 'delete',
+          code: 'Delete',
           sequence: 4,
         },
         {
-          code: 'sharing',
+          code: 'Sharing',
           sequence: 3,
         },
         {
-          code: 'findDuplicates',
+          code: 'FindDuplicates',
           sequence: 1,
         },
       ];

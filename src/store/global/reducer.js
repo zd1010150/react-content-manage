@@ -55,6 +55,25 @@ const mapSettingData = (state, data) => Object.assign({}, state, {
   model: data.model,
   conditions: data.list_view.conditions,
   assignOptions: data.list_view.assign_options,
+  // statuses: data.statuses,
+  statuses: [{
+    id: 0,
+    name: 'default',
+  }, {
+    id: 1,
+    name: 'complete',
+  }],
+  // priorities: data.priorities,
+  priorities: [{
+    id: 0,
+    name: 'high',
+  }, {
+    id: 1,
+    name: 'medium',
+  }, {
+    id: 2,
+    name: 'low',
+  }],
 });
 const settings = (state = {
   timeZones: [],
@@ -67,6 +86,8 @@ const settings = (state = {
   teams: [],
   conditions: [],
   assignOptions: [],
+  statuses: [],
+  priorities: [],
 }, action) => {
   switch (action.type) {
     case SET_GLOBAL_SETTING:
@@ -78,8 +99,10 @@ const settings = (state = {
   }
 };
 
-const companyLogo = (state = 'https://www.seoclerk.com/pics/558390-11FO8A1505384509.png', action) => {
+const companyLogo = (state = '', action) => {
   switch (action.type) {
+    case SET_GLOBAL_SETTING:
+      return (action.settings.company && action.settings.company.logoUrl) || '';
     case SET_LOGO:
       return action.logo;
     default:

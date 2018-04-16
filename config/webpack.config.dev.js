@@ -14,7 +14,7 @@ const paths = require('./paths');
 const lessToJs = require('less-vars-to-js');
 // 读取theme配置文件 https://ant.design/docs/react/customize-theme-cn#定制方式
 const themer = lessToJs(fs.readFileSync(`${paths.themeLess}/theme.less`, 'utf8'));
-
+const Visualizer = require('webpack-visualizer-plugin');
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 const publicPath = '/';
@@ -93,6 +93,9 @@ module.exports = {
       new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
     ],
   },
+  externals: {
+    lodash: '_',
+  },
   module: {
     strictExportPresence: true,
     rules: [
@@ -145,6 +148,7 @@ module.exports = {
               // directory for faster rebuilds.
               cacheDirectory: true,
               plugins: [
+                'syntax-dynamic-import',
                 ['import', {
                   libraryName: 'antd',
                   style: false,
@@ -294,6 +298,9 @@ module.exports = {
     ],
   },
   plugins: [
+    new Visualizer({
+      filename: './statistics.html',
+    }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">

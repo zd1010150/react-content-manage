@@ -69,7 +69,7 @@ class usersTableView extends React.Component {
         render: record => (
           <span>
             <Icon type="edit" onClick={() => this.edit(record.id)} />
-            <Icon type="delete" className="danger pl-lg" onClick={() => this.delete(record.id)} />
+            <Icon type="delete" className="danger pl-sm" onClick={() => this.delete(record.id)} />
           </span>
         ),
       }, {
@@ -108,7 +108,7 @@ class usersTableView extends React.Component {
       },
     };
     return (
-      <Panel panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions} contentClasses="pl-lg pr-lg pt-lg pb-lg">
+      <Panel panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions} contentClasses="pt-lg pb-lg">
         <FloatingLabelInput
           labelText={formatMessage({ id: 'page.users.searchUser' })}
           handleSearch={(value) => {

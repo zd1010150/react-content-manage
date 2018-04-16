@@ -1,0 +1,29 @@
+@import "~assets/less/theme.less";
+
+.hint {
+  color: #8b91a0;
+  line-height: 40px;
+}
+
+.subjectsList {
+  list-style: none;
+  padding: 0;
+
+  .subject {
+    padding: 5px 10px;
+    font-weight: bold;
+    
+    &:hover {
+      background-color: @secondary-dark-color; 
+      color: @crm-white;
+      cursor: pointer;
+    }
+  }
+
+  .deleteIcon {
+    color: @crm-red;
+    float: right;
+    line-height: 18px;
+    cursor: pointer;
+  }
+}

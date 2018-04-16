@@ -13,6 +13,7 @@ const cx = classNames.bind(styles);
 
 const spec = {
   beginDrag(props) {
+    console.log("dandan---- tool begin drag:", props.code);
     return {
       code: props.code,
       sourceCode: props.code,
@@ -37,11 +38,11 @@ class Tool extends React.Component {
       connectDragSource, isDragging, intl, code, theme,
     } = this.props;
     const { formatMessage } = intl;
-    return connectDragSource(<div className="module-panel">
-      <Button size="small" className={classNames(`${theme}-theme-btn`, 'mr-lg', isDragging ? cx('field-btn-dragging') : '')}>
+    return connectDragSource(<div>
+      <div className={classNames('mr-sm', cx('tool-btn'), isDragging ? cx('field-btn-dragging') : '')}>
 
         {formatMessage({ id: `global.ui.detailTools.${code}` })}
-      </Button>
+      </div>
     </div>);
   }
 }

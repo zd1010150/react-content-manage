@@ -5,13 +5,23 @@ import { Link } from 'react-router-dom';
 import { Button, Popconfirm } from 'antd';
 
 import Enums from 'utils/EnumsManager';
-
-// presets
 const { Leads, Accounts, Opportunities, Report, Email } = Enums.ObjectTypes;
-
 const { Convert, Delete, Sharing, FindDuplicates } = Enums.DetailTools;
 
-const renderToolByCode = (code, formatMessage, clickHandler) => {
+const getSubPathByCode = code => {
+  switch(code) {
+    case Convert:
+      return 'convert/find';
+    case Sharing:
+      return 'sharing';
+    case FindDuplicates:
+      return 'find';
+    default:
+      return '';
+  }
+};
+
+const renderToolByCode = (id, type, code, formatMessage, clickHandler) => {
   const i18nPrefix = 'global.ui';
   const text = formatMessage({ id: `${i18nPrefix}.detailTools.${code}` });
 
@@ -19,16 +29,15 @@ const renderToolByCode = (code, formatMessage, clickHandler) => {
     case Convert:
     case Sharing:
     case FindDuplicates:
-      const link = '';
-      // const link = `../../${type}/${path}/${id}`;
       return (
-        <Button
-          className="ml-sm"
-          key={code}
-          size="small"
-        >
-          <Link to={link}>{text}</Link>
-        </Button>
+        <Link key={code} to={`/${type}/${getSubPathByCode(code)}/${id}`}>
+          <Button
+            className="ml-sm"
+            size="small"
+          >
+            {text}
+          </Button>
+        </Link>
       );
     case Delete:
       return (
@@ -80,7 +89,7 @@ const DetailTopButtons = ({ intl, type, tools, id, onDelete }) => {
     case Accounts:
       return (
         <Fragment>
-          {tools.map(tool => renderToolByCode(tool.code, formatMessage, _onDelete))}
+          {tools.map(tool => renderToolByCode(id, type, tool.code, formatMessage, _onDelete))}
         </Fragment>
       );
     case Opportunities:

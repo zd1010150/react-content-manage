@@ -4,18 +4,22 @@ import PropTypes from 'prop-types';
 import { Modal, Row, Col, Icon } from 'antd';
 import { intlShape, injectIntl } from 'react-intl';
 import { PAGE_ACTION, objTypeAndClassTypeMap } from 'config/app.config';
-import { CardContainer, FloatingLabelInput } from 'components/ui/index';
+import { CardContainer, FloatingLabelInput, DeleteConfirmDialog } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
 import { PICKLIST_OPTION_EDIT } from '../../flow/pageAction';
 
 const { confirm } = Modal;
 class PickListValue extends React.Component {
-  componentDidMount() {
-    const { action, setAddedFieldAttr } = this.props;
-    if (action === PAGE_ACTION.ADD) {
-      setAddedFieldAttr({ picklist: [] });
+    state={
+      deleteDialogVisible: false,
+      deleteId: '',
     }
-  }
+    componentDidMount() {
+      const { action, setAddedFieldAttr } = this.props;
+      if (action === PAGE_ACTION.ADD) {
+        setAddedFieldAttr({ picklist: [] });
+      }
+    }
     onIconClick = (e) => {
       const { id } = e.currentTarget.dataset;
       const { type } = e.target.dataset;
@@ -28,32 +32,37 @@ class PickListValue extends React.Component {
           this.onDeative(id);
           break;
         case Edit:
-        default:
           this.onEdit(id);
+          break;
+        default:
+          break;
       }
     }
     onDelete(id) {
       const {
-        action, deletePickListValue, editObject, setReplaceDialog,
+        action, editObject, setReplaceDialog,
       } = this.props;
       const isEdit = action === PAGE_ACTION.EDIT;
       if (!isEdit) {
-        const { formatMessage } = this.props.intl;
-        confirm({
-          title: formatMessage({ id: 'global.ui.dialog.deleteTitle' }),
-          onOk() {
-            const newPickList = editObject.picklist.slice();
-            newPickList.splice(id, 1);
-            deletePickListValue();
-          },
+        this.setState({
+          deleteDialogVisible: true,
+          deleteId: id,
         });
       } else {
+        const replacedValue = editObject.picklist.filter(v => `${v.id}` === `${id}`)[0];
         setReplaceDialog({
           options: editObject.picklist.filter(v => `${v.id}` !== `${id}`),
           isVisible: true,
           replacedValId: id,
+          replacedValName: replacedValue.option_value,
         });
       }
+    }
+    confirmDelete() {
+      const { editObject, deletePickListValue } = this.props;
+      const newPickList = editObject.picklist.slice();
+      newPickList.splice(this.state.deleteId, 1);
+      deletePickListValue();
     }
     onDeative(id) {
       const { updatePickListValueStatusToRemote, fetchFieldDetailInfo, editObject } = this.props;
@@ -93,6 +102,9 @@ class PickListValue extends React.Component {
         fetchFieldDetailInfo,
       } = this.props;
       const isEdit = action === PAGE_ACTION.EDIT;
+      if (_.isEmpty(val)) {
+        return;
+      }
       if (!isEdit) {
         addPickListValue(val);
       } else {
@@ -139,6 +151,9 @@ class PickListValue extends React.Component {
             />
 
           </Col>
+          <DeleteConfirmDialog visible={this.state.deleteDialogVisible} onOk={() => this.confirmDelete()} onCancel={() => this.setState({ deleteDialogVisible: false })} >
+            <h3>{ formatMessage({ id: 'global.ui.dialog.deleteTitle' })}</h3>
+          </DeleteConfirmDialog>
         </Row>
 
 
@@ -161,7 +176,6 @@ PickListValue.propTypes = {
   deletePickListValue: PropTypes.func.isRequired,
   addPickListValue: PropTypes.func.isRequired,
   sortPicklistValueToRemote: PropTypes.func.isRequired,
-  replacePickListValueToRemote: PropTypes.func.isRequired,
   addPickListValueToRemote: PropTypes.func,
   setReplaceDialog: PropTypes.func,
   updatePickListValueStatusToRemote: PropTypes.func,

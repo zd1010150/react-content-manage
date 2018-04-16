@@ -7,18 +7,34 @@ const defaultProps = {
 };
 const propTypes = {
   intl: intlShape.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   visible: PropTypes.bool.isRequired,
-  onOk: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
+  onOk: PropTypes.func,
+  onCancel: PropTypes.func,
 };
 
-const StyledModal = ({ intl, children, ...other }) => {
+const StyledModal = ({ intl, children, onCancel, onOk, ...other }) => {
+  
+  const _onCancel = $ => {
+    if (_.isFunction(onCancel)) {
+      onCancel();
+    }
+  };
+
+  const _onOk = $ => {
+    if (_.isFunction(onOk)) {
+      onOk();
+    }
+  };
+
   const { formatMessage } = intl;
+
   return (
     <Modal
       className="customizedModal"
-      {...other}
+      { ...other }
+      onCancel={_onCancel}
+      onOk={_onOk}
     >
       {children}
     </Modal>

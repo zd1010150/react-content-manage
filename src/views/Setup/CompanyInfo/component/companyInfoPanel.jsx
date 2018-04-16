@@ -37,26 +37,26 @@ class companyInfoPanel extends React.Component {
     }));
     return (
       <Panel panelTitle={formatMessage({ id: 'page.comInfo.organizationDetail' })}>
-        <div className="info-display-table">
+        <div className="info-display-table pb-sm">
           <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
-                <Col className="gutter-row field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.name' }) }:</span></Col>
-                <Col className="gutter-row field-value" span={12}> <EditBox isShowStatuLabel={false} spanClasses={cx('edit-box-span')} inputClasses={cx('edit-box-input')} type="input" value={company.name} onBlur={value => this.onBlur('name', value)} /></Col>
+                <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.name' }) }:</span></Col>
+                <Col className=" field-value" span={12}> <EditBox isShowStatuLabel={false} spanClasses={cx('edit-box-span')} inputClasses={cx('edit-box-input')} type="input" value={company.name} onBlur={value => this.onBlur('name', value)} /></Col>
               </Row>
             </Col>
             <Col className="gutter-row" span={12}>
               <Row>
-                <Col className="gutter-row field-label" span={12}> <span className="form-label">{ formatMessage({ id: 'page.comInfo.phone' }) }:</span></Col>
-                <Col className="gutter-row field-value" span={12}>  <EditBox isShowStatuLabel={false} spanClasses={cx('edit-box-span')} inputClasses={cx('edit-box-input')} type="input" value={company.phone} onBlur={value => this.onBlur('phone', value)} /></Col>
+                <Col className=" field-label" span={12}> <span className="form-label">{ formatMessage({ id: 'page.comInfo.phone' }) }:</span></Col>
+                <Col className=" field-value" span={12}>  <EditBox isShowStatuLabel={false} spanClasses={cx('edit-box-span')} inputClasses={cx('edit-box-input')} type="input" value={company.phone} onBlur={value => this.onBlur('phone', value)} /></Col>
               </Row>
             </Col>
           </Row>
           <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
-                <Col className="gutter-row field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.fax' }) }:</span></Col>
-                <Col className="gutter-row field-value" span={12}>
+                <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.fax' }) }:</span></Col>
+                <Col className=" field-value" span={12}>
                   <EditBox
                     isShowStatuLabel={false}
                     spanClasses={cx('edit-box-span')}
@@ -70,8 +70,8 @@ class companyInfoPanel extends React.Component {
             </Col>
             <Col className="gutter-row" span={12}>
               <Row>
-                <Col className="gutter-row field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.address' }) }:</span></Col>
-                <Col className="gutter-row field-value" span={12}>
+                <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.address' }) }:</span></Col>
+                <Col className=" field-value" span={12}>
                   <EditBox
                     isShowStatuLabel={false}
                     spanClasses={cx('edit-box-span')}
@@ -87,8 +87,8 @@ class companyInfoPanel extends React.Component {
           <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
-                <Col className="gutter-row field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.country' }) }:</span></Col>
-                <Col className="gutter-row field-value" span={12}>
+                <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.country' }) }:</span></Col>
+                <Col className=" field-value" span={12}>
                   <EditBox
                     isShowStatuLabel={false}
                     spanClasses={cx('edit-box-span')}
@@ -103,8 +103,8 @@ class companyInfoPanel extends React.Component {
             </Col>
             <Col className="gutter-row" span={12}>
               <Row>
-                <Col className="gutter-row field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.fiscalYearStarts' }) }:</span></Col>
-                <Col className="gutter-row field-value" span={12}>
+                <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.fiscalYearStarts' }) }:</span></Col>
+                <Col className=" field-value" span={12}>
                   <EditBox
                     isShowStatuLabel={false}
                     spanClasses={cx('edit-box-span')}
@@ -121,8 +121,8 @@ class companyInfoPanel extends React.Component {
           <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
-                <Col className="gutter-row field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.timeZone' }) }:</span></Col>
-                <Col className="gutter-row field-value" span={12}>
+                <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.timeZone' }) }:</span></Col>
+                <Col className=" field-value" span={12}>
                   <EditBox
                     isShowStatuLabel={false}
                     spanClasses={cx('edit-box-span')}
@@ -137,8 +137,8 @@ class companyInfoPanel extends React.Component {
             </Col>
             <Col className="gutter-row" span={12}>
               <Row>
-                <Col className="gutter-row field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.usedDataSpace' }) }:</span></Col>
-                <Col className="gutter-row field-value" span={12}>
+                <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.usedDataSpace' }) }:</span></Col>
+                <Col className=" field-value" span={12}>
                   <EditBox
                     isShowStatuLabel={false}
                     spanClasses={cx('edit-box-span')}
@@ -154,8 +154,8 @@ class companyInfoPanel extends React.Component {
           <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
-                <Col className="gutter-row field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.fileStorage' }) }:</span></Col>
-                <Col className="gutter-row field-value" span={12}><span className={cx('edit-box-span')}>{ company.file_storage } </span>
+                <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.fileStorage' }) }:</span></Col>
+                <Col className=" field-value" span={12}><span className={cx('edit-box-span')}>{ company.file_storage } </span>
                   <EditBox
                     isShowStatuLabel={false}
                     spanClasses={cx('edit-box-span')}
@@ -169,8 +169,8 @@ class companyInfoPanel extends React.Component {
             </Col>
             <Col className="gutter-row" span={12}>
               <Row>
-                <Col className="gutter-row field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.lastModify' }) }:</span></Col>
-                <Col className="gutter-row field-value" span={12}>
+                <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.lastModify' }) }:</span></Col>
+                <Col className=" field-value" span={12}>
                   <EditBox
                     isShowStatuLabel={false}
                     spanClasses={cx('edit-box-span')}
@@ -186,8 +186,8 @@ class companyInfoPanel extends React.Component {
           <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
-                <Col className="gutter-row field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.language' }) }:</span></Col>
-                <Col className="gutter-row field-value" span={12}>
+                <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.language' }) }:</span></Col>
+                <Col className=" field-value" span={12}>
                   <EditBox isShowStatuLabel={false} spanClasses={cx('edit-box-span')} inputClasses={cx('edit-box-input')} type="select" options={languageOptions} value={company.language} onBlur={value => this.onBlur('language', value, true, languages)} />
                 </Col>
               </Row>

@@ -3,6 +3,7 @@ import _ from 'lodash';
 import {
   SETUP_FIELDS_SET_CURRENT_OBJECT,
   SETUP_FIELDS_SET_ADDED_ATTR,
+  SETUP_FIELDS_SET_FIELD_ATTR,
   SETUP_FIELDS_RESET_ADDED_ATTR,
   SETUP_FIELDS_SET_OBJECT_LAYOUT,
   SETUP_FIELDS_SET_FIELD_LABEL_IS_DUPLICATE,
@@ -38,6 +39,8 @@ const addedField = (state = { ...originState }, action) => {
     case SETUP_FIELDS_SET_CURRENT_OBJECT:
       if (!_.isEmpty(payload.objType)) { return Object.assign({}, state, { objType: payload.objType }); }
       return state;
+    case SETUP_FIELDS_SET_FIELD_ATTR:
+      return Object.assign({}, state, { field: Object.assign({}, state.field, { ...payload }) });
     case SETUP_FIELDS_SET_ADDED_ATTR:
       return Object.assign({}, state, { ...payload });
     case SETUP_FIELDS_RESET_ADDED_ATTR:

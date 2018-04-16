@@ -4,6 +4,7 @@ import {
 
 const layout = (state = {
   id: '',
+  name: '',
 }, action) => {
   const { type, ...payload } = action;
   switch (type) {

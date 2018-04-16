@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DragLayer } from 'react-dnd';
 import { ItemTypes } from '../../../flow/edit/itemType';
-import { MODULES, TOOLS, SECTIONS } from '../../../flow/edit/operateType';
 import BoxDragPreview from './BoxDragPreview';
 
 const layerStyles = {
@@ -49,9 +48,11 @@ class CustomDragLayer extends Component {
     const { formatMessage } = intl;
     switch (type) {
       case ItemTypes.MODULE:
-        return <BoxDragPreview title={formatMessage({ id: `global.ui.detailModules.${item.code}` })} canDrop={canDrop} type={MODULES} theme={theme} />;
+        return <BoxDragPreview title={formatMessage({ id: `global.ui.detailModules.${item.code}` })} canDrop={canDrop} type={ItemTypes.MODULE} theme={theme} />;
+      case ItemTypes.SECTION_FIELD:
+        return <BoxDragPreview title={item.label} canDrop={canDrop} type={ItemTypes.SECTION_FIELD} theme={theme} />;
       case ItemTypes.TOOL:
-        return <BoxDragPreview title={formatMessage({ id: `global.ui.detailTools.${item.code}` })} canDrop={canDrop} type={TOOLS} theme={theme} />;
+        return <BoxDragPreview title={formatMessage({ id: `global.ui.detailTools.${item.code}` })} canDrop={canDrop} type={ItemTypes.TOOL} theme={theme} />;
       default:
         return null;
     }
@@ -67,7 +68,7 @@ class CustomDragLayer extends Component {
     return (
       <div style={layerStyles}>
         <div style={getItemStyles(this.props)}>
-         {this.renderItem(itemType, item, canDrop, theme, intl)}
+          {this.renderItem(itemType, item, canDrop, theme, intl)}
         </div>
       </div>
     );

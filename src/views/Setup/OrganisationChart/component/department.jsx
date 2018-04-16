@@ -10,6 +10,7 @@ class Department extends React.Component {
   state={
     deleteDialogVisible: false,
     deleteId: '',
+    expandedKeys: null,
   }
   confirmDelete() {
     const { deleteDepartment } = this.props;
@@ -18,7 +19,9 @@ class Department extends React.Component {
       deleteDialogVisible: false,
     });
   }
-
+  onExpand(expandedKeys) {
+    this.setState({ expandedKeys });
+  }
   delete = (id) => {
     this.setState({
       deleteDialogVisible: true,
@@ -37,7 +40,9 @@ class Department extends React.Component {
     this.props.setSelectedTeam(selectedKeys[0]);
   }
   render() {
-    const { teams, setTeams, setSelectedTeam } = this.props;
+    const {
+      teams, setTeams, setSelectedTeam, teamIds,
+    } = this.props;
     return (
       <div>
         <DefaultDepartment onSelect={(id) => { setSelectedTeam(id); }} />
@@ -47,11 +52,14 @@ class Department extends React.Component {
           canDelete
           canModifyTeamName
           modifyTeamName={(newTeamName, id) => this.modifyTeamName(newTeamName, id)}
+          onExpand={expandedKeys => this.onExpand(expandedKeys)}
           onDelete={id => this.delete(id)}
           onAdd={parentId => this.add(parentId)}
           teams={teams}
           setTeams={setTeams}
+          expandedKeys={this.state.expandedKeys || teamIds}
           defaultExpandAll
+          autoExpandParent={false}
         />
         <DeleteConfirmDialog visible={this.state.deleteDialogVisible} onOk={() => this.confirmDelete()} onCancel={() => this.setState({ deleteDialogVisible: false })} >
           <h3>一旦删除，就都无法恢复</h3>
@@ -73,6 +81,7 @@ Department.propTypes = {
   deleteDepartment: PropTypes.func.isRequired,
   setAddVisible: PropTypes.func.isRequired,
   updateTeam: PropTypes.func.isRequired,
+  teamIds: PropTypes.array.isRequired,
 };
 
 export default injectIntl(Department);
