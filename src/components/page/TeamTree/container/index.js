@@ -131,10 +131,11 @@ class teamTree extends React.Component {
   }
   render() {
     const {
-      checkable, draggable, teams, defaultExpandAll, defaultSelectedKeys, defaultExpandedKeys, autoExpandParent, defaultCheckedKeys,
+      checkable, draggable, teams, defaultExpandAll, defaultSelectedKeys, defaultExpandedKeys, autoExpandParent, defaultCheckedKeys, expandedKeys,
     } = this.props;
     return (
       <Tree
+        expandedKeys={expandedKeys}
         defaultExpandAll={defaultExpandAll}
         draggable={draggable}
         checkable={checkable}
@@ -186,6 +187,7 @@ teamTree.defaultProps = {
   defaultExpandedKeys: [],
   defaultCheckedKeys: [],
   defaultSelectedKeys: [],
+  expandedKeys: [],
 };
 teamTree.propTypes = {
   teams: PropTypes.array.isRequired,
@@ -214,6 +216,7 @@ teamTree.propTypes = {
   defaultExpandedKeys: PropTypes.array,
   defaultCheckedKeys: PropTypes.array,
   defaultSelectedKeys: PropTypes.array,
+  expandedKeys: PropTypes.array,
 };
 
 export default teamTree;

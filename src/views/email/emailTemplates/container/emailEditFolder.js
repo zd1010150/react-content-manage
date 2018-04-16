@@ -1,100 +1,161 @@
 /* eslint-disable react/prop-types,no-shadow */
 import React, {Fragment} from 'react';
-import { connect } from 'react-redux';
-import { intlShape, injectIntl } from 'react-intl';
-import { Row, Col, Button, Icon, Radio, Input } from 'antd';
-import { Panel } from 'components/ui/index';
-import { setTeams } from 'store/global/action';
-import { updateUsers } from 'views/Setup/Users/flow/action';
-import classNames from 'classnames/bind';
-import styles from '../emailTemplates.less';
+import {connect} from 'react-redux';
+import {intlShape, injectIntl} from 'react-intl';
+import {Panel} from 'components/ui/index';
 import {
     setEditFolderViewVisible,
     setEditFolderData,
-    deleteUserFolderData
-} from '../flow/action';
-import { getTeamUsers, getSelectedTeamName } from '../flow/reselect';
-const cx = classNames.bind(styles);
-const foldersData = {
-    userFolders: [{
-        id: 0,
-        name: 'genaral folder',
-        isShared: true,
-        templates: [{
-            name: 'market',
-            createdAt: '2018-01-02',
-            modifiedDate: '2018-03-02',
-            createBy: 'Jimmy',
-            Description: 'for markdet use'
-        }]
-    },
-        {
-            id: 1,
-            name: 'private folder',
-            isShared: false,
-            templates: [{
-                name: 'sales',
-                createdAt: '2018-01-02',
-                modifiedDate: '2018-03-02',
-                createBy: 'Jimmy',
-                Description: 'for sales use'
-            }]
-        }],
-    sharedFolders: [{
-        name: 'ACY folder',
-        sharedBy: 'Jimmy',
-        templates: [{
-            name: 'ACY',
-            createdAt: '2018-01-02',
-            modifiedDate: '2018-03-02',
-            createBy: 'Jimmy',
-            Description: 'for ACY use'
-        }]
-    }]
-}
-const FolderInput = ({item, editFolders, setEditFolderData, deleteUserFolderData})=>{
-    let canEdit = false;
-    editFolders.forEach((folder)=>{
-        if(folder.id === item.id){
-            canEdit = true;
-        }
-    })
-   return <Col className="pl-lg gutter-row field-label" span={6}>
-       <div onClick={()=>{deleteUserFolderData(item.id)}}>
-           <Icon className={cx('folder-icon')} type="folder" /><span className="pl-sm"><Icon type="delete"/></span>
-       </div>
-       <Input size="small" disabled={!canEdit} addonAfter={!canEdit && <Icon onClick={() => {setEditFolderData(item)}} type="edit" />} defaultValue={item.name} />
-   </Col>
-}
+    deleteUserFolderData,
+    sortValues,
+    updateFolderName,
+    createUserFolder,
+    uploadFolders
+} from '../../flow/action';
+import {EditFolder} from '../component';
 
-const ActionButtonGroup = ({setEditFolderViewVisible, formatMessage}) => {
-    return <div className="pt-md pl-md pb-md">
-        <Button className="email-theme-btn mr-md" onClick={() => {setEditFolderViewVisible(false)}}><Icon type="save" />{ formatMessage({ id: 'page.emailTemplates.save' }) }</Button>
-        <Button onClick={() => {setEditFolderViewVisible(false)}}><Icon type="close" />{ formatMessage({ id: 'page.emailTemplates.cancel' }) }</Button>
-    </div>
-}
+
+import {getTeamUsers, getSelectedTeamName} from '../../flow/reselect';
 
 class EmailTemplateEditFolder extends React.Component {
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            cards: props.userFolders,
+            selectIndex: -1,
+            isOtherDragging: false,
+            tempId: -1
+        };
     }
+
+    componentWillReceiveProps(nextProps) {
+        const {cards} = this.state;
+        if (nextProps.userFolders.length === this.props.userFolders.length + 1) {
+            const last = nextProps.userFolders[nextProps.userFolders.length - 1];
+            return this.setState({
+                cards: [...cards, last],
+            });
+        }
+        return this.setState({
+            cards: [...nextProps.userFolders],
+        });
+    }
+
+    setSelectedCards = (index) => {
+        const {cards} = this.state;
+        const selectedCards = cards.map((card, i) => {
+            card.selected = i === Number(index);
+            return card;
+        });
+        const {onSelect} = this.props;
+        if (onSelect && typeof onSelect === 'function') {
+            onSelect(selectedCards.filter(card => card.selected));
+        }
+        return selectedCards;
+    }
+
+    handleItemSelection = e => {
+        const {index} = e.target.dataset;
+
+        if (!e.shiftKey) {
+            return this.setState({
+                cards: this.setSelectedCards(index),
+                selectIndex: index
+            });
+        }
+    }
+
+    setDragging = () => {
+        const {selectIndex} = this.state;
+        this.setState({
+            isOtherDragging: true,
+            cards: this.setSelectedCards(selectIndex),
+        });
+    }
+
+    onDrop = sortedArray => {
+        // console.log('dropped ----- current order is:');
+        // console.log(sortedArray);
+        // const ids = sortedArray.map(elem => elem.id);
+        this.props.sortValues(sortedArray);
+    }
+
+    clearDragging = () => {
+        this.onDrop(this.state.cards);
+        this.setState({isOtherDragging: false});
+    }
+
+    // Swap algorithm
+    // According to how the drag function is worked (in other words, when moveCard is being called), we only swap with one adjacent card every time,
+    swapCards = (cards, start, newStart) => {
+        const cardsCopy = _.cloneDeep(cards);
+        const dragCards = cardsCopy.splice(start, 1);
+        // Insert dragged card into new positions
+        cardsCopy.splice(newStart, 0, dragCards[0]);
+        return cardsCopy;
+    }
+
+    moveCard = (dragIndex, hoverIndex) => {
+        const {selectIndex, cards} = this.state;
+        // Don't replace items with other selected items
+        if (hoverIndex === selectIndex) {
+            return;
+        }
+
+        const newStartIndex = hoverIndex;
+        const newCards = this.swapCards(cards, selectIndex, newStartIndex);
+
+        this.setState({
+            selectIndex: newStartIndex,
+            cards: newCards,
+            isOtherDragging: true,
+        });
+    }
+
+    editFolderName = (e, item) => {
+        this.props.updateFolderName({id: item.id, name: e.target.value})
+    }
+
+    saveEditFolder = () => {
+        const {setEditFolderViewVisible, userFolders, uploadFolders} = this.props;
+        let canSave = true;
+        if(_.uniqBy(userFolders, 'name').length !== userFolders.length){
+            alert('same file name')
+            return false
+        }
+        userFolders.map((item, key) => {
+            if(item.name === ''){
+                alert('empty file name exist')
+                canSave = false;
+                return true
+            }
+        })
+        if(canSave){
+            uploadFolders(()=>{setEditFolderViewVisible(false)});
+        }
+    }
+
     render() {
-        const { formatMessage } = this.props.intl;
-        const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteUserFolderData} = this.props;
-        const actionsRight = <div><Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {}}><Icon type="plus" />{ formatMessage({ id: 'page.emailTemplates.newFolder' }) }</Button></div>;
+        const {formatMessage} = this.props.intl;
+        const {isOtherDragging} = this.state;
+
+        const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteUserFolderData, createUserFolder, ...others} = this.props;
         return (
-            <Panel panelTitle={formatMessage({ id: 'page.emailTemplates.editFolderTitle' })} contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('email-panel-content')}`} actionsRight={actionsRight}>
-                <Row className={cx('folders')}>
-                    {userFolders.map((item)=>
-                        <FolderInput
-                            key={item.id}
-                            item={item}
-                            editFolders={editFolders}
-                            setEditFolderData={setEditFolderData}
-                            deleteUserFolderData={deleteUserFolderData}/>
-                    )}
-                </Row>
-                <ActionButtonGroup setEditFolderViewVisible={setEditFolderViewVisible} formatMessage={formatMessage}/>
-            </Panel>
+            <EditFolder userFolders={userFolders}
+                        editFolders={editFolders}
+                        setEditFolderViewVisible={setEditFolderViewVisible}
+                        setEditFolderData={setEditFolderData}
+                        deleteUserFolderData={deleteUserFolderData}
+                        createUserFolder={createUserFolder}
+                        isOtherDragging={isOtherDragging}
+                        formatMessage={formatMessage}
+                        editFolderName={this.editFolderName}
+                        moveCard={this.moveCard}
+                        clearDragging={this.clearDragging}
+                        setDragging={this.setDragging}
+                        handleItemSelection={this.handleItemSelection}
+                        saveEditFolder={this.saveEditFolder}
+                        {...others}/>
         );
     }
 }
@@ -104,24 +165,25 @@ EmailTemplateEditFolder.propTypes = {
 };
 
 
-const mapStateToProps = ({ global, setup }) => {
-    const { emailTemplates } = setup;
+const mapStateToProps = ({global, setup}) => {
+    const {emailTemplates} = setup;
     return {
-        teams: global.settings.teams,
-        teamUsers: getTeamUsers({ emailTemplates }),
+        teamUsers: getTeamUsers({emailTemplates}),
         isEditFolderViewVisible: emailTemplates.ui.isEditFolderViewVisible,
         editFolders: emailTemplates.editFolders,
-        userFolders:emailTemplates.userFolders
+        userFolders: emailTemplates.userFolders
     };
 };
 
 const mapDispatchToProps = {
-    setTeams,
-    updateUsers,
     setEditFolderViewVisible,
     setEditFolderData,
-    deleteUserFolderData
+    deleteUserFolderData,
+    sortValues,
+    updateFolderName,
+    createUserFolder,
+    uploadFolders
 };
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateEditFolder));
+export default connect(mapStateToProps, mapDispatchToProps)(EmailTemplateEditFolder);
 

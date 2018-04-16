@@ -29,9 +29,11 @@ const RightActions = ({ intl, theme, permissions }) => {
     <Fragment>
       {theme !== 'lead' ? 
         null : (
-          <Button {...btnSettings} >
-            <Link to={`/leads/${Enums.PhantomId}`}>{btnWords}</Link>
-          </Button>
+          <Link to={`/leads/${Enums.PhantomId}`}>
+            <Button {...btnSettings} >
+              {btnWords}
+            </Button>
+          </Link>
         )
       }
       <Button {...btnSettings} disabled >

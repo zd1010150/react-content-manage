@@ -14,7 +14,8 @@
    "globals": {
      "window": true,
      "navigator": true,
-     "__API_URL__": true
+     "__API_URL__": true,
+     "_": false
    },
    "settings": {
      "import/resolver": {

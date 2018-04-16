@@ -55,6 +55,7 @@ export const FORM_FOOTER_CONFIG = {
 export const MINIMUM_YEAR = 1990;
 export const DEFAULT_DEPAREMTN = { id: -1, name: 'No Department' };
 
+/* 后端定义 */
 export const OBJECT_TYPES = {
   leads: 'leads',
   accounts: 'accounts',

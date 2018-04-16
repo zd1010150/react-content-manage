@@ -92,9 +92,10 @@ class AssignDepartmentContainer extends React.Component {
     const theme = objTypeAndClassTypeMap[objectType];
     return (
       <Panel panelClasses={`${theme}-theme-panel`} panelTitle={formatMessage({ id: 'page.layouts.pageLayoutAssignment' })}>
-        <Row className="pt-lg pb-lg pl-lg">
+        <Row className="pl-lg">
           <Col span={24}>
             <Tree
+              className="large-team-tree"
               defaultExpandAll
               autoExpandParent={false}
               expandedKeys={this.state.expandedKeys || teamIds}

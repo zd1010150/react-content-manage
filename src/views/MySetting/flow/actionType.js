@@ -1,0 +1,2 @@
+
+export const MY_SETTING_SET_AVATOR = 'MY_SETTING_SET_AVATOR';

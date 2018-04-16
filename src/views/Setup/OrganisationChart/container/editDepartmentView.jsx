@@ -22,7 +22,7 @@ import {
   resetNewDepartment,
   addDepartment,
   setSortingTeam } from '../flow/action';
-import { getTeamUsers, getSelectedTeamName } from '../flow/reselect';
+import { getTeamUsers, getSelectedTeamName, getTeamIds } from '../flow/reselect';
 
 
 class EditView extends React.Component {
@@ -52,6 +52,7 @@ class EditView extends React.Component {
       resetNewDepartment,
       setSortingTeam,
       selectedTeamName,
+      teamIds,
     } = this.props;
     const { formatMessage } = this.props.intl;
     const actionsRight = <div><Button className="btn-ellipse" size="small" onClick={() => { setSortableViewVisible(true); setSortingTeam(JSON.parse(JSON.stringify(teams))); }}><Icon type="edit" />{ formatMessage({ id: 'page.organChart.editStructure' }) }</Button></div>;
@@ -69,6 +70,7 @@ class EditView extends React.Component {
         <Row>
           <Col className="gutter-row field-label pr-lg" span={8}>
             <Department
+              teamIds={teamIds}
               teams={teams}
               setTeams={setTeams}
               setSelectedTeam={setSelectedTeam}
@@ -104,6 +106,7 @@ EditView.propTypes = {
 const mapStateToProps = ({ global, setup }) => {
   const { orgChart } = setup;
   return {
+    teamIds: getTeamIds({ global }),
     teams: global.settings.teams,
     teamUsers: getTeamUsers({ orgChart }),
     isSelectTeamDialogVisible: orgChart.ui.isSelectTeamDialogVisible,
