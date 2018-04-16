@@ -34,10 +34,12 @@ class Avator extends React.Component {
         onAllDone={(response, error) => this.onAllDone(response, error)}
         key={Math.random()}
       >
-        <img className={cx('avatar-img')} src={avatar || 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'} alt=""  />
+        <div className={classNames(cx('avatar-img-wrapper'), 'mt-lg', 'mb-lg')}>
+          <img className={cx('avatar-img')} src={avatar || 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'} alt="" />
+        </div>
       </Upload>
-      <h1>hello, {name}</h1>
-      <p>{email}</p>
+      <h1 className="text-center"> { formatMessage({ id: 'page.mySetting.hello' }, { name })} </h1>
+      <p className="text-center">{email}</p>
             </Panel>);
   }
 }
