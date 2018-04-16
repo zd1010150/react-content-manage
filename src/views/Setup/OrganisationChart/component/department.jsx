@@ -41,8 +41,9 @@ class Department extends React.Component {
   }
   render() {
     const {
-      teams, setTeams, setSelectedTeam, teamIds,
+      teams, setTeams, setSelectedTeam, teamIds, intl,
     } = this.props;
+    const { formatMessage } = intl;
     return (
       <div>
         <DefaultDepartment onSelect={(id) => { setSelectedTeam(id); }} />
@@ -62,7 +63,7 @@ class Department extends React.Component {
           autoExpandParent={false}
         />
         <DeleteConfirmDialog visible={this.state.deleteDialogVisible} onOk={() => this.confirmDelete()} onCancel={() => this.setState({ deleteDialogVisible: false })} >
-          <h3>一旦删除，就都无法恢复</h3>
+          <h3>{ formatMessage({ id: 'global.ui.dialog.deleteTitle' })}</h3>
         </DeleteConfirmDialog>
       </div>
 

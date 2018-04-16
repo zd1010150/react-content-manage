@@ -22,9 +22,7 @@ export const setSeletedDeparmentPermission = permissions => ({
   permissions,
 });
 export const fetchPermission = id => dispatch => get(`/admin/teams/${id}/permissions`, {}, dispatch).then((data) => {
-  if (!_.isEmpty(data)) {
-    dispatch(setSeletedDeparmentPermission(data));
-  }
+  dispatch(setSeletedDeparmentPermission(data));
 });
 
 export const savePermission = ({ team_id, permissions, description }) => dispatch => patch(`/admin/teams/${team_id}/permissions/sync`, { team_id, permissions, description }, dispatch);

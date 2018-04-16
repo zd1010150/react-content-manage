@@ -30,6 +30,9 @@ class userForm extends React.Component {
       }
     });
   }
+    onCancel() {
+      this.props.onCancel();
+    }
   toggleDepartment() {
     const { toggleDepartmentDialog } = this.props;
     toggleDepartmentDialog(true);
@@ -146,7 +149,7 @@ class userForm extends React.Component {
         </FormItem>
         <FormItem {...FORM_FOOTER_CONFIG}>
             <Button type="primary" htmlType="submit" onClick={() => { this.onSubmit(); }}><Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' })}</Button>
-            <Button type="danger" className="ml-sm"><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
+            <Button type="danger" className="ml-sm" onClick={() => { this.onCancel(); }}><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
         </FormItem>
       </Form>
     );
@@ -166,6 +169,7 @@ userForm.propTypes = {
   moments: PropTypes.array.isRequired,
   selectedDepartmentText: PropTypes.string,
   selectedDepartmentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    onCancel: PropTypes.func.isRequired,
 };
 const UserFormWrapper = Form.create()(injectIntl(userForm));
 export default UserFormWrapper;

@@ -18,15 +18,21 @@ class DepartmentDialog extends React.Component {
     });
   }
   render() {
-    const { isDisplayDepartmentDialog, teams } = this.props;
+    const {
+      isDisplayDepartmentDialog, teams, noDepartment, intl,
+    } = this.props;
+    const { formatMessage } = intl;
     return (
       <Modal
         visible={isDisplayDepartmentDialog}
-        title="Title"
+        title={formatMessage({ id: 'page.users.selectTeam' })}
         footer={[]}
         onCancel={() => this.props.toggleDepartmentDialog(false)}
       >
-        <DefaultDepartment onSelect={(id, name) => { this.selectDepartment(true, { id, name }); }} />
+        {
+              noDepartment ? '' : <DefaultDepartment onSelect={(id, name) => { this.selectDepartment(true, { id, name }); }} />
+          }
+
         <TeamTree onSelect={(selectedKeys, treeData) => this.selectDepartment(false, selectedKeys, treeData)} teams={teams} defaultExpandAll />
       </Modal>
     );
@@ -36,6 +42,7 @@ DepartmentDialog.defaultProps = {
   isDisplayDepartmentDialog: false,
   toggleDepartmentDialog: () => {},
   setDepartment: () => {},
+  noDepartment: false,
 };
 DepartmentDialog.propTypes = {
   intl: intlShape.isRequired,
@@ -43,6 +50,7 @@ DepartmentDialog.propTypes = {
   toggleDepartmentDialog: PropTypes.func,
   setDepartment: PropTypes.func,
   teams: PropTypes.array,
+  noDepartment: PropTypes.bool,
 };
 
 export default injectIntl(DepartmentDialog);
