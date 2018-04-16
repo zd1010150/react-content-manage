@@ -102,6 +102,7 @@ const EnumsManager = Object.freeze({
     VIEWFILTER: 'VIEW_FILTER_',
     VIEWDETAILS: 'VIEW_DETAILS_',
     DUPLICATES: 'DUPLICATES_',
+    MERGE: 'MERGE_',
   }),
 
   ViewVisibilityIds: Object.freeze({
@@ -154,6 +155,9 @@ const EnumsManager = Object.freeze({
     ]),
     MaxSelection: 4,
   }),
+
+  MasterKey: 'master',
+  
 });
 
 export default EnumsManager;

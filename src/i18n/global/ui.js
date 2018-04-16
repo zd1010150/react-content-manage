@@ -49,6 +49,7 @@ export default {
       uploading: '正在上传',
       mergeLead: '合并选中的潜在客户',
       convert: '进行转化',
+      merge: '进行合并',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -159,6 +160,7 @@ export default {
       uploading: 'Uploading...',
       mergeLead: 'Merge Leads',
       convert: 'Continue to Convert',
+      merge: 'Merge',
     },
     input: {
       searchStore: 'Search entire store here...',

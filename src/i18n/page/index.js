@@ -17,6 +17,7 @@ import attachments from 'views/ClientAttachments/i18n';
 import filterResultsTable from 'components/ui/FilterResultsTable/i18n';
 import mySetting from 'views/MySetting/i18n';
 import topPanel from 'components/page/TopPanel/i18n';
+import mergeLeads from 'views/MergeLeads/i18n';
 
 export default {
   comInfo,
@@ -38,4 +39,5 @@ export default {
   filterResultsTable,
   mySetting,
   topPanel,
+  mergeLeads,
 };

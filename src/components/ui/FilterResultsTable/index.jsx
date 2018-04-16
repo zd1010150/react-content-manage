@@ -88,7 +88,7 @@ const FilterResultsTable = ({
   const { formatMessage } = intl;
   const columns = renderColumnsByTheme(theme, formatMessage);
   const mergeBtn = theme === Leads ? (
-    <Link to={`/123`}>
+    <Link to={`/leads/merge`}>
       <Button
         className={`${theme}-theme-btn`}
         disabled={selectedRowKeys.length < 2 || (maxSelection && selectedRowKeys.length > maxSelection)}

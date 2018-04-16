@@ -26,6 +26,7 @@ import DeleteConfirmButton from './DeleteConfirmBtn/index';
 import ScrollTop from './ScrollTop/index';
 import FilterField from './FilterField/index';
 import FilterResultsTable from './FilterResultsTable/index';
+import RadioField from './RadioField/index';
 
 export {
   Upload,
@@ -58,4 +59,5 @@ export {
   ScrollTop,
   FilterField,
   FilterResultsTable,
+  RadioField,
 };
