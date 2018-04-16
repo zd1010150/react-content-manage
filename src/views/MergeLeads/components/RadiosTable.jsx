@@ -15,7 +15,7 @@ import { setMergedData } from '../flow/actions';
 const defaultProps = {
   data: [],
   keys: [],  
-  mergedData: [],
+  mergedData: {},
 };
 const propTypes = {
   intl: intlShape.isRequired,
@@ -41,7 +41,7 @@ class RadiosTable extends Component {
       sm: 4,
     };
     const colLayout = {
-      sm: (AntdGridMax - labelColLayout.sm) / data.length,
+      sm: Math.floor((AntdGridMax - labelColLayout.sm) / data.length),
     };
 
     return (
@@ -61,6 +61,7 @@ class RadiosTable extends Component {
             <Col key={record.id} {...colLayout}>
               {keys.map(key =>
                 <RadioField
+                  key={key.key}
                   fieldKey={key}
                   data={record}
                   mergedData={mergedData}

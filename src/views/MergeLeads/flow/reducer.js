@@ -34,7 +34,7 @@ const convertToTimeZone = (data, keys) => {
 const initialState = {
   data: [],
   keys: [],  
-  mergedData: [],
+  mergedData: {},
 };
 
 const mergence = (state = initialState, action) => {

@@ -7,7 +7,7 @@ export const setData = (originalKeys, data) => ({
     });
 
 export const tryFetchLeads = ids => dispatch =>
-    get(`/admin/leads/merge/index?ids[]=1&ids[]=2&ids[]=3&ids[]=4`, {}, dispatch).then((data) => {
+    get(`/admin/leads/merge/index?${ids}`, {}, dispatch).then((data) => {
       if (data
           && !_.isEmpty(data.index)
           && !_.isEmpty(data.index.data)

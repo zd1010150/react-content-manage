@@ -1,14 +1,17 @@
 import { Panel } from 'components/ui/index';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Buttons, RadiosTable } from '../components/index';
 import { tryFetchLeads } from '../flow/actions';
+import { concatArrayParams } from 'utils/common';
 
 
 const defaultProps = {};
 const propTypes = {
   intl: intlShape.isRequired,
+  tryFetchLeads: PropTypes.func,
 };
 
 
@@ -16,8 +19,9 @@ class MergeLeads extends Component {
   componentDidMount() {
     // fetch data
     const { selectedLeadIds, tryFetchLeads } = this.props;
-    console.log(selectedLeadIds);
-    tryFetchLeads(selectedLeadIds);
+    if (selectedLeadIds.length) {
+      tryFetchLeads(concatArrayParams(selectedLeadIds));
+    }
   }
 
   render() {
@@ -29,11 +33,10 @@ class MergeLeads extends Component {
       <Panel
         panelTitle={formatMessage({ id: `${i18n}.title` })}
         panelClasses="lead-theme-panel"
+        contentClasses="pb-lg pl-lg pr-lg pt-sm"
       >
-        <RadiosTable
-
-        />
-        <Buttons />
+        <RadiosTable />
+        <div className="mt-lg"><Buttons /></div>
       </Panel>
     );
   }

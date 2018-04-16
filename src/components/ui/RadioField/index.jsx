@@ -12,12 +12,9 @@ const { Lookup } = FieldTypes;
 const getValueByType = (type, rawValue) => {
   if (type === Lookup) {
     // TODO: complete this after the backend changed the response structure
-    return '';
+    return 'lookup';
   }
   return rawValue ? rawValue : '';
-};
-const isEqual = (value, comparedValue) => {
-  return !_.isNil(value) && value === comparedValue;
 };
 
 
@@ -49,7 +46,7 @@ const RadioField = ({
         className={isFollowMaster ? '' : 'lead-theme-radio'}
         data-key={key}
         data-value={value}
-        checked={isEqual(value, mergedValue)}
+        checked={value === mergedValue}
         disabled={isFollowMaster}
       >
         {value}
