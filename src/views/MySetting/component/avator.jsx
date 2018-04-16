@@ -34,7 +34,7 @@ class Avator extends React.Component {
         onAllDone={(response, error) => this.onAllDone(response, error)}
         key={Math.random()}
       >
-        <Avatar src={avatar} alt="" />
+        <img className={cx('avatar-img')} src={avatar || 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'} alt=""  />
       </Upload>
       <h1>hello, {name}</h1>
       <p>{email}</p>

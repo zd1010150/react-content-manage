@@ -16,7 +16,7 @@ class GlobalSearch extends React.Component {
   render() {
     const { updatePwd, setAvator, userInfo } = this.props;
     return (<div className={cx('my-setting-wrapper')}>
-      <div className={cx('avatar-wrapper')}>
+      <div className={classNames(cx('avatar-wrapper'), 'pr-lg')}>
         <Avator userInfo={userInfo} setUserAvator={setAvator} />
       </div>
       <div className={cx('changepwd-wrapper')}>
