@@ -10,13 +10,12 @@ export default {
       newFolder: '新建文档',
       editFolderTitle:'编辑文档',
       dragFolder: '拖拽文档改变顺序',
-      save: '保存',
-      cancel: '取消',
+
 
       templateName: '模板标题',
-      templateCreatedDate: '创建日期',
+
       templateModifiedDate: '更改日期',
-      templateCreatedBy: '创建者',
+
       templateDescription: '详情',
       permissionToGetAccess: '获取权限',
       folder:'文件夹',
@@ -37,8 +36,46 @@ export default {
       subject: '主题:',
       selectTemplate: '选择模板',
       cloudAttachment: '云附件',
-      localAttachment: '本地附件'
+      localAttachment: '本地附件',
+      attachment: '附件',
+      sharedBy: '共享者：',
+      permissionTitle: '访问权限',
+      addNewUser: '添加用户权限',
 
+      attachFiles: '添加附件',
+      chooseCloudAttachment: '选择云附件',
+      attachLocalFiles: '上传本地文件',
+      fileName: '文件名',
+      chooseFile: '选择文件',
+      chooseFolder: '选择文件夹',
+
+      emailCampaignsSeparator: '............................................................................................',
+      emailCampaign: '活动邮件',
+      campaignName: '名称',
+      subscriberList: '订阅者列表',
+
+      startDate: '开始日期',
+      endDate: '截止日期',
+      status: '状态',
+      campaignDescription: '详情',
+      newCampaign: '新活动',
+      subscriberLists: '订阅者列表',
+      unsubscriberList: '退订者名单',
+      newEmailCampaign: '新活动邮件',
+      stepOne: '第一步：信息',
+      emailTemplate: '邮件模板',
+      stepTwo: '第二步: 时间安排',
+      schedulesDescription: '( 邮件活动开始日期和截止日期如下 )',
+      ongingCampaign: '持续的活动',
+
+      commonUseSeparator: '................................................................................................',
+      name: '名称',
+      type: '种类',
+      createdDate: '创建日期',
+      createdBy: '创建者',
+      save: '保存',
+      cancel: '取消',
+      description: '详情'
 
   },
   en: {
@@ -52,12 +89,11 @@ export default {
       newFolder: 'New Folder',
       editFolderTitle:'Edit Folder',
       dragFolder: 'Drag the folder to change the order.',
-      save: 'Save',
-      cancel: 'Cancel',
+
       templateName: 'Template Name',
-      templateCreatedDate: 'Created Date',
+
       templateModifiedDate: 'Modified Date',
-      templateCreatedBy: 'Created By',
+
       templateDescription: 'Description',
       permissionToGetAccess: 'Permission to Get Access',
       folder: 'folder',
@@ -79,8 +115,51 @@ export default {
       subject: 'Subject:',
       selectTemplate: 'Select Template',
       cloudAttachment: 'Cloud Attachment',
-      localAttachment: 'Local Attachment'
+      localAttachment: 'Local Attachment',
+      attachment: 'Attachment',
+      sharedBy: 'By: ',
+      permissionTitle: 'Permission to Access',
+      addNewUser: 'Add New User',
+
+      attachFiles: 'Attach Files',
+      chooseCloudAttachment: 'Choose Cloud Attachment',
+      attachLocalFiles: 'Attach File from Local',
+      fileName: 'File Name',
+      chooseFile: 'Choose File',
+      chooseFolder: 'Choose Folder',
 
 
+
+
+      emailCampaignsSeparator: '............................................................................................',
+      emailCampaign: 'Email Campaigns',
+      campaignName: 'Campaign Name',
+      subscriberList: 'Subscriber List',
+
+      startDate: 'Start Date',
+      endDate: 'End Date',
+      status: 'Status',
+      campaignDescription: 'Description',
+      newCampaign: 'New Campaign',
+      subscriberLists: 'Subscriber Lists',
+      unsubscriberList: 'Unsubscriber List',
+
+      newEmailCampaign: 'New Email Campaigns',
+      stepOne: 'Step 1: Information',
+      emailTemplate: 'Email Template',
+      stepTwo: 'Step 2: Schedules',
+      schedulesDescription: '( Email campaign start at the start date, and end at the end date. )',
+      ongingCampaign: 'Ongoing Campaign',
+
+
+
+      commonUseSeparator: '................................................................................................',
+      name: 'Name',
+      type: 'Type',
+      createdDate: 'Created Date',
+      createdBy: 'Created By',
+      save: 'Save',
+      cancel: 'Cancel',
+      description: 'Description'
   },
 };

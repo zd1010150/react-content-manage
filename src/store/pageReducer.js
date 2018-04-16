@@ -7,6 +7,7 @@ import objectView from 'components/page/ObjectFilter/flow/reducer';
 import objectDetails from 'views/ObjectDetails/flow/reducer';
 import taskDetails from 'components/page/TaskDetails/flow/reducer';
 import duplicates from 'components/page/FindDuplicates/flow/reducer';
+import globalSearch from 'views/GlobalSearch/flow/reducer';
 import mergence from 'views/MergeLeads/flow/reducer';
 
 // test
@@ -25,4 +26,5 @@ export default {
   taskDetails,
   duplicates,
   mergence,
+  globalSearch,
 };

@@ -1,7 +1,3 @@
-.email-panel-content{
-  padding: 0;
-}
-
 .folders{
   background: #FFF3E0;
   padding: 20px 5px;
@@ -14,9 +10,25 @@
   text-align: center;
 }
 
+.delete-icon{
+  cursor: pointer;
+}
+
 .folder-icon{
+  cursor: pointer;
   color: @email-theme-color;
   font-size: 30px;
+  margin-left: 5px;
+}
+
+.folder-move{
+  cursor: move;
+  &.selected {
+    cursor: move;
+  }
+  &.dragging {
+    opacity: .3;
+  }
 }
 
 .tab-button{

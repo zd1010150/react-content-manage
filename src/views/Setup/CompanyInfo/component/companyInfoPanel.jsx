@@ -37,7 +37,7 @@ class companyInfoPanel extends React.Component {
     }));
     return (
       <Panel panelTitle={formatMessage({ id: 'page.comInfo.organizationDetail' })}>
-        <div className="info-display-table">
+        <div className="info-display-table pb-sm">
           <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>

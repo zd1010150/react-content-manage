@@ -23,9 +23,9 @@ const generateRequest = (url, fetchType = 'GET', bodyContent = {}) => {
   return request;
 };
 
-export const loginSuccess = json => ({
+export const loginSuccess = args => ({
   type: LOGIN_SUCCESS,
-  payload: { json },
+  ...args,
 });
 
 const loginOrOutFailed = () => ({
@@ -35,7 +35,7 @@ const loginOrOutFailed = () => ({
 export const tryLogin = values => dispatch => post(url, values, dispatch)
   .then((json) => {
     if (json && (!_.isEmpty(json.data))) {
-      dispatch(loginSuccess(json));
+      dispatch(loginSuccess(json.data));
     }
   });
 

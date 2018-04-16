@@ -1,3 +1,4 @@
+import Dashboard from './Dashboard/index';
 import Leads from './Leads/index';
 import LoginForm from './LoginForm/index';
 import DDDemo from './DD-demo/index';
@@ -8,7 +9,11 @@ import Users from './Setup/Users';
 import OrganisationChart from './Setup/OrganisationChart';
 import EmailTemplates from './email/emailTemplates';
 import EmailTemplatesCreation from './email/emailTemplatesCreation';
-import EmailTemplatesCampaign from './email/emailTemplatesCampaign';
+import {
+  EmailCampaign,
+  EditCampaign,
+  NewCampaign,
+} from './email/emailCampaign';
 import NewEmail from './email/newEmail';
 import PermissionProfile from './Setup/PermissionProfile';
 import Fields from './Setup/Fields';
@@ -18,8 +23,10 @@ import Layouts from './Setup/PageLayout';
 import ObjectTask from './ObjectTask/index';
 import ClientAttachments from './ClientAttachments/index';
 import MergeLeads from './MergeLeads/index';
+import MySetting from './MySetting/index';
 
 export {
+  Dashboard,
   Leads,
   LoginForm,
   DDDemo,
@@ -30,7 +37,9 @@ export {
   OrganisationChart,
   EmailTemplates,
   EmailTemplatesCreation,
-  EmailTemplatesCampaign,
+  EmailCampaign,
+  EditCampaign,
+  NewCampaign,
   NewEmail,
   PermissionProfile,
   Fields,
@@ -39,5 +48,6 @@ export {
   Layouts,
   ObjectTask,
   ClientAttachments,
+  MySetting,
   MergeLeads,
 };

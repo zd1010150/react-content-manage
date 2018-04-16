@@ -43,7 +43,7 @@ const SelectionPool = ({
   const _onTagDoubleClick = (e, item, isTeam) => {
     // TODO: add debounce to separate double click and single click twice
     if (_.isFunction(onTagDoubleClick)) {
-      onTagDoubleClick(item.id, isTeam);
+      onTagDoubleClick(item.id, item, isTeam);
     }
   };
   const _onTagClose = (e, item, isTeam) => {

@@ -99,8 +99,10 @@ const settings = (state = {
   }
 };
 
-const companyLogo = (state = 'https://www.seoclerk.com/pics/558390-11FO8A1505384509.png', action) => {
+const companyLogo = (state = '', action) => {
   switch (action.type) {
+    case SET_GLOBAL_SETTING:
+      return (action.settings.company && action.settings.company.logoUrl) || '';
     case SET_LOGO:
       return action.logo;
     default:

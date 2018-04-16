@@ -5,14 +5,34 @@ import {Row, Col, Input, Select, Button, Icon, Radio, Table} from 'antd';
 import {connect} from 'react-redux';
 import {Panel} from 'components/ui/index';
 import classNames from 'classnames/bind';
-import {Editor, EditorState, RichUtils, getDefaultKeyBinding} from 'draft-js';
+import {Editor, EditorState, RichUtils, getDefaultKeyBinding, convertFromHTML, ContentState} from 'draft-js';
+import {decorator} from './decorator';
+import {stateToHTML} from 'draft-js-export-html';
+
 import styles from './richEditor.less';
 const cx = classNames.bind(styles);
+const sampleMarkup =
+    '<b>Bold text</b>, <i>Italic text</i><br/ ><br />' +
+    '<a href="https://www.facebook.com">Example link</a><br /><br/ >' +
+    '<img src="https://raw.githubusercontent.com/facebook/draft-js/master/examples/draft-0-10-0/convertFromHTML/image.png" height="112" width="200" />';
+
+
+
 
 class RichEditor extends React.Component {
     constructor(props){
         super(props);
-        this.state = {editorState: EditorState.createEmpty()};
+        const {registerGetContentHook, content} = this.props;
+        if(!!content && content !== '<p><br></p>'){
+            const blocksFromHTML = convertFromHTML(content);
+            const state = ContentState.createFromBlockArray(
+                blocksFromHTML.contentBlocks,
+                blocksFromHTML.entityMap
+            );
+            this.state = {editorState: EditorState.createWithContent(state, decorator)};
+        }else{
+            this.state = {editorState: EditorState.createEmpty()};
+        }
         this.focus = () => this.refs.editor.focus();
         this.onChange = (editorState) => this.setState({editorState});
         this.handleKeyCommand = this._handleKeyCommand.bind(this);
@@ -22,7 +42,30 @@ class RichEditor extends React.Component {
         this.getLocalHtml = this.getLocalHtml.bind(this);
         this.previewHtml = this.previewHtml.bind(this);
 
+
+        registerGetContentHook &&
+        registerGetContentHook(() => {
+            return stateToHTML(this.state.editorState.getCurrentContent());
+            // return this.state.editorState.getCurrentContent ().getPlainText ();
+        });
     }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.content !== nextProps.content){
+            //什么都没填的时候，content默认为<p><br></p>， 但convertFromHTML('<p><br></p>') 会报错，所以要做这个判断
+            if(!!nextProps.content && nextProps.content !== '<p><br></p>'){
+                const blocksFromHTML = convertFromHTML(nextProps.content);
+                const state = ContentState.createFromBlockArray(
+                    blocksFromHTML.contentBlocks,
+                    blocksFromHTML.entityMap
+                );
+                this.setState({editorState: EditorState.createWithContent(state, decorator)})
+            }else{
+                this.setState({editorState: EditorState.createEmpty()})
+            }
+        }
+    }
+
     componentDidMount() {
 
     }
@@ -74,7 +117,8 @@ class RichEditor extends React.Component {
 
     render() {
         const {editorState} = this.state;
-        const { formatMessage } = this.props.intl;
+        const {intl, setContent} = this.props;
+        const { formatMessage } = intl;
         // If the user changes block type before entering any text, we can
         // either style the placeholder or hide it. Let's just hide it now.
         let className = 'RichEditor-editor';

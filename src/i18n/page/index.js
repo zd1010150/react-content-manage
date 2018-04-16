@@ -15,6 +15,8 @@ import assigneeModal from 'components/ui/AssigneeModal/i18n';
 import subjectsModal from 'components/ui/SubjectsModal/i18n';
 import attachments from 'views/ClientAttachments/i18n';
 import filterResultsTable from 'components/ui/FilterResultsTable/i18n';
+import mySetting from 'views/MySetting/i18n';
+import topPanel from 'components/page/TopPanel/i18n';
 import mergeLeads from 'views/MergeLeads/i18n';
 
 export default {
@@ -35,5 +37,7 @@ export default {
   subjectsModal,
   attachments,
   filterResultsTable,
+  mySetting,
+  topPanel,
   mergeLeads,
 };

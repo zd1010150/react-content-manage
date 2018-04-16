@@ -16,11 +16,19 @@
   }
 
   .siteTitle {
+    box-sizing: border-box;
     font-size: 18px;
-    margin-right: 50px;
     text-transform: uppercase;
+    height: @top-height;
+    width: 180px;
+    text-align: center;
   }
-
+  .crm-logo{
+    max-height: ~'calc(@{top-height} - 12px)';
+    max-width: 160px;
+    margin: 5px 10px;
+    display: inline-block;
+  }
   .setupBtn {
     display: inline-block;
     margin-left: 11px;
