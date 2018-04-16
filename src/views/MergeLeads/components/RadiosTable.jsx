@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd';
+import { Col, Row, Icon, Tooltip } from 'antd';
 import classNames from 'classnames/bind';
 import { RadioField } from 'components/ui/index';
 import PropTypes from 'prop-types';
@@ -36,6 +36,7 @@ class RadiosTable extends Component {
   render() {
     const { intl, data, keys, mergedData } = this.props;
     const { formatMessage } = intl;
+    const i18n = 'page.mergeLeads';
 
     const labelColLayout = {
       sm: 4,
@@ -44,15 +45,37 @@ class RadiosTable extends Component {
       sm: Math.floor((AntdGridMax - labelColLayout.sm) / data.length),
     };
 
+    const masterLabel = (
+      <Fragment>
+        <span>{formatMessage({ id: `${i18n}.master` })}</span>
+        <Tooltip placement="right" title={formatMessage({ id: `${i18n}.aboutMaster` })}>
+          <Icon
+            className="ml-sm"
+            size="small"
+            style={{ color: 'red', fontWeight: '400' }}
+            type="exclamation-circle"
+          />
+        </Tooltip>
+      </Fragment>
+    );
+
     return (
       <Fragment>
         {/* header with leads name */}
+        <Row>
+          {data.length > 0 && <Col className={cx('title')} key={MasterKey} {...labelColLayout} />}
+          {data.map(record =>
+            <Col className={cx('title')} key={record.id} {...colLayout}>
+              {record.name}
+            </Col>
+          )}
+        </Row>
         <Row onClick={this.handleRadioChange}>
           {/* label col */}
-          <Col {...labelColLayout}>
+          <Col key={MasterKey} {...labelColLayout}>
             {keys.map(key => 
               <div className={cx('labelCol')} key={key.key}>
-                {key.key === MasterKey ? 'MasterRecord' : key.label}
+                {key.key === MasterKey ? masterLabel : key.label}
               </div>
             )}
           </Col>
