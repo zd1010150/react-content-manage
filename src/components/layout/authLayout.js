@@ -1,20 +1,14 @@
 import React from 'react';
-import { Layout } from 'antd';
 import {
   AuthMainContent,
   CopyRight,
 } from '../page/index';
 
-const { Content } = Layout;
-
-
 const layout = () => (
-  <Layout>
-    <Content>
+    <div className="auth-wrapper">
       <AuthMainContent />
       <CopyRight />
-    </Content>
-  </Layout>
+    </div>
 );
 
 export default layout;

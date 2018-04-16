@@ -36,7 +36,7 @@ const propTypes = {
   format: PropTypes.string,
   helpText: PropTypes.string,
   id: PropTypes.number.isRequired,
-  initialValue: PropTypes.string.isRequired,
+  initialValue: PropTypes.string,
   label: PropTypes.string.isRequired,
   lookupDisplayKey: PropTypes.string,
   name: PropTypes.string.isRequired,
@@ -220,7 +220,7 @@ const CustomField = ({
   return (
     <Row className={cx('row')}>
       <Col xs={24} sm={8} style={{ textAlign: 'right' }}>
-        <span className={required ? cx('required') : ''}>
+        <span className={required ? `${cx('required')} ${cx('label')}` : cx('label')}>
           {label}
         </span>
         {helpText ? <Tooltip title={helpText}>

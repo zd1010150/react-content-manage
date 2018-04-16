@@ -12,9 +12,10 @@ class moduleSiderView extends React.Component {
     const {
       selectedModules,
       deleteModule,
+      theme,
     } = this.props;
     return (
-      <SideViewWrapper deleteModule={deleteModule}>
+      <SideViewWrapper deleteModule={deleteModule} theme={theme}>
         { Object.keys(Enums.DetailModules).map(m => (<SingleOption
           key={m}
           code={m}

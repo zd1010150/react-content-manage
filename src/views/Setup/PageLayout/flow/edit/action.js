@@ -23,6 +23,8 @@ import {
   SETUP_LAYOUT_EDIT_SORT_TOOLS,
   SETUP_LAYOUT_EDIT_DELETE_TOOLS,
   SETUP_LAYOUT_EDIT_SET_CURRENT_LAYOUT,
+  SETUP_LAYOUT_EDIT_FIELD,
+  SETUP_LAYOUT_CHANGE_FIELD_ATTR,
 } from './actionType';
 /* sider draglayer action */
 export const setCanDrop = canDrop => ({
@@ -86,7 +88,7 @@ export const deleteFromSection = args => ({
   ...args,
 });
 
-export const moveBetweenSection = args => ({
+export const moveFieldsBetweenSection = args => ({
   type: SETUP_LAYOUT_EDIT_MOVE_BETWEEN_SECTION,
   ...args,
 });
@@ -126,6 +128,14 @@ export const setAllSections = sections => ({
   sections,
 });
 
+export const setEditField = args => ({
+  type: SETUP_LAYOUT_EDIT_FIELD,
+  ...args,
+});
+export const changeFieldAttr = args => ({
+  type: SETUP_LAYOUT_CHANGE_FIELD_ATTR,
+  ...args,
+});
 export const setAllFields = (fields, sections) => ({
   type: SETUP_LAYOUT_EDIT_SET_ALL_FIELDS,
   fields,
@@ -138,6 +148,11 @@ export const fetchLayoutDetail = id => dispatch => get(`/admin/page_layouts/${id
     dispatch(setTools(tools));
     dispatch(setAllSections(sections));
     dispatch(setAllFields(data.all_fields.data, sections));
+  }
+});
+export const updateLayoutDetail = (id, name, structure, cb) => dispatch => patch(`/admin/page_layouts/${id}`, { name, structure }, dispatch).then((data) => {
+  if (_.isFunction(cb)) {
+    cb();
   }
 });
 

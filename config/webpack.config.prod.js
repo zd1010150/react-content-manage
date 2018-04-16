@@ -15,7 +15,7 @@ const getClientEnvironment = require('./env');
 const lessToJs = require('less-vars-to-js');
 
 const themer = lessToJs(fs.readFileSync(`${paths.themeLess}/theme.less`, 'utf8'));
-
+const Visualizer = require('webpack-visualizer-plugin');
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
 const publicPath = paths.servedPath;
@@ -100,6 +100,9 @@ module.exports = {
       new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
     ],
   },
+  externals: {
+    lodash: '_',
+  },
   module: {
     strictExportPresence: true,
     rules: [
@@ -147,6 +150,7 @@ module.exports = {
             options: {
               compact: true,
               plugins: [
+                'syntax-dynamic-import',
                 ['import', {
                   libraryName: 'antd',
                   style: false,
@@ -330,6 +334,9 @@ module.exports = {
     ],
   },
   plugins: [
+    new Visualizer({
+      filename: './statistics.html',
+    }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
@@ -425,6 +432,25 @@ module.exports = {
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    // split vendor js into its own file
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks(module, count) {
+        // any required modules inside node_modules are extracted to vendor
+        return (
+          module.resource &&
+                  /\.js$/.test(module.resource) &&
+                  module.resource.indexOf(path.join(__dirname, '../node_modules')) === 0
+        );
+      },
+    }),
+
+    // extract webpack runtime and module manifest to its own file in order to
+    // prevent vendor hash from being updated whenever app bundle is updated
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      chunks: ['vendor'],
+    }),
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

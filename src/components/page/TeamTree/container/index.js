@@ -102,7 +102,7 @@ class teamTree extends React.Component {
     return data.map((item) => {
       const treeEl = (
         <div onDoubleClick={(e) => { this.onDbClick(item.id, item.name, e); }}>
-          <span className={cx('tree-node-title')} span={12}>
+          <span className={cx('tree-node-title')} >
             { canModifyTeamName ? <EditBox
               type="input"
               value={item.name}
@@ -113,7 +113,7 @@ class teamTree extends React.Component {
                 }}
             /> : <span>{item.name}</span> }
           </span>
-          <div className={cx('tree-node-operate')} span={12} >
+          <div className={cx('tree-node-operate')} >
             { canAdd ? <Icon type="plus-square-o " className="pl-lg ok" onClick={(e) => { e.stopPropagation(); onAdd(item.id); }} /> : ''}
             { canDelete ? <Icon type="delete" className="pl-sm danger" onClick={(e) => { e.stopPropagation(); onDelete(item.id); }} /> : ''}
           </div>
@@ -131,10 +131,11 @@ class teamTree extends React.Component {
   }
   render() {
     const {
-      checkable, draggable, teams, defaultExpandAll, defaultSelectedKeys, defaultExpandedKeys, autoExpandParent, defaultCheckedKeys,
+      checkable, draggable, teams, defaultExpandAll, defaultSelectedKeys, defaultExpandedKeys, autoExpandParent, defaultCheckedKeys, expandedKeys,
     } = this.props;
     return (
       <Tree
+        expandedKeys={expandedKeys}
         defaultExpandAll={defaultExpandAll}
         draggable={draggable}
         checkable={checkable}
@@ -186,6 +187,7 @@ teamTree.defaultProps = {
   defaultExpandedKeys: [],
   defaultCheckedKeys: [],
   defaultSelectedKeys: [],
+  expandedKeys: [],
 };
 teamTree.propTypes = {
   teams: PropTypes.array.isRequired,
@@ -214,6 +216,7 @@ teamTree.propTypes = {
   defaultExpandedKeys: PropTypes.array,
   defaultCheckedKeys: PropTypes.array,
   defaultSelectedKeys: PropTypes.array,
+  expandedKeys: PropTypes.array,
 };
 
 export default teamTree;

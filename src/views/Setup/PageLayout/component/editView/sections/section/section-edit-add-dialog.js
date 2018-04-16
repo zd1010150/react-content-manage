@@ -1,44 +1,53 @@
 /* eslint-disable no-shadow */
 import React from 'react';
+import _ from 'lodash';
+import { PAGE_ACTION } from 'config/app.config';
+import { intlShape, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import { Modal, Input, Radio } from 'antd';
-import { ADD } from '../../../../flow/edit/operateType';
+import { Modal, Button } from 'antd';
+import AddEditForm from './section-edit-add-form';
 
-const RadioGroup = Radio.Group;
+
 class sectionEditAddDialog extends React.Component {
-  setAttr(attrs) {
-    this.props.setSectionAttr(attrs);
+  componentWillReceiveProps() {
+    if (!_.isEmpty(this.form && this.form.resetFields)) { // 更新form表单里的值
+      this.form.resetFields();
+    }
   }
   save() {
     const {
-      operate, sequence, label, code, addSection, updateSection, toggleSectionAddEditDialog, cols,
+      operate, sequence, code, addSection, updateSection, toggleSectionAddEditDialog,
     } = this.props;
-    if (operate === ADD) {
-      addSection({ label, sequence, cols });
-    } else {
-      updateSection({ label, sectionCode: code, cols }); //
-    }
-    toggleSectionAddEditDialog({ isShow: false });
+    this.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        if (operate === PAGE_ACTION.ADD) {
+          addSection({ label: values.label, sequence, cols: values.cols });
+        } else {
+          updateSection({ label: values.label, sectionCode: code, cols: values.cols }); //
+        }
+        toggleSectionAddEditDialog({ isShow: false });
+      }
+    });
   }
   cancel() {
     this.props.toggleSectionAddEditDialog({ isShow: false });
   }
   render() {
     const {
-      isShow, label, cols,
+      isShow, label, cols, code, intl, operate,
     } = this.props;
+    const { formatMessage } = intl;
     return (
       <Modal
-        title="Basic Modal"
+        title={formatMessage({ id: `page.layouts.${operate === PAGE_ACTION.ADD ? 'addSectionDialogTitle' : 'editSectionDialogTitle'}` })}
         visible={isShow}
-        onOk={this.save.bind(this)}
-        onCancel={this.cancel.bind(this)}
+        footer={[
+          <Button key="save" size="small" icon="close" onClick={() => this.cancel()}> {formatMessage({ id: 'global.ui.button.cancel' })}</Button>,
+          <Button key="save" size="small" icon="save" type="danger" onClick={() => this.save()}> {formatMessage({ id: 'global.ui.button.save' })}</Button>,
+        ]}
+        onCancel={() => this.cancel()}
       >
-        <p><Input placeholder="输入section名" defaultValue={label} value={label} onInput={e => this.setAttr({ label: e.target.value })} /></p>
-        <RadioGroup onChange={e => this.setAttr({ cols: e.target.value })} value={cols}>
-          <Radio value={1}>col 1</Radio>
-          <Radio value={2}>col 2</Radio>
-        </RadioGroup>
+        <AddEditForm code={code} label={label} cols={cols} ref={c => this.form = c} />
       </Modal>
     );
   }
@@ -46,24 +55,19 @@ class sectionEditAddDialog extends React.Component {
 
 sectionEditAddDialog.defaultProps = {
   isShow: false,
-  label: '',
-  sequence: 0,
-  cols: 1,
-  code: '',
-  operate: 'add',
 };
 sectionEditAddDialog.propTypes = {
+  intl: intlShape.isRequired,
   isShow: PropTypes.bool,
-  label: PropTypes.string,
-  sequence: PropTypes.number,
-  cols: PropTypes.number,
-  code: PropTypes.string,
-  operate: PropTypes.string,
+  label: PropTypes.string.isRequired,
+  sequence: PropTypes.number.isRequired,
+  cols: PropTypes.number.isRequired,
+  code: PropTypes.string.isRequired,
+  operate: PropTypes.string.isRequired,
   addSection: PropTypes.func.isRequired,
   updateSection: PropTypes.func.isRequired,
-  setSectionAttr: PropTypes.func.isRequired,
   toggleSectionAddEditDialog: PropTypes.func.isRequired,
 };
 
 
-export default sectionEditAddDialog;
+export default injectIntl(sectionEditAddDialog);

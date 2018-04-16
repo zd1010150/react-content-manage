@@ -1,7 +1,6 @@
 import TopPanel from './TopPanel';
 import HeaderNav from './HeaderNav';
 import MainContent from './MainContent';
-import Footer from './Footer';
 import CopyRight from './CopyRight';
 import Notification from './Notification';
 import ErrorNotification from './ErrorNotification';
@@ -12,12 +11,13 @@ import TeamTree from './TeamTree';
 import ObjectFilter from './ObjectFilter/index';
 import RightSider from './RightSider/index';
 import FilterCriteria from './FilterCriteria/index';
+import TaskDetails from './TaskDetails/index';
+import FindDuplicates from './FindDuplicates/index';
 
 export {
   TopPanel,
   HeaderNav,
   MainContent,
-  Footer,
   CopyRight,
   Notification,
   ErrorNotification,
@@ -28,5 +28,6 @@ export {
   ObjectFilter,
   RightSider,
   FilterCriteria,
+  TaskDetails,
+  FindDuplicates,
 };
-

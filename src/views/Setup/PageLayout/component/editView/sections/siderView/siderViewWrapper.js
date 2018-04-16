@@ -24,14 +24,23 @@ const sectionsFieldsTarget = {
 const collect = (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
   isOver: monitor.isOver(),
+  canDrop: monitor.canDrop(),
 });
 
 class SectionSiderViewWrapper extends React.Component {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isOver && (!this.props.isOver)) { // 进入
+      this.props.setCanDrop(nextProps.canDrop);
+    }
+    if ((!nextProps.isOver) && (this.props.isOver)) { // 退出
+      this.props.setCanDrop(true);
+    }
+  }
   render() {
     const {
-      isOver, connectDropTarget,
+      isOver, connectDropTarget, canDrop, theme,
     } = this.props;
-    return connectDropTarget(<div className={classNames(cx('fields'), isOver ? cx('sider-view-can-drop') : '')}>
+    return connectDropTarget(<div className={classNames(cx('fields'), 'pl-lg', 'pr-lg','pb-lg',  isOver ? (canDrop ? `${theme}-sider-view-can-drop` : 'sider-view-cant-drop') : '')}>
       {
             this.props.children
         }
@@ -42,6 +51,7 @@ SectionSiderViewWrapper.propTypes = {
   deleteFromSection: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   isOver: PropTypes.bool.isRequired,
+  theme: PropTypes.string.isRequired,
 };
 
 

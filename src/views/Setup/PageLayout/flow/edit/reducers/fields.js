@@ -13,7 +13,7 @@ import { DEFAULT_SECTION_CODE } from '../config';
 const initFilels = (fields, sections) => {
   const allSelectedFiledIds = [];
   sections.reduce((accumulator, item) => {
-    accumulator.push(...item.fields.map(f => f.id));
+    accumulator.push(...item.fields.map(f => `${f.id}`));
     return accumulator;
   }, allSelectedFiledIds);
   return fields.map(item => ({
@@ -21,7 +21,10 @@ const initFilels = (fields, sections) => {
     label: item.field_label,
     type: item.crm_data_type,
     is_layout_required: Boolean(item.notnull),
-    isSelected: allSelectedFiledIds.indexOf(item.id) > -1,
+    isSelected: allSelectedFiledIds.indexOf(`${item.id}`) > -1,
+    isSystem: Boolean(item.is_sys_auto),
+    pageRequired: item.is_sys_auto ? false : (!!item.notnull),
+    pageReadonly: Boolean(item.is_sys_auto),
   }));
 };
 const addFieldToSection = (state, { fieldId }) => state.map((item) => {

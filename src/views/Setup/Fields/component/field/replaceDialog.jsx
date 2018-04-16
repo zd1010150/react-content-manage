@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Row, Col, Radio, Button } from 'antd';
 import { intlShape, injectIntl } from 'react-intl';
@@ -6,8 +7,20 @@ import { intlShape, injectIntl } from 'react-intl';
 import { DeleteConfirmDialog } from 'components/ui/index';
 
 class ReplaceDialog extends React.Component {
+  state={
+    isError: false,
+  }
   submitReplace() {
-    this.props.submitReplace(this.props.selectedOption);
+    if (_.isEmpty(this.props.selectedOption)) {
+      this.setState({
+        isError: true,
+      });
+    } else {
+      this.setState({
+        isError: false,
+      });
+      this.props.submitReplace(this.props.selectedOption);
+    }
   }
   cancelReplace() {
     this.props.setReplaceDialog({ isVisible: false });
@@ -17,7 +30,7 @@ class ReplaceDialog extends React.Component {
   }
   render() {
     const {
-      options, selectedOption, isVisible, intl,
+      options, selectedOption, isVisible, intl, replacedValName,
     } = this.props;
     const { formatMessage } = intl;
 
@@ -38,12 +51,13 @@ class ReplaceDialog extends React.Component {
         onClick={() => this.submitReplace()}
       >{ formatMessage({ id: 'global.ui.button.replace' })}
       </Button>];
+
     return (
       <DeleteConfirmDialog visible={isVisible} modelConfig={{ footer: deleteFooter }}>
-          <div>
-            <p>please select a value to replace</p>
-            <Row>
-              {
+        <div>
+          <p>{ formatMessage({ id: 'page.fields.selectValueToReplace' }) } {replacedValName}</p>
+          <Row>
+            {
                 options.map(val => (
                   <Col span={24} key={val.id}>
                     <Radio
@@ -56,9 +70,10 @@ class ReplaceDialog extends React.Component {
                   </Col>
                         ))
               }
-            </Row>
-            <p className="error-msg">Change can take up to 5 mins to become effective.</p>
-          </div>
+          </Row>
+          { this.state.isError && _.isEmpty(selectedOption.id) ? <p className="error-msg">{ formatMessage({ id: 'page.fields.mustChooseField' }) } </p> : '' }
+          <p className="error-msg">{formatMessage({ id: 'page.fields.goEffectIn5' }) } </p>
+        </div>
       </DeleteConfirmDialog>
 
 
@@ -73,6 +88,7 @@ ReplaceDialog.propTypes = {
   selectedOption: PropTypes.object.isRequired,
   setReplaceDialog: PropTypes.func.isRequired,
   submitReplace: PropTypes.func.isRequired,
+  replacedValName: PropTypes.string.isRequired,
 };
 export default injectIntl(ReplaceDialog);
 

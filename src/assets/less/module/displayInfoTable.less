@@ -2,21 +2,29 @@
 
 .info-display-table{
   width: 100%;
+  overflow: hidden;
   .info-display-table-row{
     border-bottom: @grey-border;
+    height:25px;
     &:last-child{
       border-bottom: none;
+    }
+    .gutter-row{
+      height:25px;
     }
   }
   .field-label{
     font-weight: 700;
     display: inline-block;
     text-align: right;
-    padding: 4px 0 3px;
+    line-height: 25px;
+    height:25px;
   }
   .field-value{
     text-align: left;
     display: inline-block;
-    padding: 3px 4px;
+    padding-left: 3px;
+    line-height: 25px;
+    height:25px;
   }
 }

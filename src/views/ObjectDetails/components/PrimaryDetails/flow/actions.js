@@ -116,15 +116,13 @@ export const revertAllFields = $ => ({
   type: REVERT_ALL_FIELDS,
 });
 
-
-export const setFieldOptionsById = (code, id, options) => ({
-  type: SET_FIELD_OPTIONS,
-  payload: { code, id, options },
-});
-
 export const tryFetchFieldOptions = (code, id) => dispatch =>
     get(`/admin/objects/lookup-metadata/${id}`, {}, dispatch).then((data) => {
       if (data) {
         dispatch(setFieldOptionsById(code, id, data));
       }
     });
+export const setFieldOptionsById = (code, id, options) => ({
+  type: SET_FIELD_OPTIONS,
+  payload: { code, id, options },
+});

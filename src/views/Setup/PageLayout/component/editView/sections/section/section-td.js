@@ -11,7 +11,7 @@ const cx = classNames.bind(styles);
 const fieldTarget = {
   drop(props, monitor) {
     const {
-      x, y, sectionCode, moveBetweenSection, addFieldToSection, allFields,
+      x, y, sectionCode, moveFieldsBetweenSection, addFieldToSection, allFields,
     } = props;
     const { fieldId, sourceSectionCode } = monitor.getItem();
     if (_.isEmpty(sourceSectionCode)) { // drag from allfields to these td
@@ -22,7 +22,7 @@ const fieldTarget = {
         position: [x, y],
       });
     } else {
-      moveBetweenSection({ // move between sections
+      moveFieldsBetweenSection({ // move between sections
         fieldId, allFields, sourceSectionCode, targetSectionCode: sectionCode, position: [x, y],
       });
     }
@@ -42,8 +42,8 @@ class sectionTD extends React.Component {
   renderOverLay() {
     const { isOver } = this.props;
     const maskClasses = classNames(
-      cx('square-over-mask'),
-      isOver ? cx('square-over-mask-overing-ok') : '',
+      cx('section-field-over-mask'),
+      isOver ? cx('section-field-over-mask-overing-ok') : '',
     );
     if (isOver) {
       return <div className={maskClasses} />;
@@ -51,12 +51,13 @@ class sectionTD extends React.Component {
     return '';
   }
   render() {
-    const { connectDropTarget, classes } = this.props;
-    return connectDropTarget(<td className={classNames(cx(classes), cx('square'))} >
-      <div>
+    const {
+      connectDropTarget, classes, isOver, theme,
+    } = this.props;
+    return connectDropTarget(<td className={cx(classes)}>
+      <div className={classNames(isOver ? `${theme}-section-field-hover` : '')}>
         { this.props.children }
       </div>
-      { this.renderOverLay() }
                              </td>);
   }
 }
@@ -66,11 +67,12 @@ sectionTD.defaultProps = {
 sectionTD.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
+  theme: PropTypes.string.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   isOver: PropTypes.bool.isRequired,
   allFields: PropTypes.array.isRequired,
   sectionCode: PropTypes.string.isRequired,
-  moveBetweenSection: PropTypes.func.isRequired,
+  moveFieldsBetweenSection: PropTypes.func.isRequired,
   addFieldToSection: PropTypes.func.isRequired,
   classes: PropTypes.string,
   setCanDrop: PropTypes.func.isRequired,

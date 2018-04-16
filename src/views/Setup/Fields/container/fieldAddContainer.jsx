@@ -9,6 +9,7 @@ import { Panel } from 'components/ui/index';
 import { objTypeAndClassTypeMap, PAGE_ACTION, PICKLIST_FIELD_TYPE } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import {
+  setFieldAttr,
   setAddedFieldAttr,
   resetAddedFieldAttr,
   fetchBackground,
@@ -53,6 +54,7 @@ class FieldAddContainer extends React.Component {
           const append_page_layout_ids = addedField.appendPageLayoutIds;
           saveFieldToRemote(objectType, { create_data, picklist, append_page_layout_ids }, () => {
             history.push(`/setup/${objectType}/fields`);
+
             resetAddedFieldAttr(objectType);
           });
         }
@@ -86,6 +88,7 @@ class FieldAddContainer extends React.Component {
         addPickListValue,
         sortPicklistValueToRemote,
         replacePickListValueToRemote,
+        setFieldAttr,
       } = this.props;
       const classType = objTypeAndClassTypeMap[objectType];
       const rowSelection = {
@@ -108,7 +111,7 @@ class FieldAddContainer extends React.Component {
         },
       ];
       return (
-        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'global.properNouns.users' })} contentClasses="pt-lg pb-lg">
+        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.createField' }, { type: addedField.field.type })} contentClasses="pt-lg pb-lg">
           <FieldForm
             isDuplicate={isDuplicate}
             setFieldLableisDuplicate={setFieldLableisDuplicate}
@@ -118,12 +121,13 @@ class FieldAddContainer extends React.Component {
             objType={objectType}
             prefix={fieldPrefix}
             checkLabelDuplicate={duplicatFilter}
+            setFieldAttr={setFieldAttr}
           />
 
           {
               addedField.field.type === PICKLIST_FIELD_TYPE ?
                 <div className="panel-section">
-                  <div className="section-header">Default Fields</div>
+                  <div className="section-header">{ formatMessage({ id: 'page.fields.picklistValue' }) }</div>
                   <div className="section-content  mt-lg mb-lg">
                     <PickListValue
                       objectType={objectType}
@@ -139,7 +143,7 @@ class FieldAddContainer extends React.Component {
                 </div> : ''
             }
           <div className="panel-section">
-            <div className="section-header">Default Fields</div>
+            <div className="section-header">{ formatMessage({ id: 'page.fields.addingPagelayoutToDepartment' }) }</div>
             <div className="section-content  mt-lg mb-lg">
               <Table rowSelection={rowSelection} columns={columns} dataSource={layouts} rowKey="id" pagination={false} />
             </div>
@@ -200,6 +204,7 @@ const mapDispatchToProps = {
   sortPicklistValueToRemote,
   replacePickListValueToRemote,
   saveFieldToRemote,
+  setFieldAttr,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldAddContainer)));
 

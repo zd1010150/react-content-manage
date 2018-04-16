@@ -42,11 +42,13 @@ class logo extends React.Component {
       const uploadProps = {
         name: 'document',
         action: '/admin/files/company_logo',
+        accept: 'image/png',
         withCredentials: true,
       };
       return (
-        <Panel panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions}>
-          <img _ngcontent-c23="" alt="" height="250" src={ companyLogo } width="250" />
+        <Panel panelTitle={formatMessage({ id: 'page.comInfo.logo' })} actionsRight={rightActions} contentClasses="pt-lg pr-lg pb-lg pl-lg">
+          <p className="error-msg">* {formatMessage({ id: 'page.comInfo.logoTip' })}</p>
+          <img alt=""  src={companyLogo} style={{maxWidth: '400px',maxHeight: '250px', backgroundColor: '#000', padding: '10px'}} />
           <Modal
             title="Upload Icon"
             visible={this.state.visible}

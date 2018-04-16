@@ -11,12 +11,15 @@ import { Panel } from 'components/ui/index';
 import { objTypeAndClassTypeMap } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import { toggleRightSider } from 'components/page/RightSider/flow/action';
-import { fetchFields, toggleEditingStatus, setSelectedFields, changeMapping, saveFieldsMapping, setAddedFieldAttr } from '../flow/action';
+import { fetchFields, toggleEditingStatus, setSelectedFields, changeMapping, saveFieldsMapping, setAddedFieldAttr, resetAddedFieldAttr } from '../flow/action';
 import { getToFieldsStatus } from '../flow/reselect';
 import { FIELD_TYPE_SELECT, FIELD_EDIT } from '../flow/pageAction';
 import FieldMappingInput from '../component/tableView/fieldMappingInput';
 import RightSiderFields from '../component/tableView/rightSiderFields';
 import { fieldCategory } from '../flow/objectTypeHelper';
+import styles from '../index.less';
+
+const cx = classNames.bind(styles);
 
 class FieldsTableView extends React.Component {
   componentDidMount() {
@@ -42,7 +45,7 @@ class FieldsTableView extends React.Component {
       field: {
         id: field.id,
         name: category === fieldCategory.CUSTOM ? field.field_name.slice(fieldPrefix.length) : field.field_name,
-        notnull: field.notnull,
+        notnull: Boolean(field.notnull),
         type: field.crm_data_type,
         label: field.field_label,
         length: field.length,
@@ -62,7 +65,8 @@ class FieldsTableView extends React.Component {
     });
   }
   addNewField() {
-    const { history, objectType } = this.props;
+    const { history, objectType, resetAddedFieldAttr } = this.props;
+    resetAddedFieldAttr(objectType);
     history.push(`/setup/${objectType}/fields?action=${FIELD_TYPE_SELECT}`);
   }
   coloseEditing() {
@@ -142,7 +146,7 @@ class FieldsTableView extends React.Component {
     const getMappingTd = (field, fieldProp, mappingFields, fieldCategory) => {
       if (!_.isEmpty(mappingFields)) {
         return Object.keys(mappingFields).map((objType) => {
-          if (!field.can_be_mapped) return <td> Cannot be mapped</td>;
+          if (!field.can_be_mapped) return <td key={objType}> Cannot be mapped</td>;
           let fields = [];
           if (!_.isEmpty(field[fieldProp][objType])) {
             if (fieldProp === 'map_from') {
@@ -176,22 +180,27 @@ class FieldsTableView extends React.Component {
     ));
     return (
       <Fragment>
-        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'global.properNouns.users' })} actionsRight={rightActions} contentClasses="pt-lg pb-lg" >
+        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.pageTitle' }, { type: formatMessage({ id: `global.properNouns.${objectType}` }) })} actionsRight={rightActions} contentClasses="pt-lg pb-lg" >
           <div className="panel-section">
-            <div className="section-header">Default Fields</div>
+            <div className="section-header">{ formatMessage({ id: 'page.fields.defaultFields' }, { type: formatMessage({ id: `global.properNouns.${objectType}` }) }) }</div>
             <div className="section-content  mt-lg mb-lg">
               <table style={{ width: '100%' }}>
                 <thead className="ant-table-thead">
                   <tr>
-                    <th>Action</th>
-                    <th >Field Label</th>
+                    <th className={cx('field-action')}>{formatMessage({ id: 'global.ui.table.action' })}</th>
+                    <th className={cx('field-label')}>{formatMessage({ id: 'page.fields.label' })}</th>
                     {
-                        Object.keys(fromFields).map(objType => <th key={objType}>Map from {objType}</th>)
+                        Object.keys(fromFields).map(objType => (<th key={objType} className={cx('field-map')}>
+                          {formatMessage({ id: 'page.fields.mapFrom' }, { field: formatMessage({ id: `global.properNouns.${objType}` }) })}
+                                                                </th>))
                       }
                     {
-                          Object.keys(toFields).map(objType => <th key={objType}>Map to {objType}</th>)
+                          Object.keys(toFields).map(objType => (<th key={objType} className={cx('field-map')}>
+                            {formatMessage({ id: 'page.fields.mapTo' }, { field: formatMessage({ id: `global.properNouns.${objType}` }) })}
+
+                          </th>))
                       }
-                    <th>Date Type</th>
+                    <th className={cx('field-date-type')}>{ formatMessage({ id: 'page.fields.dataType' }) }</th>
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
@@ -203,20 +212,20 @@ class FieldsTableView extends React.Component {
             </div>
           </div>
           <div className="panel-section">
-            <div className="section-header">Customer Fields</div>
+            <div className="section-header">{ formatMessage({ id: 'page.fields.cstmFields' }, { type: formatMessage({ id: `global.properNouns.${objectType}` }) }) }</div>
             <div className="section-content  mt-lg mb-lg">
               <table style={{ width: '100%' }}>
                 <thead className="ant-table-thead">
                   <tr>
-                    <th>Action</th>
-                    <th >Field Label</th>
+                    <th className={cx('field-action')}>{formatMessage({ id: 'global.ui.table.action' })}</th>
+                    <th className={cx('field-label')}>{formatMessage({ id: 'page.fields.label' })}</th>
                     {
-                        Object.keys(fromFields).map(objType => <th key={objType}>Map from {objType}</th>)
+                        Object.keys(fromFields).map(objType => <th key={objType} className={cx('field-map')}>Map from {objType}</th>)
                     }
                     {
-                        Object.keys(toFields).map(objType => <th key={objType}>Map to {objType}</th>)
+                        Object.keys(toFields).map(objType => <th key={objType} className={cx('field-map')}>Map to {objType}</th>)
                     }
-                    <th>Date Type</th>
+                    <th className={cx('field-date-type')}>{ formatMessage({ id: 'page.fields.dataType' }) }</th>
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
@@ -276,5 +285,6 @@ const mapDispatchToProps = {
   changeMapping,
   saveFieldsMapping,
   setAddedFieldAttr,
+  resetAddedFieldAttr,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldsTableView)));

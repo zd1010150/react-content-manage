@@ -31,7 +31,6 @@ class ModuleWrapper extends React.Component {
     const {
       connectDropTarget, isOver, classes, theme,
     } = this.props;
-    debugger;
     return connectDropTarget(<div className={classNames(cx('module-wrapper'), isOver ? `${theme}-theme-panel-hover` : '', classes)} >
       { this.props.children }
                              </div>);

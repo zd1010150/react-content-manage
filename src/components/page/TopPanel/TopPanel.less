@@ -16,22 +16,25 @@
   }
 
   .siteTitle {
+    box-sizing: border-box;
     font-size: 18px;
-    margin-right: 50px;
     text-transform: uppercase;
+    height: @top-height;
+    width: 180px;
+    text-align: center;
   }
-
+  .crm-logo{
+    max-height: ~'calc(@{top-height} - 12px)';
+    max-width: 160px;
+    margin: 5px 10px;
+    display: inline-block;
+  }
   .setupBtn {
-    margin-top: 11px;
-    border-color: transparent;
+    display: inline-block;
+    margin-left: 11px;
+    float:right;
     background-color: transparent;
     color: @brk-text-white-color;
-    a {
-      color: @brk-text-white-color;
-      i {
-        margin-right: 5px;
-      }
-    }
   }
 
   [data-role='language'], [data-role='globalSearch'], [data-role='setup'] {

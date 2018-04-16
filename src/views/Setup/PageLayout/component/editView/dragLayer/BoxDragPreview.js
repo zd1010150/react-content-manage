@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Box from './Box';
-import { MODULES, TOOLS, SECTIONS, OPERATES } from '../../../flow/edit/operateType';
+import { ItemTypes } from '../../../flow/edit/itemType';
 import shallowEqual from './shallowEqual';
 
 class BoxDragPreview extends Component {
@@ -30,7 +30,7 @@ class BoxDragPreview extends Component {
 BoxDragPreview.propTypes = {
   title: PropTypes.string.isRequired,
   canDrop: PropTypes.bool,
-  type: PropTypes.oneOf(OPERATES),
+  type: PropTypes.oneOf(Object.keys(ItemTypes)),
   theme: PropTypes.string.isRequired,
 };
 
