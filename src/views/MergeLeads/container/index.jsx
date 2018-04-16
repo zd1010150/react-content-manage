@@ -1,12 +1,23 @@
 import { Panel } from 'components/ui/index';
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import { Buttons } from '../components/index';
+import { Buttons, RadiosTable } from '../components/index';
+import { tryFetchLeads } from '../flow/actions';
+
+
+const defaultProps = {};
+const propTypes = {
+  intl: intlShape.isRequired,
+};
+
 
 class MergeLeads extends Component {
   componentDidMount() {
     // fetch data
+    const { selectedLeadIds, tryFetchLeads } = this.props;
+    console.log(selectedLeadIds);
+    tryFetchLeads(selectedLeadIds);
   }
 
   render() {
@@ -19,7 +30,9 @@ class MergeLeads extends Component {
         panelTitle={formatMessage({ id: `${i18n}.title` })}
         panelClasses="lead-theme-panel"
       >
-        merge MergeLeads
+        <RadiosTable
+
+        />
         <Buttons />
       </Panel>
     );
@@ -27,10 +40,13 @@ class MergeLeads extends Component {
 }
 
 
-const mapStateToProps = ({ language, mergence }) => ({
+const mapStateToProps = ({ language, mergence, duplicates }) => ({
   language: global.language,
+  selectedLeadIds: duplicates.selectedRowKeys,
 });
 const mapDispatchToProps = {
-  // tryFetchData,
+  tryFetchLeads,
 };
+MergeLeads.defaultProps = defaultProps;
+MergeLeads.propTypes = propTypes;
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(MergeLeads));
