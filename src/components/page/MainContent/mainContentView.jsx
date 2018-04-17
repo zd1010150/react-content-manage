@@ -5,8 +5,6 @@ import { Route, Switch } from 'react-router-dom';
 import {
   Dashboard,
   Leads,
-  DDDemo,
-  DragPreview,
   UIDemo,
   CompanyInfo,
   Users,
@@ -26,6 +24,7 @@ import {
   ClientAttachments,
   MergeLeads,
   MySetting,
+  ConvertLeads,
 } from 'views/index';
 
 
@@ -33,8 +32,6 @@ import { ObjectFilter } from '../index';
 
 const MainContent = () =>
   (<Switch>
-    <Route path="/setup/company-info/dd-demo" component={DDDemo} />
-    <Route path="/setup/company-info/drag-preveiw" component={DragPreview} />
     <Route path="/setup/company-info/ui-demo" component={UIDemo} />
     <Route path="/setup/company-info/company-info" component={CompanyInfo} />
     <Route path="/setup/company-info/users" component={Users} />
@@ -67,12 +64,14 @@ const MainContent = () =>
     <Route path="/:objectType/sharing/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
     <Route path="/leads/convert/find/:objectId" component={FindDuplicates} />
-    <Route path="/leads/convert/convert/:objectId" component={FindDuplicates} />
+    <Route path="/leads/convert/convert/:objectId" component={ConvertLeads} />
     <Route path="/leads/merge/" component={MergeLeads} />
     <Route path="/:objectType/tasks/:objectId" component={ObjectTask} />
     <Route path="/:objectType/attachments/:objectId" component={ClientAttachments} />
     <Route path="/:objectType/:objectId" component={ObjectDetails} exact />
     <Route path="/leads" component={Leads} exact />
+    <Route path="/accounts" component={Leads} exact />
+    <Route path="/opportunities" component={Leads} exact />
     <Route path="/dashboard" component={Dashboard} exact />
   </Switch>);
 

@@ -3,14 +3,13 @@ import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { intlShape, injectIntl } from 'react-intl';
 import { withRouter } from 'react-router';
-import { Layout, Menu, Icon } from 'antd';
+import { Menu, Icon } from 'antd';
 import classNames from 'classnames/bind';
 import { getParentUrl } from 'utils/url';
 import styles from '../Sider.less';
 import { OBJECT_TYPES } from 'config/app.config';
 
 const { SubMenu } = Menu;
-const { Sider } = Layout;
 const cx = classNames.bind(styles);
 
 
@@ -20,22 +19,6 @@ const menuItems = [
     id: 'companyInfo',
     path: `${pathPrefix}/company-info`,
     children: [
-      {
-        id: 'uiDemo',
-        path: `${pathPrefix}/company-info/ui-demo`,
-        icon: 'setting',
-      },
-      {
-        id: 'ddDemo',
-        path: `${pathPrefix}/company-info/dd-demo`,
-        icon: 'setting',
-      },
-      {
-        id: 'dragPreview',
-        path: `${pathPrefix}/company-info/drag-preveiw`,
-        icon: 'setting',
-      },
-
       {
         id: 'companyInfo',
         path: `${pathPrefix}/company-info/company-info`,
@@ -122,10 +105,7 @@ const menuItems = [
       },
     ],
   },
-  {
-    id: 'workflow',
-    path: `${pathPrefix}/workflow`,
-  },
+
 ];
 
 const renderMenuItem = (intl) => {
@@ -144,7 +124,7 @@ const renderMenuItem = (intl) => {
       );
     }
     return (
-      <Menu.Item key={item.path} className={cx('left-nav-item')}>
+      <Menu.Item key={item.path}>
         <NavLink to={item.path}><Icon type={item.icon || 'setting'} />{ formatMessage({ id: `${i18nPath}.${item.id}` }) }</NavLink>
       </Menu.Item>);
   };

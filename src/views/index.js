@@ -1,8 +1,6 @@
 import Dashboard from './Dashboard/index';
 import Leads from './Leads/index';
 import LoginForm from './LoginForm/index';
-import DDDemo from './DD-demo/index';
-import DragPreview from './dragPreview';
 import UIDemo from './ui-demo';
 import CompanyInfo from './Setup/CompanyInfo';
 import Users from './Setup/Users';
@@ -24,13 +22,12 @@ import ObjectTask from './ObjectTask/index';
 import ClientAttachments from './ClientAttachments/index';
 import MergeLeads from './MergeLeads/index';
 import MySetting from './MySetting/index';
+import ConvertLeads from './ConvertLeads/index';
 
 export {
   Dashboard,
   Leads,
   LoginForm,
-  DDDemo,
-  DragPreview,
   UIDemo,
   CompanyInfo,
   Users,
@@ -50,4 +47,5 @@ export {
   ClientAttachments,
   MySetting,
   MergeLeads,
+  ConvertLeads,
 };

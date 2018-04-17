@@ -17,6 +17,9 @@ export default {
     inactiveUser: '不活跃用户数',
     logo: '公司图标',
     logoTip: '公司图标会出现在页面左上角的导航栏里，推荐尺寸 160* 34, 只能上传png格式',
+    addNewUser: '新增用户',
+    clickToUpload: '点击上传',
+      uploadCompanyLogo: '上传公司logo',
   },
   en: {
     organizationDetail: 'Organisation Details',
@@ -36,5 +39,8 @@ export default {
     inactiveUser: 'Inactive User',
     logo: 'Company Logo',
     logoTip: 'This logo will replace the logo on the top navigation bar. The recommend size is 160 * 34，the format must be png',
+    addNewUser: 'Add New User',
+    clickToUpload: 'Click to Upload',
+      uploadCompanyLogo: 'Upload Company Logo',
   },
 };

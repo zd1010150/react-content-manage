@@ -6,7 +6,6 @@ import Notification from './Notification';
 import ErrorNotification from './ErrorNotification';
 import SetupSider from './Sider/container';
 import AuthMainContent from './AuthMainContent';
-import SetupContent from './SetupContent';
 import TeamTree from './TeamTree';
 import ObjectFilter from './ObjectFilter/index';
 import RightSider from './RightSider/index';
@@ -23,7 +22,6 @@ export {
   ErrorNotification,
   SetupSider,
   AuthMainContent,
-  SetupContent,
   TeamTree,
   ObjectFilter,
   RightSider,

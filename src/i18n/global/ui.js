@@ -50,6 +50,7 @@ export default {
       mergeLead: '合并选中的潜在客户',
       convert: '进行转化',
       merge: '进行合并',
+      convertToAccount: '升级为客户',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -126,6 +127,11 @@ export default {
       [Attachments]: '附件',
       [Logs]: '日志',
     },
+    upload: {
+      maxSize: '文件最大是{size}M',
+      errorMax: '你的文件超过了{size}M,请重新选择',
+      errorType: '文件类型不对，只允许上传 {type} 类型的文件',
+    },
   },
   en: {
     button: {
@@ -161,6 +167,7 @@ export default {
       mergeLead: 'Merge Leads',
       convert: 'Continue to Convert',
       merge: 'Merge',
+      convertToAccount: 'Convert to Account',
     },
     input: {
       searchStore: 'Search entire store here...',
@@ -236,6 +243,11 @@ export default {
       [EmailSent]: 'Email Sent',
       [Attachments]: 'Attachments',
       [Logs]: 'Logs',
+    },
+    upload: {
+      maxSize: 'Maximum file size is {size}M',
+      errorMax: 'The file is larger than {size}M, please reselect',
+      errorType: 'The type of file is error, the allowed type is {type}',
     },
   },
 };

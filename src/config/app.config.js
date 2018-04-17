@@ -14,6 +14,7 @@ export const UNAUTHENTICATION = { // Unauthentication rewrite url
   LOGIN_URL: '/',
   REDIRECT_KEY: 'success_url',
 };
+export const SUCCESS_HTTP_CODE = [200, 201];
 
 export const UNPAIED_ORDER_STATUS = 0; // 未支付的发货单的状态是1
 export const CURRENCY_SYMBOL = {
@@ -36,7 +37,7 @@ export const FORM_LAYOUT_CONFIG = {
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 8, },
+    sm: { span: 8 },
   },
 };
 
@@ -68,3 +69,8 @@ export const objTypeAndClassTypeMap = {
   opportunities: 'opport',
 };
 export const PICKLIST_FIELD_TYPE = 'picklist';
+export const MAX_UPLOAD_FILE_SIZE = {
+  COMPANY_LOGO: 500 * 1024, // company logo 500 k
+  USER_LOGO: 1024 * 1024, // user logo 1m
+  DEFAULT: 2 * 1024 * 1024, // 默认2m
+};
