@@ -88,6 +88,7 @@ export default {
       email: '电子邮件',
       company: '公司',
       phone: '电话号码',
+      selectedItems: '条记录被选中',
     },
     select: {
       label: '视图',
@@ -200,6 +201,7 @@ export default {
       email: 'Email',
       company: 'Company',
       phone: 'Phone',
+      selectedItems: 'items selected',
     },
     select: {
       label: 'view',
