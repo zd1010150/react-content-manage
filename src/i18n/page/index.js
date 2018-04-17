@@ -18,6 +18,7 @@ import filterResultsTable from 'components/ui/FilterResultsTable/i18n';
 import mySetting from 'views/MySetting/i18n';
 import topPanel from 'components/page/TopPanel/i18n';
 import mergeLeads from 'views/MergeLeads/i18n';
+import convertLeads from 'views/ConvertLeads/i18n';
 
 export default {
   comInfo,
@@ -40,4 +41,5 @@ export default {
   mySetting,
   topPanel,
   mergeLeads,
+  convertLeads,
 };

@@ -24,6 +24,7 @@ import ObjectTask from './ObjectTask/index';
 import ClientAttachments from './ClientAttachments/index';
 import MergeLeads from './MergeLeads/index';
 import MySetting from './MySetting/index';
+import ConvertLeads from './ConvertLeads/index';
 
 export {
   Dashboard,
@@ -50,4 +51,5 @@ export {
   ClientAttachments,
   MySetting,
   MergeLeads,
+  ConvertLeads,
 };

@@ -60,7 +60,7 @@ class FindDuplicates extends Component {
           theme={theme}
         />
         {withConvert && (
-          <Link to="/leads">
+          <Link to={`/leads/convert/convert/${objectId}`}>
             <Button className={`${theme}-theme-btn mb-md`} style={{ width: '100%' }}>
               {formatMessage({ id: `global.ui.button.convert` })}
             </Button>
