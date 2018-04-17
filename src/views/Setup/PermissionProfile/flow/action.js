@@ -11,10 +11,9 @@ export const toggleDepartmentDialog = isDisplayDepartmentDialog => ({
   isDisplayDepartmentDialog,
 });
 
-export const setDepartment = ({ department_id, department_name }) => ({
+export const setDepartment = args => ({
   type: SETUP_PERPRO_SET_SELECTED_DEPARTMENT,
-  department_id,
-  department_name,
+  ...args,
 });
 
 export const setSeletedDeparmentPermission = permissions => ({
@@ -22,7 +21,8 @@ export const setSeletedDeparmentPermission = permissions => ({
   permissions,
 });
 export const fetchPermission = id => dispatch => get(`/admin/teams/${id}/permissions`, {}, dispatch).then((data) => {
-  dispatch(setSeletedDeparmentPermission(data));
+  dispatch(setSeletedDeparmentPermission(data.permissions));
+  dispatch(setDepartment({ description: data.description }));
 });
 
 export const savePermission = ({ team_id, permissions, description }) => dispatch => patch(`/admin/teams/${team_id}/permissions/sync`, { team_id, permissions, description }, dispatch);

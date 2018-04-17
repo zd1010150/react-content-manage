@@ -12,7 +12,7 @@ export default {
     newPwd: 'New Password',
     confirmPwd: 'Confirm New Password',
     confirmError: 'New password is not same as to the confirm password',
-    pwdTip: 'At least 8 characters including number ,lower capital and upper capitals ',
+    pwdTip: 'At least 8 characters including number,lower/upper capitals',
     hello: 'Hello, {name}!',
   },
 };
