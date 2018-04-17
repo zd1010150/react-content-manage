@@ -7,7 +7,7 @@ export default {
     permissions: '权限',
     leads: '潜在客户',
     accounts: '客户',
-    opportunities: 'opportunity',
+    opportunities: '机会',
     fields: '字段',
     pageLayout: '自定义页面结构',
     email: '电子邮件设置',
