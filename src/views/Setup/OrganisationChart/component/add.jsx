@@ -28,7 +28,7 @@ class Add extends React.Component {
     const { formatMessage } = intl;
     return (
       <div className="pb-lg">
-        <h4>{formatMessage({ id: 'page.organChart.addNewTip' }, { department: selectedTeamName })}</h4>
+        <h4>{formatMessage({ id: 'page.organChart.addNewTip' })} <span className="error-msg"> { selectedTeamName }</span></h4>
         <FloatingLabelInput
           value={newTeam.name}
           labelText={formatMessage({ id: 'page.organChart.inputDeaprmentPlaceHolder' })}

@@ -31,10 +31,12 @@ confirmPwdBlur() {
   this.validateConfirmPwd();
 }
 onSubmit() {
-  const { form, submit } = this.props;
+  const { form, submit, tryLogout } = this.props;
   form.validateFieldsAndScroll((err, values) => {
     if (!err && this.validateConfirmPwd()) {
-      submit(values);
+      submit(values, () => {
+          tryLogout();
+      });
     }
   });
 }
@@ -59,7 +61,7 @@ render() {
                                 rules: [
                                     getExistRule('required', 'password', locale, { required: true }),
                                 ],
-                            })(<Input size="small" />)
+                            })(<Input type="password" size="small" />)
                         }
         </FormItem>
         <FormItem
@@ -75,7 +77,7 @@ render() {
                                 validator: validator.password(locale),
                             },
                         ],
-                    })(<Input size="small" />)
+                    })(<Input type="password" size="small" />)
                 }
           <span className="form-tip">{formatMessage({ id: 'page.mySetting.pwdTip' })}</span>
           { this.state.isConfirmError ? <span className="form-tip error-msg">{formatMessage({ id: 'page.mySetting.confirmError' }) }</span> : '' }
@@ -93,7 +95,7 @@ render() {
                                 validator: validator.password(locale),
                             },
                         ],
-                    })(<Input size="small" onBlur={() => this.confirmPwdBlur()} />)
+                    })(<Input size="small" type="password" onBlur={() => this.confirmPwdBlur()} />)
           }
           { this.state.isConfirmError ? <span className="form-tip error-msg">{formatMessage({ id: 'page.mySetting.confirmError' }) }</span> : '' }
         </FormItem>
@@ -114,6 +116,7 @@ Avator.defaultProps = {
 Avator.propTypes = {
   intl: intlShape.isRequired,
   submit: PropTypes.func.isRequired,
+    tryLogout: PropTypes.func.isRequired,
 };
 
 

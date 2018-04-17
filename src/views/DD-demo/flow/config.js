@@ -1,1 +1,0 @@
-export const DEFAULT_SECTION_CODE = 'default'; // 默认的section的code
