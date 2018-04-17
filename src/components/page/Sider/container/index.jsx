@@ -64,12 +64,12 @@ const menuItems = [
       {
         id: 'fields',
         path: `${pathPrefix}/${OBJECT_TYPES.accounts}/fields`,
-        icon: 'setting',
+        icon: 'profile',
       },
       {
         id: 'pageLayout',
         path: `${pathPrefix}/${OBJECT_TYPES.accounts}/pageLayout`,
-        icon: 'setting',
+        icon: 'table',
       },
     ],
   },
@@ -80,12 +80,12 @@ const menuItems = [
       {
         id: 'fields',
         path: `${pathPrefix}/${OBJECT_TYPES.opportunities}/fields`,
-        icon: 'setting',
+        icon: 'profile',
       },
       {
         id: 'pageLayout',
         path: `${pathPrefix}/${OBJECT_TYPES.opportunities}/pageLayout`,
-        icon: 'setting',
+        icon: 'table',
       },
     ],
   },
