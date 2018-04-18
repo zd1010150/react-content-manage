@@ -1,4 +1,8 @@
-import { SET_DATA, SET_ROW_SELECTION } from './actionTypes';
+import {
+  SET_DATA,
+  SET_ROW_SELECTION,
+  DELETE_CLIENT,
+} from './actionTypes';
 
 const initialState = {
   columns: [],
@@ -25,6 +29,15 @@ const objectList = (state = initialState, action) => {
       return {
         ...state,
         selectedRowKeys,
+      };
+    
+    
+    case DELETE_CLIENT:
+      const { deleteId } = action.payload;
+      const dataAfterDelete = state.data.filter(record => record.id !== deleteId);
+      return {
+        ...state,
+        data: dataAfterDelete,
       };
 
 

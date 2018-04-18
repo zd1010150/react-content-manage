@@ -7,8 +7,12 @@ import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { mapToAPIOrderStr } from 'utils/common';
 import { toTimezone } from 'utils/dateTimeUtils';
-import { setRowSelection, tryFetchData } from '../flow/actions';
-const { FieldTypes } = Enums;
+import {
+  setRowSelection,
+  tryFetchData,
+  tryDeleteClientByType,
+} from '../flow/actions';
+const { FieldTypes, DefaultPageConfigs } = Enums;
 const {
   DateOnly,
   DateTime,
@@ -19,6 +23,7 @@ const {
   PickList,
   TextInput,
 } = FieldTypes;
+const { Options, PageSize } = DefaultPageConfigs;
 
 
 const defaultProps = {
@@ -39,24 +44,52 @@ class TableWrapper extends Component {
   componentDidMount() {
     // initial fetch
     const { objectType, tryFetchData } = this.props;
-    tryFetchData(objectType);
+    tryFetchData(objectType, { per_page: PageSize });
   }
+
+  handleDeleteClick = id => this.props.tryDeleteClientByType(this.props.objectType, id)
 
   handleSelectionChange = selectedRowKeys => this.props.setRowSelection(selectedRowKeys)
 
-  handleTableChange = (pagination, filters, sorter) => {    
-    const params = {
-      orderBy: sorter.column.columnId,
-      sortBy: mapToAPIOrderStr(sorter.order),
-    };
+  handleTableChange = (pagination, filters, sorter) => {
+    let paginationParams = {};
+    let sorterParams = {};
+    if (!_.isEmpty(pagination)) {
+      const { current, pageSize } = pagination;
+      paginationParams = {
+        page: current,
+        per_page: pageSize,
+      };
+    }
+    if (!_.isEmpty(sorter)) {
+      sorterParams = {
+        orderBy: sorter.column.columnId,
+        sortBy: mapToAPIOrderStr(sorter.order),
+      }
+    }
     const { objectType, tryFetchData } = this.props;
-    debugger;
-    tryFetchData(objectType, params);
+    // console.log('--==PARAMS==--');
+    // console.dir({ ...paginationParams, ...sorterParams });
+    tryFetchData(objectType, { ...paginationParams, ...sorterParams });
   }
 
-  parsePagination = data => {
+  parsePagination = meta => {
+    // console.log('--==META==--');
+    // console.dir(meta.pagination);
+    const { pagination } = meta;
+    let extraParams = {};
+    if (!_.isEmpty(pagination)) {
+      extraParams = {
+        total: pagination.total,
+      };
+    }
     return {
       className: 'stickToRight',
+      defaultPageSize: PageSize,
+      pageSizeOptions: Options,
+      showSizeChanger: true,
+      showTotal: (total, range) => `${range[0]}-${range[1]} / ${total}`,
+      ...extraParams,
     };
   }
 
@@ -107,6 +140,7 @@ class TableWrapper extends Component {
   }
 
   renderColumns = data => {
+    const { formatMessage } = this.props.intl;
     const me = this;
     const columns = data.map(column => me.renderColumnByType(column.crm_data_type, column));
     columns.unshift({
@@ -115,8 +149,9 @@ class TableWrapper extends Component {
       width: 30,
       render: (text, record) => (
         <Popconfirm
-          title="Are you sure to delete?"
-          onConfirm={() => onDeleteClick(record.id)}
+          title={formatMessage({ id: `global.ui.dialog.deleteTitle` })}
+          onConfirm={$ => me.handleDeleteClick(record.id)}
+          placement="right"
         >
           <Icon className="cursor-pointer" size="small" type='delete' />
         </Popconfirm>
@@ -158,5 +193,6 @@ const mapStateToProps = ({ objectList }) => ({
 const mapDispatchToProps = {
   setRowSelection,
   tryFetchData,
+  tryDeleteClientByType,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TableWrapper));

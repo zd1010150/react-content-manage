@@ -33,3 +33,18 @@ export const setRowSelection = selectedRowKeys => ({
       type: SET_ROW_SELECTION,
       payload: { selectedRowKeys },
     });
+
+
+//
+export const deleteClient = deletedId => ({
+      type: DELETE_CLIENT,
+      payload: { deletedId },
+    });
+
+export const tryDeleteClientByType = (objectType, id) => dispatch =>
+    httpDelete(`/admin/${objectType}/${id}`, {}, dispatch).then((data) => {
+      debugger;
+      if (data && data.deleted) {
+        dispatch(deleteClient(id));
+      }
+    });
