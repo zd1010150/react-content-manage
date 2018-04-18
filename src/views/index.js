@@ -23,6 +23,7 @@ import ClientAttachments from './ClientAttachments/index';
 import MergeLeads from './MergeLeads/index';
 import MySetting from './MySetting/index';
 import ConvertLeads from './ConvertLeads/index';
+import ObjectList from './ObjectList/index';
 
 export {
   Dashboard,
@@ -48,4 +49,5 @@ export {
   MySetting,
   MergeLeads,
   ConvertLeads,
+  ObjectList,
 };

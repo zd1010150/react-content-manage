@@ -8,6 +8,7 @@ import taskDetails from 'components/page/TaskDetails/flow/reducer';
 import duplicates from 'components/page/FindDuplicates/flow/reducer';
 import globalSearch from 'views/GlobalSearch/flow/reducer';
 import mergence from 'views/MergeLeads/flow/reducer';
+import objectList from 'views/ObjectList/flow/reducer';
 
 // test
 import multiDndFields from 'components/ui/MultiSelectDnD/flow/reducer';
@@ -23,5 +24,6 @@ export default {
   taskDetails,
   duplicates,
   mergence,
+  objectList,
   globalSearch,
 };

@@ -11,6 +11,8 @@ export default {
     field_name: 'API',
     layout_name: '布局名',
     section_label: '内容块名',
+    field: '字段',
+    value: '字段值',
   },
   en: {
     userName: 'User Name',
@@ -24,5 +26,7 @@ export default {
     field_name: 'Field API',
     layout_name: 'Layout Name',
     section_label: 'Section Label',
+    field: 'Field',
+    value: 'Value',
   },
 };

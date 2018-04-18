@@ -55,7 +55,7 @@ const EnumsManager = Object.freeze({
   DefaultPageConfigs: Object.freeze({
     PageSizeSmall: 10,
     PageSize: 25,
-    Options: ['10', '25', '50', '100', '200', '300'],
+    Options: ['2', '10', '25', '50', '100', '200', '300'],
   }),
 
   DataType: Object.freeze([
@@ -103,6 +103,7 @@ const EnumsManager = Object.freeze({
     VIEWDETAILS: 'VIEW_DETAILS_',
     DUPLICATES: 'DUPLICATES_',
     MERGE: 'MERGE_',
+    OBJECTLIST: 'OBJECTLIST_',
   }),
 
   ViewVisibilityIds: Object.freeze({

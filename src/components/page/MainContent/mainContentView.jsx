@@ -1,10 +1,13 @@
 /* eslint-disable react/no-typos */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import Enums from 'utils/EnumsManager';
+const { ObjectTypes } = Enums;
+const { Leads, Accounts, Opportunities } = ObjectTypes;
 
 import {
   Dashboard,
-  Leads,
+  Leads as LeadPage,
   UIDemo,
   CompanyInfo,
   Users,
@@ -25,6 +28,7 @@ import {
   MergeLeads,
   MySetting,
   ConvertLeads,
+  ObjectList,
 } from 'views/index';
 
 
@@ -69,10 +73,20 @@ const MainContent = () =>
     <Route path="/:objectType/tasks/:objectId" component={ObjectTask} />
     <Route path="/:objectType/attachments/:objectId" component={ClientAttachments} />
     <Route path="/:objectType/:objectId" component={ObjectDetails} exact />
-    <Route path="/leads" component={Leads} exact />
-    <Route path="/accounts" component={Leads} exact />
-    <Route path="/opportunities" component={Leads} exact />
+    <Route path="/leads" component={LeadPage} exact />
     <Route path="/dashboard" component={Dashboard} exact />
+    {/* testing */}
+    <Route path="/objects" component={ObjectList} exact />
+    <Route path="/:objectType" exact render={props => {
+      const { match } = props;
+      const { objectType } = match.params;
+
+      if ([ Leads, Accounts, Opportunities ].indexOf(objectType) !== -1) {
+        return <ObjectList key={objectType} {...props} objectType={objectType} />
+      }
+      // TOOD: return 404 page
+      return null;
+    }}/>
   </Switch>);
 
 export default MainContent;
