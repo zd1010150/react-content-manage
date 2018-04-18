@@ -1,6 +1,7 @@
 import {
   SET_DATA,
   SET_ROW_SELECTION,
+  SET_OPTIONS,
 } from './actionTypes';
 
 const initialState = {
@@ -9,6 +10,7 @@ const initialState = {
   meta: {},
   selectedRowKeys: [],
   tableParams: {},
+  selectedFieldOptions: [],
 };
 
 const objectList = (state = initialState, action) => {
@@ -30,6 +32,14 @@ const objectList = (state = initialState, action) => {
       return {
         ...state,
         selectedRowKeys,
+      };
+
+
+    case SET_OPTIONS:
+      const { selectedFieldOptions } = action.payload;
+      return {
+        ...state,
+        selectedFieldOptions,
       };
 
 

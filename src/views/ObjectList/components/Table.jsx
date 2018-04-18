@@ -33,10 +33,14 @@ const defaultProps = {
 };
 const propTypes = {
   intl: intlShape.isRequired,
-  data: PropTypes.array.isRequired,
   columns: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,  
   meta: PropTypes.object.isRequired,
-  tryFetchLeads: PropTypes.func,
+  selectedRowKeys: PropTypes.array,
+  tableParams: PropTypes.object,
+  setRowSelection: PropTypes.func,
+  tryFetchData: PropTypes.func,
+  tryDeleteClientByType: PropTypes.func,
 };
 
 

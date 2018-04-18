@@ -1,7 +1,8 @@
-import { get, patch, httpDelete } from 'store/http/httpAction';
+import { get, post, httpDelete } from 'store/http/httpAction';
 import {
   SET_DATA,
   SET_ROW_SELECTION,
+  SET_OPTIONS,
 } from './actionTypes';
 
 const concatParams = params => {
@@ -25,7 +26,7 @@ const getFetchPage = (params, meta, count) => {
   return 1;
 };
 
-export const setData = (columns, data, meta, tableParams) => ({
+const setData = (columns, data, meta, tableParams) => ({
       type: SET_DATA,
       payload: { columns, data, meta, tableParams },
     });
@@ -70,5 +71,28 @@ export const tryDeleteClientsByType = (objectType, ids, params, meta) => dispatc
           ...params,
           page: getFetchPage(params, meta, ids.length),
         }));
+      }
+    });
+
+
+//
+export const setOptions = selectedFieldOptions => ({
+      type: SET_OPTIONS,
+      payload: { selectedFieldOptions },
+    });
+
+export const tryFetchOptionsById = id => dispatch =>
+    get(`/admin/objects/lookup-metadata/${id}`, {}, dispatch).then((data) => {
+      if (!_.isEmpty(data)) {
+        dispatch(setOptions(data));
+      }
+    });
+
+
+//
+export const tryUpdateClients = (params, objectType, tableParams) => dispatch =>
+    post(`/admin/${objectType}/mass-update`, params, dispatch).then((data) => {      
+      if (data && !_.isEmpty(data.updated_ids)) {
+        dispatch(tryFetchData(objectType, tableParams));
       }
     });

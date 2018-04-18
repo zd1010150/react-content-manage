@@ -9,7 +9,7 @@ const { ThemeTypes, PhantomId, ObjectTypes, ThemeTypesInArray, ObjectTypesInArra
 import { MassUpdateModal } from './index';
 const { Leads } = ObjectTypes;
 import { connect } from 'react-redux';
-import { tryDeleteClientsByType } from '../flow/actions';
+import { tryUpdateClients, tryDeleteClientsByType } from '../flow/actions';
 
 
 const defaultProps = {
@@ -35,6 +35,17 @@ class Toolbar extends Component {
   handleMassDelete = $ => {
     const { objectType, selectedRowKeys, meta, tableParams, tryDeleteClientsByType } = this.props;
     tryDeleteClientsByType(objectType, selectedRowKeys, tableParams, meta);
+  }
+
+  handleMassUpdate = (fieldName, value) => {
+    const { selectedRowKeys, objectType, tableParams, tryUpdateClients } = this.props;
+    const params = {
+      ids: selectedRowKeys,
+      field_name: fieldName,
+      value,
+    };
+    tryUpdateClients(params, objectType, tableParams);
+    this.setState({ visible: false });
   }
 
   handleModalClose = $ => this.setState({ visible: false })
@@ -67,6 +78,7 @@ class Toolbar extends Component {
           </Button>
           <MassUpdateModal
             visible={visible}
+            onOk={this.handleMassUpdate}
             onCancel={this.handleModalClose}
           />
           <Popconfirm
@@ -116,5 +128,6 @@ const mapStateToProps = ({ global, objectList }) => ({
 });
 const mapDispatchToProps = {
   tryDeleteClientsByType,
+  tryUpdateClients,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Toolbar));

@@ -30,14 +30,28 @@ const defaultProps = {
   options: [],
   size: 'small',
   type: '',
+  readOnly: false,
+  required: false,
+  labelCol: {
+    xs: 24,
+    sm: 8,
+  },
+  useDefaultRowCls: true,
+  valueCol: {
+    xs: 24,
+    sm: 16,
+  },
 };
 const propTypes = {
-  active: PropTypes.bool.isRequired,
   format: PropTypes.string,
   helpText: PropTypes.string,
   id: PropTypes.number.isRequired,
   initialValue: PropTypes.string,
   label: PropTypes.string.isRequired,
+  labelCol: PropTypes.shape({
+    xs: PropTypes.number,
+    sm: PropTypes.number,
+  }).isRequired,
   lookupDisplayKey: PropTypes.string,
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func,
@@ -47,22 +61,28 @@ const propTypes = {
   options: PropTypes.array,
   readOnly: PropTypes.bool.isRequired,
   required: PropTypes.bool.isRequired,
+  rowCls: PropTypes.string,
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   type: PropTypes.oneOf(Enums.FieldTypesInArray).isRequired,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
   ]),
+  valueCol: PropTypes.shape({
+    xs: PropTypes.number,
+    sm: PropTypes.number,
+  }).isRequired,
+  useDefaultRowCls: PropTypes.bool.isRequired,
 };
 
 
 const CustomField = ({
-  active,
   format,
   helpText,
   id,
   initialValue,
   label,
+  labelCol,
   lookupDisplayKey,
   name,
   onBlur,
@@ -73,9 +93,12 @@ const CustomField = ({
   options,
   readOnly,
   required,
+  rowCls,
   size,
   type,
   value,
+  valueCol,
+  useDefaultRowCls,
 }) => {
 
   const _onBlur = $ => {
@@ -218,8 +241,8 @@ const CustomField = ({
   }
 
   return (
-    <Row className={cx('row')}>
-      <Col xs={24} sm={8} style={{ textAlign: 'right' }}>
+    <Row className={useDefaultRowCls ? cx('row') : rowCls}>
+      <Col {...labelCol} style={{ textAlign: 'right' }}>
         <span className={required ? `${cx('required')} ${cx('label')}` : cx('label')}>
           {label}
         </span>
@@ -231,7 +254,7 @@ const CustomField = ({
           />
         </Tooltip> : <div className={cx('iconPlaceholder')} />}
       </Col>
-      <Col xs={24} sm={16}>{field}</Col>
+      <Col {...valueCol}>{field}</Col>
     </Row>
   );
 };
