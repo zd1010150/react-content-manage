@@ -12,11 +12,19 @@ const { Lookup, PickList } = FieldTypes;
 
 
 const defaultProps = {
+  visible: false,
+  columns: [],
+  selectedFieldOptions: [],
 };
 const propTypes = {
   intl: intlShape.isRequired,
+  columns: PropTypes.array.isRequired,
   onCancel: PropTypes.func,
   onOk: PropTypes.func,
+  selectedFieldOptions: PropTypes.array.isRequired,
+  setOptions: PropTypes.func,
+  tryFetchOptionsById: PropTypes.func,
+  visible: PropTypes.bool.isRequired,
 };
 
 
@@ -48,8 +56,9 @@ class MassUpdateModal extends Component {
   _onOk = $ => {
     const { onOk, selectedFieldOptions } = this.props;
     if (_.isFunction(onOk)) {
-      let { fieldName, lookupDisplayKey, type, value } = this.state;
+      let { fieldName, type, value } = this.state;
       if (type === Lookup) {
+        const { lookupDisplayKey } = this.setState;
         const option = selectedFieldOptions.find(option => option[lookupDisplayKey] === value);
         value = option.id;
       }
@@ -80,7 +89,7 @@ class MassUpdateModal extends Component {
 
   handleValueChange = (id, value) => this.setState({ value })
 
-  render () {
+  render() {
     const { fieldId, fieldName, lookupDisplayKey, type, value } = this.state;
     const { intl, visible, columns, selectedFieldOptions } = this.props;
     const { formatMessage } = intl;
