@@ -47,7 +47,10 @@ class TableWrapper extends Component {
     tryFetchData(objectType, { per_page: PageSize });
   }
 
-  handleDeleteClick = id => this.props.tryDeleteClientByType(this.props.objectType, id)
+  handleDeleteClick = id => {
+    const { objectType, tryDeleteClientByType, tableParams, meta } = this.props;
+    tryDeleteClientByType(objectType, id, tableParams, meta);
+  }
 
   handleSelectionChange = selectedRowKeys => this.props.setRowSelection(selectedRowKeys)
 
@@ -184,11 +187,13 @@ class TableWrapper extends Component {
 
 TableWrapper.defaultProps = defaultProps;
 TableWrapper.propTypes = propTypes;
-const mapStateToProps = ({ objectList }) => ({
+const mapStateToProps = ({ global, objectList }) => ({
+  language: global.language,
   columns: objectList.columns,
   data: objectList.data,
   meta: objectList.meta,
   selectedRowKeys: objectList.selectedRowKeys,
+  tableParams: objectList.tableParams,
 });
 const mapDispatchToProps = {
   setRowSelection,

@@ -1,26 +1,27 @@
 import {
   SET_DATA,
   SET_ROW_SELECTION,
-  DELETE_CLIENT,
 } from './actionTypes';
 
 const initialState = {
   columns: [],
   data: [],
   meta: {},
-  selectedRowKeys: [], 
+  selectedRowKeys: [],
+  tableParams: {},
 };
 
 const objectList = (state = initialState, action) => {
   switch (action.type) {
     case SET_DATA:
-      const { columns, data, meta } = action.payload;
+      const { columns, data, meta, tableParams } = action.payload;
       return {
         ...state,
         columns,
         data,
         meta,
         selectedRowKeys: [],
+        tableParams,
       };
 
     
@@ -29,15 +30,6 @@ const objectList = (state = initialState, action) => {
       return {
         ...state,
         selectedRowKeys,
-      };
-    
-    
-    case DELETE_CLIENT:
-      const { deleteId } = action.payload;
-      const dataAfterDelete = state.data.filter(record => record.id !== deleteId);
-      return {
-        ...state,
-        data: dataAfterDelete,
       };
 
 
