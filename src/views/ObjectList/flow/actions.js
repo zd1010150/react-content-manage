@@ -3,6 +3,7 @@ import {
   SET_DATA,
   SET_ROW_SELECTION,
   SET_OPTIONS,
+  SET_VIEWS,
 } from './actionTypes';
 
 const concatParams = params => {
@@ -94,5 +95,19 @@ export const tryUpdateClients = (params, objectType, tableParams) => dispatch =>
     post(`/admin/${objectType}/mass-update`, params, dispatch).then((data) => {      
       if (data && !_.isEmpty(data.updated_ids)) {
         dispatch(tryFetchData(objectType, tableParams));
+      }
+    });
+
+
+//
+export const setViews = views => ({
+      type: SET_VIEWS,
+      payload: { views },
+    });
+
+export const tryFetchViewsByType = objectType => dispatch =>
+    get(`/admin/list_views/object/${objectType}`, {}, dispatch).then((data) => {
+      if (data && !_.isEmpty(data.data)) {
+        dispatch(setViews(data.data));
       }
     });
