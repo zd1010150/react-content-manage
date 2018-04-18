@@ -8,8 +8,6 @@ const { Leads, Accounts, Opportunities } = ObjectTypes;
 import {
   Dashboard,
   Leads as LeadPage,
-  DDDemo,
-  DragPreview,
   UIDemo,
   CompanyInfo,
   Users,
@@ -38,8 +36,6 @@ import { ObjectFilter } from '../index';
 
 const MainContent = () =>
   (<Switch>
-    <Route path="/setup/company-info/dd-demo" component={DDDemo} />
-    <Route path="/setup/company-info/drag-preveiw" component={DragPreview} />
     <Route path="/setup/company-info/ui-demo" component={UIDemo} />
     <Route path="/setup/company-info/company-info" component={CompanyInfo} />
     <Route path="/setup/company-info/users" component={Users} />

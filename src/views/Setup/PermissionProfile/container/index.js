@@ -10,6 +10,7 @@ import { Panel } from 'components/ui/index';
 import { fetchPermission, savePermission, toggleDepartmentDialog, setDepartment, setSeletedDeparmentPermission } from '../flow/action';
 import { intlShape, injectIntl } from 'react-intl';
 import DepartmentDialog from '../../Users/component/departmentDialog';
+import { getTeamIds } from '../flow/reselect';
 
 const CheckboxGroup = Checkbox.Group;
 const { TextArea } = Input;
@@ -23,6 +24,9 @@ class permissionProfile extends Component {
   }
   setDepartment({ department_id, department_name }) {
     const { setDepartment, fetchPermission } = this.props;
+    if (_.isEmpty(`${department_id}`)) {
+      return;
+    }
     setDepartment({ department_id, department_name });
     fetchPermission(department_id);
   }
@@ -40,22 +44,24 @@ class permissionProfile extends Component {
   }
   onSubmit() {
     const { savePermission, selectedDepartment } = this.props;
-
     savePermission({ team_id: selectedDepartment.department_id, permissions: selectedDepartment.permissions, description: '' });
   }
   onCancel() {
     const { fetchPermission, selectedDepartment } = this.props;
+    if (_.isEmpty(`${selectedDepartment.department_id}`)) {
+      return;
+    }
     fetchPermission(selectedDepartment.department_id);
   }
   render() {
     const { formatMessage } = this.props.intl;
     const {
-      isDisplayDepartmentDialog, toggleDepartmentDialog, teams, permissions, selectedDepartment,
+      isDisplayDepartmentDialog, toggleDepartmentDialog, teams, permissions, selectedDepartment, teamIds,
     } = this.props;
     return (
       <Panel panelTitle={formatMessage({ id: 'page.permissionProfile.permissionProfile' })} >
         <div className="pl-lg pr-lg pt-lg pb-lg">
-          <h4>Team</h4>
+          <h4>{formatMessage({ id: 'global.properNouns.department' })} </h4>
           <Search
             className="input-material-theme"
             placeholder={formatMessage({ id: 'page.permissionProfile.inputTeam' })}
@@ -63,12 +69,19 @@ class permissionProfile extends Component {
             onClick={() => { this.openDepartment(); }}
             value={selectedDepartment.department_name}
           />
-          <DepartmentDialog isDisplayDepartmentDialog={isDisplayDepartmentDialog} toggleDepartmentDialog={toggleDepartmentDialog} setDepartment={this.setDepartment.bind(this)} teams={teams} noDepartment={true} />
-          <h4 className="pt-lg pb-lg">Description</h4>
-          <TextArea rows={4} />
+          <DepartmentDialog
+            isDisplayDepartmentDialog={isDisplayDepartmentDialog}
+            toggleDepartmentDialog={toggleDepartmentDialog}
+            setDepartment={({ department_id, department_name }) => this.setDepartment({ department_id, department_name })}
+            teams={teams}
+            noDepartment
+            teamIds={teamIds}
+          />
+          <h4 className="pt-lg pb-lg">{formatMessage({ id: 'page.permissionProfile.description' })}</h4>
+          <TextArea rows={4} onChange={e => this.props.setDepartment({ description: e.target.value })} value={selectedDepartment.description} />
         </div>
         <div className="panel-section">
-          <div className="section-header">Tab Settings</div>
+          <div className="section-header">{formatMessage({ id: 'page.permissionProfile.tabSettings' })}</div>
           <div className="section-content mt-lg mb-lg">
             {
               permissions.tabs.map(t =>
@@ -84,16 +97,16 @@ class permissionProfile extends Component {
           </div>
         </div>
         <div className="panel-section">
-          <div className="section-header">Tab Conditions</div>
+          <div className="section-header">{formatMessage({ id: 'page.permissionProfile.tabCondition' })}</div>
           <div className="section-content  mt-lg mb-lg">
             <table style={{ width: '100%' }}>
               <thead className="ant-table-thead">
                 <tr>
-                  <th>Tab</th>
-                  <th >Create</th>
+                  <th>{formatMessage({ id: 'page.permissionProfile.tab' })}</th>
+                  <th >{formatMessage({ id: 'page.permissionProfile.create' })}</th>
 
-                  <th >Delete</th>
-                  <th >Edit</th>
+                  <th >{ formatMessage({ id: 'global.ui.button.delete' }) }</th>
+                  <th >{ formatMessage({ id: 'global.ui.button.edit' }) }</th>
                   <th>View</th>
                 </tr>
               </thead>
@@ -132,6 +145,7 @@ const mapStateToProps = ({ global, setup }) => ({
   permissions: setup.permissionPro.permissions,
   selectedDepartment: setup.permissionPro.selectedDepartment,
   isDisplayDepartmentDialog: setup.permissionPro.ui.isDisplayDepartmentDialog,
+  teamIds: getTeamIds({ global }),
 });
 const mapDispatchToProps = {
   fetchPermission,

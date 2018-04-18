@@ -128,6 +128,11 @@ export default {
       [Attachments]: '附件',
       [Logs]: '日志',
     },
+    upload: {
+      maxSize: '文件最大是{size}M',
+      errorMax: '你的文件超过了{size}M,请重新选择',
+      errorType: '文件类型不对，只允许上传 {type} 类型的文件',
+    },
   },
   en: {
     button: {
@@ -240,6 +245,11 @@ export default {
       [EmailSent]: 'Email Sent',
       [Attachments]: 'Attachments',
       [Logs]: 'Logs',
+    },
+    upload: {
+      maxSize: 'Maximum file size is {size}M',
+      errorMax: 'The file is larger than {size}M, please reselect',
+      errorType: 'The type of file is error, the allowed type is {type}',
     },
   },
 };

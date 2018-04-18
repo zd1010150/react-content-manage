@@ -68,9 +68,6 @@ export const addUsers = (form, callback) => dispatch => post('/admin/users', { .
 
 export const deleteUsers = (id, cb) => (dispatch, getState) => httpDelete(`/admin/users/${id}`, {}, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
-    const { usersDataTablePagination, searchKey } = getState().setup.users;
-    const { perPage, currentPage } = usersDataTablePagination;
-    dispatch(fetchUsers(perPage, currentPage, searchKey, dispatch));
     if (_.isFunction(cb)) {
       cb(data);
     }

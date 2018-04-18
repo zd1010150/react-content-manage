@@ -1,6 +1,6 @@
 import http from 'utils/http';
 import { notification } from 'antd';
-import { UNAUTHENTICATION } from 'config/app.config.js';
+import { UNAUTHENTICATION, SUCCESS_HTTP_CODE } from 'config/app.config.js';
 import { tryLogout } from 'views/LoginForm/flow/actions';
 import _ from 'lodash';
 import {
@@ -31,6 +31,16 @@ const dispatch = (method, url, request, dispatcher = () => {}) => {
     if (statusCode === UNAUTHENTICATION.CODE) { // 如果是401为授权，就跳转到登录界面
       dispatcher(tryLogout());
     }
+    if (SUCCESS_HTTP_CODE.indexOf(statusCode) > -1) {
+      dispatcher({
+        type: HTTP_ACTION_DONE,
+        payload: {
+          data,
+        },
+      });
+      successNotify(method, url);
+      return data;
+    }
     if (data && (data.error || data.errors || data.message)) {
       let { errors } = data;
       errors = errors || data.status_code;
@@ -46,15 +56,6 @@ const dispatch = (method, url, request, dispatcher = () => {}) => {
       } else if (data.message) {
         dispatcher(addError(data.message));
       }
-    } else {
-      dispatcher({
-        type: HTTP_ACTION_DONE,
-        payload: {
-          data,
-        },
-      });
-      successNotify(method, url);
-      return data;
     }
   }).catch((err) => {
     dispatcher({
