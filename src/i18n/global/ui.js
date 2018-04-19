@@ -209,7 +209,7 @@ export default {
       selectedItems: 'items selected',
     },
     select: {
-      label: 'view',
+      label: 'View',
       all: 'All',
     },
     dialog: {

@@ -6,9 +6,10 @@ import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
-import { setActiveView, tryFetchViewsByType } from '../flow/actions';
-const { PhantomId, ObjectTypes, ObjectTypesInArray } = Enums;
+import { setActiveView, tryFetchDataByView, tryFetchViewsByType } from '../flow/actions';
+const { DefaultPageConfigs, PhantomId, ObjectTypes, ObjectTypesInArray } = Enums;
 const { Leads } = ObjectTypes;
+const { PageSize } = DefaultPageConfigs;
 
 
 const defaultProps = {
@@ -35,7 +36,12 @@ class Topbar extends Component {
     tryFetchViewsByType(objectType);
   }
 
-  handleViewChange = value => this.props.setActiveView(value)
+  handleViewChange = value => {
+    const { objectType, setActiveView, tryFetchDataByView } = this.props;
+    setActiveView(value);
+    // change view will reset table params
+    tryFetchDataByView(objectType, value, { per_page: PageSize });
+  }
 
   render() {
     const {
@@ -52,7 +58,7 @@ class Topbar extends Component {
         <Col sm={12}>
           <StyledSelect
             displayField={'view_name'}
-            labelText={formatMessage({ id: `${i18n}.labels.viewName` })}
+            labelText={formatMessage({ id: `${i18n}.select.label` })}
             options={views}
             onChange={this.handleViewChange}
             value={activeViewId}
@@ -83,6 +89,7 @@ const mapStateToProps = ({ global, objectList }) => ({
 });
 const mapDispatchToProps = {
   setActiveView,
+  tryFetchDataByView,
   tryFetchViewsByType,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Topbar));
