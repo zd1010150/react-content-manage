@@ -113,9 +113,7 @@ render() {
   );
 }
 }
-Avator.defaultProps = {
 
-};
 Avator.propTypes = {
   intl: intlShape.isRequired,
   submit: PropTypes.func.isRequired,
