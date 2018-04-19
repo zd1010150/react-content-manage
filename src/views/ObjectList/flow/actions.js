@@ -30,11 +30,13 @@ const getFetchUrlByView = (objectType, id, params) => {
   return `/admin/${objectType}/by_list_view/${id}${concatParams(params)}`;
 };
 
+
+//
 const setData = (columns, data, meta, tableParams) => ({
       type: SET_DATA,
       payload: { columns, data, meta, tableParams },
     });
-
+// TODO: replace this with tryFetchDataByView
 export const tryFetchData = (objectType, params) => dispatch =>
     get(`/admin/${objectType}${concatParams(params)}`, {}, dispatch).then((data) => {
       if (data
