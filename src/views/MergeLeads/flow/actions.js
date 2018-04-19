@@ -33,11 +33,9 @@ export const setMasterRecord = masterId => ({
 
 
 //
-export const tryMergeLeads = data => dispatch => {
-    console.dir(data);
-    return post('/admin/leads/merge', data, dispatch).then((data) => {
+export const tryMergeLeads = data => dispatch =>
+    post('/admin/leads/merge', data, dispatch).then((data) => {
       if (data) {
         debugger;
       }
     });
-  }

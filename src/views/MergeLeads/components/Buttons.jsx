@@ -37,8 +37,9 @@ class Buttons extends Component {
     if (hasFieldMissing) {
       return notification['warning']({
         message: 'Missing some fields',
-      });;
+      });
     }
+
     return tryMergeLeads({
       merged_ids: data.map(record => record.id),
       lead: mergedData,
