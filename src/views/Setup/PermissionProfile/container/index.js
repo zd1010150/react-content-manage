@@ -44,7 +44,10 @@ class permissionProfile extends Component {
   }
   onSubmit() {
     const { savePermission, selectedDepartment } = this.props;
-    savePermission({ team_id: selectedDepartment.department_id, permissions: selectedDepartment.permissions, description: '' });
+    if (_.isEmpty(`${selectedDepartment.department_id}`)) {
+      return;
+    }
+    savePermission({ team_id: selectedDepartment.department_id, permissions: selectedDepartment.permissions, description: selectedDepartment.description });
   }
   onCancel() {
     const { fetchPermission, selectedDepartment } = this.props;
