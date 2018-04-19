@@ -2,6 +2,7 @@
 import Upload from './upload';
 import InputNumber from './inputNumber';
 import ViewFilter from './ViewFilter/index';
+import StyledSelect from './StyledSelect/index';
 import ListTopButtons from './ListTopButton/index';
 import EditBox from './editBox/index';
 import Panel from './panel/index';
@@ -32,6 +33,7 @@ export {
   Upload,
   InputNumber,
   ViewFilter,
+  StyledSelect,
   ListTopButtons,
   Panel,
   FloatingLabelInput,

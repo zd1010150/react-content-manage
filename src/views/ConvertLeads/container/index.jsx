@@ -10,7 +10,6 @@ const { Option } = Select;
 
 const propTypes = {
   intl: intlShape.isRequired,
-  objectId: PropTypes.number.isRequired,
 };
 
 
@@ -26,6 +25,18 @@ class ConvertLeads extends Component {
   }
 
   onCancelClick = $ => this.props.history.goBack()
+
+  onConvertClick = $ => {
+    const {
+      accountNum,
+      password,
+      type,
+      types,
+      loginAccount,
+      portalPassword,
+    } = this.state;
+    console.dir(this.state);
+  }
 
   onFieldChange = (field, value) => this.setState({ [field]: value })
 
@@ -64,7 +75,7 @@ class ConvertLeads extends Component {
           <Button
             className="lead-theme-btn mr-sm ml-lg mb-md"
             size="small"
-            onClick={this.onMergeClick}
+            onClick={this.onConvertClick}
           >
             <Icon size="small" type="save" />
             {formatMessage({ id: `global.ui.button.convertToAccount` })}

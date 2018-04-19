@@ -1,5 +1,4 @@
 import Dashboard from './Dashboard/index';
-import Leads from './Leads/index';
 import LoginForm from './LoginForm/index';
 import UIDemo from './ui-demo';
 import CompanyInfo from './Setup/CompanyInfo';
@@ -23,10 +22,10 @@ import ClientAttachments from './ClientAttachments/index';
 import MergeLeads from './MergeLeads/index';
 import MySetting from './MySetting/index';
 import ConvertLeads from './ConvertLeads/index';
+import ObjectList from './ObjectList/index';
 
 export {
   Dashboard,
-  Leads,
   LoginForm,
   UIDemo,
   CompanyInfo,
@@ -48,4 +47,5 @@ export {
   MySetting,
   MergeLeads,
   ConvertLeads,
+  ObjectList,
 };
