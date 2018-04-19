@@ -13,7 +13,7 @@ const propTypes = {
 
 const TopNav = ({ intl, permissions, location }) => {
   const { formatMessage } = intl;
-
+  const i18n = 'global.properNouns';
   // TODO: hide specific tabs based on user's permissions
   //       need to discuss the permission json format with be dev
   //       and then add functionality to hide specific tabs
@@ -39,7 +39,9 @@ const TopNav = ({ intl, permissions, location }) => {
         const theme = ThemeTypes[key.charAt(0).toUpperCase() + key.slice(1)];
         return (
           <Menu.Item key={key} className={`${theme}-theme-menu`}>
-            <Link to={item.href}>{key}</Link>
+            <Link to={item.href}>
+              {formatMessage({ id: `${i18n}.${key}` })}
+            </Link>
           </Menu.Item>
         );
       })}
