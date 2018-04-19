@@ -28,6 +28,7 @@ const dispatch = (method, url, request, dispatcher = () => {}) => {
     payload: {},
   });
   return request.then(({ data, statusCode }) => {
+    debugger;
     if (statusCode === UNAUTHENTICATION.CODE) { // 如果是401为授权，就跳转到登录界面
       dispatcher(tryLogout());
     }

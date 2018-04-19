@@ -34,8 +34,10 @@ onSubmit() {
   const { form, submit, tryLogout } = this.props;
   form.validateFieldsAndScroll((err, values) => {
     if (!err && this.validateConfirmPwd()) {
-      submit(values, () => {
+      submit(values, (data) => {
+        if (data && data.status) {
           tryLogout();
+        }
       });
     }
   });
@@ -116,7 +118,7 @@ Avator.defaultProps = {
 Avator.propTypes = {
   intl: intlShape.isRequired,
   submit: PropTypes.func.isRequired,
-    tryLogout: PropTypes.func.isRequired,
+  tryLogout: PropTypes.func.isRequired,
 };
 
 

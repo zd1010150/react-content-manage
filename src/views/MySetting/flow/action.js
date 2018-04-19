@@ -7,8 +7,8 @@ export const setAvator = avatar => ({
     avatar,
 });
 
-export const updatePwd = (args, cb) => dispatch => patch('/admin/users/me/reset_password', { ...args }, dispatch).then(() => {
+export const updatePwd = (args, cb) => dispatch => patch('/admin/users/me/reset_password', { ...args }, dispatch).then((data) => {
   if (_.isFunction(cb)) {
-    cb();
+    cb(data);
   }
 });
