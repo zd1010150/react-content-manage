@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import Enums from 'utils/EnumsManager';
 import { getThemeByType } from 'utils/common';
-import { Toolbar, Table } from '../components/index';
+import { Toolbar, Table, Topbar } from '../components/index';
 const { ObjectTypesInArray } = Enums;
 
 
@@ -18,8 +18,7 @@ class ObjectList extends Component {
 
     return (
       <Fragment>
-        view part
-        table:
+        <Topbar objectType={objectType} />
         <Panel
           panelClasses={`${theme}-theme-panel`}
           contentClasses="pb-xlg"

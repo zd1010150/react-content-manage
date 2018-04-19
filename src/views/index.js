@@ -1,5 +1,4 @@
 import Dashboard from './Dashboard/index';
-import Leads from './Leads/index';
 import LoginForm from './LoginForm/index';
 import UIDemo from './ui-demo';
 import CompanyInfo from './Setup/CompanyInfo';
@@ -27,7 +26,6 @@ import ObjectList from './ObjectList/index';
 
 export {
   Dashboard,
-  Leads,
   LoginForm,
   UIDemo,
   CompanyInfo,

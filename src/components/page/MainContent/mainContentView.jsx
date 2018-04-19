@@ -7,7 +7,6 @@ const { Leads, Accounts, Opportunities } = ObjectTypes;
 
 import {
   Dashboard,
-  Leads as LeadPage,
   UIDemo,
   CompanyInfo,
   Users,
@@ -73,10 +72,7 @@ const MainContent = () =>
     <Route path="/:objectType/tasks/:objectId" component={ObjectTask} />
     <Route path="/:objectType/attachments/:objectId" component={ClientAttachments} />
     <Route path="/:objectType/:objectId" component={ObjectDetails} exact />
-    <Route path="/leads" component={LeadPage} exact />
     <Route path="/dashboard" component={Dashboard} exact />
-    {/* testing */}
-    <Route path="/objects" component={ObjectList} exact />
     <Route path="/:objectType" exact render={props => {
       const { match } = props;
       const { objectType } = match.params;

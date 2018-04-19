@@ -1,7 +1,6 @@
 import setup from './setupReducer';
 
 import loginUser from 'views/LoginForm/flow/reducer';
-import leads from 'views/Leads/flow/reducer';
 import objectView from 'components/page/ObjectFilter/flow/reducer';
 import objectDetails from 'views/ObjectDetails/flow/reducer';
 import taskDetails from 'components/page/TaskDetails/flow/reducer';
@@ -16,7 +15,6 @@ import multiDndFields from 'components/ui/MultiSelectDnD/flow/reducer';
 
 export default {
   loginUser,
-  leads,
   setup,
   multiDndFields,
   objectView,

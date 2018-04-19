@@ -1,9 +1,7 @@
-import { get, post, httpDelete } from 'store/http/httpAction';
-import {
-  SET_DATA,
-  SET_ROW_SELECTION,
-  SET_OPTIONS,
-} from './actionTypes';
+import { get, httpDelete, post } from 'store/http/httpAction';
+import Enums from 'utils/EnumsManager';
+import { SET_ACTIVE_VIEW, SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS } from './actionTypes';
+const { PhantomId } = Enums;
 
 const concatParams = params => {
   if (_.isEmpty(params)) return '';
@@ -24,6 +22,12 @@ const getFetchPage = (params, meta, count) => {
     return page;
   }
   return 1;
+};
+const getFetchUrlByView = (objectType, id, params) => {
+  if (id === PhantomId) {
+    return `/admin/${objectType}${concatParams(params)}`;
+  }
+  return `/admin/${objectType}/by_list_view/${id}${concatParams(params)}`;
 };
 
 const setData = (columns, data, meta, tableParams) => ({
@@ -94,5 +98,38 @@ export const tryUpdateClients = (params, objectType, tableParams) => dispatch =>
     post(`/admin/${objectType}/mass-update`, params, dispatch).then((data) => {      
       if (data && !_.isEmpty(data.updated_ids)) {
         dispatch(tryFetchData(objectType, tableParams));
+      }
+    });
+
+
+//
+export const setViews = views => ({
+      type: SET_VIEWS,
+      payload: { views },
+    });
+
+export const tryFetchViewsByType = objectType => dispatch =>
+    get(`/admin/list_views/object/${objectType}`, {}, dispatch).then((data) => {
+      if (data && !_.isEmpty(data.data)) {
+        dispatch(setViews(data.data));
+      }
+    });
+
+
+//
+export const setActiveView = activeViewId => ({
+      type: SET_ACTIVE_VIEW,
+      payload: { activeViewId },
+    });
+
+export const tryFetchDataByView = (objectType, viewId, params) => dispatch =>
+    get(getFetchUrlByView(objectType, viewId, params), {}, dispatch).then((data) => {
+      if (data
+          && !_.isEmpty(data.index)
+          && data.index.data
+          && data.index.meta
+          && !_.isEmpty(data.selector_meta)
+          && data.selector_meta.data) {
+        dispatch(setData(data.selector_meta.data, data.index.data, data.index.meta, params));
       }
     });

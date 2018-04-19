@@ -10,9 +10,10 @@ import { toTimezone } from 'utils/dateTimeUtils';
 import {
   setRowSelection,
   tryFetchData,
+  tryFetchDataByView,
   tryDeleteClientByType,
 } from '../flow/actions';
-const { FieldTypes, DefaultPageConfigs } = Enums;
+const { FieldTypes, DefaultPageConfigs, PhantomId } = Enums;
 const {
   DateOnly,
   DateTime,
@@ -27,12 +28,17 @@ const { Options, PageSize } = DefaultPageConfigs;
 
 
 const defaultProps = {
-  data: [],
+  activeViewId: PhantomId,
   columns: [],
+  data: [],
   meta: {},
 };
 const propTypes = {
   intl: intlShape.isRequired,
+  activeViewId: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string
+  ]).isRequired,
   columns: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,  
   meta: PropTypes.object.isRequired,
@@ -40,6 +46,7 @@ const propTypes = {
   tableParams: PropTypes.object,
   setRowSelection: PropTypes.func,
   tryFetchData: PropTypes.func,
+  tryFetchDataByView: PropTypes.func,
   tryDeleteClientByType: PropTypes.func,
 };
 
@@ -74,19 +81,16 @@ class TableWrapper extends Component {
         sortBy: mapToAPIOrderStr(sorter.order),
       }
     }
-    const { objectType, tryFetchData } = this.props;
-    // console.log('--==PARAMS==--');
-    // console.dir({ ...paginationParams, ...sorterParams });
-    tryFetchData(objectType, { ...paginationParams, ...sorterParams });
+    const { activeViewId, objectType, tryFetchDataByView } = this.props;
+    return tryFetchDataByView(objectType, activeViewId, { ...paginationParams, ...sorterParams });
   }
 
   parsePagination = meta => {
-    // console.log('--==META==--');
-    // console.dir(meta.pagination);
     const { pagination } = meta;
     let extraParams = {};
     if (!_.isEmpty(pagination)) {
       extraParams = {
+        pageSize: pagination.per_page,
         total: pagination.total,
       };
     }
@@ -193,6 +197,7 @@ TableWrapper.defaultProps = defaultProps;
 TableWrapper.propTypes = propTypes;
 const mapStateToProps = ({ global, objectList }) => ({
   language: global.language,
+  activeViewId: objectList.activeViewId,
   columns: objectList.columns,
   data: objectList.data,
   meta: objectList.meta,
@@ -202,6 +207,7 @@ const mapStateToProps = ({ global, objectList }) => ({
 const mapDispatchToProps = {
   setRowSelection,
   tryFetchData,
+  tryFetchDataByView,
   tryDeleteClientByType,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TableWrapper));
