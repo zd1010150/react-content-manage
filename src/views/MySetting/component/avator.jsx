@@ -15,6 +15,7 @@ const cx = classNames.bind(styles);
 
 class Avator extends React.Component {
   onAllDone(response, error) {
+    debugger;
     if (_.isEmpty(error)) {
       const logo = response && response[0].logo;
       this.props.setUserAvator(logo);
@@ -31,7 +32,7 @@ class Avator extends React.Component {
     const { email, name, avatar } = this.props.userInfo;
     const uploadProps = {
       name: 'document',
-      action: '/admin/files/company_logo',
+      action: '/admin/files/user_avatar',
       accept: 'image/png,image/jpeg',
       withCredentials: true,
       showUploadList: false,
