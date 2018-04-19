@@ -42,6 +42,7 @@ onSubmit() {
     }
   });
 }
+
 render() {
   const {
     intl, form,
