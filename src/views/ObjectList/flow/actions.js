@@ -4,6 +4,7 @@ import {
   SET_ROW_SELECTION,
   SET_OPTIONS,
   SET_VIEWS,
+  SET_ACTIVE_VIEW,
 } from './actionTypes';
 
 const concatParams = params => {
@@ -110,4 +111,11 @@ export const tryFetchViewsByType = objectType => dispatch =>
       if (data && !_.isEmpty(data.data)) {
         dispatch(setViews(data.data));
       }
+    });
+
+
+//
+export const setActiveView = activeViewId => ({
+      type: SET_ACTIVE_VIEW,
+      payload: { activeViewId },
     });

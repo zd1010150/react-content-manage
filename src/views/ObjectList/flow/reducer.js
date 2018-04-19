@@ -1,8 +1,9 @@
 import Enums from 'utils/EnumsManager';
-import { SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS } from './actionTypes';
+import { SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS, SET_ACTIVE_VIEW } from './actionTypes';
 const { PhantomId } = Enums;
 
 const initialState = {
+  activeViewId: PhantomId,
   columns: [],
   data: [],
   meta: {},
@@ -50,7 +51,16 @@ const objectList = (state = initialState, action) => {
       };
       return {
         ...state,
+        activeViewId: PhantomId,
         views: [ viewAll, ...views ],
+      };
+
+
+    case SET_ACTIVE_VIEW:
+      const { activeViewId } = action.payload;
+      return {
+        ...state,
+        activeViewId,
       };
 
 

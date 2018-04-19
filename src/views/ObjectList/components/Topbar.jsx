@@ -6,17 +6,26 @@ import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
-import { tryFetchViewsByType } from '../flow/actions';
-const { ObjectTypes, ObjectTypesInArray } = Enums;
+import { setActiveView, tryFetchViewsByType } from '../flow/actions';
+const { PhantomId, ObjectTypes, ObjectTypesInArray } = Enums;
 const { Leads } = ObjectTypes;
 
 
 const defaultProps = {
-  objectType: Leads,
+  activeViewId: PhantomId,
+  objectType: Leads,  
+  views: [],
 };
 const propTypes = {
   intl: intlShape.isRequired,
+  activeViewId: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]).isRequired,
   objectType: PropTypes.oneOf(ObjectTypesInArray).isRequired,
+  setActiveView: PropTypes.func,
+  tryFetchViewsByType: PropTypes.func,
+  views: PropTypes.array.isRequired,
 };
 
 
@@ -26,8 +35,15 @@ class Topbar extends Component {
     tryFetchViewsByType(objectType);
   }
 
+  handleViewChange = value => this.props.setActiveView(value)
+
   render() {
-    const { intl, objectType, viewId, views } = this.props;
+    const {
+      intl,
+      activeViewId,
+      objectType,
+      views,
+    } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui';
 
@@ -35,14 +51,16 @@ class Topbar extends Component {
       <Row className="mt-sm mb-sm">
         <Col sm={12}>
           <StyledSelect
+            displayField={'view_name'}
             labelText={formatMessage({ id: `${i18n}.labels.viewName` })}
             options={views}
-            valueField={'view_name'}
+            onChange={this.handleViewChange}
+            value={activeViewId}
           />
         </Col>
         <Col sm={12} style={{ textAlign: 'right' }}>
-          <Link to={`/${objectType}/views/${viewId}`}>
-            <Button className="mr-sm" size="small" disabled={false} >
+          <Link to={`/${objectType}/views/${activeViewId}`}>
+            <Button className="mr-sm" size="small" disabled={activeViewId === PhantomId} >
               {formatMessage({ id: `${i18n}.button.edit` })}
             </Button>
           </Link>
@@ -60,9 +78,11 @@ class Topbar extends Component {
 
 const mapStateToProps = ({ global, objectList }) => ({
   language: global.language,
+  activeViewId: objectList.activeViewId,
   views: objectList.views,
 });
 const mapDispatchToProps = {
+  setActiveView,
   tryFetchViewsByType,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Topbar));

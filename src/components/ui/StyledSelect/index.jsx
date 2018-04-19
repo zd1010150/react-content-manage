@@ -8,32 +8,29 @@ const cx = classNames.bind(styles);
 
 
 const defaultProps = {
+  displayField: 'id',
   keyField: 'id',
   options: [],
   valueField: 'id',
 };
 const propTypes = {
-  activeId: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]).isRequired,
-
-
-  labelText: PropTypes.string,
+  displayField: PropTypes.string.isRequired,
   keyField: PropTypes.string.isRequired,
-  valueField: PropTypes.string.isRequired,
+  labelText: PropTypes.string,
   onChange: PropTypes.func,
   options: PropTypes.array.isRequired,
+  value: PropTypes.any,
+  valueField: PropTypes.string.isRequired,
 };
 
 
 const StyledSelect = ({
-  activeId,
-
-  options,
-  onChange,
-  labelText,
+  displayField,
   keyField,
+  labelText,
+  onChange,
+  options,
+  value,
   valueField,
 }) => {
 
@@ -51,14 +48,14 @@ const StyledSelect = ({
         size="small"
         dropdownMatchSelectWidth={false}
         onChange={value => _onChange(value)}
-        defaultValue="All"
+        value={value}
       >
         {options.map(option => 
           <Option
-            key={option.keyField}
-            value={option.valueField}
+            key={option[keyField]}
+            value={option[valueField]}
           >
-            {option[valueField]}
+            {option[displayField]}
           </Option>
         )}
       </Select>
