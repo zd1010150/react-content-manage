@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import Enums from 'utils/EnumsManager';
 import { getThemeByType } from 'utils/common';
-import { Toolbar, Table, Topbar } from '../components/index';
+import { Table, Toolbar, Topbar } from '../components/index';
 const { ObjectTypesInArray } = Enums;
 
 

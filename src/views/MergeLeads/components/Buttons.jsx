@@ -5,6 +5,8 @@ import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { tryMergeLeads } from '../flow/actions';
+import Enums from 'utils/EnumsManager';
+const { MasterKey } = Enums;
 
 
 const defaultProps = {
@@ -28,7 +30,7 @@ class Buttons extends Component {
     // check if some fields miss selection
     let hasFieldMissing = false;
     keys.forEach(key => {
-      if (!mergedData.hasOwnProperty(key.key)) {
+      if (key.key !== MasterKey && !mergedData.hasOwnProperty(key.key)) {
         hasFieldMissing = true;
       }
     });

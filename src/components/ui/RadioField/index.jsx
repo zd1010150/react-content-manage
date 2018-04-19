@@ -9,12 +9,29 @@ const { FieldTypes, MasterKey } = Enums;
 const { Lookup } = FieldTypes;
 
 
-const getValueByType = (type, rawValue) => {
+const getDisplayValueByType = (type, data, key, lookupKey) => {
   if (type === Lookup) {
-    // TODO: complete this after the backend changed the response structure
-    return 'lookup';
+    return data[key] && data[key][lookupKey] ? data[key][lookupKey] : '';
   }
-  return rawValue ? rawValue : '';
+  return data[key] ? data[key] : '';
+};
+const getValueByType = (type, data, key, lookupKey) => {
+  if (key === MasterKey) {
+    return data.id;
+  } else if (type === Lookup) {
+    return data[key] ? data[key].id : data[key];
+  }
+  return data[key];
+};
+const shouldCheck = (key, type, data, mergedData) => {
+  if (key === MasterKey) {
+    return data.id && data.id === mergedData.id;
+  } else if (type === Lookup) {
+    return data[key] === null
+            ? mergedData[key] === null
+            : data[key] && data[key].id === mergedData[key];
+  }
+  return data[key] !== void 0 && data[key] === mergedData[key];
 };
 
 
@@ -34,24 +51,28 @@ const RadioField = ({
   fieldKey,
   data,
   mergedData,
+  onChange,
 }) => {
 
-  const { key, type, isFollowMaster } = fieldKey;
-  const rawValue = data[key];
-  const mergedValue = mergedData[key];
-  const value = getValueByType(type, rawValue);
+  const _onChange = (key, value) => {    
+    if (_.isFunction(onChange)) {
+      onChange(key, value);
+    }
+  }
+
+  const { key, lookupKey, type, isFollowMaster } = fieldKey;
+  const value = getValueByType(type, data, key, lookupKey);
+  const mergedValue = getValueByType(type, mergedData, key, lookupKey);
+
   return (
     <div className={cx('valueCol')}>
       <Radio
         className={isFollowMaster ? '' : 'lead-theme-radio'}
-        data-key={key}
-        data-value={key === MasterKey ? data.id : value}
-        checked={key === MasterKey
-                  ? data.id == mergedData[MasterKey]
-                  : value === mergedValue}
+        checked={shouldCheck(key, type, data, mergedData)}
         disabled={isFollowMaster}
+        onChange={e => _onChange(key, value)}
       >
-        {value}
+        {getDisplayValueByType(type, data, key, lookupKey)}
       </Radio>
     </div>
   );
