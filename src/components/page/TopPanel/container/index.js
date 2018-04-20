@@ -42,7 +42,7 @@ class topPanel extends React.Component {
         <TopNav permissions={permissions} />
         <UserSettings name={name} logoutHandler={() => this.onLogoutClick()} />
         <Language language={language} onChange={language => this.changeLanguage(language)} />
-        <Link className={cx('setupBtn')} to="/setup/company-info/company-info"><Icon type="setting" />Setup</Link>
+        <Link className={cx('setupBtn')} to="/setup/company-info/company-info"><Icon className="mr-sm" type="setting" />Setup</Link>
         <Input.Search
           onSearch={this.onSearch}
           className={classNames('input-material-theme bright')}

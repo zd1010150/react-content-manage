@@ -78,7 +78,7 @@ class TableWrapper extends Component {
     if (!_.isEmpty(sorter)) {
       sorterParams = {
         orderBy: sorter.column.columnId,
-        sortBy: mapToAPIOrderStr(sorter.order),
+        sortedBy: mapToAPIOrderStr(sorter.order),
       }
     }
     const { activeViewId, objectType, tryFetchDataByView } = this.props;

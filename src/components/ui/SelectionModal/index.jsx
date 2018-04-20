@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { intlShape, injectIntl } from 'react-intl';
-import { Row, Col, Checkbox, Icon } from 'antd';
-const CheckboxGroup = Checkbox.Group;
+import { Checkbox, Col, Icon, Row } from 'antd';
 import classNames from 'classnames/bind';
+import { FloatingLabelInput, StyledModal } from 'components/ui/index';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { injectIntl } from 'react-intl';
 import styles from './index.less';
+
+const CheckboxGroup = Checkbox.Group;
 const cx = classNames.bind(styles);
 
-import { StyledModal, FloatingLabelInput } from 'components/ui/index';
 
 const defaultProps = {
   theme: 'lead',
@@ -73,7 +74,7 @@ class SelectionModal extends Component {
         <FloatingLabelInput
           labelText={formatMessage({ id: `${i18nPrefix}.modal.searchInput` })}
           labelColor="#4e4e4e"
-          placeholder={formatMessage({ id: `global.ui.input.searchUser` })}
+          placeholder={formatMessage({ id: 'global.ui.input.searchUser' })}
           addonAfter={<Icon type="search" size="small" />}
           handleSearch={this.handleSearch}
           withSearch

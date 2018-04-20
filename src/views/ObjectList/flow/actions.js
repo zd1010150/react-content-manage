@@ -1,9 +1,10 @@
 import { get, httpDelete, post } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
 import { SET_ACTIVE_VIEW, SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS } from './actionTypes';
+
 const { PhantomId } = Enums;
 
-const concatParams = params => {
+const concatParams = (params) => {
   if (_.isEmpty(params)) return '';
 
   let str = '?';
@@ -30,11 +31,13 @@ const getFetchUrlByView = (objectType, id, params) => {
   return `/admin/${objectType}/by_list_view/${id}${concatParams(params)}`;
 };
 
+
+//
 const setData = (columns, data, meta, tableParams) => ({
       type: SET_DATA,
       payload: { columns, data, meta, tableParams },
     });
-
+// TODO: replace this with tryFetchDataByView
 export const tryFetchData = (objectType, params) => dispatch =>
     get(`/admin/${objectType}${concatParams(params)}`, {}, dispatch).then((data) => {
       if (data

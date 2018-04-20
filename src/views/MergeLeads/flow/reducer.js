@@ -5,6 +5,7 @@ const { FieldTypes, MasterKey } = Enums;
 const {
   DateOnly,
   DateTime,
+  Lookup,
 } = FieldTypes;
 
 
@@ -16,8 +17,8 @@ const parseKeys = keys => {
     isFollowMaster: !!key.is_merge_master,
     key: key.field_name,  // this is the field we use as a key to sync with backend for changes
     label: key.field_label,
-    // options: key.picklists,
     type: key.crm_data_type,
+    lookupKey: key.lookup_own_field_name,
   }));
 };
 const convertToTimeZone = (data, keys) => {
@@ -72,6 +73,11 @@ const mergence = (state = initialState, action) => {
       state.keys.forEach(key => {
         if (key.isFollowMaster) {
           masteredFields[key.key] = masterRecord[key.key];
+          if (key.type === Lookup) {
+            masteredFields[key.key] = masterRecord[key.key]
+                                        ? masterRecord[key.key].id
+                                        : null;
+          }
         }
       });
       
@@ -80,7 +86,7 @@ const mergence = (state = initialState, action) => {
         mergedData: {
           ...state.mergedData,
           ...masteredFields,
-          master: masterId,
+          id: masterId,
         }
       };
 

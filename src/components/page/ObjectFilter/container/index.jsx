@@ -1,42 +1,46 @@
-import React, { Component } from 'react';
+import { Panel, Section } from 'components/ui/index';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import { intlShape, injectIntl } from 'react-intl';
-
 import Enums from 'utils/EnumsManager';
-import { Section, Panel, FilterCondition, SubmitButtons } from 'components/ui/index';
-import { ViewName, FilterCriteria, FieldsSelection, ViewVisibility, ViewActions } from '../components/index';
+import { getThemeByType } from 'utils/common';
+import { FieldsSelection, FilterCriteria, ViewActions, ViewName, ViewVisibility } from '../components/index';
 import { resetView, fetchViewById } from '../flow/actions';
+
 
 const defaultProps = {
 };
 const propTypes = {
   intl: intlShape.isRequired,
+  fetchViewById: PropTypes.func.isRequired,
+  resetView: PropTypes.func.isRequired,
 };
+
 
 const sections = [
   {
     titleI18n: 'viewName',
-    bodyComponent: ViewName,
+    component: ViewName,
   },
   {
     titleI18n: 'criteria',
-    bodyComponent: FilterCriteria,
+    component: FilterCriteria,
   },
   {
     titleI18n: 'selectors',
-    bodyComponent: FieldsSelection,
+    component: FieldsSelection,
   },
   {
     titleI18n: 'visibility',
-    bodyComponent: ViewVisibility,
+    component: ViewVisibility,
   },
 ];
 
 class ObjectFilter extends Component {
   componentDidMount() {
-    const { objectType, viewId } = this.props.match.params;
-    this.props.fetchViewById(viewId, objectType);
+    const { objectType, viewId, fetchViewById } = this.props;
+    fetchViewById(viewId, objectType);
   }
 
   componentWillUnmount() {
@@ -44,28 +48,35 @@ class ObjectFilter extends Component {
   }
 
   render() {
-    const { match, intl } = this.props;
+    const { intl, objectType, viewId } = this.props;
+    const theme = getThemeByType(objectType);
     const { formatMessage } = intl;
-    const i18nPrefix = 'page.objectFilter';
+    const i18n = 'page.objectFilter';
 
-    const { viewId } = match.params;
-    const panelTitleI18nId = viewId === Enums.PhantomId ? 'general.newTitle' : 'general.existTitle';
+    const titleId = viewId === Enums.PhantomId ? 'general.newTitle' : 'general.existTitle';
 
     return (
-      <Panel panelClasses="lead-theme-panel" panelTitle={formatMessage({ id: `${i18nPrefix}.${panelTitleI18nId}` })}>
+      <Panel
+        panelClasses={`${theme}-theme-panel`}
+        panelTitle={formatMessage({ id: `${i18n}.${titleId}` })}
+      >
         {sections.map((section, i) => {
-          const id = `${i18nPrefix}.${section.titleI18n}.stepName`;
+          const id = `${i18n}.${section.titleI18n}.stepName`;
           const stepName = formatMessage({ id });
           return (
             <Section
               key={i}
               title={`${i + 1}. ${stepName}`}
             >
-              {section.bodyComponent}
+              <section.component theme={theme} />
             </Section>
           );
         })}
-        <ViewActions />
+        <ViewActions
+          objectType={objectType}
+          theme={theme}
+          viewId={viewId}
+        />
       </Panel>
     );
   }

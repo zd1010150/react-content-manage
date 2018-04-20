@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter, Redirect } from 'react-router-dom';
-
-import Enums from 'utils/EnumsManager';
 import { SubmitButtons } from 'components/ui/index';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import Enums from 'utils/EnumsManager';
 import { trySave, trySaveNew } from './flow/actions';
 
-const defaultProps = {};
+const { PhantomId } = Enums;
+
+
 const propTypes = {
-  trySave: PropTypes.func,
-  trySaveNew: PropTypes.func,
+  trySave: PropTypes.func.isRequired,
+  trySaveNew: PropTypes.func.isRequired,
   objectView: PropTypes.shape({
     name: PropTypes.object.isRequired,
     filterCriteria: PropTypes.object.isRequired,
@@ -21,28 +22,30 @@ const propTypes = {
 };
 
 class ViewActions extends Component {
-  handleSaveClick = e => {
-    const { model, match, objectView } = this.props;
+  handleSaveClick = () => {
+    const {
+      model,
+      objectType,
+      objectView,
+      viewId,
+    } = this.props;
     // TODO: Add notification when view_name field is empty
     if (_.isEmpty(objectView.name.view_name)) return;
 
-    const { object, viewId } = match.params;
-    const objectType = model[object];
-    const funcKey = viewId === Enums.PhantomId ? 'trySaveNew' : 'trySave';
-    this.props[funcKey](objectType, objectView, viewId);
+    const funcKey = viewId === PhantomId ? 'trySaveNew' : 'trySave';
+    this.props[funcKey](model[objectType], objectView, viewId);
   }
 
-  render () {
-    const { hasSuccessfullySaved, match } = this.props;
-    const { object } = match.params;
+  render() {
+    const { hasSuccessfullySaved, objectType, theme } = this.props;
     if (hasSuccessfullySaved) {
-      return <Redirect to={`/${object}`} />;
+      return <Redirect to={`/${objectType}`} />;
     }
-    return <SubmitButtons onSaveClick={this.handleSaveClick} />;
+    return <SubmitButtons theme={theme} objectType={objectType} onSaveClick={this.handleSaveClick} />;
   }
 }
 
-ViewActions.defaultProps = defaultProps;
+
 ViewActions.propTypes = propTypes;
 const mapStateToProps = ({ global, objectView }) => ({
   model: global.settings.model,
@@ -53,4 +56,4 @@ const mapDispatchToProps = {
   trySave,
   trySaveNew,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ViewActions));
+export default connect(mapStateToProps, mapDispatchToProps)(ViewActions);

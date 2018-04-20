@@ -2,39 +2,20 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
+import {
+  ClientAttachments, CompanyInfo, ConvertLeads, Dashboard, EditCampaign,
+  EmailCampaign, EmailTemplates, EmailTemplatesCreation, Fields, FindDuplicates,
+  Layouts, MergeLeads, MySetting, NewCampaign, NewEmail,
+  ObjectList, ObjectView, ObjectDetails, ObjectTask, OrganisationChart, PermissionProfile,
+  UIDemo, Users,
+} from 'views/index';
+
 const { ObjectTypes } = Enums;
 const { Leads, Accounts, Opportunities } = ObjectTypes;
 
-import {
-  Dashboard,
-  UIDemo,
-  CompanyInfo,
-  Users,
-  OrganisationChart,
-  EmailTemplates,
-  EmailTemplatesCreation,
-  NewEmail,
-  EmailCampaign,
-  EditCampaign,
-  NewCampaign,
-  PermissionProfile,
-  Fields,
-  ObjectDetails,
-  FindDuplicates,
-  Layouts,
-  ObjectTask,
-  ClientAttachments,
-  MergeLeads,
-  MySetting,
-  ConvertLeads,
-  ObjectList,
-} from 'views/index';
 
-
-import { ObjectFilter } from '../index';
-
-const MainContent = () =>
-  (<Switch>
+const MainContent = () => (
+  <Switch>
     <Route path="/setup/company-info/ui-demo" component={UIDemo} />
     <Route path="/setup/company-info/company-info" component={CompanyInfo} />
     <Route path="/setup/company-info/users" component={Users} />
@@ -63,7 +44,8 @@ const MainContent = () =>
     <Route path="/setup/:objectType/fields" component={Fields} />
     <Route path="/setup/:objectType/pageLayout" component={Layouts} />
     <Route path="/my-setting" component={MySetting} />
-    <Route path="/:objectType/views/:viewId" component={ObjectFilter} />
+
+    <Route path="/dashboard" component={Dashboard} exact />
     <Route path="/:objectType/sharing/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
     <Route path="/leads/convert/find/:objectId" component={FindDuplicates} />
@@ -72,17 +54,22 @@ const MainContent = () =>
     <Route path="/:objectType/tasks/:objectId" component={ObjectTask} />
     <Route path="/:objectType/attachments/:objectId" component={ClientAttachments} />
     <Route path="/:objectType/:objectId" component={ObjectDetails} exact />
-    <Route path="/dashboard" component={Dashboard} exact />
-    <Route path="/:objectType" exact render={props => {
-      const { match } = props;
-      const { objectType } = match.params;
 
-      if ([ Leads, Accounts, Opportunities ].indexOf(objectType) !== -1) {
-        return <ObjectList key={objectType} {...props} objectType={objectType} />
-      }
-      // TOOD: return 404 page
-      return null;
-    }}/>
-  </Switch>);
+    <Route path="/:objectType/views/:viewId" component={ObjectView} />
+    <Route
+      path="/:objectType"
+      exact
+      render={(props) => {
+        const { match } = props;
+        const { objectType } = match.params;
+        if ([Leads, Accounts, Opportunities].indexOf(objectType) !== -1) {
+          return <ObjectList key={objectType} {...props} objectType={objectType} />
+        }
+        // TOOD: return 404 page
+        return null;
+      }}
+    />
+  </Switch>
+);
 
 export default MainContent;
