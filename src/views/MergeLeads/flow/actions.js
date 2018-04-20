@@ -6,6 +6,7 @@ export const setData = (originalKeys, data) => ({
   type: SET_DATA,
   payload: { originalKeys, data },
 });
+
 export const tryFetchLeads = ids => dispatch =>
   get(`/admin/leads/merge/index?${ids}`, {}, dispatch).then((data) => {
     if (data
@@ -22,6 +23,7 @@ export const setMergedData = (key, value) => ({
   type: SET_MERGED_DATA,
   payload: { key, value },
 });
+
 //
 export const setMasterRecord = masterId => ({
   type: SET_MASTER_RECORD,
