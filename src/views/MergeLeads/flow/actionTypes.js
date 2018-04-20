@@ -3,3 +3,5 @@ const { MERGE } = Enums.ReduxActionTypePrefix;
 export const SET_DATA = MERGE + 'SET_DATA';
 export const SET_MERGED_DATA = MERGE + 'SET_MERGED_DATA';
 export const SET_MASTER_RECORD = MERGE + 'SET_MASTER_RECORD';
+export const MERGE_SUCCESS = MERGE + 'MERGE_SUCCESS';
+export const RESET = MERGE + 'RESET';

@@ -1,23 +1,24 @@
+/* eslint arrow-parens: ["error", "as-needed"] */
 import { Button, Icon, notification } from 'antd';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { tryMergeLeads } from '../flow/actions';
 import Enums from 'utils/EnumsManager';
+import { tryMergeLeads } from '../flow/actions';
+
 const { MasterKey } = Enums;
 
 
 const defaultProps = {
   canMerge: false,
-  mergedRecord: {},
 };
 const propTypes = {
   intl: intlShape.isRequired,
-  canMerge: PropTypes.bool.isRequired,
-  mergedRecord: PropTypes.shape({
-    masterId: PropTypes.number,
+  canMerge: PropTypes.bool,
+  mergedData: PropTypes.shape({
+    master_record_id: PropTypes.number,
   }).isRequired,
 };
 
@@ -26,16 +27,21 @@ class Buttons extends Component {
   onCancelClick = $ => this.props.history.goBack()
 
   onMergeClick = $ => {
-    const { data, keys, mergedData, tryMergeLeads } = this.props;
+    const {
+      data,
+      keys,
+      mergedData,
+      tryMergeLeads,
+    } = this.props;
     // check if some fields miss selection
     let hasFieldMissing = false;
     keys.forEach(key => {
-      if (key.key !== MasterKey && !mergedData.hasOwnProperty(key.key)) {
+      if (!mergedData.hasOwnProperty(key.key)) {
         hasFieldMissing = true;
       }
     });
     if (hasFieldMissing) {
-      return notification['warning']({
+      return notification.warning({
         message: 'Missing some fields',
       });
     }
@@ -43,6 +49,7 @@ class Buttons extends Component {
     return tryMergeLeads({
       merged_ids: data.map(record => record.id),
       lead: mergedData,
+      [MasterKey]: mergedData[MasterKey],
     });
   }
 
