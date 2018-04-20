@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types,no-shadow */
 import { Button, Col, Icon, Row, notification } from 'antd';
 import { FilterField, Panel } from 'components/ui/index';
 import PropTypes from 'prop-types';
@@ -6,10 +7,14 @@ import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
-const { FindDupConfigs, PhantomId, ThemeTypes, ThemeTypesInArray } = Enums;
+import { toggleCheckbox, setFieldValue, tryFetchClientDetails, tryFindDuplicates } from '../flow/actions';
+
+const {
+  FindDupConfigs, PhantomId, ThemeTypes, ThemeTypesInArray,
+} = Enums;
 const { Leads } = ThemeTypes;
 const { BaseFields } = FindDupConfigs;
-import { toggleCheckbox, setFieldValue, tryFetchClientDetails, tryFindDuplicates } from '../flow/actions';
+
 // presets
 const i18n = 'global.ui';
 const colLayout = {
@@ -17,9 +22,9 @@ const colLayout = {
   xs: 24,
 };
 const rowLayout = {
-  className: "mt-md",
-  type: "flex",
-  justify: "center",
+  className: 'mt-md',
+  type: 'flex',
+  justify: 'center',
 };
 const fieldsMapping = {
   firstName: 'name',
@@ -38,7 +43,7 @@ const defaultProps = {
   theme: Leads,
 };
 const propTypes = {
-  intl: intlShape.isRequired,  
+  intl: intlShape.isRequired,
   objectId: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
@@ -64,7 +69,7 @@ class FindPanel extends Component {
     const params = duplicates.checkedFields.reduce(reducer, '');
 
     if (_.isEmpty(params)) {
-      return notification['warning']({
+      return notification.warning({
         message: 'No rule has been setup',
         description: 'Please add filter criteria in the top section.',
       });

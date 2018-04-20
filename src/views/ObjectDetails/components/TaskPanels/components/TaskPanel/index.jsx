@@ -1,22 +1,23 @@
-import React, { Component, Fragment } from 'react';
+import { Button, Icon, Popconfirm, Table } from 'antd';
+import classNames from 'classnames/bind';
+import { Panel } from 'components/ui/index';
 import PropTypes from 'prop-types';
-import { intlShape, injectIntl } from 'react-intl';
+import React, { Component, Fragment } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Table, Button, Icon, Popconfirm } from 'antd';
-import classNames from 'classnames/bind';
+import Enums from 'utils/EnumsManager';
+import { mapToAPIOrderStr } from 'utils/common';
 import styles from './index.less';
+import { tryFetchTaskByModule, setTaskData } from '../../flow/actions';
+
 const cx = classNames.bind(styles);
 
-import { Panel } from 'components/ui/index';
-import { mapToAPIOrderStr } from 'utils/common';
-import Enums from 'utils/EnumsManager';
-import { tryFetchTaskByModule, setTaskData } from '../../flow/actions';
+
 const {
   DefaultPageConfigs,
   DetailModules,
   DetailModulesInArray,
-  PhantomId,
   ThemeTypes,
   ThemeTypesInArray,
 } = Enums;
@@ -322,8 +323,6 @@ class TaskPanel extends Component {
   onTableChange = (pagination, sorter, module) => {
     const { columnKey, order } = sorter;
     const a = mapToAPIOrderStr(order);
-    debugger;
-    console.log('on table change');
   }
 
   render() {
