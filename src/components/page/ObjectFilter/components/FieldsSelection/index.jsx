@@ -1,18 +1,15 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { Button, Col, Icon, Row } from 'antd';
 import classNames from 'classnames/bind';
-import styles from '../index.less';
-const cx = classNames.bind(styles);
-
-import { Button, Icon, Row, Col } from 'antd';
 import { CardContainer } from 'components/ui/index';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import styles from '../index.less';
 import { addToSelection, removeFromSelection, setNewOrder } from './flow/actions';
 
-const defaultProps = {
-  availableFields: [],
-  selectedFields: [],
-};
+const cx = classNames.bind(styles);
+
+
 const propTypes = {
   availableFields: PropTypes.array.isRequired,
   selectedFields: PropTypes.array.isRequired,
@@ -30,7 +27,7 @@ class FieldsSelection extends Component {
   removeFromSelection = () => this.props.removeFromSelection(this.state.selectedFields)
 
   // TODO: Add new prop passing to CardContainer in order to disable the sorting
-  handleDropInAvailable = sortedArray => {}
+  handleDropInAvailable = () => {}
 
   handleDropInSelection = sortedArray => this.props.setNewOrder(sortedArray)
 
@@ -40,7 +37,7 @@ class FieldsSelection extends Component {
       sm: 10,
     };
 
-    const { availableFields, selectedFields } = this.props;
+    const { availableFields, selectedFields, theme } = this.props;
     
     return (
       <Row>
@@ -48,7 +45,7 @@ class FieldsSelection extends Component {
           <CardContainer
             title="Available Fields"
             data={availableFields}
-            theme={'lead'}
+            theme={theme}
             onSelect={this.onSelectIds}
             onDrop={this.handleDropInAvailable}
             cardDisplayField="field_label"
@@ -67,7 +64,7 @@ class FieldsSelection extends Component {
           <CardContainer
             title="Selected Fields"
             data={selectedFields}
-            theme={'lead'}
+            theme={theme}
             onSelect={this.onSelectIds}
             onDrop={this.handleDropInSelection}
             cardDisplayField="field_label"
@@ -78,9 +75,9 @@ class FieldsSelection extends Component {
   }
 }
 
-FieldsSelection.defaultProps = defaultProps;
+
 FieldsSelection.propTypes = propTypes;
-const mapStateToProps = ({ global, objectView, }) => ({
+const mapStateToProps = ({ global, objectView }) => ({
   language: global.language,
   availableFields: objectView.fields.availableFields,
   selectedFields: objectView.fields.selectedFields,

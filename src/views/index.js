@@ -23,6 +23,7 @@ import MergeLeads from './MergeLeads/index';
 import MySetting from './MySetting/index';
 import ConvertLeads from './ConvertLeads/index';
 import ObjectList from './ObjectList/index';
+import ObjectView from './ObjectView/index';
 
 export {
   Dashboard,
@@ -48,4 +49,5 @@ export {
   MergeLeads,
   ConvertLeads,
   ObjectList,
+  ObjectView,
 };

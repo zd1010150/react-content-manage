@@ -1,9 +1,10 @@
 import { get, httpDelete, post } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
 import { SET_ACTIVE_VIEW, SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS } from './actionTypes';
+
 const { PhantomId } = Enums;
 
-const concatParams = params => {
+const concatParams = (params) => {
   if (_.isEmpty(params)) return '';
 
   let str = '?';
