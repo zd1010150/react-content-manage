@@ -157,8 +157,8 @@ const EnumsManager = Object.freeze({
     MaxSelection: 4,
   }),
 
-  MasterKey: 'master',
-  
+  MasterKey: 'master_record_id',
+
 });
 
 export default EnumsManager;

@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
 import styles from './index.less';
 import { setMergedData, setMasterRecord } from '../flow/actions';
+
 const cx = classNames.bind(styles);
 const { MasterKey, AntdGridMax } = Enums;
 
@@ -29,16 +30,20 @@ const propTypes = {
 
 class RadiosTable extends Component {
   handleRadioChange = (key, value) => {
-    console.log(`---==ONRADIOCHANGE==---${key} ->>> ${value}`);
     const { setMergedData, setMasterRecord } = this.props;
     if (key === MasterKey) {
       return setMasterRecord(value);
     }
     return setMergedData(key, value);
   }
-  
+
   render() {
-    const { intl, data, keys, mergedData } = this.props;
+    const {
+      intl,
+      data,
+      keys,
+      mergedData,
+    } = this.props;
     const { formatMessage } = intl;
     const i18n = 'page.mergeLeads';
 
@@ -67,26 +72,26 @@ class RadiosTable extends Component {
       <Fragment>
         {/* header with leads name */}
         <Row>
-          {data.length > 0 && <Col className={cx('title')} key={MasterKey} {...labelColLayout} />}
-          {data.map(record =>
+          {data.length > 0 && <Col className={cx('title')} {...labelColLayout} />}
+          {data.map(record => (
             <Col className={cx('title')} key={record.id} {...colLayout}>
               {record.name}
             </Col>
-          )}
+          ))}
         </Row>
         <Row>
           {/* label col */}
           <Col key={MasterKey} {...labelColLayout}>
-            {keys.map(key => 
+            {keys.map(key => (
               <div className={cx('labelCol')} key={key.key}>
                 {key.key === MasterKey ? masterLabel : key.label}
               </div>
-            )}
+            ))}
           </Col>
           {/* value cols */}
-          {data.map(record => 
+          {data.map(record => (
             <Col key={record.id} {...colLayout}>
-              {keys.map(key =>
+              {keys.map(key => (
                 <RadioField
                   key={key.key}
                   fieldKey={key}
@@ -94,9 +99,9 @@ class RadiosTable extends Component {
                   mergedData={mergedData}
                   onChange={this.handleRadioChange}
                 />
-              )}
+              ))}
             </Col>
-          )}
+          ))}
         </Row>
       </Fragment>
     );

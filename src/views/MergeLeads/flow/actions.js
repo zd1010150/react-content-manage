@@ -1,5 +1,5 @@
 import { get, post } from 'store/http/httpAction';
-import { SET_DATA, SET_MERGED_DATA, SET_MASTER_RECORD } from './actionTypes';
+import { MERGE_SUCCESS, RESET, SET_DATA, SET_MASTER_RECORD, SET_MERGED_DATA } from './actionTypes';
 
 //
 export const setData = (originalKeys, data) => ({
@@ -30,9 +30,19 @@ export const setMasterRecord = masterId => ({
   payload: { masterId },
 });
 //
+export const mergeSuccess = () => ({
+  type: MERGE_SUCCESS,
+});
+//
 export const tryMergeLeads = mergedData => dispatch =>
   post('/admin/leads/merge', mergedData, dispatch).then((data) => {
-    if (data) {
-      console.log('empty');
+    if (data && !_.isEmpty(data.data)) {
+      dispatch(mergeSuccess());
     }
   });
+
+
+//
+export const resetState = () => ({
+  type: RESET,
+});
