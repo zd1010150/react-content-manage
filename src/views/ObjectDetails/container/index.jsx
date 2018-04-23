@@ -45,7 +45,7 @@ class ObjectDetails extends Component {
       <Fragment>
         <Toolbar {...commonProps} tools={tools} />
         <PrimaryDetails {...commonProps} />
-        <TaskPanels {...commonProps} />
+        <TaskPanels {...commonProps} modules={modules} />
       </Fragment>
     );
   }

@@ -1,3 +1,4 @@
+/* eslint arrow-parens: ["error", "as-needed"] */
 import { Button, Icon, Popconfirm, Table } from 'antd';
 import classNames from 'classnames/bind';
 import { Panel } from 'components/ui/index';
@@ -7,12 +8,10 @@ import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
-import { mapToAPIOrderStr } from 'utils/common';
 import styles from './index.less';
-import { tryFetchTaskByModule, setTaskData } from '../../flow/actions';
+import { tryFetchModuleData } from '../../flow/actions';
 
 const cx = classNames.bind(styles);
-
 
 const {
   DefaultPageConfigs,
@@ -29,145 +28,7 @@ const {
   TaskOpen,
   TaskHistory,
 } = DetailModules;
-// presets
-const getColumnsByModule = (module, intl) => {
-  const { formatMessage } = intl;
-  const i18nPrefix = 'global.ui.table';
-  let columns = [];
-  switch (module) {
-    case TaskOpen:
-    case TaskHistory:
-      columns = [
-        {
-          dataIndex: 'subject',
-          title: formatMessage({ id: `${i18nPrefix}.subject` }),
-          sorter: true,
-        },
-        {
-          dataIndex: 'status',
-          title: formatMessage({ id: `${i18nPrefix}.status` }),
-          sorter: true,
-        },
-        {
-          dataIndex: 'due_date',
-          title: formatMessage({ id: `${i18nPrefix}.dueOn` }),
-          sorter: true,
-        },
-        {
-          dataIndex: 'due_time',
-          title: formatMessage({ id: `${i18nPrefix}.dueAt` }),
-          sorter: true,
-        },
-        {
-          dataIndex: 'last_modified_at',
-          title: formatMessage({ id: `${i18nPrefix}.lastModifiedAt` }),
-          sorter: true,
-        },
-      ];
-      break;
-    case Opportunities:
-    case EmailSent:
-      columns = [
-        {
-          dataIndex: 'subject',
-          title: formatMessage({ id: `${i18nPrefix}.subject` }),
-          sorter: true,
-        },
-        {
-          dataIndex: 'sent_date',
-          title: formatMessage({ id: `${i18nPrefix}.sentDate` }),
-          sorter: true,
-        },
-        {
-          dataIndex: 'open_date',
-          title: formatMessage({ id: `${i18nPrefix}.openDate` }),
-          sorter: true,
-        },
-        {
-          dataIndex: 'open_times',
-          title: formatMessage({ id: `${i18nPrefix}.openTimes` }),
-          sorter: true,
-        },
-        {
-          dataIndex: 'last_open',
-          title: formatMessage({ id: `${i18nPrefix}.lastOpenAt` }),
-          sorter: true,
-        },
-      ];
-    case Attachments:
-      columns = [
-        {
-          dataIndex: 'title',
-          title: formatMessage({ id: `${i18nPrefix}.title` }),
-          sorter: true,
-        },
-        {
-          dataIndex: 'type',
-          title: formatMessage({ id: `${i18nPrefix}.type` }),
-          sorter: true,
-        },
-        {
-          dataIndex: 'uploaded_at',
-          title: formatMessage({ id: `${i18nPrefix}.uploadAt` }),
-          sorter: true,
-        },
-        {
-          dataIndex: 'created_by',
-          title: formatMessage({ id: `${i18nPrefix}.createBy` }),
-          sorter: true,
-        },
-      ];
-    case Logs:
-      columns = [
-        {
-          dataIndex: 'date',
-          title: formatMessage({ id: `${i18nPrefix}.date` }),
-          sorter: true,
-        },
-        {
-          dataIndex: 'user',
-          title: formatMessage({ id: `${i18nPrefix}.user` }),
-          sorter: true,
-        },
-        {
-          dataIndex: 'action',
-          title: formatMessage({ id: `${i18nPrefix}.action` }),
-          sorter: true,
-        },
-      ];
-      break;
-    default:
-      console.log('The module is not found.');
-  }
-  // TODO: need to add checking about permissions of edit and delete to decide whether shows 'Action' column
-  if (module !== Logs) {
-    columns.unshift({
-      key: 'actions',
-      className: cx('firstCol'),
-      title: formatMessage({ id: `${i18nPrefix}.action` }),
-      render: (text, record) => {
-        const { id } = record;
-        return (
-          <Fragment>
-            <Link to="#">
-              <Icon size="small" type="edit" />
-            </Link>
-            <Popconfirm
-              placement="right"
-              title={formatMessage({ id: 'global.ui.dialog.deleteTitle' })}
-              okText="Yes"
-              cancelText="No"
-              onConfirm={$ => console.log(`${module}` + ' test')}
-            >
-              <Icon className="ml-sm" size="small" type="delete" />
-            </Popconfirm>
-          </Fragment>
-        );
-      },
-    });
-  }
-  return columns;
-};
+const { PageSizeSmall } = DefaultPageConfigs;
 
 
 const defaultProps = {
@@ -192,50 +53,217 @@ const propTypes = {
 
 class TaskPanel extends Component {
   componentDidMount() {
-    const { objectId, module, tryFetchTaskByModule } = this.props;
-    // fetch task data by module type
-    // 
+    const {
+      code,
+      objectId,
+      objectType,
+      tryFetchModuleData,
+    } = this.props;
+    tryFetchModuleData(code, objectType, objectId, { per_page: PageSizeSmall });
   }
 
-  onTableChange = (pagination, sorter, module) => {
-    const { columnKey, order } = sorter;
-    const a = mapToAPIOrderStr(order);
+  enableBtnByModule = () => {
+    const { code } = this.props;
+    if (code === TaskOpen
+      || code === EmailSent
+      || code === Attachments) {
+      return true;
+    }
+    return false;
+  }
+
+  handleTableChange = pagination => {
+    const {
+      code,
+      objectType,
+      objectId,
+      tryFetchModuleData,
+    } = this.props;
+    const params = pagination ? {
+      page: pagination.current,
+      per_page: PageSizeSmall,
+    } : {};
+    tryFetchModuleData(code, objectType, objectId, params);
+  }
+
+  parsePagination = meta => {
+    let extraParams = {};
+    if (!_.isEmpty(meta)) {
+      const { pagination } = meta;
+      const { current_page, total } = pagination;
+      extraParams = {
+        current: current_page,
+        total,
+      };
+    }
+    return {
+      pageSize: PageSizeSmall,
+      showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+      ...extraParams,
+    };
+  }
+
+  renderColumnsByModule = () => {
+    const { intl, code, objectType } = this.props;
+    const { formatMessage } = intl;
+    const i18n = 'global.ui.table';
+
+    let columns = [];
+    let editLink = '';
+    let deleteLink = '';
+    switch (code) {
+      case TaskOpen:
+        editLink = `${objectType}/tasks`;
+      case TaskHistory:
+        columns = [
+          {
+            dataIndex: 'subject',
+            title: formatMessage({ id: `${i18n}.subject` }),
+          },
+          {
+            dataIndex: 'status',
+            title: formatMessage({ id: `${i18n}.status` }),
+          },
+          {
+            dataIndex: 'due_date',
+            title: formatMessage({ id: `${i18n}.dueOn` }),
+          },
+          {
+            dataIndex: 'due_time',
+            title: formatMessage({ id: `${i18n}.dueAt` }),
+          },
+          {
+            dataIndex: 'updated_at',
+            title: formatMessage({ id: `${i18n}.lastModifiedAt` }),
+          },
+        ];
+        break;
+      case Opportunities:
+        break;
+      case EmailSent:
+        columns = [
+          {
+            dataIndex: 'subject',
+            title: formatMessage({ id: `${i18n}.subject` }),
+          },
+          {
+            dataIndex: 'sent_date',
+            title: formatMessage({ id: `${i18n}.sentDate` }),
+          },
+          {
+            dataIndex: 'open_date',
+            title: formatMessage({ id: `${i18n}.openDate` }),
+          },
+          {
+            dataIndex: 'open_times',
+            title: formatMessage({ id: `${i18n}.openTimes` }),
+          },
+          {
+            dataIndex: 'last_open',
+            title: formatMessage({ id: `${i18n}.lastOpenAt` }),
+          },
+        ];
+        break;
+      case Attachments:
+        columns = [
+          {
+            dataIndex: 'title',
+            title: formatMessage({ id: `${i18n}.title` }),
+          },
+          {
+            dataIndex: 'type',
+            title: formatMessage({ id: `${i18n}.type` }),
+          },
+          {
+            dataIndex: 'uploaded_at',
+            title: formatMessage({ id: `${i18n}.uploadAt` }),
+          },
+          {
+            dataIndex: 'created_by',
+            title: formatMessage({ id: `${i18n}.createBy` }),
+          },
+        ];
+        break;
+      case Logs:
+        columns = [
+          {
+            dataIndex: 'updated_at',
+            title: formatMessage({ id: `${i18n}.date` }),
+          },
+          {
+            dataIndex: 'causer.name',
+            title: formatMessage({ id: `${i18n}.user` }),
+          },
+          {
+            dataIndex: 'description',
+            title: formatMessage({ id: `${i18n}.action` }),
+          },
+        ];
+        break;
+      default:
+        console.log('The module is not found.');
+    }
+    // TODO: need to add checking about permissions of edit and delete to decide whether shows 'Action' column
+    if (code === TaskOpen
+        || code === Attachments
+        || code === Opportunities) {
+      columns.unshift({
+        key: 'actions',
+        className: cx('firstCol'),
+        title: formatMessage({ id: `${i18n}.action` }),
+        render: (text, record) => {
+          const { id } = record;
+          return (
+            <Fragment>
+              <Link to={`/${editLink}/${id}`}>
+                <Icon className="cursor-pointer" size="small" type="edit" />
+              </Link>
+              <Popconfirm
+                placement="right"
+                title={formatMessage({ id: 'global.ui.dialog.deleteTitle' })}
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => console.log(`${code}-${id}`)}
+              >
+                <Icon className="ml-sm cursor-pointer" size="small" type="delete" />
+              </Popconfirm>
+            </Fragment>
+          );
+        },
+      });
+    }
+    return columns;
   }
 
   render() {
     const {
       intl,
       canAdd,
-      module,
+      code,
       tasks,
       theme,
     } = this.props;
     const { formatMessage } = intl;
-    const i18nPrefix = 'global.ui.detailModules';
+    const i18n = 'global.ui.detailModules';
 
-    const { data, current } = tasks[module];
-    const columns = getColumnsByModule(module, intl);
+    const source = !_.isEmpty(tasks[code]) ? tasks[code] : {};
+    const { data, meta } = source;
 
     return (
       <Panel
-        panelTitle={formatMessage({ id: `${i18nPrefix}.${module}` })}
+        panelTitle={formatMessage({ id: `${i18n}.${code}` })}
         panelClasses={`${theme}-theme-panel`}
-        actionsRight={canAdd && (
+        actionsRight={this.enableBtnByModule() && (
           <Button size="small">
-            + {formatMessage({ id: `${i18nPrefix}.${module}` })}
+            + {formatMessage({ id: `${i18n}.${code}` })}
           </Button>
         )}
       >
         <Table
-          columns={columns}
+          columns={this.renderColumnsByModule()}
           dataSource={data}
-          onChange={(pagination, filters, sorter) => this.onTableChange(pagination, sorter, module)}
-          pagination={{
-            current,
-            pageSize: DefaultPageConfigs.PageSizeSmall,
-            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
-            total: 100,
-          }}
+          onChange={this.handleTableChange}
+          pagination={this.parsePagination(meta)}
           rowKey="id"
           size="small"
         />
@@ -250,7 +278,6 @@ const mapStateToProps = ({ global, objectDetails }) => ({
   tasks: objectDetails.tasks,
 });
 const mapDispatchToProps = {
-  tryFetchTaskByModule,
-  setTaskData,
+  tryFetchModuleData,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TaskPanel));

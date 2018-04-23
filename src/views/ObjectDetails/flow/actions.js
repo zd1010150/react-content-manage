@@ -2,7 +2,7 @@ import { get } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
 import { setTools } from '../components/Toolbar/flow/actions';
 import { setSource } from '../components/PrimaryDetails/flow/actions';
-// import {} from '../components/TaskPanel/flow/actions';
+import { setModules } from '../components/TaskPanels/flow/actions';
 import { RESET } from './actionTypes';
 
 const { PhantomId } = Enums;
@@ -22,7 +22,8 @@ export const tryFetchClientDetails = (objectType, objectId) => dispatch =>
             || data.data.structure.modules)) {
       dispatch(setTools(data.data.structure.tools));
       // dispatch(setSource(data.data.structure.sections));
-      // dispatch(setTools(data.data.structure.tools));
+      debugger;
+      dispatch(setModules(data.data.structure.modules));
     }
   });
 

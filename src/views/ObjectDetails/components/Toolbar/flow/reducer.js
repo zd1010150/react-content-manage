@@ -23,7 +23,6 @@ const toolbar = (state = initialState, action) => {
 
 
     case RESET:
-      debugger;
       return initialState;
 
       

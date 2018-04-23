@@ -7,19 +7,27 @@ const { ThemeTypesInArray } = Enums;
 
 
 const propTypes = {
-  objectId: PropTypes.number.isRequired,
+  objectId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
   theme: PropTypes.oneOf(ThemeTypesInArray).isRequired,
 };
 
 
-const TaskPanels = ({ modules, objectId, theme }) => (
+const TaskPanels = ({
+  modules,
+  objectId,
+  objectType,
+  theme,
+}) => (
   <Fragment>
-    {[].map(module => (
+    {modules.map(module => (
       <TaskPanel
         key={module.code}
         code={module.code}
         objectId={objectId}
-        module={module}
+        objectType={objectType}
         theme={theme}
         canAdd
         canDelete

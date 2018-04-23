@@ -1,5 +1,4 @@
-import { SET_MODULES, SET_TASK_DATA } from './actionTypes';
-
+import { SET_MODULES, SET_MODULE_DATA } from './actionTypes';
 
 const initialState = {
   modules: [],
@@ -7,19 +6,23 @@ const initialState = {
 
 const tasks = (state = initialState, action) => {
   switch (action.type) {
-    case SET_TASK_DATA:
-      const { data, meta, taskType } = action.payload;
+    case SET_MODULE_DATA:
+      const { code, data, meta } = action.payload;
       return {
         ...state,
+        [code]: {
+          data,
+          meta,
+        },
       };
 
 
-      case SET_MODULES:
-        const { modules } = action.payload;
-        return {
-          ...state,
-          modules,
-        };
+    case SET_MODULES:
+      const { modules } = action.payload;
+      return {
+        ...state,
+        modules: _.sortBy(modules, ['sequence']),
+      };
 
 
     default:
