@@ -2,6 +2,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
+
 const { ObjectTypes } = Enums;
 const { Leads, Accounts, Opportunities } = ObjectTypes;
 
@@ -28,6 +29,7 @@ import {
   MySetting,
   ConvertLeads,
   ObjectList,
+  GlobalSearch,
 } from 'views/index';
 
 
@@ -73,16 +75,21 @@ const MainContent = () =>
     <Route path="/:objectType/attachments/:objectId" component={ClientAttachments} />
     <Route path="/:objectType/:objectId" component={ObjectDetails} exact />
     <Route path="/dashboard" component={Dashboard} exact />
-    <Route path="/:objectType" exact render={props => {
+    <Route path="/globalSearch" component={GlobalSearch} exat />
+    <Route
+      path="/:objectType"
+      exact
+      render={(props) => {
       const { match } = props;
       const { objectType } = match.params;
 
-      if ([ Leads, Accounts, Opportunities ].indexOf(objectType) !== -1) {
-        return <ObjectList key={objectType} {...props} objectType={objectType} />
+      if ([Leads, Accounts, Opportunities].indexOf(objectType) !== -1) {
+        return <ObjectList key={objectType} {...props} objectType={objectType} />;
       }
       // TOOD: return 404 page
       return null;
-    }}/>
+    }}
+    />
   </Switch>);
 
 export default MainContent;
