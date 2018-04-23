@@ -1,33 +1,34 @@
-import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { TaskPanel } from '../components/index';
+import React, { Fragment } from 'react';
 import Enums from 'utils/EnumsManager';
-const { DetailModulesInArray } = Enums;
+import { TaskPanel } from '../components/index';
+
+const { ThemeTypesInArray } = Enums;
 
 
 const propTypes = {
   objectId: PropTypes.number.isRequired,
-  theme: PropTypes.oneOf(Enums.ThemeTypesInArray).isRequired,
+  theme: PropTypes.oneOf(ThemeTypesInArray).isRequired,
 };
 
 
-const TaskPanels = ({ theme, objectId }) => {
-  return (
-    <Fragment>
-      {DetailModulesInArray.map(module => (
-        <TaskPanel
-          canAdd
-          canDelete
-          canEdit
-          key={module}
-          objectId={objectId}
-          module={module}
-          theme={theme}        
-        />
-      ))}
-    </Fragment>
-  );
-}
+const TaskPanels = ({ modules, objectId, theme }) => (
+  <Fragment>
+    {[].map(module => (
+      <TaskPanel
+        key={module.code}
+        code={module.code}
+        objectId={objectId}
+        module={module}
+        theme={theme}
+        canAdd
+        canDelete
+        canEdit
+      />
+    ))}
+  </Fragment>
+);
 
 
+TaskPanels.propTypes = propTypes;
 export default TaskPanels;

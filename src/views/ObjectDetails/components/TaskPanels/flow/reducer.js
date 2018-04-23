@@ -1,27 +1,9 @@
-import Enums from 'utils/EnumsManager';
-const {
-  opportunities,
-  taskOpen,
-  taskHistory,
-  emailSent,
-  attachments,
-  logs,
-} = Enums.DetailModules;
-import {
-  SET_TASK_DATA,
-} from './actionTypes';
+import { SET_MODULES, SET_TASK_DATA } from './actionTypes';
 
-const getInitialState = () => {
-  const initialState = {};
-  Enums.DetailModulesInArray.forEach(module => {
-    initialState[module] = {
-      data: [],
-      current: 1,
-    };
-  });
-  return initialState;
+
+const initialState = {
+  modules: [],
 };
-const initialState = getInitialState();
 
 const tasks = (state = initialState, action) => {
   switch (action.type) {
@@ -29,11 +11,15 @@ const tasks = (state = initialState, action) => {
       const { data, meta, taskType } = action.payload;
       return {
         ...state,
-        [taskType]: {
-          data,
-          // current,
-        }
       };
+
+
+      case SET_MODULES:
+        const { modules } = action.payload;
+        return {
+          ...state,
+          modules,
+        };
 
 
     default:

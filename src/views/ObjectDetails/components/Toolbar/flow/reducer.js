@@ -1,39 +1,32 @@
-import { SET_TOOLS } from './actionTypes';
+import { DELETE_SUCCESS, RESET, SET_TOOLS } from './actionTypes';
 
 const initialState = {
   tools: [],
+  deleted: false,
 };
 
 const toolbar = (state = initialState, action) => {
   switch (action.type) {
     case SET_TOOLS:
       const { tools } = action.payload;
-      // TODO: to be removed, only for test purpose
-      const newTools = [
-        {
-          code: 'Convert',
-          sequence: 0,
-        },
-        {
-          code: 'Delete',
-          sequence: 4,
-        },
-        {
-          code: 'Sharing',
-          sequence: 3,
-        },
-        {
-          code: 'FindDuplicates',
-          sequence: 1,
-        },
-      ];
-      // test ends
       return {
         ...state,
-        tools: _.sortBy(newTools, ['sequence']),
+        tools: _.sortBy(tools, ['sequence']),
       };
 
 
+    case DELETE_SUCCESS:
+      return {
+        ...state,
+        deleted: true,
+      };
+
+
+    case RESET:
+      debugger;
+      return initialState;
+
+      
     default:
       return state;
   }

@@ -1,40 +1,37 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Row } from 'antd';
-
-import Enums from 'utils/EnumsManager';
 import { DetailTopButtons } from 'components/ui/index';
-import { setTools, tryDeleteEntity } from './flow/actions';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Enums from 'utils/EnumsManager';
+import { tryDeleteEntity } from './flow/actions';
+
+const { ObjectTypesInArray } = Enums;
 
 
 const defaultProps = {
-  objectType: Enums.ObjectTypes.Leads,
-  objectId: Enums.PhantomId,
   tools: [],
 };
 const propTypes = {
-  objectType: PropTypes.oneOf(Enums.ObjectTypesInArray).isRequired,
+  objectType: PropTypes.oneOf(ObjectTypesInArray).isRequired,
   objectId: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,
   ]).isRequired,
-  tools: PropTypes.arrayOf(
-    PropTypes.shape({
-      code: PropTypes.string.isRequired,
-      sequence: PropTypes.number.isRequired,
-    })
-  ).isRequired,
+  tools: PropTypes.arrayOf(PropTypes.shape({
+    code: PropTypes.string.isRequired,
+    sequence: PropTypes.number.isRequired,
+  })),
 };
 
 
 class Toolbar extends Component {
-  handleDelete = id => this.props.tryDeleteEntity(id, this.props.objectType)
+  handleDelete = id => this.props.tryDeleteEntity(this.props.objectType, id)
 
-  render () {
+  render() {
     const { objectId, objectType, tools } = this.props;
     return (
-      <Row style={{ textAlign:'right', marginBottom: 5 }}>
+      <Row style={{ textAlign: 'right', marginBottom: 5 }}>
         <DetailTopButtons
           id={objectId}
           type={objectType}
@@ -49,9 +46,8 @@ class Toolbar extends Component {
 
 Toolbar.defaultProps = defaultProps;
 Toolbar.propTypes = propTypes;
-const mapStateToProps = ({ global, objectDetails }) => ({
+const mapStateToProps = ({ global }) => ({
   language: global.language,
-  tools: objectDetails.toolbar.tools,
 });
 const mapDispatchToProps = {
   tryDeleteEntity,

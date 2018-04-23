@@ -78,7 +78,7 @@ class FieldsSection extends Component {
                     <CustomField
                       key={field.key}
                       {...field}
-                      lookupDisplayKey={'name'}
+                      lookupDisplayKey={field.lookupDisplayKey}
                       format={field.type === DateOnly ? dateFormat : timeFormat}
                       type={field.active ? field.type : Display}
                       onChange={this.handleChange}

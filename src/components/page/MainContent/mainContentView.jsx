@@ -53,9 +53,28 @@ const MainContent = () => (
     <Route path="/leads/merge/" component={MergeLeads} />
     <Route path="/:objectType/tasks/:objectId" component={ObjectTask} />
     <Route path="/:objectType/attachments/:objectId" component={ClientAttachments} />
-    <Route path="/:objectType/:objectId" component={ObjectDetails} exact />
 
     <Route path="/:objectType/views/:viewId" component={ObjectView} />
+    <Route
+      path="/:objectType/:objectId"
+      exact
+      render={(props) => {
+        const { match } = props;
+        const { objectId, objectType } = match.params;
+        if ([Leads, Accounts, Opportunities].indexOf(objectType) !== -1) {
+          return (
+            <ObjectDetails
+              {...props}
+              key={objectType}
+              objectId={objectId}
+              objectType={objectType}
+            />
+          );
+        }
+        // TOOD: return 404 page
+        return null;
+      }}
+    />
     <Route
       path="/:objectType"
       exact
