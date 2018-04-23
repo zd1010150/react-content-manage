@@ -1,23 +1,26 @@
+/* eslint arrow-parens: ["error", "as-needed"] */
+/* eslint no-case-declarations: [0] */
 import Enums from 'utils/EnumsManager';
 import { toTimezone } from 'utils/dateTimeUtils';
-import { SET_DATA, SET_MERGED_DATA, SET_MASTER_RECORD } from './actionTypes';
+import { MERGE_SUCCESS, RESET, SET_DATA, SET_MASTER_RECORD, SET_MERGED_DATA } from './actionTypes';
+
 const { FieldTypes, MasterKey } = Enums;
 const {
   DateOnly,
   DateTime,
+  Lookup,
 } = FieldTypes;
 
 
 const parseKeys = keys => {
-  keys.unshift({
-    field_name: MasterKey,
-  });
-  return keys.map(key => ({
+  const masterKey = keys.find(key => key.field_name === MasterKey);
+  const restKeys = keys.filter(key => key.field_name !== MasterKey);
+  return [masterKey, ...restKeys].map(key => ({
     isFollowMaster: !!key.is_merge_master,
-    key: key.field_name,  // this is the field we use as a key to sync with backend for changes
+    key: key.field_name, // this is the field we use as a key to sync with backend for changes
     label: key.field_label,
-    // options: key.picklists,
     type: key.crm_data_type,
+    lookupKey: key.lookup_own_field_name,
   }));
 };
 const convertToTimeZone = (data, keys) => {
@@ -33,8 +36,9 @@ const convertToTimeZone = (data, keys) => {
 
 const initialState = {
   data: [],
-  keys: [],  
+  keys: [],
   mergedData: {},
+  mergeSuccess: false,
 };
 
 const mergence = (state = initialState, action) => {
@@ -44,8 +48,7 @@ const mergence = (state = initialState, action) => {
       // parse original keys
       const parsedKeys = parseKeys(originalKeys);
       // process data of Date, Datetime
-      const transferredData = convertToTimeZone(data, parsedKeys);
-
+      convertToTimeZone(data, parsedKeys);
       return {
         ...state,
         keys: parsedKeys,
@@ -61,7 +64,7 @@ const mergence = (state = initialState, action) => {
         mergedData: {
           ...state.mergedData,
           [key]: value,
-        }
+        },
       };
 
     
@@ -72,6 +75,11 @@ const mergence = (state = initialState, action) => {
       state.keys.forEach(key => {
         if (key.isFollowMaster) {
           masteredFields[key.key] = masterRecord[key.key];
+          if (key.type === Lookup) {
+            masteredFields[key.key] = masterRecord[key.key]
+                                        ? masterRecord[key.key].id
+                                        : null;
+          }
         }
       });
       
@@ -80,9 +88,21 @@ const mergence = (state = initialState, action) => {
         mergedData: {
           ...state.mergedData,
           ...masteredFields,
-          master: masterId,
-        }
+          id: masterId,
+          master_record_id: masterId,
+        },
       };
+
+
+    case MERGE_SUCCESS:
+      return {
+        ...state,
+        mergeSuccess: true,
+      };
+
+
+    case RESET:
+      return initialState;
 
 
     default:

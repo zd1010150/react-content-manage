@@ -15,6 +15,8 @@ export default {
     opportunitiesPageLayout: 'Opportunity Page Layout',
     field: '字段',
     fields: '字段',
+    dashboard: '总览',
+    report: '报告',
   },
   en: {
     lead: 'Lead',
@@ -31,5 +33,7 @@ export default {
     opportunitiesPageLayout: 'Opportunity Page Layout',
     field: 'Field',
     fields: 'Fields',
+    dashboard: 'Dashboard',
+    report: 'Report',
   },
 };

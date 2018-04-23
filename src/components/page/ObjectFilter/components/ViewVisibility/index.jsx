@@ -1,14 +1,12 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { injectIntl, intlShape } from 'react-intl';
-import { Row, Col, Radio, Icon, Button, Checkbox } from 'antd';
-const RadioGroup = Radio.Group;
-const CheckboxGroup = Checkbox.Group;
-
-import { StyledModal, SelectionModal, SelectionPool, SearchPool } from 'components/ui/index';
+import { Button, Col, Icon, Radio, Row } from 'antd';
 import { TeamTree } from 'components/page/index';
+import { SearchPool, SelectionModal, SelectionPool } from 'components/ui/index';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
+import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
+import { fetchTeams } from 'store/global/action';
 import {
   setVisibilityOption,
   selectTeam,
@@ -17,7 +15,9 @@ import {
   removeEntityFromSelection,
   changeSelections,
 } from './flow/actions';
-import { fetchTeams } from 'store/global/action';
+
+const RadioGroup = Radio.Group;
+
 
 const defaultProps = {
   theme: 'lead',
@@ -30,6 +30,7 @@ const propTypes = {
   assignOptions: PropTypes.array.isRequired,
   selectedOption: PropTypes.number.isRequired,
 };
+
 
 class ViewVisibility extends Component {
   state = {
@@ -109,10 +110,11 @@ class ViewVisibility extends Component {
               withIcon
             />
             <Row style={{ margin: '10px 0' }}>
-              <Button size="small" onClick={this.handleUserBtnClick}>
+              <Button className="mr-sm" size="small" onClick={this.handleUserBtnClick}>
                 {formatMessage({ id: `${visibilityI18n}.buttons.addUserToShare` })}
               </Button>
               <SelectionModal
+                theme={theme}
                 data={users}
                 selectedData={selectedUsers}
                 title={formatMessage({ id: `${visibilityI18n}.buttons.addUserToShare` })}
@@ -151,6 +153,7 @@ class ViewVisibility extends Component {
     );
   }
 }
+
 
 ViewVisibility.defaultProps = defaultProps;
 ViewVisibility.propTypes = propTypes;
