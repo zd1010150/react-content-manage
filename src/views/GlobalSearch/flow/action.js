@@ -39,10 +39,12 @@ const setData = (objType, data, dispatch) => {
 };
 
 export const fetchResultFromRemote = search => dispatch => get('/admin/objects/search', { search }, dispatch).then((data) => {
-  debugger;
-  setData(leads, data[leads], dispatch);
-  setData(accounts, data[accounts], dispatch);
-  setData(opportunities, data[opportunities], dispatch);
+  console.log("===", data)
+  if (!_.isEmpty(data)) {
+    setData(leads, data[leads], dispatch);
+    setData(accounts, data[accounts], dispatch);
+    setData(opportunities, data[opportunities], dispatch);
+  }
 });
 
 

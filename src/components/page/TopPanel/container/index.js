@@ -31,6 +31,7 @@ class topPanel extends React.Component {
   }
   onSearch = (keys) => {
     const { setSearchKey, history } = this.props;
+    console.log("====dandan", keys);
     setSearchKey(keys);
     history.push('/globalSearch');
   }
@@ -52,6 +53,7 @@ class topPanel extends React.Component {
           className={classNames('input-material-theme bright')}
           placeholder="search"
           style={{ width: 200, marginTop: 7, float: 'right' }}
+          enterButton
         />
       </div>
     );

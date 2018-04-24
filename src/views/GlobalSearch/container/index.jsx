@@ -32,7 +32,8 @@ class GlobalSearch extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.keys !== this.props.keys) {
-      const { fetchResultFromRemote, keys } = this.props;
+      debugger;
+      const { fetchResultFromRemote, keys } = nextProps;
       fetchResultFromRemote(keys);
     }
   }
