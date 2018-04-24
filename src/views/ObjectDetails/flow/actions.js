@@ -22,7 +22,6 @@ export const tryFetchClientDetails = (objectType, objectId) => dispatch =>
             || data.data.structure.modules)) {
       dispatch(setTools(data.data.structure.tools));
       // dispatch(setSource(data.data.structure.sections));
-      debugger;
       dispatch(setModules(data.data.structure.modules));
     }
   });
