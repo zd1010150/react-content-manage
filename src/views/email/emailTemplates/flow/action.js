@@ -39,24 +39,33 @@ const url = "/";
 
 export const sortValues = array => dispatch => dispatch(setNewOrder(array));
 
-export const getUserFolderData = userId => dispatch =>
+export const getUserFolderData = userId => (dispatch, getState) =>
   get(`/admin/email_folders/user/${userId}`, {}, dispatch).then(data => {
     //data will be {own: {data: []}, shared_by: {data: []}}
-    console.log("1111", data);
+
+    const storedUserFolder = getState().setup.emailTemplates.userFolders;
+    const storedSharedFolder = getState().setup.emailTemplates.sharedFolders;
     if (!_.isEmpty(data)) {
-      dispatch(setTemplatesData([]));
-      dispatch(setPermissionTeams([]));
-      dispatch(setPermissionUsers([]));
-      dispatch(setSelectedFolder({}));
-      if (data.own && !_.isEmpty(data.own.data)) {
-        dispatch(setUserFolderData(data.own.data));
-      } else {
-        dispatch(setUserFolderData([]));
-      }
-      if (data.shared_by && !_.isEmpty(data.shared_by.data)) {
-        dispatch(setSharedFolderData(data.shared_by.data));
-      } else {
-        dispatch(setSharedFolderData([]));
+      if (
+        !_.isEqual(
+          storedUserFolder,
+          data.own.data || !_.isEqual(storedSharedFolder, data.shared_by.data)
+        )
+      ) {
+        dispatch(setTemplatesData([]));
+        dispatch(setPermissionTeams([]));
+        dispatch(setPermissionUsers([]));
+        dispatch(setSelectedFolder({}));
+        if (data.own && !_.isEmpty(data.own.data)) {
+          dispatch(setUserFolderData(data.own.data));
+        } else {
+          dispatch(setUserFolderData([]));
+        }
+        if (data.shared_by && !_.isEmpty(data.shared_by.data)) {
+          dispatch(setSharedFolderData(data.shared_by.data));
+        } else {
+          dispatch(setSharedFolderData([]));
+        }
       }
     }
   });
@@ -300,7 +309,7 @@ export const setAllUser = users => ({
 
 export const getAllUser = () => dispatch =>
   get("/admin/users/all", {}, dispatch).then(data => {
-    if (!_.isEmpty(data.data)) {
+    if (data && !_.isEmpty(data.data)) {
       dispatch(setAllUser(data.data));
     }
   });

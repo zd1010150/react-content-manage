@@ -72,6 +72,7 @@ const ActionButtonGroup = ({save, cancel, formatMessage}) => {
 }
 
 class TemplateInformation extends React.Component {
+
     componentDidMount() {
         const {getUserFolderData, loginUser} = this.props;
         getUserFolderData(loginUser.id);
@@ -87,6 +88,7 @@ class TemplateInformation extends React.Component {
             setNewTemplateContent,
             registerGetContentHook,
             editTemplate,
+            newTemplate,
             setEditTemplateFolder,
             setEditTemplateName,
             setEditTemplateApiName,
@@ -110,7 +112,6 @@ class TemplateInformation extends React.Component {
             }
         }
 
-
         return (
             <Panel panelTitle={formatMessage({id: 'page.emailTemplates.newEmailTemplate'})}
                    panelClasses="email-theme-panel"
@@ -130,7 +131,8 @@ class TemplateInformation extends React.Component {
                         formatMessage={formatMessage}/>
                     <FieldInfo formatMessage={formatMessage}/>
                     <TemplateContent registerGetContentHook={registerGetContentHook}
-                                     setTemplateContent={setNewTemplateContent}/>
+                                     setTemplateContent={setNewTemplateContent}
+                                     content={newTemplate.content}/>
                 </Fragment>
                 }
 
@@ -171,6 +173,7 @@ const mapStateToProps = ({global, setup, loginUser}) => {
         userFolders: emailTemplates.userFolders,
         selectedFolder: emailTemplates.selectedFolder,
         editTemplate: emailTemplates.editTemplate,
+        newTemplate: emailTemplates.newTemplate
     };
 };
 
