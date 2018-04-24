@@ -15,7 +15,6 @@ const cx = classNames.bind(styles);
 
 class Avator extends React.Component {
   onAllDone(response, error) {
-    debugger;
     if (_.isEmpty(error)) {
       const logo = response && response[0].logo;
       this.props.setUserAvator(logo);

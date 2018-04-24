@@ -9,5 +9,5 @@ export {
   FilterCriteria,
   FieldsSelection,
   ViewVisibility,
-  ViewActions
-}
+  ViewActions,
+};

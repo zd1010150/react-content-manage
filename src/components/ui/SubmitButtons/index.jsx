@@ -1,22 +1,29 @@
-import React from 'react';
+import { Button, Icon, Row } from 'antd';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
-import { Row, Button, Icon } from 'antd';
+import { Link } from 'react-router-dom';
+
 
 const propTypes = {
-  onSaveClick: PropTypes.func,
+  onSaveClick: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
 };
 
-const SubmitButtons = ({ intl, onSaveClick }) => {
+
+const SubmitButtons = ({
+  intl,
+  objectType,
+  onSaveClick,
+  theme,
+}) => {
   const { formatMessage } = intl;
   const i18nPrefix = 'global.ui.button';
   
   return (
     <Row style={{ margin: '30px 15px 20px' }}>
       <Button
-        className="ml-sm lead-theme-btn"
+        className={`${theme}-theme-btn ml-sm`}
         onClick={onSaveClick}
       >
         <Icon type="save" size="small" />
@@ -25,7 +32,7 @@ const SubmitButtons = ({ intl, onSaveClick }) => {
       <Button
         className="ml-sm"
       >
-        <Link to="/leads">
+        <Link to={`/${objectType}`}>
           <Icon type="close" size="small" />
           {formatMessage({ id: `${i18nPrefix}.cancel` })}
         </Link>
@@ -33,6 +40,7 @@ const SubmitButtons = ({ intl, onSaveClick }) => {
     </Row>
   );
 };
+
 
 SubmitButtons.propTypes = propTypes;
 export default injectIntl(SubmitButtons);

@@ -102,7 +102,7 @@ class permissionProfile extends Component {
         <div className="panel-section">
           <div className="section-header">{formatMessage({ id: 'page.permissionProfile.tabCondition' })}</div>
           <div className="section-content  mt-lg mb-lg">
-            <table style={{ width: '100%' }}>
+            <table style={{ width: '100%' }} className="ant-table-small">
               <thead className="ant-table-thead">
                 <tr>
                   <th>{formatMessage({ id: 'page.permissionProfile.tab' })}</th>

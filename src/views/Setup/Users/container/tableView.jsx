@@ -125,7 +125,7 @@ class usersTableView extends React.Component {
           }}
             withSearch
           />
-          <Table dataSource={users} columns={columns} pagination={pagination} className="mt-lg" rowKey="id" />
+          <Table dataSource={users} columns={columns} pagination={pagination} className="mt-lg" rowKey="id" size="small"/>
           <DeleteConfirmDialog visible={this.state.deleteDialogVisible} onOk={() => this.confirmDelete()} onCancel={() => this.setState({ deleteDialogVisible: false })} >
             <h3>{ formatMessage({ id: 'global.ui.dialog.deleteTitle' })}</h3>
           </DeleteConfirmDialog>
