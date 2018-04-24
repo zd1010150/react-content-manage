@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-
+import _ from 'lodash';
 
 const getAllTeams = state => state.global.settings.teams;
 
@@ -23,3 +23,5 @@ export const getTeamIds = createSelector(
     return teamIds;
   },
 );
+
+

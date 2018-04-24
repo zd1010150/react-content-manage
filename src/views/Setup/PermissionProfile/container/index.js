@@ -2,22 +2,30 @@
 
 import React, { Component, Fragment } from 'react';
 import _ from 'lodash';
+import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 import { fetchTeams } from 'store/global/action';
-import { Input, Checkbox, Button, Icon } from 'antd';
+import { Input, Checkbox, Button, Icon, Tree } from 'antd';
 import { connect } from 'react-redux';
 import { Panel } from 'components/ui/index';
-import { fetchPermission, savePermission, toggleDepartmentDialog, setDepartment, setSeletedDeparmentPermission } from '../flow/action';
+import { fetchPermission, savePermission, toggleDepartmentDialog, setDepartment, setSeletedDeparmentPermission, fetchAllPermission, setExpandedKeys } from '../flow/action';
 import { intlShape, injectIntl } from 'react-intl';
 import DepartmentDialog from '../../Users/component/departmentDialog';
 import { getTeamIds } from '../flow/reselect';
+import styles from '../index.less';
 
-const CheckboxGroup = Checkbox.Group;
+const { TreeNode } = Tree;
 const { TextArea } = Input;
 const { Search } = Input;
+const cx = classNames.bind(styles);
+
 class permissionProfile extends Component {
+  onExpand(expandedKeys) {
+    this.props.setExpandedKeys(expandedKeys);
+  }
   componentDidMount() {
     this.props.fetchTeams();
+    this.props.fetchAllPermission();
   }
   openDepartment() {
     this.props.toggleDepartmentDialog(true);
@@ -30,17 +38,8 @@ class permissionProfile extends Component {
     setDepartment({ department_id, department_name });
     fetchPermission(department_id);
   }
-  changePermission(e) {
-    const isChecked = e.target.checked;
-    const checkedValue = e.target.value;
-    const permissions = this.props.selectedDepartment.permissions.slice();
-    const isExist = permissions.indexOf(checkedValue) > -1;
-    if (isChecked && !isExist) { // 选中不存在
-      permissions.push(checkedValue);
-    } else if (!isChecked && isExist) {
-      permissions.splice(permissions.indexOf(checkedValue), 1);
-    }
-    this.props.setSeletedDeparmentPermission(permissions);
+  onCheckPermission(checkedKeys) {
+    this.props.setSeletedDeparmentPermission(checkedKeys, false);
   }
   onSubmit() {
     const { savePermission, selectedDepartment } = this.props;
@@ -56,11 +55,34 @@ class permissionProfile extends Component {
     }
     fetchPermission(selectedDepartment.department_id);
   }
+  renderTreeNodes(data) {
+    if (!_.isArray(data) && !_.isEmpty(data)) {
+      return Object.keys(data).map((tab) => {
+        const tabPermission = data[tab];
+        if (!_.isEmpty(tabPermission.child_rec)) {
+          return (
+            <TreeNode className={cx('tree-node-line')} title={tabPermission.name} key={tabPermission.id}>
+              {this.renderTreeNodes(tabPermission.child_rec)}
+            </TreeNode>
+          );
+        }
+        return <TreeNode className={cx('tree-node-line')} title={tabPermission.name} key={tabPermission.id} />;
+      });
+    }
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const {
-      isDisplayDepartmentDialog, toggleDepartmentDialog, teams, permissions, selectedDepartment, teamIds,
+      isDisplayDepartmentDialog,
+      toggleDepartmentDialog,
+      teams,
+      permissions,
+      selectedDepartment,
+      teamIds,
+      treeExpandKeys,
     } = this.props;
+
     return (
       <Panel panelTitle={formatMessage({ id: 'page.permissionProfile.permissionProfile' })} >
         <div className="pl-lg pr-lg pt-lg pb-lg">
@@ -84,56 +106,26 @@ class permissionProfile extends Component {
           <TextArea rows={4} onChange={e => this.props.setDepartment({ description: e.target.value })} value={selectedDepartment.description} />
         </div>
         <div className="panel-section">
-          <div className="section-header">{formatMessage({ id: 'page.permissionProfile.tabSettings' })}</div>
+          <div className="section-header">{formatMessage({ id: 'page.permissionProfile.permissionSetting' })}</div>
           <div className="section-content mt-lg mb-lg">
-            {
-              permissions.tabs.map(t =>
-                (<Checkbox
-                  key={t.value}
-                  value={t.value}
-                  onChange={e => this.changePermission(e)}
-                  checked={selectedDepartment.permissions.indexOf(t.value) > -1}
-                >
-                  {t.label}
-                 </Checkbox>))
-            }
-          </div>
-        </div>
-        <div className="panel-section">
-          <div className="section-header">{formatMessage({ id: 'page.permissionProfile.tabCondition' })}</div>
-          <div className="section-content  mt-lg mb-lg">
-            <table style={{ width: '100%' }} className="ant-table-small">
-              <thead className="ant-table-thead">
-                <tr>
-                  <th>{formatMessage({ id: 'page.permissionProfile.tab' })}</th>
-                  <th >{formatMessage({ id: 'page.permissionProfile.create' })}</th>
-
-                  <th >{ formatMessage({ id: 'global.ui.button.delete' }) }</th>
-                  <th >{ formatMessage({ id: 'global.ui.button.edit' }) }</th>
-                  <th>View</th>
-                </tr>
-              </thead>
-              <tbody className="ant-table-tbody">
-                {
-                    Object.keys(permissions.pages).map(pageTitle => (
-                      <tr key={pageTitle}>
-                        <td>{pageTitle}</td>
-                        {
-                          permissions.pages[pageTitle].map(permission =>
-                            (
-                              <td key={permission.value}>
-                                <Checkbox value={permission.value} onChange={e => this.changePermission(e)} checked={selectedDepartment.permissions.indexOf(permission.value) > -1} />
-                              </td>
-                            ))
-                        }
-                      </tr>))
-                      }
-              </tbody>
-            </table>
+            <Tree
+              checkable
+              defaultExpandAll
+              autoExpandParent={false}
+              checkedKeys={selectedDepartment.permissions}
+              expandedKeys={treeExpandKeys}
+              onExpand={expandedKeys => this.onExpand(expandedKeys)}
+              onCheck={checkedKeys => this.onCheckPermission(checkedKeys)}
+            >
+              { this.renderTreeNodes(permissions)}
+            </Tree>
           </div>
         </div>
         <div className="pb-lg pl-lg">
-          <Button type="primary" htmlType="submit" disabled={_.isEmpty(`${selectedDepartment.department_id}`)} onClick={() => { this.onSubmit(); }}><Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' })}</Button>
+          <Button type="primary" htmlType="submit" disabled={_.isEmpty(`${selectedDepartment.department_id}`)} onClick={() => { this.onSubmit(); }}>
+            <Icon type="save" />
+            { formatMessage({ id: 'global.ui.button.save' })}
+          </Button>
           <Button type="danger" className="ml-sm" onClick={() => { this.onCancel(); }}><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
         </div>
       </Panel>
@@ -149,6 +141,7 @@ const mapStateToProps = ({ global, setup }) => ({
   selectedDepartment: setup.permissionPro.selectedDepartment,
   isDisplayDepartmentDialog: setup.permissionPro.ui.isDisplayDepartmentDialog,
   teamIds: getTeamIds({ global }),
+  treeExpandKeys: setup.permissionPro.ui.treeExpandKeys,
 });
 const mapDispatchToProps = {
   fetchPermission,
@@ -157,5 +150,7 @@ const mapDispatchToProps = {
   setDepartment,
   fetchTeams,
   setSeletedDeparmentPermission,
+  fetchAllPermission,
+  setExpandedKeys,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(permissionProfile));
