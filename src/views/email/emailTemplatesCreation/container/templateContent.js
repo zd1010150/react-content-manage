@@ -3,13 +3,14 @@ import _ from 'lodash';
 import {intlShape, injectIntl} from 'react-intl';
 import {Row, Col, Input, Select, Button, Icon, Radio, Table, Modal, Checkbox} from 'antd';
 import {connect} from 'react-redux';
-import {Panel, RichEditor} from 'components/ui/index';
+// import {Panel, RichEditor} from 'components/ui/index';
+import {Panel, CKEditor} from 'components/ui/index';
 import classNames from 'classnames/bind';
 import {SelectComponentVertical, InputComponent, TextAreaComponent} from '../component/formController';
 import styles from '../emailTemplatesCreation.less';
 const cx = classNames.bind(styles);
 const RadioGroup = Radio.Group;
-
+import { apiDomain } from '../../../../config/env.config.js';
 const Radios = ({handleRadioClick, formatMessage}) => (
     <RadioGroup defaultValue={1} onChange={e => {
         e.target.value === 1 ? handleRadioClick(true) : handleRadioClick(false)
@@ -20,6 +21,39 @@ const Radios = ({handleRadioClick, formatMessage}) => (
                value={2}>{formatMessage({id: 'page.emailTemplates.attachLocalFiles'})}</Radio>
     </RadioGroup>
 );
+const config = {
+    toolbar: [
+        { name: 'document', items: [ 'Print' ] },
+        { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
+        { name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
+        { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+        { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+        '/',
+        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'CopyFormatting' ] },
+        { name: 'links', items: [ 'Link', 'Unlink' ] },
+        { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
+        { name: 'insert', items: [ 'Image', 'Table' ] },
+        { name: 'tools', items: [ 'Maximize' ] },
+        { name: 'editing', items: [ 'Scayt' ] }
+    ],
+
+    extraAllowedContent: 'h3{clear};h2{line-height};h2 h3{margin-left,margin-top}',
+
+    // Adding drag and drop image upload.
+    // extraPlugins: 'print,format,font,colorbutton,justify,uploadimage',
+    uploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
+
+    // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+    filebrowserBrowseUrl: '/ckfinder/ckfinder.html',
+    filebrowserImageBrowseUrl: '/ckfinder/ckfinder.html?type=Images',
+    // filebrowserUploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+    filebrowserImageUploadUrl: apiDomain + '/api/v1/admin/files/image',
+
+    height: 560,
+
+    removeDialogTabs: 'image:advanced;link:advanced'
+}
+
 class TemplateContent extends React.Component {
     constructor(props) {
         super(props);
@@ -57,6 +91,54 @@ class TemplateContent extends React.Component {
         // e.target.checked
         console.log(e.target.checked)
     }
+
+    onChange = (evt) =>{
+        console.log("onChange fired with event info: ",evt, "and data: ",evt.editor.getData());
+        this.props.registerGetContentHook(() => {
+            return evt.editor.getData();
+        });
+    }
+    onBlur = (evt) => {
+        console.log("onBlur fired with event info: ",evt);
+    }
+
+    afterPaste = (evt) => {
+        console.log("afterPaste fired with event info: ",evt);
+    }
+
+    fileUploadHandler = (evt) => {
+        const fileLoader = evt.data.fileLoader;
+        const xhr = fileLoader.xhr;
+        evt.data.requestData = {
+            document: evt.data.requestData.upload
+        };
+        xhr.setRequestHeader( 'Cache-Control', 'no-cache' );
+        xhr.setRequestHeader( 'X-CUSTOM', 'HEADER' );
+        xhr.setRequestHeader('accept', 'image/*');
+        // xhr.setRequestHeader('Authorization', this.props.loginUser.token_info.access_token)
+        xhr.setRequestHeader('Authorization', '12321313')
+        xhr.withCredentials = true;
+        // Prevented the default behavior.
+        evt.stop();
+    }
+
+    fileUploadResponse = (evt) => {
+        // Prevent the default response handler.
+        evt.stop();
+        // Get XHR and response.
+        const data = evt.data,
+            xhr = data.fileLoader.xhr,
+            response = xhr.responseText.split( '|' );
+
+        if ( response[ 1 ] ) {
+            // An error occurred during upload.
+            data.message = response[ 1 ];
+            evt.cancel();
+        } else {
+            data.url = JSON.parse(response[ 0 ]).data.url
+        }
+    }
+
 
     render() {
         const {intl, setNewTemplateContent, registerGetContentHook, content} = this.props;
@@ -137,14 +219,25 @@ class TemplateContent extends React.Component {
                     <Radios formatMessage={formatMessage} handleRadioClick={this.handleRadioClick}></Radios>
                     {this.state.chooseCloudAttachment ? CloudAttachment : LocalAttachment}
                 </Modal>
-                <RichEditor content={content} registerGetContentHook={registerGetContentHook}
-                            setContent={setNewTemplateContent} additionalCtrl={additionalCtrl}/>
+                {/*<RichEditor content={content} registerGetContentHook={registerGetContentHook}*/}
+                            {/*setContent={setNewTemplateContent} additionalCtrl={additionalCtrl}/>*/}
+                    <CKEditor
+                        events={{
+                            blur: this.onBlur,
+                            afterPaste: this.afterPaste,
+                            change: this.onChange,
+                            fileUploadRequest: this.fileUploadHandler,
+                            fileUploadResponse: this.fileUploadResponse
+                        }}
+                        config={config}/>
             </Fragment>
         );
     }
 }
 
-const mapStateToProps = ({global}) => ({});
+const mapStateToProps = ({global, loginUser}) => ({
+    loginUser: loginUser
+});
 const mapDispatchToProps = {};
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(TemplateContent));

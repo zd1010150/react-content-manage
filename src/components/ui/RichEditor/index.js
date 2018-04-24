@@ -5,18 +5,87 @@ import {Row, Col, Input, Select, Button, Icon, Radio, Table} from 'antd';
 import {connect} from 'react-redux';
 import {Panel} from 'components/ui/index';
 import classNames from 'classnames/bind';
-import {Editor, EditorState, RichUtils, getDefaultKeyBinding, convertFromHTML, ContentState} from 'draft-js';
+import {EditorState, RichUtils, getDefaultKeyBinding, convertFromHTML, ContentState, convertToRaw, CompositeDecorator, convertFromRaw} from 'draft-js';
+import Editor, { composeDecorators } from 'draft-js-plugins-editor';
+import createImagePlugin from 'draft-js-image-plugin';
+import createAlignmentPlugin from 'draft-js-alignment-plugin';
+
+import createFocusPlugin from 'draft-js-focus-plugin';
+
+import createResizeablePlugin from 'draft-js-resizeable-plugin';
+
+import createBlockDndPlugin from 'draft-js-drag-n-drop-plugin';
+import ImageAdd from './imageAdd';
+
 import {decorator} from './decorator';
 import {stateToHTML} from 'draft-js-export-html';
 
 import styles from './richEditor.less';
+
+const focusPlugin = createFocusPlugin();
+const resizeablePlugin = createResizeablePlugin();
+const blockDndPlugin = createBlockDndPlugin();
+const alignmentPlugin = createAlignmentPlugin();
+const { AlignmentTool } = alignmentPlugin;
+const decoratorForImage = composeDecorators(
+    resizeablePlugin.decorator,
+    alignmentPlugin.decorator,
+    focusPlugin.decorator,
+    blockDndPlugin.decorator
+);
+const imagePlugin = createImagePlugin({ decoratorForImage });
+const plugins = [
+    blockDndPlugin,
+    focusPlugin,
+    alignmentPlugin,
+    resizeablePlugin,
+    imagePlugin
+];
+const initialState = {
+    "entityMap": {
+        "0": {
+            "type": "image",
+            "mutability": "IMMUTABLE",
+            "data": {
+                "src": "https://raw.githubusercontent.com/facebook/draft-js/master/examples/draft-0-10-0/convertFromHTML/image.png"
+            }
+        }
+    },
+    "blocks": [{
+        "key": "9gm3s",
+        "text": "You can have images in your text field. This is a very rudimentary example, but you can enhance the image plugin with resizing, focus or alignment plugins.",
+        "type": "unstyled",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [],
+        "data": {}
+    }, {
+        "key": "ov7r",
+        "text": " ",
+        "type": "atomic",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [{
+            "offset": 0,
+            "length": 1,
+            "key": 0
+        }],
+        "data": {}
+    }, {
+        "key": "e23a8",
+        "text": "See advanced examples further down …",
+        "type": "unstyled",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [],
+        "data": {}
+    }]
+};
 const cx = classNames.bind(styles);
-const sampleMarkup =
-    '<b>Bold text</b>, <i>Italic text</i><br/ ><br />' +
-    '<a href="https://www.facebook.com">Example link</a><br /><br/ >' +
-    '<img src="https://raw.githubusercontent.com/facebook/draft-js/master/examples/draft-0-10-0/convertFromHTML/image.png" height="112" width="200" />';
-
-
+// const sampleMarkup =
+//     '<b>Bold text</b>, <i>Italic text</i><br/ ><br />' +
+//     '<a href="https://www.facebook.com">Example link</a><br /><br/ >' +
+//     '<img src="https://raw.githubusercontent.com/facebook/draft-js/master/examples/draft-0-10-0/convertFromHTML/image.png" height="112" width="200" />';
 
 
 class RichEditor extends React.Component {
@@ -29,9 +98,12 @@ class RichEditor extends React.Component {
                 blocksFromHTML.contentBlocks,
                 blocksFromHTML.entityMap
             );
-            this.state = {editorState: EditorState.createWithContent(state, decorator)};
+            console.log('1123123', state)
+            this.setState({editorState: EditorState.createWithContent(state)})
         }else{
-            this.state = {editorState: EditorState.createEmpty()};
+            // this.state = {editorState: EditorState.createEmpty()};
+            console.log('convertFromRaw(initialState)', convertFromRaw(initialState))
+            this.state = {editorState: EditorState.createWithContent(convertFromRaw(initialState))};
         }
         this.focus = () => this.refs.editor.focus();
         this.onChange = (editorState) => this.setState({editorState});
@@ -45,6 +117,7 @@ class RichEditor extends React.Component {
 
         registerGetContentHook &&
         registerGetContentHook(() => {
+            console.log('12312312312131233', convertToRaw(this.state.editorState.getCurrentContent()))
             return stateToHTML(this.state.editorState.getCurrentContent());
             // return this.state.editorState.getCurrentContent ().getPlainText ();
         });
@@ -59,9 +132,14 @@ class RichEditor extends React.Component {
                     blocksFromHTML.contentBlocks,
                     blocksFromHTML.entityMap
                 );
-                this.setState({editorState: EditorState.createWithContent(state, decorator)})
+                console.log('0000000', nextProps.content)
+                console.log('111111111', blocksFromHTML)
+                console.log('222222222', state)
+                this.setState({editorState: EditorState.createWithContent(state)})
             }else{
-                this.setState({editorState: EditorState.createEmpty()})
+                // this.setState({editorState: EditorState.createEmpty()})
+                console.log('convertFromRaw(initialState)', convertFromRaw(initialState))
+                this.state = {editorState: EditorState.createWithContent(convertFromRaw(initialState))};
             }
         }
     }
@@ -138,6 +216,11 @@ class RichEditor extends React.Component {
                 >
                     {this.props.additionalCtrl}
                 </ActionControls>
+                <ImageAdd
+                    editorState={editorState}
+                    onChange={this.onChange}
+                    modifier={imagePlugin.addImage}
+                />
                 <BlockStyleControls
                     editorState={editorState}
                     onToggle={this.toggleBlockType}
@@ -154,6 +237,7 @@ class RichEditor extends React.Component {
                         handleKeyCommand={this.handleKeyCommand}
                         keyBindingFn={this.mapKeyToEditorCommand}
                         onChange={this.onChange}
+                        plugins={plugins}
                         placeholder="Tell a story..."
                         ref="editor"
                         spellCheck={true}

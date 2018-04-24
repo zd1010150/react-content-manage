@@ -1,3 +1,4 @@
+import React, {Component} from 'react';
 import {CompositeDecorator} from 'draft-js';
 
 function findLinkEntities(contentBlock, callback, contentState) {
@@ -47,7 +48,19 @@ const Image = (props) => {
     );
 };
 
-export const decorator = new CompositeDecorator([
+// export const decorator = new CompositeDecorator([
+//     {
+//         strategy: findLinkEntities,
+//         component: Link,
+//     },
+//     {
+//         strategy: findImageEntities,
+//         component: Image,
+//     },
+// ]);
+
+
+export const decorator = [
     {
         strategy: findLinkEntities,
         component: Link,
@@ -56,4 +69,4 @@ export const decorator = new CompositeDecorator([
         strategy: findImageEntities,
         component: Image,
     },
-]);
+];
