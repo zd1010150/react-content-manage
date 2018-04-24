@@ -35,12 +35,9 @@ export const setSearchKey = searchKey => ({
 });
 
 export const fetchUsers = (perPage = EnumsManager.DefaultPageConfigs.PageSize, currentPage = 1, search, dispatch) => get('/admin/users/list', { per_page: perPage, page: currentPage, search }, dispatch).then((data) => {
-  if (data && (!_.isEmpty(data.data)) && (!_.isEmpty(data.meta))) {
-    dispatch(setUserData(data.data));
-    const { pagination } = data.meta;
-
-    dispatch(setPaginations(pagination.per_page, pagination.current_page, pagination.total));
-  }
+  dispatch(setUserData(data.data || []));
+  const { pagination } = data.meta;
+  dispatch(setPaginations(pagination.per_page, pagination.current_page, pagination.total));
 });
 
 export const queryByPaging = (perPage, currentPage) => (dispatch, getState) => {

@@ -6,6 +6,7 @@ export default {
     confirmError: '新密码和确认密码不一致！',
     pwdTip: '密码不能少于8位，包含数字，大小写字母',
     hello: '{name},你好!',
+    changeSuccess: '修改密码成功，请重新登录',
   },
   en: {
     oldPwd: 'Old Password',
@@ -14,5 +15,6 @@ export default {
     confirmError: 'New password is not same as to the confirm password',
     pwdTip: 'At least 8 characters including number,lower/upper capitals',
     hello: 'Hello, {name}!',
+    changeSuccess: 'Modify password success, Please relogin',
   },
 };

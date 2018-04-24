@@ -1,10 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { toggleLanguage, fetchGlobalSetting } from 'store/global/action';
+import { setSearchKey } from 'views/GlobalSearch/flow/action';
 import Language from '../component/language';
 import TopNav from '../component/topStaticNav';
 import Welcome from '../component/welcomeMsg';
@@ -28,7 +30,10 @@ class topPanel extends React.Component {
     this.props.tryLogout();
   }
   onSearch = (keys) => {
-    console.log(keys);
+    const { setSearchKey, history } = this.props;
+    console.log("====dandan", keys);
+    setSearchKey(keys);
+    history.push('/globalSearch');
   }
   render() {
     const {
@@ -48,6 +53,7 @@ class topPanel extends React.Component {
           className={classNames('input-material-theme bright')}
           placeholder="search"
           style={{ width: 200, marginTop: 7, float: 'right' }}
+          enterButton
         />
       </div>
     );
@@ -71,8 +77,9 @@ const mapDispatchToProp = {
   toggleLanguage,
   fetchGlobalSetting,
   tryLogout,
+  setSearchKey,
 };
 
-const TopPanel = connect(mapStateToProps, mapDispatchToProp)(topPanel);
+const TopPanel = connect(mapStateToProps, mapDispatchToProp)(withRouter(topPanel));
 export default TopPanel;
 

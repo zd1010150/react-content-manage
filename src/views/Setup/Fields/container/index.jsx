@@ -18,7 +18,9 @@ class FieldsIndexView extends React.Component {
     this.setObjectType(props);
   }
   componentWillReceiveProps(nextProps) {
-    this.setObjectType(nextProps);
+    if (nextProps.match.params.objectType !== this.props.match.params.objectType) {
+      this.setObjectType(nextProps);
+    }
   }
   setObjectType(props) {
     const { match, setCurrentObject } = props;

@@ -28,16 +28,12 @@ const dispatch = (method, url, request, dispatcher = () => {}) => {
     payload: {},
   });
   return request.then(({ data, statusCode }) => {
+    dispatcher({ type: HTTP_ACTION_DONE });
     if (statusCode === UNAUTHENTICATION.CODE) { // 如果是401为授权，就跳转到登录界面
       dispatcher(tryLogout());
+      return Promise.reject();
     }
     if (SUCCESS_HTTP_CODE.indexOf(statusCode) > -1) {
-      dispatcher({
-        type: HTTP_ACTION_DONE,
-        payload: {
-          data,
-        },
-      });
       successNotify(method, url);
       return data;
     }
@@ -56,13 +52,11 @@ const dispatch = (method, url, request, dispatcher = () => {}) => {
       } else if (data.message) {
         dispatcher(addError(data.message));
       }
+      return Promise.reject();
     }
   }).catch((err) => {
     dispatcher({
       type: HTTP_ACTION_ERROR,
-      payload: {
-        err,
-      },
     });
     return Promise.reject(err);
   });
