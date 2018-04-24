@@ -55,6 +55,7 @@ const mapSettingData = (state, data) => Object.assign({}, state, {
   model: data.model,
   conditions: data.list_view.conditions,
   assignOptions: data.list_view.assign_options,
+  categories: data.file.category,
   statuses: data.task.statuses,
   priorities: data.task.priorities,
 });
@@ -69,6 +70,7 @@ const settings = (state = {
   teams: [],
   conditions: [],
   assignOptions: [],
+  categories: [],
   statuses: [],
   priorities: [],
 }, action) => {

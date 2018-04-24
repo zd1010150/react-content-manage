@@ -185,6 +185,7 @@ const primaryDetails = (state = initialState, action) => {
         data: [...state.data],
       };
 
+      
     case RESET:
       return initialState;
 

@@ -86,7 +86,7 @@ class TaskPanel extends Component {
         link = '';
         break;
       case Attachments:
-        link = '';
+        link = `/${objectType}/${objectId}/attachments/${PhantomId}`;
         break;
       case TaskHistory:
       case Logs:
@@ -154,6 +154,7 @@ class TaskPanel extends Component {
       objectType,
       priorities,
       statuses,
+      categories,
     } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui.table';
@@ -224,8 +225,12 @@ class TaskPanel extends Component {
       case Attachments:
         columns = [
           {
-            dataIndex: 'title',
-            title: formatMessage({ id: `${i18n}.title` }),
+            dataIndex: 'category',
+            title: formatMessage({ id: `${i18n}.category` }),
+            render: text => {
+              const category = categories.find(category => category.id === text);
+              return category ? category.display_value : null;
+            },
           },
           {
             dataIndex: 'type',
@@ -261,9 +266,7 @@ class TaskPanel extends Component {
         console.log('The module is not found.');
     }
     // TODO: need to add checking about permissions of edit and delete to decide whether shows 'Action' column
-    if (code === TaskOpen
-        || code === Attachments
-        || code === Opportunities) {
+    if (code === TaskOpen || code === Opportunities) {
       columns.unshift({
         key: 'actions',
         className: cx('firstCol'),
@@ -285,6 +288,26 @@ class TaskPanel extends Component {
                 <Icon className="ml-sm cursor-pointer" size="small" type="delete" />
               </Popconfirm>
             </Fragment>
+          );
+        },
+      });
+    } else if (code === Attachments) {
+      columns.unshift({
+        key: 'actions',
+        className: cx('firstCol'),
+        title: formatMessage({ id: `${i18n}.action` }),
+        render: (text, record) => {
+          const { id } = record;
+          return (
+            <Popconfirm
+              placement="right"
+              title={formatMessage({ id: 'global.ui.dialog.deleteTitle' })}
+              okText={formatMessage({ id: 'global.ui.button.ok' })}
+              cancelText={formatMessage({ id: 'global.ui.button.cancel' })}
+              onConfirm={() => this.handleDeleteByModule(code, id)}
+            >
+              <Icon className="ml-sm cursor-pointer" size="small" type="delete" />
+            </Popconfirm>
           );
         },
       });
@@ -328,6 +351,7 @@ class TaskPanel extends Component {
 
 const mapStateToProps = ({ global, objectDetails }) => ({
   language: global.language,
+  categories: global.settings.categories,
   priorities: global.settings.priorities,
   statuses: global.settings.statuses,
   tasks: objectDetails.tasks,

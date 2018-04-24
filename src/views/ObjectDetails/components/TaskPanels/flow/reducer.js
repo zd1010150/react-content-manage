@@ -1,4 +1,4 @@
-import { SET_MODULES, SET_MODULE_DATA } from './actionTypes';
+import { SET_MODULES, SET_MODULE_DATA, RESET } from './actionTypes';
 
 const initialState = {
   modules: [],
@@ -25,6 +25,10 @@ const tasks = (state = initialState, action) => {
       };
 
 
+    case RESET:
+      return initialState;
+
+      
     default:
       return state;
   }
