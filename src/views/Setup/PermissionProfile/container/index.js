@@ -41,6 +41,20 @@ class permissionProfile extends Component {
   onCheckPermission(checkedKeys) {
     this.props.setSeletedDeparmentPermission(checkedKeys, false);
   }
+  permissionChange(e, permission) {
+    debugger;
+    const isChecked = e.target.checked;
+    const { permissions } = this.props.selectedDepartment;
+    const newPermissions = [...permissions];
+    debugger;
+    if (isChecked) {
+      newPermissions.push(permission);
+    } else if (!isChecked && newPermissions.indexOf(permission) > -1) {
+      debugger;
+      newPermissions.splice(newPermissions.indexOf(permission), 1);
+    }
+    this.props.setSeletedDeparmentPermission(newPermissions, false);
+  }
   onSubmit() {
     const { savePermission, selectedDepartment } = this.props;
     if (_.isEmpty(`${selectedDepartment.department_id}`)) {
@@ -56,17 +70,21 @@ class permissionProfile extends Component {
     fetchPermission(selectedDepartment.department_id);
   }
   renderTreeNodes(data) {
+    const { permissions } = this.props.selectedDepartment;
     if (!_.isArray(data) && !_.isEmpty(data)) {
       return Object.keys(data).map((tab) => {
         const tabPermission = data[tab];
+        const treeEl = (<Checkbox onChange={e => this.permissionChange(e, tabPermission.id)} checked={permissions.indexOf(tabPermission.id) > -1}>
+          {tabPermission.name}
+        </Checkbox>);
         if (!_.isEmpty(tabPermission.child_rec)) {
           return (
-            <TreeNode className={cx('tree-node-line')} title={tabPermission.name} key={tabPermission.id}>
+            <TreeNode className={cx('tree-node-line')} title={treeEl} key={tabPermission.id}>
               {this.renderTreeNodes(tabPermission.child_rec)}
             </TreeNode>
           );
         }
-        return <TreeNode className={cx('tree-node-line')} title={tabPermission.name} key={tabPermission.id} />;
+        return (<TreeNode className={cx('tree-node-line')} title={treeEl} key={tabPermission.id} />);
       });
     }
   }
@@ -109,13 +127,11 @@ class permissionProfile extends Component {
           <div className="section-header">{formatMessage({ id: 'page.permissionProfile.permissionSetting' })}</div>
           <div className="section-content mt-lg mb-lg">
             <Tree
-              checkable
               defaultExpandAll
               autoExpandParent={false}
               checkedKeys={selectedDepartment.permissions}
               expandedKeys={treeExpandKeys}
               onExpand={expandedKeys => this.onExpand(expandedKeys)}
-              onCheck={checkedKeys => this.onCheckPermission(checkedKeys)}
             >
               { this.renderTreeNodes(permissions)}
             </Tree>
