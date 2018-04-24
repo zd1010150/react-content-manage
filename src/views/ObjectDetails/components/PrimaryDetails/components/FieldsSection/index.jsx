@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+/* eslint arrow-parens: ["error", "as-needed"] */
+import { Col, Row } from 'antd';
+import { CustomField, Section } from 'components/ui/index';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col } from 'antd';
-
-import { Section, CustomField } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
-const { DateOnly, Display } = Enums.FieldTypes;
 import {
   setActiveField,
   resetActiveField,
@@ -13,6 +12,9 @@ import {
   resetFieldValue,
   tryFetchFieldOptions,
 } from '../../flow/actions';
+
+const { DateOnly, Display } = Enums.FieldTypes;
+
 
 const defaultProps = {
   code: 'code',
@@ -45,12 +47,19 @@ class FieldsSection extends Component {
   handleRevertClick = id => this.props.resetFieldValue(this.props.code, id)
 
   render() {
-    const { code, title, fields, columns } = this.props;
+    const {
+      code,
+      title,
+      fields,
+      columns,
+    } = this.props;
     const colLayout = {
       sm: Enums.AntdGridMax / columns,
       xs: Enums.AntdGridMax,
     };
 
+    // TODO: refactor to adapt to other column numbers
+    const colArray = columns === 2 ? [0, 1] : [0];
     // TODO: will be replaced shortly by props
     const dateFormat = 'YYYY-MM-DD';
     const timeFormat = 'YYYY-MM-DD HH:mm:ss';
@@ -61,20 +70,27 @@ class FieldsSection extends Component {
         collapsible
       >
         <Row>
-          {fields.map((field, i) => (
-            <Col key={field.key} {...colLayout}>
-              <CustomField
-                key={field.key}
-                {...field}
-                lookupDisplayKey={'name'}
-                format={field.type === DateOnly ? dateFormat : timeFormat}
-                type={field.active ? field.type : Display}
-                onChange={this.handleChange}
-                onDoubleClick={this.handleDoubleClick}
-                onDropdownOpen={this.handleDropdownOpen}
-                onRevertClick={this.handleRevertClick}
-                onBlur={this.handleBlur}
-              />
+          {colArray.map((col, i) => (
+            <Col key={i} {...colLayout}>
+              {fields.map(field => {
+                if (field.position[1] === col) {
+                  return (
+                    <CustomField
+                      key={field.key}
+                      {...field}
+                      lookupDisplayKey={field.lookupDisplayKey}
+                      format={field.type === DateOnly ? dateFormat : timeFormat}
+                      type={field.active ? field.type : Display}
+                      onChange={this.handleChange}
+                      onDoubleClick={this.handleDoubleClick}
+                      onDropdownOpen={this.handleDropdownOpen}
+                      onRevertClick={this.handleRevertClick}
+                      onBlur={this.handleBlur}
+                    />
+                  );
+                }
+                return null;
+              }, this)}
             </Col>
           ), this)}
         </Row>
