@@ -1,25 +1,29 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { intlShape, injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
-import moment from 'moment';
-import { Row, Col, Input, Icon, Select, DatePicker } from 'antd';
-const { TextArea } = Input;
-const { Option, OptGroup } = Select;
+import { Col, DatePicker, Icon, Input, Row, Select } from 'antd';
 import classNames from 'classnames/bind';
-import styles from './index.less';
-const cx = classNames.bind(styles);
-
 import { AssigneeModal, SubjectsModal } from 'components/ui/index';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
+import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
-const { PhantomId } = Enums;
+import styles from './index.less';
 import {
   setAssignee,
   setFieldValue,
   tryDeleteSubject,
   tryFetchTask,
   trySaveNewSubject,
+  tryFetchAssignees,
+  tryFetchRecentAssignees,
+  tryFetchTaskSubjects,
 } from '../../flow/actions';
+
+const { TextArea } = Input;
+const { Option, OptGroup } = Select;
+const cx = classNames.bind(styles);
+
+const { PhantomId } = Enums;
 // presets
 const colLayout = {
   sm: 12,
@@ -45,9 +49,22 @@ class TaskFields extends Component {
   }
 
   componentDidMount() {
-    const { objectId, objectType, tryFetchTask } = this.props;
-    if (objectId !== PhantomId) {
-      return tryFetchTask(objectId, objectType);
+    const {
+      objectId,
+      objectType,
+      taskId,
+      tryFetchTask,
+      tryFetchAssignees,
+      tryFetchRecentAssignees,
+      tryFetchTaskSubjects,
+    } = this.props;
+    if (taskId !== PhantomId) {
+      tryFetchTask(taskId, objectId, objectType);
+    } else {
+      // TODO: refactor to move those fetch methods to field separately
+      tryFetchAssignees(objectId, objectType);
+      tryFetchRecentAssignees(objectType);
+      tryFetchTaskSubjects();
     }
   }
 
@@ -90,7 +107,7 @@ class TaskFields extends Component {
       recentAssignees,
       statusCode,
       statuses,
-      subject,      
+      subject,
     } = this.props;
 
     const { formatMessage } = intl;
@@ -140,7 +157,7 @@ class TaskFields extends Component {
               style={{ width: '100%' }}
               value={statusCode}
             >
-              {statuses.map(status => <Option key={status.id} value={status.id}>{status.name}</Option>)}
+              {statuses.map(status => <Option key={status.id} value={status.id}>{status.display_value}</Option>)}
             </Select>
           </Col>
         </Row>
@@ -174,7 +191,7 @@ class TaskFields extends Component {
               onChange={value => this.handleFieldChange('priorityCode', value)}
               value={priorityCode}
             >
-              {priorities.map(priority => <Option key={priority.id} value={priority.id}>{priority.name}</Option>)}
+              {priorities.map(priority => <Option key={priority.id} value={priority.id}>{priority.display_value}</Option>)}
             </Select>
           </Col>
         </Row>
@@ -184,10 +201,9 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.dueDate` })}
             </div>
             <DatePicker
-              format="YYYY-MM-DD HH:mm:ss"
+              format="YYYY-MM-DD"
               onChange={(date, dateString) => this.handleFieldChange('dueTime', dateString)}
               placeholder={formatMessage({ id: 'global.ui.input.datetimepicker.placeholder' })}
-              showTime
               style={{ width: '100%' }}
               value={moment(dueTime)}
             />
@@ -233,5 +249,8 @@ const mapDispatchToProps = {
   tryDeleteSubject,
   tryFetchTask,
   trySaveNewSubject,
+  tryFetchAssignees,
+  tryFetchRecentAssignees,
+  tryFetchTaskSubjects,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TaskFields));

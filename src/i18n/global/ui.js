@@ -51,6 +51,7 @@ export default {
       convert: '进行转化',
       merge: '进行合并',
       convertToAccount: '升级为客户',
+      [TaskOpen]: '新任务',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -89,6 +90,7 @@ export default {
       company: '公司',
       phone: '电话号码',
       selectedItems: '条记录被选中',
+      priority: '优先级',
     },
     select: {
       label: '视图',
@@ -169,6 +171,7 @@ export default {
       convert: 'Continue to Convert',
       merge: 'Merge',
       convertToAccount: 'Convert to Account',
+      [TaskOpen]: 'New Task',
     },
     input: {
       searchStore: 'Search entire store here...',
@@ -207,6 +210,7 @@ export default {
       company: 'Company',
       phone: 'Phone',
       selectedItems: 'items selected',
+      priority: 'Priority',
     },
     select: {
       label: 'View',

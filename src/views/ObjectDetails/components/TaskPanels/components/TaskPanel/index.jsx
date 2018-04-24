@@ -1,4 +1,5 @@
 /* eslint arrow-parens: ["error", "as-needed"] */
+/* eslint-disable no-fallthrough */
 import { Button, Icon, Popconfirm, Table } from 'antd';
 import classNames from 'classnames/bind';
 import { Panel } from 'components/ui/index';
@@ -9,7 +10,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import styles from './index.less';
-import { tryFetchModuleData } from '../../flow/actions';
+import { tryDeleteTask, tryFetchModuleData } from '../../flow/actions';
 
 const cx = classNames.bind(styles);
 
@@ -17,6 +18,7 @@ const {
   DefaultPageConfigs,
   DetailModules,
   DetailModulesInArray,
+  PhantomId,
   ThemeTypes,
   ThemeTypesInArray,
 } = Enums;
@@ -62,14 +64,55 @@ class TaskPanel extends Component {
     tryFetchModuleData(code, objectType, objectId, { per_page: PageSizeSmall });
   }
 
-  enableBtnByModule = () => {
-    const { code } = this.props;
-    if (code === TaskOpen
-      || code === EmailSent
-      || code === Attachments) {
-      return true;
+  getActionBtnByModule = () => {
+    const {
+      intl,
+      code,
+      objectId,
+      objectType,
+    } = this.props;
+    const { formatMessage } = intl;
+    const i18n = 'global.ui.button';
+
+    let link = '';
+    switch (code) {
+      case Opportunities:
+        link = '';
+        break;
+      case TaskOpen:
+        link = `/${objectType}/${objectId}/tasks/${PhantomId}`;
+        break;
+      case EmailSent:
+        link = '';
+        break;
+      case Attachments:
+        link = '';
+        break;
+      case TaskHistory:
+      case Logs:
+      default:
+        return null;
     }
-    return false;
+    return (
+      <Link to={link}>
+        <Button size="small">
+          <Icon size="small" type="plus" />
+          {formatMessage({ id: `${i18n}.${code}` })}
+        </Button>
+      </Link>
+    );
+  }
+
+  handleDeleteByModule = (code, id) => {
+    console.log(`${code} -> del -> ${id}`);
+    
+    const { objectId, objectType, tryDeleteTask } = this.props;
+    switch (code) {
+      case TaskOpen:
+        return tryDeleteTask(code, id, objectType, objectId);
+      default:
+        console.log('no such code has been found.');
+    }    
   }
 
   handleTableChange = pagination => {
@@ -104,16 +147,22 @@ class TaskPanel extends Component {
   }
 
   renderColumnsByModule = () => {
-    const { intl, code, objectType } = this.props;
+    const {
+      intl,
+      code,
+      objectId,
+      objectType,
+      priorities,
+      statuses,
+    } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui.table';
 
     let columns = [];
     let editLink = '';
-    let deleteLink = '';
     switch (code) {
       case TaskOpen:
-        editLink = `${objectType}/tasks`;
+        editLink = `${objectType}/${objectId}/tasks`;
       case TaskHistory:
         columns = [
           {
@@ -121,16 +170,24 @@ class TaskPanel extends Component {
             title: formatMessage({ id: `${i18n}.subject` }),
           },
           {
-            dataIndex: 'status',
+            dataIndex: 'status_code',
             title: formatMessage({ id: `${i18n}.status` }),
+            render: text => {
+              const status = statuses.find(status => status.id === text);
+              return status ? status.display_value : null;
+            },
+          },
+          {
+            dataIndex: 'priority_code',
+            title: formatMessage({ id: `${i18n}.priority` }),
+            render: text => {
+              const priority = priorities.find(priority => priority.id === text);
+              return priority ? priority.display_value : null;
+            },
           },
           {
             dataIndex: 'due_date',
             title: formatMessage({ id: `${i18n}.dueOn` }),
-          },
-          {
-            dataIndex: 'due_time',
-            title: formatMessage({ id: `${i18n}.dueAt` }),
           },
           {
             dataIndex: 'updated_at',
@@ -221,9 +278,9 @@ class TaskPanel extends Component {
               <Popconfirm
                 placement="right"
                 title={formatMessage({ id: 'global.ui.dialog.deleteTitle' })}
-                okText="Yes"
-                cancelText="No"
-                onConfirm={() => console.log(`${code}-${id}`)}
+                okText={formatMessage({ id: 'global.ui.button.ok' })}
+                cancelText={formatMessage({ id: 'global.ui.button.cancel' })}
+                onConfirm={() => this.handleDeleteByModule(code, id)}
               >
                 <Icon className="ml-sm cursor-pointer" size="small" type="delete" />
               </Popconfirm>
@@ -253,11 +310,7 @@ class TaskPanel extends Component {
       <Panel
         panelTitle={formatMessage({ id: `${i18n}.${code}` })}
         panelClasses={`${theme}-theme-panel`}
-        actionsRight={this.enableBtnByModule() && (
-          <Button size="small">
-            + {formatMessage({ id: `${i18n}.${code}` })}
-          </Button>
-        )}
+        actionsRight={this.getActionBtnByModule()}
       >
         <Table
           columns={this.renderColumnsByModule()}
@@ -275,9 +328,12 @@ class TaskPanel extends Component {
 
 const mapStateToProps = ({ global, objectDetails }) => ({
   language: global.language,
+  priorities: global.settings.priorities,
+  statuses: global.settings.statuses,
   tasks: objectDetails.tasks,
 });
 const mapDispatchToProps = {
+  tryDeleteTask,
   tryFetchModuleData,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TaskPanel));

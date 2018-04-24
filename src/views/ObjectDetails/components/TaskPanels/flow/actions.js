@@ -1,6 +1,6 @@
-import { get } from 'store/http/httpAction';
-import { SET_MODULE_DATA, SET_MODULES } from './actionTypes';
+import { get, httpDelete } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
+import { SET_MODULE_DATA, SET_MODULES } from './actionTypes';
 
 const { DetailModules } = Enums;
 const {
@@ -67,5 +67,15 @@ export const tryFetchModuleData = (code, objectType, objectId, params) => dispat
         && !_.isEmpty(data.data)
         && !_.isEmpty(data.meta)) {
       dispatch(setModuleData(code, data.data, data.meta));
+    }
+  });
+
+
+//
+export const tryDeleteTask = (code, taskId, objectType, objectId) => dispatch =>
+  httpDelete(`/admin/tasks/${taskId}`, {}, dispatch).then((data) => {
+    if (data && data.deleted) {
+      // TODO: replace per_page with actual params
+      dispatch(tryFetchModuleData(code, objectType, objectId, { page: 1, per_page: 10 }));
     }
   });
