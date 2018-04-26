@@ -60,7 +60,13 @@ class AssignDepartmentContainer extends React.Component {
             <span className={cx('tree-title')}>{item.name}</span>
           </span>
           <div className={cx('tree-action')}>
-            <Select dropdownMatchSelectWidth={false} size="small" className={classNames('ant-select-no-border', cx('select-layout'))} value={_.isEmpty(teamLayouts[`${item.id}`]) ? '' : teamLayouts[`${item.id}`]} onChange={value => this.props.setLayoutTeam(`${item.id}`, value)}>
+            <Select
+              dropdownMatchSelectWidth={false}
+              size="small"
+              className={classNames('ant-select-no-border', cx('select-layout'))}
+              value={_.isEmpty(teamLayouts[`${item.id}`]) ? '' : teamLayouts[`${item.id}`]}
+              onChange={value => this.props.setLayoutTeam(`${item.id}`, value)}
+            >
               <Option value="">{formatMessage({ id: 'page.layouts.selectPageLayout' })}</Option>
               {
                       allLayout.map(l => <Option value={`${l.id}`} key={l.id}>{ l.name }</Option>)

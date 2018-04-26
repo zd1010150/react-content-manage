@@ -8,11 +8,11 @@ const propTypes = {
   onConfirm: PropTypes.func,
   placement: PropTypes.string,
   size: PropTypes.oneOf([
-    'small', 'default', 'large'
+    'small', 'default', 'large',
   ]).isRequired,
   text: PropTypes.string,
   type: PropTypes.oneOf([
-    'button', 'icon'  // icon is default
+    'button', 'icon', // icon is default
   ]).isRequired,
 };
 
@@ -24,12 +24,11 @@ const DeleteConfirmButton = ({
   size,
   type,
 }) => {
-
-  const _onConfirm = $ => {
+  const _onConfirm = ($) => {
     if (_.isFunction(onConfirm)) {
       onConfirm(callbackValue);
     }
-  }
+  };
 
   const { formatMessage } = intl;
   const i18n = 'global.ui';

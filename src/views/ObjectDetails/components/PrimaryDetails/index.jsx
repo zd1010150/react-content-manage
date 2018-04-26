@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import { Panel } from 'components/ui/index';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
-
+import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
-import { Panel, Section } from 'components/ui/index';
-import { FieldsSection, ActionButtons } from './components/index';
+import { ActionButtons, FieldsSection } from './components/index';
 import { tryFetch } from './flow/actions';
-//presets
+
+// presets
 const i18nPrefix = 'page.objectDetails';
 
 
@@ -32,7 +32,12 @@ class PrimaryDetails extends Component {
   }
 
   render() {
-    const { intl, theme, data, objectId, objectType } = this.props;
+    const {
+      intl,
+      theme,
+      data,
+      objectId,
+    } = this.props;
     const { formatMessage } = intl;
     const titleId = objectId === Enums.PhantomId ? 'newTitle' : 'editTitle';
 

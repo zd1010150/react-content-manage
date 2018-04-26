@@ -1,33 +1,84 @@
 import { combineReducers } from 'redux';
 import _ from 'lodash';
-import { SETUP_PERPRO_SET_SELECTED_DEPARTMENT, SETUP_PERPRO_TOGGLE_DEPARTMENT_DIALOG, SETUP_PERPRO_SET_SELECTED_PERMISSION } from './actionType';
-import allPermissions from './permissions';
+import {
+  SETUP_PERPRO_SET_SELECTED_DEPARTMENT,
+  SETUP_PERPRO_TOGGLE_DEPARTMENT_DIALOG,
+  SETUP_PERPRO_SET_SELECTED_PERMISSION,
+  SETUP_PERPRO_SET_ALL_PERMISSIONS,
+  SETUP_PERPRO_SET_EXPAND_KEYS,
+} from './actionType';
 
-const permissions = (state = allPermissions) => state;
-const selectedDepartment = (state = { department_name: '', department_id: '', description: '', permissions: [] }, action) => {
+const indexTree = (permissions) => {
+  const getParentId = (root, parent) => {
+    root.parent = parent;
+    if (!_.isEmpty(root.child_rec)) {
+      Object.keys(root.child_rec).forEach((t) => {
+        getParentId(root.child_rec[t], [...parent, root.id]);
+      });
+    }
+  };
+  Object.keys(permissions).forEach((t) => {
+    getParentId(permissions[t], []);
+  });
+  return permissions;
+};
+const permissions = (state = {}, action) => {
+  const { type, ...payload } = action;
+  switch (type) {
+    case SETUP_PERPRO_SET_ALL_PERMISSIONS:
+      return indexTree(payload.permissions);
+    default:
+      return state;
+  }
+};
+export const getAllPermissionIds = (permissions) => {
+  if (_.isEmpty(permissions)) {
+    return [];
+  }
+  const permissionIds = [];
+  const getId = (root) => {
+    permissionIds.push(`${root.id}`);
+    if (!_.isEmpty(root.child_rec)) {
+      Object.keys(root.child_rec).forEach(t => getId(t));
+    }
+  };
+  Object.keys(permissions).forEach((t) => {
+    getId(permissions[t]);
+  });
+  return permissionIds;
+};
+
+
+const selectedDepartment = (state = {
+  department_name: '', department_id: '', description: '', permissions: [],
+}, action) => {
   const { type, ...payload } = action;
   switch (type) {
     case SETUP_PERPRO_SET_SELECTED_DEPARTMENT:
       return Object.assign({}, state, { ...payload });
     case SETUP_PERPRO_SET_SELECTED_PERMISSION:
-      const isSuperAdmin = !_.isEmpty(payload.permissions) && payload.permissions.indexOf(allPermissions.superAdmin.value) > -1;
-      let ps = [];
-      if (isSuperAdmin) {
-        const { tabs, pages } = allPermissions;
-        ps = tabs.map(t => t.value).concat(Object.keys(pages).reduce((values, key) => values.concat(pages[key].map(t => t.value)), []));
-      }else {
-        ps = payload.permissions || [];
-      }
-      return Object.assign({}, state, { permissions: ps });
+      return Object.assign({}, state, { permissions: payload.permissions });
     default:
       return state;
   }
 };
-const ui = (state = { isDisplayDepartmentDialog: false }, action) => {
+
+
+const ui = (state = { isDisplayDepartmentDialog: false, treeExpandKeys: [], permissionIsFromRemote: false }, action) => {
   const { type, ...payload } = action;
   switch (type) {
     case SETUP_PERPRO_TOGGLE_DEPARTMENT_DIALOG:
       return Object.assign({}, state, { isDisplayDepartmentDialog: payload.isDisplayDepartmentDialog });
+    case SETUP_PERPRO_SET_EXPAND_KEYS:
+
+      return Object.assign({}, state, { treeExpandKeys: payload.keys, permissionIsFromRemote: false });
+    case SETUP_PERPRO_SET_ALL_PERMISSIONS:
+      return Object.assign({}, state, { treeExpandKeys: getAllPermissionIds(payload.permissions) });
+    case SETUP_PERPRO_SET_SELECTED_PERMISSION:
+      if (payload.isFromRemote) {
+        return Object.assign({}, state, { treeExpandKeys: payload.permissions, permissionIsFromRemote: true });
+      } return state;
+
     default:
       return state;
   }

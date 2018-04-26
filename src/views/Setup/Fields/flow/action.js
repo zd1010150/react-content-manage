@@ -60,6 +60,11 @@ export const saveFieldsMapping = (mappings, cb) => dispatch => patch('/admin/met
     cb();
   }
 });
+export const deleteField = (fieldId, cb) => dispatch => httpDelete(`/admin/metadata/${fieldId}`, {}, dispatch).then((data) => {
+  if (_.isFunction(cb)) {
+    cb();
+  }
+});
 /* replace dialog actions */
 export const setReplaceDialog = args => ({
   type: SETUP_FIELDS_SET_REPLACE_DIALOG_ATTR,

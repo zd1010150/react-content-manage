@@ -55,25 +55,9 @@ const mapSettingData = (state, data) => Object.assign({}, state, {
   model: data.model,
   conditions: data.list_view.conditions,
   assignOptions: data.list_view.assign_options,
-  // statuses: data.statuses,
-  statuses: [{
-    id: 0,
-    name: 'default',
-  }, {
-    id: 1,
-    name: 'complete',
-  }],
-  // priorities: data.priorities,
-  priorities: [{
-    id: 0,
-    name: 'high',
-  }, {
-    id: 1,
-    name: 'medium',
-  }, {
-    id: 2,
-    name: 'low',
-  }],
+  categories: data.file.category,
+  statuses: data.task.statuses,
+  priorities: data.task.priorities,
 });
 const settings = (state = {
   timeZones: [],
@@ -86,6 +70,7 @@ const settings = (state = {
   teams: [],
   conditions: [],
   assignOptions: [],
+  categories: [],
   statuses: [],
   priorities: [],
 }, action) => {

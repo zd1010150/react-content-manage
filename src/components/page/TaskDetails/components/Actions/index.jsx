@@ -12,11 +12,11 @@ const buttons = [
     key: 'save',
     icon: 'save',
   },
-  {
-    cls: 'saveAndNewBtn',
-    key: 'saveAndNew',
-    icon: 'plus',
-  },
+  // {
+  //   cls: 'saveAndNewBtn',
+  //   key: 'saveAndNew',
+  //   icon: 'plus',
+  // },
   {
     cls: 'cancelBtn',
     key: 'cancel',
@@ -59,13 +59,13 @@ const Actions = ({
   
   const _onSave = $ => {
     if (_.isFunction(onSave)) {
-      onSave(objectId, objectType);
+      onSave();
     }
   };
 
   const _onSaveAndNew = $ => {
     if (_.isFunction(onSaveAndNew)) {
-      onSaveAndNew(objectId, objectType);
+      onSaveAndNew();
     }
   };
 

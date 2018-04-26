@@ -12,6 +12,7 @@ import RightSider from './RightSider/index';
 import FilterCriteria from './FilterCriteria/index';
 import TaskDetails from './TaskDetails/index';
 import FindDuplicates from './FindDuplicates/index';
+import PageLoading from './PageLoading/index';
 
 export {
   TopPanel,
@@ -28,4 +29,5 @@ export {
   FilterCriteria,
   TaskDetails,
   FindDuplicates,
+  PageLoading,
 };
