@@ -52,8 +52,8 @@ const propTypes = {
 };
 class FindPanel extends Component {
   componentDidMount() {
-    const { objectId, tryFetchClientDetails } = this.props;
-    tryFetchClientDetails(objectId);
+    const { objectId, objectType, tryFetchClientDetails } = this.props;
+    tryFetchClientDetails(objectId, objectType);
   }
 
   handleCancelClick = $ => this.props.history.goBack()

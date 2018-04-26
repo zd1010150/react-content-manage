@@ -26,8 +26,7 @@ const getModuleFetchUrl = (code, objectType, objectId, params) => {
   let url = '';
   switch (code) {
     case Opportunities:
-      // TODO: API not finished yet
-      url = `crm_logs/object/${objectType}/${objectId}/index`;
+      url = `opportunities/object/account/${objectId}`;
       break;
     case TaskOpen:
       url = `tasks/object/${objectType}/${objectId}/open/index`;
