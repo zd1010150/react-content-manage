@@ -70,7 +70,6 @@ const ui = (state = { isDisplayDepartmentDialog: false, treeExpandKeys: [], perm
     case SETUP_PERPRO_TOGGLE_DEPARTMENT_DIALOG:
       return Object.assign({}, state, { isDisplayDepartmentDialog: payload.isDisplayDepartmentDialog });
     case SETUP_PERPRO_SET_EXPAND_KEYS:
-
       return Object.assign({}, state, { treeExpandKeys: payload.keys, permissionIsFromRemote: false });
     case SETUP_PERPRO_SET_ALL_PERMISSIONS:
       return Object.assign({}, state, { treeExpandKeys: getAllPermissionIds(payload.permissions) });
