@@ -51,6 +51,16 @@ export default async (type = 'GET', url = '', data = {}, headers = {}, apiDomain
     Object.defineProperty(requestConfig, 'body', {
       value: JSON.stringify(data),
     });
+  } else if (data instanceof FormData) {
+    // debugger;
+    const mappedData = {};
+    for (let key of data.keys()) {
+      mappedData[key] = data.get(key);
+    }
+    console.log(JSON.stringify(mappedData));
+    Object.defineProperty(requestConfig, 'body', {
+      value: JSON.stringify(mappedData),
+    });
   }
 
   function _fetch(fetchPromise, timeout) {
