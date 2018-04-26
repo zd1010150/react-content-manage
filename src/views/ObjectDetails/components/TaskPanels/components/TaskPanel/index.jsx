@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import styles from './index.less';
-import { tryDeleteTask, tryFetchModuleData } from '../../flow/actions';
+import { tryDeleteAttachment, tryDeleteTask, tryFetchModuleData } from '../../flow/actions';
 
 const cx = classNames.bind(styles);
 
@@ -86,7 +86,7 @@ class TaskPanel extends Component {
         link = '';
         break;
       case Attachments:
-        link = `/${objectType}/${objectId}/attachments/${PhantomId}`;
+        link = `/${objectType}/${objectId}/attachments`;
         break;
       case TaskHistory:
       case Logs:
@@ -106,10 +106,17 @@ class TaskPanel extends Component {
   handleDeleteByModule = (code, id) => {
     console.log(`${code} -> del -> ${id}`);
     
-    const { objectId, objectType, tryDeleteTask } = this.props;
+    const {
+      objectId,
+      objectType,
+      tryDeleteTask,
+      tryDeleteAttachment,
+    } = this.props;
     switch (code) {
       case TaskOpen:
         return tryDeleteTask(code, id, objectType, objectId);
+      case Attachments:
+        return tryDeleteAttachment(code, id, objectType, objectId);
       default:
         console.log('no such code has been found.');
     }    
@@ -357,6 +364,7 @@ const mapStateToProps = ({ global, objectDetails }) => ({
   tasks: objectDetails.tasks,
 });
 const mapDispatchToProps = {
+  tryDeleteAttachment,
   tryDeleteTask,
   tryFetchModuleData,
 };
