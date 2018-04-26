@@ -11,7 +11,7 @@ import { Panel } from 'components/ui/index';
 import { fetchPermission, savePermission, toggleDepartmentDialog, setDepartment, setSeletedDeparmentPermission, fetchAllPermission, setExpandedKeys } from '../flow/action';
 import { intlShape, injectIntl } from 'react-intl';
 import DepartmentDialog from '../../Users/component/departmentDialog';
-import { getTeamIds } from '../flow/reselect';
+import { getTeamIds, getAllExpandedKeys } from '../flow/reselect';
 import styles from '../index.less';
 
 const { TreeNode } = Tree;
@@ -38,19 +38,14 @@ class permissionProfile extends Component {
     setDepartment({ department_id, department_name });
     fetchPermission(department_id);
   }
-  onCheckPermission(checkedKeys) {
-    this.props.setSeletedDeparmentPermission(checkedKeys, false);
-  }
   permissionChange(e, permission) {
-    debugger;
     const isChecked = e.target.checked;
     const { permissions } = this.props.selectedDepartment;
     const newPermissions = [...permissions];
-    debugger;
+
     if (isChecked) {
       newPermissions.push(permission);
     } else if (!isChecked && newPermissions.indexOf(permission) > -1) {
-      debugger;
       newPermissions.splice(newPermissions.indexOf(permission), 1);
     }
     this.props.setSeletedDeparmentPermission(newPermissions, false);
@@ -70,11 +65,15 @@ class permissionProfile extends Component {
     fetchPermission(selectedDepartment.department_id);
   }
   renderTreeNodes(data) {
-    const { permissions } = this.props.selectedDepartment;
+    const { permissions, department_id } = this.props.selectedDepartment;
     if (!_.isArray(data) && !_.isEmpty(data)) {
       return Object.keys(data).map((tab) => {
         const tabPermission = data[tab];
-        const treeEl = (<Checkbox onChange={e => this.permissionChange(e, tabPermission.id)} checked={permissions.indexOf(tabPermission.id) > -1}>
+        const treeEl = (<Checkbox
+          onChange={e => this.permissionChange(e, tabPermission.id)}
+          checked={permissions.indexOf(tabPermission.id) > -1}
+          disabled={_.isEmpty(`${department_id}`)}
+        >
           {tabPermission.name}
         </Checkbox>);
         if (!_.isEmpty(tabPermission.child_rec)) {
@@ -157,7 +156,7 @@ const mapStateToProps = ({ global, setup }) => ({
   selectedDepartment: setup.permissionPro.selectedDepartment,
   isDisplayDepartmentDialog: setup.permissionPro.ui.isDisplayDepartmentDialog,
   teamIds: getTeamIds({ global }),
-  treeExpandKeys: setup.permissionPro.ui.treeExpandKeys,
+  treeExpandKeys: getAllExpandedKeys({ setup }),
 });
 const mapDispatchToProps = {
   fetchPermission,
