@@ -49,8 +49,7 @@ export const getUserFolderData = userId => (dispatch, getState) =>
       if (
         !_.isEqual(
           storedUserFolder,
-          data.own.data || !_.isEqual(storedSharedFolder, data.shared_by.data)
-        )
+          data.own.data) || !_.isEqual(storedSharedFolder, data.shared_by.data)
       ) {
         dispatch(setTemplatesData([]));
         dispatch(setPermissionTeams([]));

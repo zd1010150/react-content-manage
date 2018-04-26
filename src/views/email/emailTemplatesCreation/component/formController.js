@@ -4,7 +4,6 @@ import classNames from 'classnames/bind';
 import styles from '../emailTemplatesCreation.less';
 const cx = classNames.bind(styles);
 const TextArea = Input.TextArea;
-
 export const SelectComponent = ({defaultValue, items, label, onChange}) => {
     return <Row className={`pt-lg ${cx('new-template-input-row')}`}>
         <Col className="gutter-row field-label" span={4}>
@@ -13,9 +12,9 @@ export const SelectComponent = ({defaultValue, items, label, onChange}) => {
         <Col className="gutter-row field-value" span={20}>
             <Select onChange={(value) => {
                 onChange(value)
-            }} defaultValue={defaultValue} className="full-width">
+            }} value={defaultValue} className="full-width">
                 {items && items.map((folder) =>
-                    <Option key={folder.id} value={folder.id}>{folder.name}</Option>
+                    <Select.Option key={folder.id} value={folder.id}>{folder.name}</Select.Option>
                 )}
             </Select>
         </Col>

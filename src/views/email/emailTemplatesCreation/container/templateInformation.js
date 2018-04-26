@@ -72,10 +72,25 @@ const ActionButtonGroup = ({save, cancel, formatMessage}) => {
 }
 
 class TemplateInformation extends React.Component {
-
+    constructor(props){
+        super(props);
+        this.state = {defaultFolderName: ''}
+    }
     componentDidMount() {
-        const {getUserFolderData, loginUser} = this.props;
+        const {getUserFolderData, loginUser, isNewTemplateRouter, selectedFolder, editTemplate} = this.props;
         getUserFolderData(loginUser.id);
+        if (isNewTemplateRouter()) {
+            if (selectedFolder.id) {
+                this.setState({defaultFolderName: selectedFolder.name});
+                setNewTemplateFolder(selectedFolder.id)
+            } else if (editTemplate.folder) {
+                this.setState({defaultFolderName: editTemplate.folder.name});
+            }
+        } else {
+            if (selectedFolder.id) {
+                this.setState({defaultFolderName: selectedFolder.name});
+            }
+        }
     }
 
     render() {
@@ -98,19 +113,6 @@ class TemplateInformation extends React.Component {
             save,
             cancel
         } = this.props;
-        let defaultFolderName = '';
-        if (isNewTemplateRouter()) {
-            if (selectedFolder.id) {
-                defaultFolderName = selectedFolder.name;
-                setNewTemplateFolder(selectedFolder.id)
-            } else if (editTemplate.folder) {
-                defaultFolderName = editTemplate.folder.name;
-            }
-        } else {
-            if (selectedFolder.id) {
-                defaultFolderName = selectedFolder.name;
-            }
-        }
 
         return (
             <Panel panelTitle={formatMessage({id: 'page.emailTemplates.newEmailTemplate'})}
@@ -120,7 +122,7 @@ class TemplateInformation extends React.Component {
                 <Fragment>
                     <BasicInfo
                         disableApiInput={false}
-                        defaultFolderName={defaultFolderName}
+                        defaultFolderName={this.state.defaultFolderName}
                         setTemplateFolder={setNewTemplateFolder}
                         setTemplateName={setNewTemplateName}
                         setTemplateApiName={setNewTemplateApiName}
@@ -132,7 +134,8 @@ class TemplateInformation extends React.Component {
                     <FieldInfo formatMessage={formatMessage}/>
                     <TemplateContent registerGetContentHook={registerGetContentHook}
                                      setTemplateContent={setNewTemplateContent}
-                                     content={newTemplate.content}/>
+                                     content={newTemplate.content}
+                                     />
                 </Fragment>
                 }
 
@@ -140,7 +143,7 @@ class TemplateInformation extends React.Component {
                 <Fragment>
                     <BasicInfo
                         disableApiInput={true}
-                        defaultFolderName={defaultFolderName}
+                        defaultFolderName={this.state.defaultFolderName}
                         setTemplateFolder={setEditTemplateFolder}
                         setTemplateName={setEditTemplateName}
                         setTemplateApiName={setEditTemplateApiName}
@@ -166,15 +169,20 @@ class TemplateInformation extends React.Component {
 }
 
 
-const mapStateToProps = ({global, setup, loginUser}) => {
+const mapStateToProps = ({global, setup, loginUser}, {isNewTemplateRouter}) => {
     const {emailTemplates} = setup;
-    return {
+    return isNewTemplateRouter() ?  {
+        loginUser: loginUser,
+        userFolders: emailTemplates.userFolders,
+        selectedFolder: emailTemplates.selectedFolder,
+        newTemplate: emailTemplates.newTemplate,
+        } :
+        {
         loginUser: loginUser,
         userFolders: emailTemplates.userFolders,
         selectedFolder: emailTemplates.selectedFolder,
         editTemplate: emailTemplates.editTemplate,
-        newTemplate: emailTemplates.newTemplate
-    };
+        }
 };
 
 const mapDispatchToProps = {
@@ -191,6 +199,11 @@ const mapDispatchToProps = {
     setEditTemplateContent
 };
 
+
+TemplateInformation.defaultProps = {
+    editTemplate: {},
+    newTemplate: {}
+};
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(TemplateInformation));
 

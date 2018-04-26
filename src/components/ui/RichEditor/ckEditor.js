@@ -22,7 +22,7 @@ class CKEditor extends React.Component {
     //load ckeditor script as soon as component mounts if not already loaded
     componentDidMount() {
         if(!this.state.isScriptLoaded){
-            loadScript(this.props.scriptUrl, this.onLoad(this.props));
+            loadScript(this.props.scriptUrl, ()=>this.onLoad(this.props));
         }else{
             this.onLoad(this.props);
         }
@@ -31,9 +31,8 @@ class CKEditor extends React.Component {
     componentWillReceiveProps(nextProps) {
         console.log('2')
         if(this.props.content !== nextProps.content){
-            console.log('333', window.CKEDITOR)
             window.CKEDITOR.replaceAll();
-            loadScript(nextProps, this.onLoad(nextProps));
+            loadScript(nextProps, ()=>this.onLoad(nextProps));
         }
     }
 
