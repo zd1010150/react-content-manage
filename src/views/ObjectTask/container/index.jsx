@@ -1,18 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
-import { getThemeByType } from 'utils/common';
 import { TaskDetails } from 'components/page/index';
-
-
-const defaultProps = {};
-const propTypes = {};
+import React, { Component } from 'react';
+import { getThemeByType } from 'utils/common';
 
 
 class ObjectTask extends Component {
   render() {
     const { match } = this.props;
-    const { objectId, objectType } = match.params;
+    const { objectId, objectType, taskId } = match.params;
     const theme = getThemeByType(objectType);
     
     return (
@@ -20,6 +14,7 @@ class ObjectTask extends Component {
         theme={theme}
         objectId={objectId}
         objectType={objectType}
+        taskId={taskId}
       />
     );
   }

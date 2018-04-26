@@ -1,3 +1,4 @@
+/* eslint arrow-parens: ["error", "as-needed"] */
 import {
   SET_DATA_SOURCE,
   SET_ACTIVE_FIELD,
@@ -18,7 +19,14 @@ const initialState = {
 // If the backend response structure changed, we can change this place only, instead of changing all components uses the data.
 const mapFields = data => {
   return data.map(field => {
-    const { id, page_readonly, page_required, meta, value } = field;
+    const {
+      id,
+      page_readonly,
+      page_required,
+      meta,
+      value,
+      position,
+    } = field;
     const {
       field_name,
       field_label,
@@ -29,7 +37,7 @@ const mapFields = data => {
       precision,
       scale,
     } = meta;
-    
+
     // TODO: convert value to locale string when type is date/datetime
     // formattedValue = crm_data_type === dateonly || datetime ? toLocale...;
 
@@ -44,6 +52,7 @@ const mapFields = data => {
       lookupDisplayKey: lookup_own_field_name,
       name: field_name,
       options: picklists,
+      position,
       precision,
       readOnly: page_readonly,
       required: page_required,
@@ -176,6 +185,7 @@ const primaryDetails = (state = initialState, action) => {
         data: [...state.data],
       };
 
+      
     case RESET:
       return initialState;
 

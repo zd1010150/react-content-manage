@@ -4,7 +4,7 @@ import primaryDetails from '../components/PrimaryDetails/flow/reducer';
 import tasks from '../components/TaskPanels/flow/reducer';
 
 const objectDetails = combineReducers({
-  toolbar,  
+  toolbar,
   primaryDetails,
   tasks,
 });

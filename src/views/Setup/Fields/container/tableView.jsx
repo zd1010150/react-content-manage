@@ -28,6 +28,7 @@ class FieldsTableView extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.objectType !== this.props.objectType) {
       this.props.fetchFields(nextProps.objectType);
+      this.coloseEditing();
     }
   }
 
@@ -132,15 +133,18 @@ class FieldsTableView extends React.Component {
       >
         { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}
       </Button>);
-      actions.push(<Button
-        key="viewAll"
-        className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')}
-        size="small"
-        icon="eye"
-        onClick={() => this.mappingField()}
-      >
-        { formatMessage({ id: 'global.ui.button.edit' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}
-                   </Button>);
+      if (!_.isEmpty(toFields)) {
+        actions.push(<Button
+          key="viewAll"
+          className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')}
+          size="small"
+          icon="eye"
+          onClick={() => this.mappingField()}
+        >
+          { formatMessage({ id: 'global.ui.button.edit' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}
+        </Button>);
+      }
+
       return actions;
     })();
     const getMappingTd = (field, fieldProp, mappingFields, fieldCategory) => {

@@ -24,5 +24,6 @@ yarn-debug.log*
 yarn-error.log*
 /package-lock.json
 /statistics.html
-
-.vscode/
+/.vscode
+/yarn.lock
+/statistics.html

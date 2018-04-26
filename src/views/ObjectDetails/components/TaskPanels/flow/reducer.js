@@ -1,41 +1,34 @@
-import Enums from 'utils/EnumsManager';
-const {
-  opportunities,
-  taskOpen,
-  taskHistory,
-  emailSent,
-  attachments,
-  logs,
-} = Enums.DetailModules;
-import {
-  SET_TASK_DATA,
-} from './actionTypes';
+import { SET_MODULES, SET_MODULE_DATA, RESET } from './actionTypes';
 
-const getInitialState = () => {
-  const initialState = {};
-  Enums.DetailModulesInArray.forEach(module => {
-    initialState[module] = {
-      data: [],
-      current: 1,
-    };
-  });
-  return initialState;
+const initialState = {
+  modules: [],
 };
-const initialState = getInitialState();
 
 const tasks = (state = initialState, action) => {
   switch (action.type) {
-    case SET_TASK_DATA:
-      const { data, meta, taskType } = action.payload;
+    case SET_MODULE_DATA:
+      const { code, data, meta } = action.payload;
       return {
         ...state,
-        [taskType]: {
+        [code]: {
           data,
-          // current,
-        }
+          meta,
+        },
       };
 
 
+    case SET_MODULES:
+      const { modules } = action.payload;
+      return {
+        ...state,
+        modules: _.sortBy(modules, ['sequence']),
+      };
+
+
+    case RESET:
+      return initialState;
+
+      
     default:
       return state;
   }

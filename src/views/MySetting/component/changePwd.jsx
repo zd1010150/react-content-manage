@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types,no-shadow */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Button, Input, Icon } from 'antd';
+import { Form, Button, Input, Icon, notification } from 'antd';
 import classNames from 'classnames/bind';
 import { intlShape, injectIntl } from 'react-intl';
 import { Panel } from 'components/ui/index';
@@ -31,11 +31,17 @@ confirmPwdBlur() {
   this.validateConfirmPwd();
 }
 onSubmit() {
-  const { form, submit, tryLogout } = this.props;
+  const {
+    form, submit, tryLogout, intl,
+  } = this.props;
   form.validateFieldsAndScroll((err, values) => {
     if (!err && this.validateConfirmPwd()) {
       submit(values, (data) => {
         if (data && data.status) {
+          notification.success({
+            message: intl.formatMessage({ id: 'page.mySetting.changeSuccess' }),
+            duration: 3,
+          });
           tryLogout();
         }
       });
