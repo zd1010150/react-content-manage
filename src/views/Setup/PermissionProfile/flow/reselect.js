@@ -24,7 +24,7 @@ export const getTeamIds = createSelector(
     return teamIds;
   },
 );
-const getParentsOfNode = (permissions, nodeId) => {
+export const getParentsOfNode = (permissions, nodeId) => {
   let parents = [],
     isFind = false;
   const getParentId = (root) => {
@@ -55,11 +55,14 @@ export const getAllExpandedKeys = createSelector(
     getAllPermissions,
   ],
   (ui, allPermissions) => {
-    const { treeExpandKeys } = ui;
+    const { treeExpandKeys, permissionIsFromRemote } = ui;
     let allExpandKeys = [...treeExpandKeys];
-    treeExpandKeys.forEach((key) => {
-      allExpandKeys = [...allExpandKeys, ...getParentsOfNode(allPermissions, key)];
-    });
+    if (permissionIsFromRemote) {
+      treeExpandKeys.forEach((key) => {
+        allExpandKeys = [...allExpandKeys, ...getParentsOfNode(allPermissions, key).filter(p => allExpandKeys.indexOf(p) < 0)];
+      });
+    }
+
     return allExpandKeys;
   },
 );

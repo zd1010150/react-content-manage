@@ -26,8 +26,7 @@ const getModuleFetchUrl = (code, objectType, objectId, params) => {
   let url = '';
   switch (code) {
     case Opportunities:
-      // TODO: API not finished yet
-      url = `crm_logs/object/${objectType}/${objectId}/index`;
+      url = `opportunities/object/account/${objectId}`;
       break;
     case TaskOpen:
       url = `tasks/object/${objectType}/${objectId}/open/index`;
@@ -63,8 +62,7 @@ export const setModuleData = (code, data, meta) => ({
 
 export const tryFetchModuleData = (code, objectType, objectId, params) => dispatch =>
   get(getModuleFetchUrl(code, objectType, objectId, params), {}, dispatch).then((data) => {
-    if (data
-        && !_.isEmpty(data.data)
+    if (data && data.data
         && !_.isEmpty(data.meta)) {
       dispatch(setModuleData(code, data.data, data.meta));
     }
@@ -74,6 +72,16 @@ export const tryFetchModuleData = (code, objectType, objectId, params) => dispat
 //
 export const tryDeleteTask = (code, taskId, objectType, objectId) => dispatch =>
   httpDelete(`/admin/tasks/${taskId}`, {}, dispatch).then((data) => {
+    if (data && data.deleted) {
+      // TODO: replace per_page with actual params
+      dispatch(tryFetchModuleData(code, objectType, objectId, { page: 1, per_page: 10 }));
+    }
+  });
+
+
+//
+export const tryDeleteAttachment = (code, fileId, objectType, objectId) => dispatch =>
+  httpDelete(`/admin/files/${fileId}`, {}, dispatch).then((data) => {
     if (data && data.deleted) {
       // TODO: replace per_page with actual params
       dispatch(tryFetchModuleData(code, objectType, objectId, { page: 1, per_page: 10 }));

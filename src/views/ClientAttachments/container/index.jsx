@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { intlShape, injectIntl } from 'react-intl';
-import { withRouter } from 'react-router-dom';
-import { Upload, Button, Icon, message, Row, Col, Select } from 'antd';
-const { Option } = Select;
-
+import { Button, Col, Icon, Row, Select, Upload } from 'antd';
 import { Panel } from 'components/ui/index';
-import { getThemeByType } from 'utils/common';
+import { baseUrl } from 'config/env.config';
+import React, { Component } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { getAuthorization, getThemeByType } from 'utils/common';
+
+const { Option } = Select;
 
 
 const defaultProps = {};
@@ -15,52 +16,43 @@ const propTypes = {
 };
 
 class ClientAttachments extends Component {
-  state = {
-    fileList: [],
-    uploading: false,
+  constructor(props) {
+    super(props);
+    const { match } = props;
+    const { objectId, objectType } = match.params;
+    this.state = {
+      fileList: [],
+      categoryId: '',
+      objectId,
+      objectType,
+    };
   }
 
-  handleCancel = $ => this.props.history.goBack();
+  handleCancel = () => this.props.history.goBack();
 
-  handleUpload = () => {
-    const { fileList } = this.state;
-    const formData = new FormData();
-    fileList.forEach((file) => {
-      formData.append('files[]', file);
-    });
-
-    this.setState({ uploading: true });
-
-    // // You can use any AJAX library you like
-    // reqwest({
-    //   url: '//jsonplaceholder.typicode.com/posts/',
-    //   method: 'post',
-    //   processData: false,
-    //   data: formData,
-    //   success: () => {
-    //     this.setState({
-    //       fileList: [],
-    //       uploading: false,
-    //     });
-    //     message.success('upload successfully.');
-    //   },
-    //   error: () => {
-    //     this.setState({
-    //       uploading: false,
-    //     });
-    //     message.error('upload failed.');
-    //   },
-    // });
-  }
+  handleCategoryChange = value => this.setState({ categoryId: value })
 
   render() {
-    const { uploading } = this.state;
-    const { intl, match } = this.props;
-    const { objectId, objectType } = match.params;
+    const {
+      categoryId,
+      objectId,
+      objectType,
+    } = this.state;
     const theme = getThemeByType(objectType);
+    const { intl, categories } = this.props;
 
-    const props = {
-      action: '//jsonplaceholder.typicode.com/posts/',
+    const uploadProps = {
+      data: file => ({
+        category: categoryId,
+        document: file,
+        ownerId: objectId,
+        ownerType: objectType,
+      }),
+      headers: {
+        'Authorization': getAuthorization(),
+      },
+      action: `${baseUrl}/admin/files/asset`,
+      withCredentials: true,
       onRemove: (file) => {
         this.setState(({ fileList }) => {
           const index = fileList.indexOf(file);
@@ -71,11 +63,12 @@ class ClientAttachments extends Component {
           };
         });
       },
+      onSuccess: () => this.props.history.goBack(),
       beforeUpload: (file) => {
         this.setState(({ fileList }) => ({
           fileList: [...fileList, file],
         }));
-        return false;
+        return true;
       },
       fileList: this.state.fileList,
     };
@@ -88,40 +81,33 @@ class ClientAttachments extends Component {
       <Panel
         panelTitle={formatMessage({ id: `${i18n}.title` })}
         panelClasses={`${theme}-theme-panel`}
+        contentClasses="pl-lg pr-lg pt-md pb-md"
       >
-        <Row style={{ margin: '10px 15px' }}>
+        <Row>
           <Col>{formatMessage({ id: `${i18n}.type` })}</Col>
           <Col>
-            <Select style={{ width: '100%' }}>
+            <Select
+              className="full-width"
+              onChange={this.handleCategoryChange}
+              value={categoryId}
+            >
+              {categories.map(category => <Option key={category.id} value={category.id}>{category.display_value}</Option>)}
             </Select>
           </Col>
         </Row>
-        <Row style={{ margin: '10px 15px' }}>
+        <Row className="mt-md mb-md">
           <Col xs={24} sm={8}>
-            <Upload {...props}>
-              <Button size="small" disabled={this.state.fileList.length !== 0}>
+            <Upload {...uploadProps} showUploadList={false}>
+              <Button size="small" disabled={categoryId === ''}>
                 <Icon size="small" type="upload" />
-                {formatMessage({ id: `${i18nGlobal}.selectFile` })}
+                {formatMessage({ id: `${i18nGlobal}.selectFileAndUpload` })}
               </Button>
             </Upload>
+            <Button className="ml-sm" size="small" type="danger" onClick={this.handleCancel}>
+              <Icon type="close" />
+              {formatMessage({ id: `${i18nGlobal}.cancel` })}
+            </Button>
           </Col>
-        </Row>
-        <Row style={{ margin: '10px 15px' }}>
-          <Button
-            onClick={this.handleUpload}
-            disabled={this.state.fileList.length === 0}
-            loading={uploading}
-          >
-            {!uploading && <Icon type="save" />}
-            {uploading
-              ? formatMessage({ id: `${i18nGlobal}.uploading` })
-              : formatMessage({ id: `${i18nGlobal}.upload` })
-            }
-          </Button>
-          <Button className="ml-sm" type="danger" onClick={this.handleCancel}>
-            <Icon type="close" />
-            {formatMessage({ id: `${i18nGlobal}.cancel` })}
-          </Button>
         </Row>
       </Panel>
     );
@@ -131,4 +117,7 @@ class ClientAttachments extends Component {
 
 ClientAttachments.defaultProps = defaultProps;
 ClientAttachments.propTypes = propTypes;
-export default withRouter(injectIntl(ClientAttachments));
+const mapStateToProps = ({ global }) => ({
+  categories: global.settings.categories,
+});
+export default connect(mapStateToProps)(withRouter(injectIntl(ClientAttachments)));

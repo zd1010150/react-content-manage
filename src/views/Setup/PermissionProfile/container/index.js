@@ -11,7 +11,7 @@ import { Panel } from 'components/ui/index';
 import { fetchPermission, savePermission, toggleDepartmentDialog, setDepartment, setSeletedDeparmentPermission, fetchAllPermission, setExpandedKeys } from '../flow/action';
 import { intlShape, injectIntl } from 'react-intl';
 import DepartmentDialog from '../../Users/component/departmentDialog';
-import { getTeamIds, getAllExpandedKeys } from '../flow/reselect';
+import { getTeamIds, getAllExpandedKeys, getParentsOfNode } from '../flow/reselect';
 import styles from '../index.less';
 
 const { TreeNode } = Tree;
@@ -38,18 +38,28 @@ class permissionProfile extends Component {
     setDepartment({ department_id, department_name });
     fetchPermission(department_id);
   }
+
   permissionChange(e, permission) {
     const isChecked = e.target.checked;
+    console.log('dandan checkbox change', isChecked);
     const { permissions } = this.props.selectedDepartment;
+    const allPermissions = this.props.permissions;
     const newPermissions = [...permissions];
-
     if (isChecked) {
       newPermissions.push(permission);
     } else if (!isChecked && newPermissions.indexOf(permission) > -1) {
       newPermissions.splice(newPermissions.indexOf(permission), 1);
     }
-    this.props.setSeletedDeparmentPermission(newPermissions, false);
+    const getAllParentSelectedPermissions = (selectedPermissions, allPermissions) => {
+      let parents = [...selectedPermissions];
+      selectedPermissions.forEach((p) => {
+        parents = [...parents, ...getParentsOfNode(allPermissions, p).filter(t => parents.indexOf(t) < 0)];
+      });
+      return parents;
+    };
+    this.props.setSeletedDeparmentPermission(getAllParentSelectedPermissions(newPermissions, allPermissions), false);
   }
+
   onSubmit() {
     const { savePermission, selectedDepartment } = this.props;
     if (_.isEmpty(`${selectedDepartment.department_id}`)) {
@@ -73,17 +83,18 @@ class permissionProfile extends Component {
           onChange={e => this.permissionChange(e, tabPermission.id)}
           checked={permissions.indexOf(tabPermission.id) > -1}
           disabled={_.isEmpty(`${department_id}`)}
+
         >
           {tabPermission.name}
         </Checkbox>);
         if (!_.isEmpty(tabPermission.child_rec)) {
           return (
-            <TreeNode className={cx('tree-node-line')} title={treeEl} key={tabPermission.id}>
+            <TreeNode className={cx('tree-node-line')} title={treeEl} key={tabPermission.id} selectable={false}>
               {this.renderTreeNodes(tabPermission.child_rec)}
             </TreeNode>
           );
         }
-        return (<TreeNode className={cx('tree-node-line')} title={treeEl} key={tabPermission.id} />);
+        return (<TreeNode className={cx('tree-node-line')} title={treeEl} key={tabPermission.id} selectable={false}/>);
       });
     }
   }
