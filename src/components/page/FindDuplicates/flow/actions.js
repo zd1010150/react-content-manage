@@ -28,8 +28,8 @@ export const setFields = data => ({
       payload: { data },
     });
 
-export const tryFetchClientDetails = id => dispatch =>
-    get(`/admin/leads/${id}/duplication_search_key_values`, {}, dispatch).then((data) => {
+export const tryFetchClientDetails = (id, objectType) => dispatch =>
+    get(`/admin/${objectType}/${id}/duplication_search_key_values`, {}, dispatch).then((data) => {
       if (!_.isEmpty(data)) {
         dispatch(setFields(data));
       }

@@ -1,18 +1,24 @@
 /* eslint arrow-parens: ["error", "as-needed"] */
-import {
-  SET_DATA_SOURCE,
-  SET_ACTIVE_FIELD,
-  RESET_ACTIVE_FIELD,
-  SET_FIELD_VALUE,
-  RESET_FIELD_VALUE,
-  REVERT_ALL_FIELDS,
-  SET_FIELD_OPTIONS,
-  RESET,
-} from './actionTypes';
+import Enums from 'utils/EnumsManager';
+import { RESET, RESET_ACTIVE_FIELD, RESET_FIELD_VALUE, REVERT_ALL_FIELDS, SET_ACTIVE_FIELD, SET_DATA_SOURCE, SET_FIELD_OPTIONS, SET_FIELD_VALUE } from './actionTypes';
+
+const { FieldTypes } = Enums;
+const { Lookup, DateOnly, DateTime } = FieldTypes;
 
 const initialState = {
   source: [],
   data: [],
+};
+
+const getValueByType = (type, value, lookupField) => {
+  switch (type) {
+    case Lookup:
+      return value === null ? '' : value[lookupField];
+    case DateOnly:
+    case DateTime:
+    default:
+      return value === undefined ? '' : value;
+  }
 };
 
 // The transfer will help us to be isolated from backend json format.
@@ -46,7 +52,7 @@ const mapFields = data => {
       active: false,
       helpText: help_text,
       id, // used by lookup field for fetchinig data
-      initialValue: value === undefined ? '' : value,
+      initialValue: getValueByType(crm_data_type, value, lookup_own_field_name),
       key: id,
       label: field_label,
       lookupDisplayKey: lookup_own_field_name,
@@ -58,7 +64,7 @@ const mapFields = data => {
       required: page_required,
       scale,
       type: crm_data_type,
-      value: value === undefined ? '' : value,
+      value: getValueByType(crm_data_type, value, lookup_own_field_name),
     };
   });
 };

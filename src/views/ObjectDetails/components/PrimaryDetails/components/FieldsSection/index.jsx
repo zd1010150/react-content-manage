@@ -40,7 +40,7 @@ class FieldsSection extends Component {
   handleDropdownOpen = (id, options) => {
     if (!options || options.length < 1) {
       const { code, tryFetchFieldOptions } = this.props;
-      tryFetchFieldOptions(code, 1);
+      tryFetchFieldOptions(code, id);
     }
   }
 

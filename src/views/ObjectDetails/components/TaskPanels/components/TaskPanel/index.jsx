@@ -104,8 +104,6 @@ class TaskPanel extends Component {
   }
 
   handleDeleteByModule = (code, id) => {
-    console.log(`${code} -> del -> ${id}`);
-    
     const {
       objectId,
       objectType,
@@ -119,7 +117,7 @@ class TaskPanel extends Component {
         return tryDeleteAttachment(code, id, objectType, objectId);
       default:
         console.log('no such code has been found.');
-    }    
+    }
   }
 
   handleTableChange = pagination => {
