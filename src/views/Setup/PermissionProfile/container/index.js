@@ -41,7 +41,6 @@ class permissionProfile extends Component {
 
   permissionChange(e, permission) {
     const isChecked = e.target.checked;
-    console.log('dandan checkbox change', isChecked);
     const { permissions } = this.props.selectedDepartment;
     const allPermissions = this.props.permissions;
     const newPermissions = [...permissions];
@@ -94,7 +93,7 @@ class permissionProfile extends Component {
             </TreeNode>
           );
         }
-        return (<TreeNode className={cx('tree-node-line')} title={treeEl} key={tabPermission.id} selectable={false}/>);
+        return (<TreeNode className={cx('tree-node-line')} title={treeEl} key={tabPermission.id} selectable={false} />);
       });
     }
   }
