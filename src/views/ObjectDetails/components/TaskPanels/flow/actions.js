@@ -63,8 +63,7 @@ export const setModuleData = (code, data, meta) => ({
 
 export const tryFetchModuleData = (code, objectType, objectId, params) => dispatch =>
   get(getModuleFetchUrl(code, objectType, objectId, params), {}, dispatch).then((data) => {
-    if (data
-        && !_.isEmpty(data.data)
+    if (data && data.data
         && !_.isEmpty(data.meta)) {
       dispatch(setModuleData(code, data.data, data.meta));
     }
