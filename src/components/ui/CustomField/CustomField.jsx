@@ -177,7 +177,7 @@ const CustomField = ({
           onFocus={_onDropdownOpen}
         >
           {options.map(option => 
-            <Option key={option.id} value={option[lookupDisplayKey]}>
+            <Option key={option.id} value={option.id}>
               {option[lookupDisplayKey]}
             </Option>)}
         </Select>

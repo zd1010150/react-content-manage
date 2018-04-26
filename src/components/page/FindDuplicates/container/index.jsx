@@ -44,7 +44,8 @@ class FindDuplicates extends Component {
     const {
       intl,
       accounts,
-      objectId,      
+      objectId,
+      objectType,
       hasSearched,
       leads,
       selectedRowKeys,
@@ -57,6 +58,7 @@ class FindDuplicates extends Component {
       <Fragment>
         <FindPanel
           objectId={objectId}
+          objectType={objectType}
           theme={theme}
         />
         {withConvert && (

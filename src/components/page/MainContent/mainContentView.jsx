@@ -61,9 +61,10 @@ const MainContent = () => (
     <Route path="/leads/convert/convert/:objectId" component={ConvertLeads} />
     <Route path="/leads/merge/" component={MergeLeads} />
 
+
     <Route path="/:objectType/sharing/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
-    <Route path="/:objectType/:objectId/attachments/0000-0000" component={ClientAttachments} />
+    <Route path="/:objectType/:objectId/attachments" component={ClientAttachments} exact />
     <Route path="/:objectType/:objectId/tasks/:taskId" component={ObjectTask} />
     <Route path="/:objectType/views/:viewId" component={ObjectView} />
     <Route

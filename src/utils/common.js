@@ -1,4 +1,5 @@
 import Enums from './EnumsManager';
+import { getStore } from 'utils/localStorage';
 
 export const mapToAPIOrderStr = (order = 'ascend') => {
   return Enums.SortOrders[order];
@@ -55,4 +56,21 @@ export const getThemeByType = type => {
 export const concatArrayParams = params => {
   if (!_.isArray(params)) return '';
   return params.reduce((accumulator, currentValue) => `${accumulator}&ids[]=${currentValue}`, '');
+};
+
+
+/**
+ * getAuthorization
+ */
+export const getAuthorization = () => {
+  const loginUser = getStore(Enums.LocalStorageKey);
+  if (_.isEmpty(loginUser)) {
+    return '';
+  }
+  const userData = JSON.parse(loginUser).token_info;
+  if (_.isEmpty(userData)) {
+    return '';
+  }
+  const { token_type, access_token } = userData;
+  return `${token_type} ${access_token}`;
 };
