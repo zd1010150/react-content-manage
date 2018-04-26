@@ -53,6 +53,7 @@ export default {
       convertToAccount: '升级为客户',
       [TaskOpen]: '新任务',
       [Attachments]: '新附件',
+      selectFileAndUpload: '选择文件并上传',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -175,6 +176,7 @@ export default {
       convertToAccount: 'Convert to Account',
       [TaskOpen]: 'New Task',
       [Attachments]: 'New Attachment',
+      selectFileAndUpload: 'Select File And Upload',
     },
     input: {
       searchStore: 'Search entire store here...',
