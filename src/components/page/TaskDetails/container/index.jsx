@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl, intlShape } from 'react-intl';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Row, Col, Button } from 'antd';
-
+import { Row } from 'antd';
 import { Panel } from 'components/ui/index';
-import { toUtc } from 'utils/dateTimeUtils';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
-const { PhantomId, ThemeTypes, ThemeTypesInArray } = Enums;
+import { toUtc } from 'utils/dateTimeUtils';
 import { Actions, Fields } from '../components/index';
-import { trySaveNewTask, tryUpdateTask } from '../flow/actions';
-//
+import { reset, setSuccess, trySaveNewTask, tryUpdateTask } from '../flow/actions';
+
+const { PhantomId, ThemeTypesInArray } = Enums;
+
 const mapStoreToRequest = ({
   assigneeId,
   comments,
@@ -19,25 +19,19 @@ const mapStoreToRequest = ({
   priorityCode,
   statusCode,
   subject,
-}, type) => {
-
-  return {
-    assign_to_user_id: assigneeId,
-    subject,
-    status_code: statusCode,
-    priority_code: priorityCode,
-    due_datetime: toUtc(dueTime, '+1100', 'YYYY-MM-DD HH:mm:ss'),
-    // TODO: backend needs to save this column, now the api doesn't accept value from this column
-    // comments,
-    taskable_type: type,
-  }
-};
+}, objectId, objectType) => ({
+  assign_to_user_id: assigneeId,
+  subject,
+  status_code: statusCode,
+  priority_code: priorityCode,
+  // Convert only date pass a empty time offset
+  due_date: toUtc(dueTime, '', 'YYYY-MM-DD'),
+  comments,
+  taskable_type: objectType,
+  taskable_id: objectId,
+});
 
 
-const defaultProps = {
-  objectId: PhantomId,
-  theme: ThemeTypes.Lead,
-};
 const propTypes = {
   intl: intlShape.isRequired,
   objectId: PropTypes.string.isRequired,
@@ -46,27 +40,56 @@ const propTypes = {
 
 
 class TaskDetails extends Component {
-  handleCancel = $ => this.props.history.goBack()
-
-  handleSave = (id, type) => {
-    const { taskDetails, trySaveNewTask, tryUpdateTask } = this.props;
-    if (id === PhantomId) {      
-      trySaveNewTask(id, type, mapStoreToRequest(taskDetails, type));
-    } else {
-      tryUpdateTask(id, type, mapStoreToRequest(taskDetails, type));
+  componentDidUpdate() {
+    const {
+      history,
+      objectId,
+      objectType,
+      synced,
+    } = this.props;
+    if (synced) {
+      history.push(`/${objectType}/${objectId}`);
     }
   }
 
-  handleSaveAndNew = (id, type) => {
-    
+  componentWillUnmount() {
+    this.props.reset();
   }
 
+  handleCancel = () => this.props.setSuccess()
+
+  handleSave = (saveAndAddNew) => {
+    const {
+      objectId,
+      objectType,
+      taskDetails,
+      taskId,
+      trySaveNewTask,
+      tryUpdateTask,
+    } = this.props;
+
+    const targetData = mapStoreToRequest(taskDetails, objectId, objectType);
+    if (taskId === PhantomId) {
+      trySaveNewTask(taskId, targetData, saveAndAddNew);
+    } else {
+      tryUpdateTask(taskId, targetData, saveAndAddNew);
+    }
+  }
+
+  handleSaveAndNew = () => this.handleSave(true)
+
   render() {
-    const { intl, objectId, objectType, theme } = this.props;
+    const {
+      intl,
+      objectId,
+      objectType,
+      taskId,
+      theme,
+    } = this.props;
 
     const { formatMessage } = intl;
     const i18nPrefix = 'page.taskDetails';
-    const titleKey = objectId === PhantomId ? 'newTitle' : 'editTitle';
+    const titleKey = taskId === PhantomId ? 'newTitle' : 'editTitle';
 
     return (
       <Panel
@@ -77,6 +100,7 @@ class TaskDetails extends Component {
           <Fields
             objectId={objectId}
             objectType={objectType}
+            taskId={taskId}
           />
         </Row>
         <Row style={{ margin: '10px 15px' }}>
@@ -95,13 +119,15 @@ class TaskDetails extends Component {
 }
 
 
-TaskDetails.defaultProps = defaultProps;
 TaskDetails.propTypes = propTypes;
 const mapStateToProps = ({ global, taskDetails }) => ({
   language: global.language,
   taskDetails,
+  synced: taskDetails.synced,
 });
 const mapDispatchToProps = {
+  reset,
+  setSuccess,
   trySaveNewTask,
   tryUpdateTask,
 };

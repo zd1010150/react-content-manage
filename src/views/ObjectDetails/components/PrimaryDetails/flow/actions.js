@@ -1,17 +1,12 @@
-import { toUtc } from 'utils/dateTimeUtils';
+import { get, patch, post } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
-const { DateOnly, DateTime } = Enums.FieldTypes;
-import { get, post, patch } from 'store/http/httpAction';
-import {
-  SET_DATA_SOURCE,
-  SET_ACTIVE_FIELD,
-  RESET_ACTIVE_FIELD,
-  SET_FIELD_VALUE,
-  RESET_FIELD_VALUE,
-  REVERT_ALL_FIELDS,
-  SET_FIELD_OPTIONS,
-} from './actionTypes';
-import { setTools } from '../../Toolbar/flow/actions';
+import { toUtc } from 'utils/dateTimeUtils';
+import { setModules, tryFetchModuleData } from '../../TaskPanels/flow/actions';
+import { RESET_ACTIVE_FIELD, RESET_FIELD_VALUE, REVERT_ALL_FIELDS, SET_ACTIVE_FIELD, SET_DATA_SOURCE, SET_FIELD_OPTIONS, SET_FIELD_VALUE } from './actionTypes';
+
+const { FieldTypes, DetailModules } = Enums;
+const { DateOnly, DateTime } = FieldTypes;
+const { Logs } = DetailModules;
 
 const getFetchUrl = (id, type) => {
   if (_.isNil(id) || id === Enums.PhantomId) {
@@ -42,16 +37,14 @@ export const setSource = dataSource => ({
 });
 
 export const tryFetch = (id, type) => dispatch =>
-    get(getFetchUrl(id, type), {}, dispatch).then((data) => {
-      if (data
-          && !_.isEmpty(data.data)
-          && !_.isEmpty(data.data.structure)) {
-        dispatch(setSource(data.data.structure.sections));
-        dispatch(setTools(data.data.structure.tools));
-        // setModules
-        //dispatch(setModules(data.data.structure.modules));
-      }
-    });
+  get(getFetchUrl(id, type), {}, dispatch).then((data) => {
+    if (data
+        && !_.isEmpty(data.data)
+        && !_.isEmpty(data.data.structure)) {
+      dispatch(setSource(data.data.structure.sections));
+      dispatch(setModules(data.data.structure.modules));
+    }
+  });
 
 
 export const setActiveField = (code, fieldId) => ({
@@ -78,30 +71,35 @@ export const resetFieldValue = (code, fieldId) => ({
 
 
 export const trySaveClient = (id, type, allData) => dispatch => 
-    post(`/admin/${type}`, extractFieldValues(allData), dispatch).then((data) => {
-      if (data && !_.isEmpty(data.data)) {
-        console.log('save success');
-        // refetch data by object id
-        // but i don't think that's a good idea, it makes more sense to stay in this page.
-        // TODO: discuss to decide the behavior
-        dispatch(tryFetch(data.data.id, type));
-        // TODO: think about what user want/normally to do next after add/update a lead
-        // if they want to stay in this page, then we may need backend to respond with tools and modules
-        // dispatch(setTools(tools));
-      }
-    });
+  post(`/admin/${type}`, extractFieldValues(allData), dispatch).then((data) => {
+    if (data && !_.isEmpty(data.data)) {
+      console.log('save success');
+      // refetch data by object id
+      // but i don't think that's a good idea, it makes more sense to stay in this page.
+      // TODO: discuss to decide the behavior
+      dispatch(tryFetch(data.data.id, type));
+      // TODO: think about what user want/normally to do next after add/update a lead
+      // if they want to stay in this page, then we may need backend to respond with tools and modules
+      // dispatch(setTools(tools));      
+    }
+  });
 
 
 export const tryUpdateClient = (id, type, allData) => dispatch => 
-    patch(`/admin/${type}/${id}`, extractFieldValues(allData), dispatch).then((data) => {
-      if (data && !_.isEmpty(data.data)) {
-        console.log('update success');
-        // refetch data by object id
-        // but i don't think that's a good idea, it makes more sense to stay in this page.
-        // TODO: discuss to decide the behavior
-        dispatch(tryFetch(data.data.id, type));
-      }
-    });
+  patch(`/admin/${type}/${id}`, extractFieldValues(allData), dispatch).then((data) => {
+    if (data && !_.isEmpty(data.data)) {
+      console.log('update success');
+      // refetch data by object id
+      // but i don't think that's a good idea, it makes more sense to stay in this page.
+      // TODO: discuss to decide the behavior
+      dispatch(tryFetch(data.data.id, type));
+      // refetch logs
+      dispatch(tryFetchModuleData(Logs, type, id, {
+        page: 1,
+        per_page: 10,
+      }));
+    }
+  });
 
 
 export const trySaveAndAddNewClient = (id, type) => dispatch =>

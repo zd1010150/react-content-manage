@@ -1,53 +1,49 @@
 import { toTimezone } from 'utils/dateTimeUtils';
-import Enums from 'utils/EnumsManager';
-const { PhantomId } = Enums;
+import moment from 'moment';
 import {
-  SET_TASK_FIELDS,
-
+  ADD_NEW_SUBJECT,
+  SET_TASK_SUCCESS,
+  REMOVE_MY_SUBJECT,
   SET_TASK_ASSIGNEE,
   SET_TASK_ASSIGNEES,
+  SET_TASK_FIELD,
+  SET_TASK_FIELDS,
   SET_TASK_RECENT_ASSIGNEES,
-  SET_TASK_FIELD,  
-  ADD_NEW_SUBJECT,
   SET_TASK_SUBJECTS,
-  REMOVE_MY_SUBJECT,
+  RESET_TASK,
 } from './actionTypes';
 
 const initialState = {
   globalSubjects: [],
   mySubjects: [],
-
   assignees: [],
   assigneeId: '',
   comments: '',
-  dueTime: '',
+  dueTime: moment().format('YYYY-MM-DD'),
   priorityCode: '',
   recentAssignees: [],
   statusCode: '',
   subject: '',
+  synced: false,
 };
 
 const mapResponseToStore = ({
   id,
   assign_to_user_id,
-  taskable_type,
   subject,
   status_code,
   priority_code,
-  due_datetime,
-  ...others,
-}) => {
-  
-  return {
-    assigneeId: assign_to_user_id,
-    comments: '',
-    dueTime: toTimezone(due_datetime, '+1100', 'YYYY-MM-DD HH:mm:ss'),
-    id,
-    priorityCode: priority_code,
-    statusCode: status_code,
-    subject,
-  };
-}
+  due_date,
+  comments,
+}) => ({
+  assigneeId: assign_to_user_id,
+  comments,
+  dueTime: toTimezone(due_date, '+1100', 'YYYY-MM-DD'),
+  id,
+  priorityCode: priority_code,
+  statusCode: status_code,
+  subject,
+});
 
 const taskDetails = (state = initialState, action) => {
   switch (action.type) {
@@ -122,6 +118,26 @@ const taskDetails = (state = initialState, action) => {
       return {
         ...state,
         recentAssignees,
+      };
+
+    
+    case SET_TASK_SUCCESS:
+      return {
+        ...state,
+        synced: true,
+      };
+
+    
+    case RESET_TASK:
+      return {
+        ...state,
+        assigneeId: '',
+        comments: '',
+        dueTime: moment().format('YYYY-MM-DD'),
+        priorityCode: '',
+        statusCode: '',
+        subject: '',
+        synced: false,
       };
 
 

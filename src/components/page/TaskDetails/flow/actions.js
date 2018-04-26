@@ -1,5 +1,5 @@
 import { get, patch, post, httpDelete } from 'store/http/httpAction';
-import {  
+import {
   SET_TASK_FIELD,
   SET_TASK_FIELDS,
   SET_TASK_ASSIGNEE,
@@ -8,39 +8,22 @@ import {
   ADD_NEW_SUBJECT,
   SET_TASK_SUBJECTS,
   REMOVE_MY_SUBJECT,
+  SET_TASK_SUCCESS,
+  RESET_TASK,
 } from './actionTypes';
-
-//
-export const setTaskFields = data => ({
-    type: SET_TASK_FIELDS,
-    payload: { data },
-  });
-
-export const tryFetchTask = (id, objectType) => dispatch =>
-    get(`/admin/tasks/${id}`, {}, dispatch).then((data) => {
-      if (data && !_.isEmpty(data.data)) {
-        dispatch(setTaskFields(data.data));
-        // TODO: move out from this part for better performance
-        dispatch(tryFetchAssignees(id, objectType));
-        // TODO: move out from this part for better performance
-        dispatch(tryFetchRecentAssignees(objectType));
-        // TODO: move out from this part for better performance
-        dispatch(tryFetchTaskSubjects());
-      }
-    });
 
 
 //
 export const setAssignees = assignees => ({
-      type: SET_TASK_ASSIGNEES,
-      payload: { assignees },
-    });
+  type: SET_TASK_ASSIGNEES,
+  payload: { assignees },
+});
 export const tryFetchAssignees = (id, objectType) => dispatch =>
-    get(`/admin/tasks/object/${objectType}/${id}/managers`, {}, dispatch).then((data) => {
-      if (data) {
-        dispatch(setAssignees(data.data));
-      }
-    });
+  get(`/admin/tasks/object/${objectType}/${id}/managers`, {}, dispatch).then((data) => {
+    if (data) {
+      dispatch(setAssignees(data.data));
+    }
+  });
 
 
 //
@@ -108,24 +91,64 @@ export const setAssignee = assigneeId => ({
     });
 //
 export const setFieldValue = (field, value) => ({
-      type: SET_TASK_FIELD,
-      payload: { field, value },
-    });
+  type: SET_TASK_FIELD,
+  payload: { field, value },
+});
 
+//
+export const setSuccess = () => ({
+  type: SET_TASK_SUCCESS,
+});
 
-//  
-export const trySaveNewTask = (id, type, taskData) => dispatch =>
-    post(`/admin/tasks/`, { ...taskData }, dispatch).then((data) => {
-      if (data && !_.isEmpty(data.data)) {
-        console.log(data);
+//
+export const trySaveNewTask = (taskId, taskData, saveAndAddNew) => dispatch =>
+  post('/admin/tasks/', { ...taskData }, dispatch).then((data) => {
+    if (data && !_.isEmpty(data.data)) {
+      if (saveAndAddNew) {
+        // TODO: add save and add new process
+        // dispatch(resetNewTask());
+      } else {
+        dispatch(setSuccess());
       }
-    });
+    }
+  });
 
 
 //
-export const tryUpdateTask = (id, type, taskData) => dispatch =>
-    patch(`/admin/tasks/${id}`, { ...taskData }, dispatch).then((data) => {
-      if (data && !_.isEmpty(data.data)) {
-        console.log(data);
+export const tryUpdateTask = (taskId, taskData, saveAndAddNew) => dispatch =>
+  patch(`/admin/tasks/${taskId}`, { ...taskData }, dispatch).then((data) => {
+    if (data && !_.isEmpty(data.data)) {
+      if (saveAndAddNew) {
+        // TODO: add save and add new process
+        // dispatch(resetNewTask());
+      } else {
+        dispatch(setSuccess());
       }
-    });
+    }
+  });
+
+
+//
+export const setTaskFields = data => ({
+  type: SET_TASK_FIELDS,
+  payload: { data },
+});
+
+export const tryFetchTask = (taskId, objectId, objectType) => dispatch =>
+  get(`/admin/tasks/${taskId}`, {}, dispatch).then((data) => {
+    if (data && !_.isEmpty(data.data)) {
+      dispatch(setTaskFields(data.data));
+      // TODO: move out from this part for better performance
+      dispatch(tryFetchAssignees(objectId, objectType));
+      // TODO: move out from this part for better performance
+      dispatch(tryFetchRecentAssignees(objectType));
+      // TODO: move out from this part for better performance
+      dispatch(tryFetchTaskSubjects());
+    }
+  });
+
+
+//
+export const reset = () => ({
+  type: RESET_TASK,
+});

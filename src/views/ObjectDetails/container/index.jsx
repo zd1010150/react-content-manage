@@ -1,24 +1,65 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
-
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { getThemeByType } from 'utils/common';
-import { Toolbar, PrimaryDetails, TaskPanels } from '../components/index';
+import { PrimaryDetails, TaskPanels, Toolbar } from '../components/index';
+import { reset, tryFetchClientDetails } from '../flow/actions';
 
 
 class ObjectDetails extends Component {
+  componentDidMount() {
+    const { objectId, objectType, tryFetchClientDetails } = this.props;
+    tryFetchClientDetails(objectType, objectId);
+  }
+
+  componentDidUpdate() {
+    if (this.props.deleted) {
+      const { history, objectType } = this.props;
+      history.push(`/${objectType}`);
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.reset();
+  }
+
+  handleDelete = id => this.props.tryDeleteEntity(id, this.props.objectType)
+
   render() {
-    const { params } = this.props.match;
-    const theme = getThemeByType(params.objectType);
+    const {
+      objectId,
+      objectType,
+      tools,
+      primaryDetails,
+      modules,
+    } = this.props;
+    const theme = getThemeByType(objectType);
+
+    const commonProps = {
+      objectType,
+      objectId,
+      theme,
+    };
 
     return (
       <Fragment>
-        <Toolbar {...params} />
-        <PrimaryDetails {...params} theme={theme} />
-        <TaskPanels {...params} theme={theme} />
+        <Toolbar {...commonProps} tools={tools} />
+        <PrimaryDetails {...commonProps} />
+        <TaskPanels {...commonProps} modules={modules} />
       </Fragment>
     );
   }
 }
 
 
-export default ObjectDetails;
+const mapStateToProps = ({ objectDetails }) => ({
+  tools: objectDetails.toolbar.tools,
+  primaryDetails: objectDetails.primaryDetails,
+  modules: objectDetails.tasks.modules,
+  deleted: objectDetails.toolbar.deleted,
+});
+const mapDispatchToProps = {
+  tryFetchClientDetails,
+  reset,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ObjectDetails));
