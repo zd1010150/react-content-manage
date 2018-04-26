@@ -4,35 +4,41 @@ import ReactDOM from "react-dom";
 const loadScript = require('load-script');
 
 const defaultScriptUrl = "https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js";
-
+let editorId = 0;
+let editorInstances;
 class CKEditor extends React.Component {
     constructor(props) {
         super(props);
-
         //Bindings
         this.onLoad = this.onLoad.bind(this);
 
         //State initialization
         this.state = {
             isScriptLoaded: this.props.isScriptLoaded,
-            config: this.props.config
-        };
+            config: this.props.config,
+        }
     }
 
     //load ckeditor script as soon as component mounts if not already loaded
     componentDidMount() {
-        if(!this.state.isScriptLoaded){
-            loadScript(this.props.scriptUrl, ()=>this.onLoad(this.props));
-        }else{
+        if (!this.state.isScriptLoaded) {
+            loadScript(this.props.scriptUrl, () => this.onLoad(this.props));
+        } else {
             this.onLoad(this.props);
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('2')
-        if(this.props.content !== nextProps.content){
-            window.CKEDITOR.replaceAll();
-            loadScript(nextProps, ()=>this.onLoad(nextProps));
+        console.log('?????')
+        if (this.props.content !== nextProps.content) {
+            // window.CKEDITOR.replaceAll();
+            // loadScript(nextProps, ()=>this.onLoad(nextProps));
+
+
+            if (editorInstances) {
+                editorInstances.destroy(true);
+            }
+            this.onLoad(nextProps);
         }
     }
 
@@ -51,23 +57,24 @@ class CKEditor extends React.Component {
             console.error("CKEditor not found");
             return;
         }
-
-        this.editorInstance = window.CKEDITOR.appendTo(
+        // ReactDOM.findDOMNode(this),
+        // document.getElementById('editor123'),
+        console.log('1', props.content)
+        editorInstances = window.CKEDITOR.appendTo(
             ReactDOM.findDOMNode(this),
             this.state.config,
             props.content
         );
 
         //Register listener for custom events if any
-        for(const event in props.events){
+        for (const event in props.events) {
             const eventHandler = props.events[event];
-
-            this.editorInstance.on(event, eventHandler);
+            editorInstances.on(event, eventHandler);
         }
     }
 
     render() {
-        return <div className={this.props.activeClass} />;
+        return <div className={this.props.activeClass}/>;
     }
 }
 

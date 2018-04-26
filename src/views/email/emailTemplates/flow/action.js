@@ -15,7 +15,11 @@ import {
   EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS
 } from "./actionType";
 
-import { updateTemplate, setTemplatesData } from "./emailTemplateFlow/action";
+import {
+  updateTemplate,
+  replaceTemplate,
+  setTemplatesData
+} from "./emailTemplateFlow/action";
 import {
   setUserFolderData,
   setSharedFolderData,
@@ -47,9 +51,8 @@ export const getUserFolderData = userId => (dispatch, getState) =>
     const storedSharedFolder = getState().setup.emailTemplates.sharedFolders;
     if (!_.isEmpty(data)) {
       if (
-        !_.isEqual(
-          storedUserFolder,
-          data.own.data) || !_.isEqual(storedSharedFolder, data.shared_by.data)
+        !_.isEqual(storedUserFolder, data.own.data) ||
+        !_.isEqual(storedSharedFolder, data.shared_by.data)
       ) {
         dispatch(setTemplatesData([]));
         dispatch(setPermissionTeams([]));
@@ -165,6 +168,7 @@ export const fetchTemplateData = ({ templateId, cb, cbErr }) => (
   dispatch,
   getState
 ) => {
+  dispatch(replaceTemplate({}));
   get(`/admin/email_templates/${templateId}`, dispatch).then(data => {
     console.log("data", data);
     if (!_.isEmpty(data)) {

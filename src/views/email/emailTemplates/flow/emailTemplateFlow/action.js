@@ -6,6 +6,7 @@ import _ from "lodash";
 import {
     EMAIL_TEMPLATES_SET_TEMPLATES,
     EMAIL_TEMPLATES_UPDATE_TEMPLATE,
+    EMAIL_TEMPLATES_REPLACE_TEMPLATE
 } from "./actionType";
 
 const url = "/";
@@ -13,6 +14,11 @@ const url = "/";
 //Update new template
 export const updateTemplate = payload => ({
     type: EMAIL_TEMPLATES_UPDATE_TEMPLATE,
+    payload
+});
+
+export const replaceTemplate = payload => ({
+    type: EMAIL_TEMPLATES_REPLACE_TEMPLATE,
     payload
 });
 

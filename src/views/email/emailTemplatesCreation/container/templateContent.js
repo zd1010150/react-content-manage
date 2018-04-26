@@ -116,22 +116,20 @@ class TemplateContent extends React.Component {
         xhr.setRequestHeader('Cache-Control', 'no-cache');
         xhr.setRequestHeader('X-CUSTOM', 'HEADER');
         xhr.setRequestHeader('accept', 'image/*');
-        // !this.props.loginUser.token_info.access_token && evt.stop();
-        // xhr.setRequestHeader('Authorization', this.props.loginUser.token_info.access_token)
+        !this.props.loginUser.token_info.access_token && evt.stop();
+        xhr.setRequestHeader('Authorization', this.props.loginUser.token_info.access_token)
         xhr.withCredentials = true;
-        console.log('00000', xhr['statusText'])
         if (xhr.statusText === 'Unauthorized') {
             console.log('?????')
             this.props.tryLogout();
         }
-        console.log('1111', xhr)
+        console.log('333', xhr)
         console.log('2222', evt)
         // Prevented the default behavior.
         // evt.stop();
     }
 
     fileUploadResponse = (evt) => {
-        console.log('22222', evt)
         // Prevent the default response handler.
         evt.stop();
         // Get XHR and response.

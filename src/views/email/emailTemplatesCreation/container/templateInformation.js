@@ -139,7 +139,7 @@ class TemplateInformation extends React.Component {
                 </Fragment>
                 }
 
-                {!isNewTemplateRouter() &&
+                {!isNewTemplateRouter() && !_.isEmpty(editTemplate) &&
                 <Fragment>
                     <BasicInfo
                         disableApiInput={true}
