@@ -48,6 +48,7 @@ export default {
       fileName: '文件名',
       chooseFile: '选择文件',
       chooseFolder: '选择文件夹',
+      category: '分类',
 
       emailCampaignsSeparator: '............................................................................................',
       emailCampaign: '活动邮件',
@@ -127,7 +128,7 @@ export default {
       fileName: 'File Name',
       chooseFile: 'Choose File',
       chooseFolder: 'Choose Folder',
-
+      category: 'Category',
 
 
 

@@ -12,7 +12,8 @@ import {
   EMAIL_TEMPLATES_SET_SELECTED_DEPARTMENT,
   EMAIL_TEMPLATES_SET_USER,
   EMAIL_TEMPLATES_SET_SELECT_USER,
-  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS
+  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS,
+  EMAIL_TEMPLATES_UPDATE_FIELD_OPTION
 } from "./actionType";
 
 import {
@@ -147,11 +148,13 @@ export const createTemplateData = ({
   apiName,
   content,
   description,
+  category,
   cb
 }) => (dispatch, getState) => {
+    console.log('??????', {folderId, name, api_name: apiName, content, description, category })
   post(
     `/admin/email_templates/email_folders/${folderId}`,
-    { name, api_name: apiName, content, description },
+    { name, api_name: apiName, content, description, category },
     dispatch
   ).then(data => {
     if (!_.isEmpty(data)) {
@@ -159,6 +162,27 @@ export const createTemplateData = ({
       dispatch(queryByPaging({ folderId }));
       if (_.isFunction(cb)) {
         cb();
+      }
+    }
+  });
+};
+
+export const updateFieldOption = payload => ({
+  type: EMAIL_TEMPLATES_UPDATE_FIELD_OPTION,
+  payload
+});
+
+export const fetchNewTemplateData = ({ cb, cbErr }) => (dispatch, getState) => {
+  get(`/admin/email_templates/create`, dispatch).then(data => {
+    console.log("data", data);
+    if (!_.isEmpty(data)) {
+      dispatch(updateFieldOption(data.field_options));
+      if (_.isFunction(cb)) {
+        cb();
+      }
+    } else {
+      if (_.isFunction(cbErr)) {
+        cbErr();
       }
     }
   });
@@ -172,6 +196,7 @@ export const fetchTemplateData = ({ templateId, cb, cbErr }) => (
   get(`/admin/email_templates/${templateId}`, dispatch).then(data => {
     console.log("data", data);
     if (!_.isEmpty(data)) {
+      dispatch(updateFieldOption(data.field_options));
       dispatch(updateTemplate(data.data));
       if (_.isFunction(cb)) {
         cb();
@@ -191,11 +216,19 @@ export const updateTemplateData = ({
   apiName,
   content,
   description,
+  category,
   cb
 }) => (dispatch, getState) => {
   patch(
     `/admin/email_templates/${templateId}`,
-    { name, api_name: apiName, content, folder_id: folderId, description },
+    {
+      name,
+      api_name: apiName,
+      content,
+      folder_id: folderId,
+      description,
+      category
+    },
     dispatch
   ).then(data => {
     console.log("data", data);

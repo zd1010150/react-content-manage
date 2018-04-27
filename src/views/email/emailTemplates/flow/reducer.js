@@ -18,7 +18,8 @@ import {
   EMAIL_TEMPLATES_SET_USER,
   EMAIL_TEMPLATES_SET_SELECT_USER,
   EMAIL_TEMPLATES_SET_SORTING_TEAM,
-  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS
+  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS,
+  EMAIL_TEMPLATES_UPDATE_FIELD_OPTION
 } from "./actionType";
 
 import { templates } from "./emailTemplateFlow/reducer";
@@ -30,9 +31,9 @@ import {
   deletedFolders
 } from "./folderFlow/reducer";
 import {
-    selectedPermissionDepartment,
-    addedPermissionDepartment,
-    addedPermissionUser
+  selectedPermissionDepartment,
+  addedPermissionDepartment,
+  addedPermissionUser
 } from "./folderPermissionFlow/reducer";
 
 const mockFolders = [
@@ -201,6 +202,15 @@ const mockSelectedFolder = {
 //
 // }
 
+const fieldOption = (state = {}, action) => {
+  switch (action.type) {
+    case EMAIL_TEMPLATES_UPDATE_FIELD_OPTION:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 const templatesDataTablePagination = (
   state = {
     perPage: EnumsManager.DefaultPageConfigs.PageSize,
@@ -230,8 +240,6 @@ const selectedDepartment = (state = { id: "" }, action) => {
       return state;
   }
 };
-
-
 
 const selectedUser = (state = { id: "", name: "" }, action) => {
   const { type, ...payload } = action;
@@ -325,5 +333,6 @@ export {
   newTemplate,
   editTemplate,
   addedPermissionDepartment,
-  addedPermissionUser
+  addedPermissionUser,
+  fieldOption
 };

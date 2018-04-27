@@ -41,6 +41,7 @@ class EmailTemplatesCreation extends React.Component {
                 apiName: newTemplate.apiName,
                 content: htmlContent,
                 description: newTemplate.description,
+                category: newTemplate.category,
                 cb: ()=> history.push('/setup/email/templates')
             })
         }else{
@@ -51,6 +52,7 @@ class EmailTemplatesCreation extends React.Component {
                 apiName: editTemplate.apiName,
                 content: htmlContent,
                 description: editTemplate.description,
+                category: editTemplate.category,
                 cb: ()=> history.push('/setup/email/templates')
 
             })

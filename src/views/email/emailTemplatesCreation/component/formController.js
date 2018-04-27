@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import styles from '../emailTemplatesCreation.less';
 const cx = classNames.bind(styles);
 const TextArea = Input.TextArea;
-export const SelectComponent = ({defaultValue, items, label, onChange}) => {
+export const SelectComponent = ({defaultValue, items, label, onChange, value}) => {
     return <Row className={`pt-lg ${cx('new-template-input-row')}`}>
         <Col className="gutter-row field-label" span={4}>
             {label}
@@ -12,23 +12,24 @@ export const SelectComponent = ({defaultValue, items, label, onChange}) => {
         <Col className="gutter-row field-value" span={20}>
             <Select onChange={(value) => {
                 onChange(value)
-            }} value={defaultValue} className="full-width">
-                {items && items.map((folder) =>
-                    <Select.Option key={folder.id} value={folder.id}>{folder.name}</Select.Option>
+            }} defaultValue={defaultValue} className="full-width">
+                {items && items.map((item) =>
+                    <Select.Option key={item.id} value={value(item)}>{item.name}</Select.Option>
                 )}
             </Select>
         </Col>
     </Row>
 }
 
-export const SelectComponentVertical = ({label, onChange}) => {
+export const SelectComponentVertical = ({defaultValue, items, label, onChange}) => {
     return <Fragment>
         <div>
             {label}
         </div>
-        <Select onChange={onChange} defaultValue="Zhejiang" className="full-width">
-            <Option value="Zhejiang">Zhejiang</Option>
-            <Option value="Jiangsu">Jiangsu</Option>
+        <Select onChange={onChange} defaultValue={defaultValue} className="full-width">
+            {items && items.map((item, index) =>
+                <Select.Option key={index} value={item}>{item}</Select.Option>
+            )}
         </Select>
     </Fragment>
 }

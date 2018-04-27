@@ -32,7 +32,9 @@ import {
   setSelectedTeam,
   setSelectedUser,
   setAllUser,
-  getAllUser
+  getAllUser,
+  updateFieldOption,
+  fetchNewTemplateData
 } from "../emailTemplates/flow/action";
 
 export {
@@ -63,5 +65,7 @@ export {
   setSelectedTeam,
   setSelectedUser,
   setAllUser,
-  getAllUser
+  getAllUser,
+  updateFieldOption,
+  fetchNewTemplateData
 };

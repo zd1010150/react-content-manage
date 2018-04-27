@@ -11,11 +11,13 @@ import {
     setNewTemplateApiName,
     setNewTemplateDescription,
     setNewTemplateContent,
+    setNewTemplateCategory,
     setEditTemplateFolder,
     setEditTemplateName,
     setEditTemplateApiName,
     setEditTemplateDescription,
-    setEditTemplateContent
+    setEditTemplateContent,
+    setEditTemplateCategory
 } from '../flow/action';
 import {connect} from 'react-redux';
 import {SelectComponent, SelectComponentVertical, InputComponent} from '../component/formController';
@@ -26,39 +28,68 @@ import styles from '../emailTemplatesCreation.less';
 const cx = classNames.bind(styles);
 
 const BasicInfo = ({
+                       fieldOption,
                        disableApiInput,
                        defaultFolderName,
                        setTemplateFolder,
                        setTemplateName,
                        setTemplateApiName,
                        setTemplateDescription,
+                       setTemplateCategory,
                        editTemplate,
                        userFolders, selectedFolder, formatMessage
                    }) => {
+    const categories = Object.keys(fieldOption).map((name, index) => {
+        return {
+            id: index,
+            name
+        }
+    });
     return <Fragment>
-        <SelectComponent defaultValue={defaultFolderName} editTemplate={editTemplate}
+        <SelectComponent defaultValue={selectedFolder.name ? selectedFolder.name : ''}
                          onChange={setTemplateFolder} items={userFolders}
-                         selectedFolder={selectedFolder} label={formatMessage({id: 'page.emailTemplates.folder'})}/>
+                         label={formatMessage({id: 'page.emailTemplates.folder'})}
+                         value={v => v.id}/>
         <InputComponent value={editTemplate.name} onChange={setTemplateName}
                         label={formatMessage({id: 'page.emailTemplates.emailTemplatesName'})}/>
         <InputComponent disableInput={disableApiInput} value={editTemplate.api_name} onChange={setTemplateApiName}
                         label={formatMessage({id: 'page.emailTemplates.emailTemplateApiName'})}/>
         <InputComponent value={editTemplate.description} onChange={setTemplateDescription}
                         label={formatMessage({id: 'page.emailTemplates.newTemplateDescription'})}/>
+        <SelectComponent defaultValue={editTemplate.category ? editTemplate.category : 'leads'}
+                         onChange={setTemplateCategory} items={categories}
+                         label={formatMessage({id: 'page.emailTemplates.category'})}
+                         value={v => v.name}/>
     </Fragment>
 }
 
-const FieldInfo = ({formatMessage, onChange}) => {
+const FieldInfo = ({selectedLabel, selectedValue, template, fieldOption, formatMessage, selectLabel, selectValue}) => {
+    console.log('template', template)
+    console.log('fieldOption', fieldOption)
+    let fieldLabels, fieldValues = [];
+    let fieldObj = {};
+
+    if (!_.isEmpty(template) && !_.isEmpty(fieldOption)) {
+        fieldLabels = fieldOption[template.category].map((obj, index) => {
+            return obj.field_label
+        });
+        if(!!selectedLabel){
+            fieldOption[template.category].map((obj, index) => {
+                fieldObj[obj.field_label] = obj.field_value
+            });
+            fieldValues = [fieldObj[selectedLabel]]
+        }
+    }
+
+
     return <Row className={`pt-lg ${cx(['new-template-input-row', 'new-template-folder-information'])}`}>
-        <Col className="gutter-row field-label" span={7}>
-            <SelectComponentVertical label={formatMessage({id: 'page.emailTemplates.fieldInfo'})} onChange={onChange}/>
+        <Col className="gutter-row field-value" span={10}>
+            <SelectComponentVertical items={fieldLabels} label={formatMessage({id: 'page.emailTemplates.selectField'})}
+                                     onChange={selectLabel}/>
         </Col>
-        <Col className="gutter-row field-value" offset={1} span={7}>
-            <SelectComponentVertical label={formatMessage({id: 'page.emailTemplates.selectField'})}
-                                     onChange={onChange}/>
-        </Col>
-        <Col className="gutter-row field-value" offset={1} span={7}>
-            <SelectComponentVertical label={formatMessage({id: 'page.emailTemplates.fieldValue'})} onChange={onChange}/>
+        <Col className="gutter-row field-value" offset={2} span={10}>
+            <SelectComponentVertical items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}
+                                     onChange={selectValue}/>
         </Col>
     </Row>
 }
@@ -72,25 +103,30 @@ const ActionButtonGroup = ({save, cancel, formatMessage}) => {
 }
 
 class TemplateInformation extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state = {defaultFolderName: ''}
+        this.state = {defaultFolderName: '', selectedLabel: '', selectedValue: ''}
     }
+
     componentDidMount() {
-        const {getUserFolderData, loginUser, isNewTemplateRouter, selectedFolder, editTemplate} = this.props;
+        const {getUserFolderData, loginUser, isNewTemplateRouter, selectedFolder, setNewTemplateFolder, setNewTemplateCategory, editTemplate} = this.props;
         getUserFolderData(loginUser.id);
         if (isNewTemplateRouter()) {
+            console.log('111111')
             if (selectedFolder.id) {
-                this.setState({defaultFolderName: selectedFolder.name});
-                setNewTemplateFolder(selectedFolder.id)
-            } else if (editTemplate.folder) {
-                this.setState({defaultFolderName: editTemplate.folder.name});
+                // this.setState({defaultFolderName: selectedFolder.name});
+                setNewTemplateFolder(selectedFolder.id);
             }
-        } else {
-            if (selectedFolder.id) {
-                this.setState({defaultFolderName: selectedFolder.name});
-            }
+            setNewTemplateCategory("leads");
         }
+    }
+
+    selectLabel = (value) => {
+        this.setState({selectedLabel: value})
+    }
+
+    selectValue = (value) => {
+        this.setState({selectedValue: value})
     }
 
     render() {
@@ -101,6 +137,7 @@ class TemplateInformation extends React.Component {
             setNewTemplateApiName,
             setNewTemplateDescription,
             setNewTemplateContent,
+            setNewTemplateCategory,
             registerGetContentHook,
             editTemplate,
             newTemplate,
@@ -109,9 +146,11 @@ class TemplateInformation extends React.Component {
             setEditTemplateApiName,
             setEditTemplateDescription,
             setEditTemplateContent,
+            setEditTemplateCategory,
             isNewTemplateRouter,
             save,
-            cancel
+            cancel,
+            fieldOption
         } = this.props;
 
         return (
@@ -121,38 +160,53 @@ class TemplateInformation extends React.Component {
                 {isNewTemplateRouter() &&
                 <Fragment>
                     <BasicInfo
+                        fieldOption={fieldOption}
                         disableApiInput={false}
                         defaultFolderName={this.state.defaultFolderName}
                         setTemplateFolder={setNewTemplateFolder}
                         setTemplateName={setNewTemplateName}
                         setTemplateApiName={setNewTemplateApiName}
                         setTemplateDescription={setNewTemplateDescription}
+                        setTemplateCategory={setNewTemplateCategory}
                         editTemplate={{}}
                         userFolders={userFolders}
                         selectedFolder={selectedFolder}
                         formatMessage={formatMessage}/>
-                    <FieldInfo formatMessage={formatMessage}/>
+                    <FieldInfo selectedLabel={this.state.selectedLabel}
+                               selectedValue={this.state.selectedValue}
+                               selectLabel={this.selectLabel}
+                               selectValue={this.selectValue}
+                               template={newTemplate}
+                               fieldOption={fieldOption}
+                               formatMessage={formatMessage}/>
                     <TemplateContent registerGetContentHook={registerGetContentHook}
                                      setTemplateContent={setNewTemplateContent}
                                      content={newTemplate.content}
-                                     />
+                    />
                 </Fragment>
                 }
 
                 {!isNewTemplateRouter() && !_.isEmpty(editTemplate) &&
                 <Fragment>
                     <BasicInfo
+                        fieldOption={fieldOption}
                         disableApiInput={true}
                         defaultFolderName={this.state.defaultFolderName}
                         setTemplateFolder={setEditTemplateFolder}
                         setTemplateName={setEditTemplateName}
                         setTemplateApiName={setEditTemplateApiName}
                         setTemplateDescription={setEditTemplateDescription}
+                        setTemplateCategory={setEditTemplateCategory}
                         editTemplate={editTemplate}
                         userFolders={userFolders}
-                        selectedFolder={{}}
+                        selectedFolder={selectedFolder}
                         formatMessage={formatMessage}/>
-                    <FieldInfo formatMessage={formatMessage}/>
+                    <FieldInfo selectedLabel={this.state.selectedLabel}
+                               selectedValue={this.state.selectedValue}
+                               selectLabel={this.selectLabel}
+                               selectValue={this.selectValue}
+                               template={editTemplate}
+                               fieldOption={fieldOption} formatMessage={formatMessage}/>
                     <TemplateContent registerGetContentHook={registerGetContentHook}
                                      setTemplateContent={setEditTemplateContent}
                                      content={editTemplate.content}
@@ -171,17 +225,19 @@ class TemplateInformation extends React.Component {
 
 const mapStateToProps = ({global, setup, loginUser}, {isNewTemplateRouter}) => {
     const {emailTemplates} = setup;
-    return isNewTemplateRouter() ?  {
+    return isNewTemplateRouter() ? {
+        fieldOption: emailTemplates.fieldOption,
         loginUser: loginUser,
         userFolders: emailTemplates.userFolders,
         selectedFolder: emailTemplates.selectedFolder,
         newTemplate: emailTemplates.newTemplate,
-        } :
+    } :
         {
-        loginUser: loginUser,
-        userFolders: emailTemplates.userFolders,
-        selectedFolder: emailTemplates.selectedFolder,
-        editTemplate: emailTemplates.editTemplate,
+            fieldOption: emailTemplates.fieldOption,
+            loginUser: loginUser,
+            userFolders: emailTemplates.userFolders,
+            selectedFolder: emailTemplates.selectedFolder,
+            editTemplate: emailTemplates.editTemplate,
         }
 };
 
@@ -192,11 +248,13 @@ const mapDispatchToProps = {
     setNewTemplateApiName,
     setNewTemplateDescription,
     setNewTemplateContent,
+    setNewTemplateCategory,
     setEditTemplateFolder,
     setEditTemplateName,
     setEditTemplateApiName,
     setEditTemplateDescription,
-    setEditTemplateContent
+    setEditTemplateContent,
+    setEditTemplateCategory
 };
 
 
