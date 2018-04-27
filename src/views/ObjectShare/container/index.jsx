@@ -58,9 +58,9 @@ class ObjectShare extends Component {
   }
 
   handleSelect = (selectedTeam) => {
-    const { setActiveTeam, teams } = this.props;
+    const { setActiveTeam, flatTeams, users } = this.props;
     console.log(selectedTeam);
-    setActiveTeam(selectedTeam[0], teams);
+    setActiveTeam(selectedTeam[0], flatTeams, users);
   }
 
   handleUserOrTeamBtnClick = () => this.setState({ showTreeSection: !this.state.showTreeSection })
@@ -74,6 +74,8 @@ class ObjectShare extends Component {
       sharedUsers,
       users,
       teams,
+      usersInTeam,
+      title,
     } = this.props;
     const { formatMessage } = intl;
     const i18n = 'page.objectFilter.visibility';
@@ -124,8 +126,8 @@ class ObjectShare extends Component {
             <Col xs={24} sm={16}>
               <SearchPool
                 theme={theme}
-                title={'testing'}
-                users={[]}
+                title={title}
+                users={usersInTeam}
                 onTagDoubleClick={this.handleUserSelection}
               />
             </Col>
@@ -142,9 +144,12 @@ ObjectShare.propTypes = propTypes;
 const mapStateToProps = ({ global, objectShare }) => ({
   language: global.language,
   users: global.settings.users,
+  flatTeams: global.settings.flatTeams,
   teams: global.settings.teams,
   sharedTeams: objectShare.sharedTeams,
   sharedUsers: objectShare.sharedUsers,
+  title: objectShare.title,
+  usersInTeam: objectShare.usersInTeam,
 });
 const mapDispatchToProps = {
   changeSelections,

@@ -45,10 +45,12 @@ const objectShare = (state = initialState, action) => {
 
     case SET_ACTIVE_TEAM:
       const { activeTeamId, teams } = action.payload;
+      const targetTeam = teams.find(team => team.id == activeTeamId);
+      const usersInTeam = action.payload.allUsers.filter(user => user.team_id == activeTeamId);
       return {
         ...state,
-        // title,
-        // usersInTeam,
+        title: targetTeam.name,
+        usersInTeam,
       };
 
 

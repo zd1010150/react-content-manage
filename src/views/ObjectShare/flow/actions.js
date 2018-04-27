@@ -39,7 +39,7 @@ export const changeSelections = (changedUserIds, allUsers) => ({
 
 
 //
-export const setActiveTeam = (teamId, teams) => ({
+export const setActiveTeam = (activeTeamId, teams, allUsers) => ({
   type: SET_ACTIVE_TEAM,
-  payload: { teamId, teams },
+  payload: { activeTeamId, teams, allUsers },
 });
