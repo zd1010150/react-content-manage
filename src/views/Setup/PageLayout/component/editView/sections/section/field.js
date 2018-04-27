@@ -11,7 +11,7 @@ import styles from '../../../../index.less';
 const cx = classNames.bind(styles);
 const fieldSource = {
   beginDrag(props) {
-    console.log("dandan section field is dragging", props.id);
+    console.log('dandan section field is dragging', props.id);
     return {
       label: props.label,
       fieldId: props.id,
@@ -101,7 +101,7 @@ class field extends React.Component {
         </span>
         <span className={classNames(cx('field-sample-value'), 'pl-sm')}>
           Sample {label}
-          { this.state.isShowActions ? <div className={cx('field-action')}>{deleteBtn}{editBtn}</div> : ''}
+          { this.state.isShowActions ? <div className={cx('field-action')}>{pageRequired ? '' : deleteBtn}{editBtn}</div> : ''}
         </span>
       </div>);
     }
