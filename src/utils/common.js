@@ -74,3 +74,24 @@ export const getAuthorization = () => {
   const { token_type, access_token } = userData;
   return `${token_type} ${access_token}`;
 };
+
+
+const getFlatTree = (tree, newTree, key = 'child_team_rec') => {
+  tree.forEach((node) => {
+    if (_.isEmpty(node[key])) {
+      return newTree.push(node);
+    }
+    newTree.push(node);
+    return getFlatTree(node[key], newTree);
+  });
+};
+
+/**
+ * 
+ * @param {*} tree
+ */
+export const flattenTree = (tree, key) => {
+  const flatTree = [];
+  getFlatTree(tree, flatTree, key);
+  return flatTree;
+};
