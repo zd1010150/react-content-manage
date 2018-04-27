@@ -74,3 +74,14 @@ export const getAuthorization = () => {
   const { token_type, access_token } = userData;
   return `${token_type} ${access_token}`;
 };
+
+
+/**
+ * 
+ * @param {*} tree
+ */
+export const flattenTree = (tree, key = 'child_team_rec') => {
+  const flatTree = [];
+
+  return flatTree;
+};

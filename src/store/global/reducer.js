@@ -1,8 +1,9 @@
 /* eslint-disable max-len */
 import { combineReducers } from 'redux';
+import { flattenTree } from 'utils/common';
 import { moments, years } from 'utils/dateTimeUtils';
 import { navLanguage } from 'utils/navigationUtil';
-import { TOGGLE_LANGUAGE, SET_PERMISSION, SET_ACCOUNTINFO, SET_PAGETITLE, SET_GLOBAL_SETTING, SET_TEAMS_GLOBAL, SET_LOGO, SET_USERS_GLOBAL } from './actionType';
+import { SET_ACCOUNTINFO, SET_GLOBAL_SETTING, SET_LOGO, SET_PAGETITLE, SET_PERMISSION, SET_TEAMS_GLOBAL, SET_USERS_GLOBAL, TOGGLE_LANGUAGE } from './actionType';
 
 // 页面默认语言为 en，此处只是mock
 
@@ -79,7 +80,12 @@ const settings = (state = {
     case SET_GLOBAL_SETTING:
       return mapSettingData(state, action.settings);
     case SET_TEAMS_GLOBAL:
-      return Object.assign({}, state, { teams: action.teams });
+      return {
+        ...state,
+        teams: action.teams,
+        flatTeams: flattenTree(action.teams),
+      };
+
     case SET_USERS_GLOBAL:
       return {
         ...state,

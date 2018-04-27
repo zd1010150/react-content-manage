@@ -2,6 +2,7 @@ import { get, patch } from 'store/http/httpAction';
 import {
   CHANGE_FROM_SELECTION,
   REMOVE_FROM_SELECTION,
+  SET_ACTIVE_TEAM,
   SET_SHARE_TO,
 } from './actionTypes';
 
@@ -34,4 +35,11 @@ export const removeFromSelection = (removeId, isRemoveFromTeam) => ({
 export const changeSelections = (changedUserIds, allUsers) => ({
   type: CHANGE_FROM_SELECTION,
   payload: { changedUserIds, allUsers },
+});
+
+
+//
+export const setActiveTeam = (teamId, teams) => ({
+  type: SET_ACTIVE_TEAM,
+  payload: { teamId, teams },
 });

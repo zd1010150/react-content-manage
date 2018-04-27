@@ -2,12 +2,15 @@
 import {
   CHANGE_FROM_SELECTION,
   REMOVE_FROM_SELECTION,
+  SET_ACTIVE_TEAM,
   SET_SHARE_TO,
 } from './actionTypes';
 
 const initialState = {
   sharedTeams: [],
   sharedUsers: [],
+  title: '',
+  usersInTeam: [],
 };
 
 const objectShare = (state = initialState, action) => {
@@ -37,6 +40,15 @@ const objectShare = (state = initialState, action) => {
       return {
         ...state,
         sharedUsers: changedUsers,
+      };
+
+
+    case SET_ACTIVE_TEAM:
+      const { activeTeamId, teams } = action.payload;
+      return {
+        ...state,
+        // title,
+        // usersInTeam,
       };
 
 
