@@ -2,7 +2,7 @@
 import { combineReducers } from 'redux';
 import { moments, years } from 'utils/dateTimeUtils';
 import { navLanguage } from 'utils/navigationUtil';
-import { TOGGLE_LANGUAGE, SET_PERMISSION, SET_ACCOUNTINFO, SET_PAGETITLE, SET_GLOBAL_SETTING, SET_TEAMS_GLOBAL, SET_LOGO } from './actionType';
+import { TOGGLE_LANGUAGE, SET_PERMISSION, SET_ACCOUNTINFO, SET_PAGETITLE, SET_GLOBAL_SETTING, SET_TEAMS_GLOBAL, SET_LOGO, SET_USERS_GLOBAL } from './actionType';
 
 // 页面默认语言为 en，此处只是mock
 
@@ -68,6 +68,7 @@ const settings = (state = {
   moments,
   years,
   teams: [],
+  users: [],
   conditions: [],
   assignOptions: [],
   categories: [],
@@ -79,6 +80,11 @@ const settings = (state = {
       return mapSettingData(state, action.settings);
     case SET_TEAMS_GLOBAL:
       return Object.assign({}, state, { teams: action.teams });
+    case SET_USERS_GLOBAL:
+      return {
+        ...state,
+        users: action.users,
+      };
     default:
       return state;
   }
@@ -94,6 +100,8 @@ const companyLogo = (state = '', action) => {
       return state;
   }
 };
+
+
 const rootReducer = combineReducers({
   language,
   permission,
