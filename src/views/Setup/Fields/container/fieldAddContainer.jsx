@@ -44,11 +44,12 @@ class FieldAddContainer extends React.Component {
         isDuplicate, saveFieldToRemote, objectType, addedField, history, resetAddedFieldAttr, fieldPrefix,
       } = this.props;
       this.form.validateFieldsAndScroll((err, values) => {
+        debugger;
         if (!err && !isDuplicate) {
           const create_data = Object.assign(values, {
             field_name: `${fieldPrefix}${values.field_name}`,
             crm_data_type: addedField.field.type,
-            notnull: _.isEmpty(`${values.notnull}`) ? false : values.notnull,
+            notnull: !!values.notnull,
           });
           const picklist = addedField.picklist;
           const append_page_layout_ids = addedField.appendPageLayoutIds;
