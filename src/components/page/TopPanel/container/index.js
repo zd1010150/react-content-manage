@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import { Layout, Input, Icon } from 'antd';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -7,6 +8,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { toggleLanguage, fetchGlobalSetting } from 'store/global/action';
 import { setSearchKey } from 'views/GlobalSearch/flow/action';
+import { tryLogout } from 'views/LoginForm/flow/actions';
+import UserSettings from '../component/UserSettings';
+
 import Language from '../component/language';
 import TopNav from '../component/topStaticNav';
 import Welcome from '../component/welcomeMsg';
@@ -14,9 +18,7 @@ import styles from '../TopPanel.less';
 
 const cx = classNames.bind(styles);
 
-import { tryLogout } from 'views/LoginForm/flow/actions';
-import UserSettings from '../component/UserSettings';
-import { Layout, Input, Icon } from 'antd';
+
 
 const { Header } = Layout;
 
@@ -31,7 +33,6 @@ class topPanel extends React.Component {
   }
   onSearch = (keys) => {
     const { setSearchKey, history } = this.props;
-    console.log("====dandan", keys);
     setSearchKey(keys);
     history.push('/globalSearch');
   }
