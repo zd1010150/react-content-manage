@@ -15,6 +15,7 @@ import FindDuplicates from './FindDuplicates/index';
 import PageLoading from './PageLoading/index';
 import Permission from './Permission/index';
 import SelectionZone from './SelectionZone/index';
+import SimpleTable from './SimpleTable/index';
 
 export {
   TopPanel,
@@ -34,4 +35,5 @@ export {
   PageLoading,
   Permission,
   SelectionZone,
+  SimpleTable,
 };
