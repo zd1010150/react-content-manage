@@ -28,12 +28,12 @@ import {
   Users,
   GlobalSearch,
   ObjectShare,
+  NewOpportunity,
 } from 'views/index';
 import Enums from 'utils/EnumsManager';
 
 const { ObjectTypes } = Enums;
 const { Leads, Accounts, Opportunities } = ObjectTypes;
-
 
 const MainContent = () => (
   <Switch>
@@ -62,6 +62,7 @@ const MainContent = () => (
     <Route path="/leads/merge/" component={MergeLeads} />
 
 
+    <Route path="/accounts/:objectId/opportunities/0000-0000" component={NewOpportunity} />
     <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
     <Route
       path="/:objectType/sharing/:objectId"
