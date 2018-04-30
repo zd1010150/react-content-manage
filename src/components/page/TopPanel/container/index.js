@@ -1,12 +1,11 @@
 import React from 'react';
-import _ from 'lodash';
 import { Input, Icon } from 'antd';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
-import { Permission } from  'components/page/index';
+import { Permission } from 'components/page/index';
 import PERMISSIONS from 'config/app-permission.config';
 import { toggleLanguage, fetchGlobalSetting } from 'store/global/action';
 import { setSearchKey } from 'views/GlobalSearch/flow/action';
