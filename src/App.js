@@ -9,7 +9,6 @@ import { PageLoading } from './components/page/index';
 class App extends React.Component {
   render() {
     return (
-
       <div className="App">
         <Switch>
           <Route path="/auth" component={AuthLayout} />

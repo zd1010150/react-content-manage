@@ -4,12 +4,11 @@ import { connect } from 'react-redux';
 import { getStore } from 'utils/localStorage';
 import _ from 'lodash';
 import classNames from 'classnames/bind';
-import { Layout } from 'antd';
 import EnumsManager from 'utils/EnumsManager';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { loginSuccess } from 'views/LoginForm/flow/actions.js';
 import styles from './layout.less';
-
+import { fetchGlobalSetting, fetchAccountPermission } from 'store/global/action';
 
 import { TopPanel, CopyRight } from '../page/index';
 
@@ -18,18 +17,22 @@ import SubMainLayout from './subMainLayout';
 import SetupLayout from './setupLayout';
 
 const cx = classNames.bind(styles);
-const { Footer } = Layout;
 class MainLayout extends React.Component {
     hasLoggedIn = () => {
+      const {
+        loginUser, loginSuccess, fetchGlobalSetting, fetchAccountPermission,
+      } = this.props;
       // we'll check the login status in localstorage instead of redux/session storage
       // because it will help us to sync the status across application instances
       const localLoginUser = getStore(EnumsManager.LocalStorageKey);
-      if (!_.isEmpty(this.props.loginUser)) {
-        return true;
-      } else if (_.isEmpty(localLoginUser)) {
+      if (_.isEmpty(localLoginUser)) {
         return false;
       }
-      this.props.loginSuccess(localLoginUser);
+      if (_.isEmpty(loginUser)) {
+        loginSuccess(localLoginUser);
+      }
+      fetchGlobalSetting();
+      fetchAccountPermission();
       return true;
     }
 
@@ -42,9 +45,9 @@ class MainLayout extends React.Component {
             <Redirect to="/auth/login" />
                 ) : (
                   <div className={cx('body-wrapper')}>
-                      <div className={cx('header-wrapper')}>
-                          <TopPanel />
-                      </div>
+                    <div className={cx('header-wrapper')}>
+                      <TopPanel />
+                    </div>
                     <Switch>
                       <Route path="/setup" component={SetupLayout} />
                       <Route path="/" component={SubMainLayout} />
@@ -67,6 +70,8 @@ const mapStateToProps = ({ loginUser }) => ({
 });
 const mapDispatchToProp = {
   loginSuccess,
+  fetchGlobalSetting,
+  fetchAccountPermission,
 };
 
 

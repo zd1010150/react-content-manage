@@ -20,6 +20,7 @@ export default {
     button: {
       cancel: '取消',
       ok: '确认',
+      signIn: '登录',
       submit: '提交',
       addBtn: '新增{actionType}',
       upload: '上传',
@@ -146,6 +147,7 @@ export default {
     button: {
       cancel: 'Cancel',
       ok: 'OK',
+      signIn: 'Sign In',
       submit: 'Submit',
       addBtn: 'Add {actionType}',
       upload: 'Upload',
