@@ -14,13 +14,15 @@ const cx = classNames.bind(styles);
 
 class GlobalSearch extends React.Component {
   render() {
-    const { updatePwd, setAvator, userInfo, tryLogout } = this.props;
+    const {
+      updatePwd, setAvator, userInfo, tryLogout,
+    } = this.props;
     return (<div className={cx('my-setting-wrapper')}>
       <div className={classNames(cx('avatar-wrapper'), 'pr-lg')}>
         <Avator userInfo={userInfo} setUserAvator={setAvator} />
       </div>
       <div className={cx('changepwd-wrapper')}>
-        <ChangePwd submit={updatePwd} tryLogout={tryLogout}/>
+        <ChangePwd submit={updatePwd} tryLogout={tryLogout} />
       </div>
             </div>);
   }
@@ -31,7 +33,7 @@ const mapStateToProps = ({ loginUser }) => ({
 const mapDispatchToProps = {
   updatePwd,
   setAvator,
-    tryLogout,
+  tryLogout,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GlobalSearch);

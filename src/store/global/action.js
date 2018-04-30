@@ -41,10 +41,8 @@ export const fetchGlobalSetting = () => dispatch => get('/admin/global-settings'
   }
 });
 
-export const fetchAccountInfo = () => dispatch => post('/affiliate/me').then((data) => {
-  if (!_.isEmpty(data) && !_.isEmpty(data.user)) {
-    dispatch(setAccountInfo(data.user));
-  }
+export const fetchAccountPermission = () => dispatch => get('/admin/permissions/me').then((data) => {
+  dispatch(setPermission((data && data.permissions) || []));
 });
 
 
