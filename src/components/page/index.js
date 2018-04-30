@@ -14,6 +14,7 @@ import TaskDetails from './TaskDetails/index';
 import FindDuplicates from './FindDuplicates/index';
 import PageLoading from './PageLoading/index';
 import Permission from './Permission/index';
+import SelectionZone from './SelectionZone/index';
 
 export {
   TopPanel,
@@ -32,4 +33,5 @@ export {
   FindDuplicates,
   PageLoading,
   Permission,
+  SelectionZone,
 };

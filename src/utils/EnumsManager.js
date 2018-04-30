@@ -104,6 +104,7 @@ const EnumsManager = Object.freeze({
     DUPLICATES: 'DUPLICATES_',
     MERGE: 'MERGE_',
     OBJECTLIST: 'OBJECTLIST_',
+    OBJECTSHARE: 'OBJECTSHARE',
   }),
 
   ViewVisibilityIds: Object.freeze({

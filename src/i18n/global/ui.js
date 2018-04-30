@@ -56,6 +56,8 @@ export default {
       [Attachments]: '新附件',
       [Opportunities]: 'New Opportunities',
       selectFileAndUpload: '选择文件并上传',
+      addUserToShare: '分享给其他用户',
+      addUserOrTeamToShare: '分享给其他用户或群组',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -181,6 +183,8 @@ export default {
       [TaskOpen]: 'New Task',
       [Attachments]: 'New Attachment',
       selectFileAndUpload: 'Select File And Upload',
+      addUserToShare: 'Add User to Share',
+      addUserOrTeamToShare: 'Add User or Team to Share',
     },
     input: {
       searchStore: 'Search entire store here...',

@@ -27,7 +27,7 @@ import {
   UIDemo,
   Users,
   GlobalSearch,
-
+  ObjectShare,
 } from 'views/index';
 import Enums from 'utils/EnumsManager';
 
@@ -62,8 +62,25 @@ const MainContent = () => (
     <Route path="/leads/merge/" component={MergeLeads} />
 
 
-    <Route path="/:objectType/sharing/:objectId" component={FindDuplicates} />
     <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
+    <Route
+      path="/:objectType/sharing/:objectId"
+      render={(props) => {
+        const { match } = props;
+        const { objectId, objectType } = match.params;
+        if ([Leads, Accounts].indexOf(objectType) !== -1) {
+          return (
+            <ObjectShare
+              {...props}
+              objectId={objectId}
+              objectType={objectType}
+            />
+          );
+        }
+        // TOOD: return 404 page
+        return null;
+      }}
+    />
     <Route path="/:objectType/:objectId/attachments" component={ClientAttachments} exact />
     <Route path="/:objectType/:objectId/tasks/:taskId" component={ObjectTask} />
     <Route path="/:objectType/views/:viewId" component={ObjectView} />
