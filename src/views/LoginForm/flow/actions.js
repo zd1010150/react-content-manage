@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
+
 import { post } from 'store/http/httpAction';
 import _ from 'lodash';
 import {

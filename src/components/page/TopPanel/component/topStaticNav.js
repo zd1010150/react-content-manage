@@ -11,10 +11,9 @@ const propTypes = {
 };
 
 
-const TopNav = ({ intl, permissions, location }) => {
+const TopNav = ({ intl, location }) => {
   const { formatMessage } = intl;
   const i18n = 'global.properNouns';
-  // TODO: hide specific tabs based on user's permissions
   //       need to discuss the permission json format with be dev
   //       and then add functionality to hide specific tabs
   const nav = [

@@ -18,7 +18,7 @@ const loginUser = (state = initialState, action) => {
       return payload;
     case MY_SETTING_SET_AVATOR:
       user = Object.assign({}, state, { avatar: action.avatar });
-      setStore(EnumsManager.LocalStorageKey, user);
+      setStore(EnumsManager.LocalStorageKey, JSON.stringify(user));
       return user;
     case LOGOUT_SUCCESS:
     case LOGINOROUT_FAILURE:

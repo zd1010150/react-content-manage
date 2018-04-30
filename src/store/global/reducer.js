@@ -20,7 +20,7 @@ const language = (state = navLanguage, action) => {
   return globalLanguage;
 };
 // 权限需要从后端接口获取
-const permission = (state = {}, action) => {
+const permissions = (state = [], action) => {
   switch (action.type) {
     case SET_PERMISSION:
       return action.permission;
@@ -96,7 +96,7 @@ const companyLogo = (state = '', action) => {
 };
 const rootReducer = combineReducers({
   language,
-  permission,
+  permissions,
   account,
   pageTitle,
   settings,
