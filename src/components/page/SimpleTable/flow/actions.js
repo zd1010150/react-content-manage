@@ -18,7 +18,6 @@ export const tryFetchData = (objectId, params = { per_page: PageSizeSmall }) => 
         && data.index.meta
         && !_.isEmpty(data.selector_meta)
         && data.selector_meta.data) {
-      debugger;
       dispatch(setData(data.selector_meta.data, data.index.data, data.index.meta, params));
     }
   });
