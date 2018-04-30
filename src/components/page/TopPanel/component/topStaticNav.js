@@ -3,11 +3,14 @@ import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { Link, withRouter } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
+import { Permission } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
+
 const { ThemeTypes } = Enums;
 
 
 const propTypes = {
-  intl: intlShape.isRequired
+  intl: intlShape.isRequired,
 };
 
 
@@ -17,13 +20,13 @@ const TopNav = ({ intl, location }) => {
   //       need to discuss the permission json format with be dev
   //       and then add functionality to hide specific tabs
   const nav = [
-    { id: 'dashboard', href: '/dashboard' },
-    { id: 'leads', href: '/leads' },
-    { id: 'accounts', href: '/accounts' },
-    { id: 'opportunities', href: '/opportunities' },
-    { id: 'report', href: '/reports' },
+    { id: 'dashboard', href: '/dashboard', permission: PERMISSIONS.DASHBOARD },
+    { id: 'leads', href: '/leads', permission: PERMISSIONS.LEADS },
+    { id: 'accounts', href: '/accounts', permission: PERMISSIONS.ACCOUNTS },
+    { id: 'opportunities', href: '/opportunities', permission: PERMISSIONS.OPPORTUNITIES },
+    { id: 'report', href: '/reports', permission: PERMISSIONS.REPORTS },
   ];
-  
+
   const { pathname } = location;
   const defaultKey = nav.find(item => pathname.indexOf(item.href) !== -1);
 
@@ -33,15 +36,19 @@ const TopNav = ({ intl, location }) => {
       mode="horizontal"
       defaultSelectedKeys={defaultKey ? [defaultKey.id] : void 0}
     >
-      {nav.map(item => {
+      {nav.map((item) => {
         const key = item.id;
         const theme = ThemeTypes[key.charAt(0).toUpperCase() + key.slice(1)];
         return (
+
           <Menu.Item key={key} className={`${theme}-theme-menu`}>
-            <Link to={item.href}>
+            <Permission permission={item.permission}>
+              <Link to={item.href}>
               {formatMessage({ id: `${i18n}.${key}` })}
-            </Link>
+              </Link>
+            </Permission>
           </Menu.Item>
+
         );
       })}
     </Menu>
