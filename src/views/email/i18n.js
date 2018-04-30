@@ -38,7 +38,8 @@ export default {
       cloudAttachment: '云附件',
       localAttachment: '本地附件',
       attachment: '附件',
-      sharedBy: '共享者：',
+      by: '共享者：',
+      sharedBy: '共享',
       permissionTitle: '访问权限',
       addNewUser: '添加用户权限',
 
@@ -68,6 +69,7 @@ export default {
       stepTwo: '第二步: 时间安排',
       schedulesDescription: '( 邮件活动开始日期和截止日期如下 )',
       ongingCampaign: '持续的活动',
+      myFolders: '我的文件夹',
 
       commonUseSeparator: '................................................................................................',
       name: '名称',
@@ -118,7 +120,8 @@ export default {
       cloudAttachment: 'Cloud Attachment',
       localAttachment: 'Local Attachment',
       attachment: 'Attachment',
-      sharedBy: 'By: ',
+      by: 'By: ',
+      sharedBy: 'Shared By',
       permissionTitle: 'Permission to Access',
       addNewUser: 'Add New User',
 
@@ -129,6 +132,7 @@ export default {
       chooseFile: 'Choose File',
       chooseFolder: 'Choose Folder',
       category: 'Category',
+      myFolders: 'My Folders',
 
 
 

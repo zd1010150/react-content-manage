@@ -51,7 +51,7 @@ const MainContent = () => (
       path="/setup/email/templates-creation"
       component={EmailTemplatesCreation}
     />
-    <Route path="/email/new" component={NewEmail} />
+    <Route path="/:objectType/:objectId/email/new" component={NewEmail} />
     <Route path="/setup/email/campaign" component={EmailCampaign} exact />
     <Route
       path="/setup/email/campaign/edit/:campaignId"

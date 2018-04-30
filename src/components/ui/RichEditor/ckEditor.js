@@ -40,6 +40,9 @@ class CKEditor extends React.Component {
             }
             this.onLoad(nextProps);
         }
+        if(this.props.insertValue !== nextProps.insertValue){
+            editorInstances.insertText(nextProps.insertValue);
+        }
     }
 
     componentWillUnmount() {
@@ -84,7 +87,8 @@ CKEditor.defaultProps = {
     isScriptLoaded: false,
     scriptUrl: defaultScriptUrl,
     activeClass: "",
-    events: {}
+    events: {},
+    insertValue: ""
 };
 
 CKEditor.propTypes = {
@@ -93,7 +97,8 @@ CKEditor.propTypes = {
     isScriptLoaded: PropTypes.bool,
     scriptUrl: PropTypes.string,
     activeClass: PropTypes.string,
-    events: PropTypes.object
+    events: PropTypes.object,
+    insertValue: PropTypes.string,
 };
 
 export default CKEditor;

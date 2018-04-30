@@ -3,7 +3,8 @@ import _ from 'lodash';
 import {intlShape, injectIntl} from 'react-intl';
 import {Row, Col, Input, Select, Button, Icon, Radio, Table} from 'antd';
 import {connect} from 'react-redux';
-import {Panel, RichEditor} from 'components/ui/index';
+import {Panel, CKEditor} from 'components/ui/index';
+import config from '../../ckConfig.js';
 import classNames from 'classnames/bind';
 import styles from '../newEmail.less';
 const cx = classNames.bind(styles);
@@ -16,14 +17,77 @@ class NewEmailContent extends React.Component {
     componentDidMount() {
 
     }
+    onBlur = (evt) => {
+        console.log("onBlur fired with event info: ", evt);
+    }
+
+    afterPaste = (evt) => {
+        console.log("afterPaste fired with event info: ", evt);
+    }
+    onChange = (evt) => {
+        this.props.registerGetContentHook(() => {
+            return evt.editor.getData();
+        });
+    }
+
+    fileUploadHandler = (evt) => {
+        const fileLoader = evt.data.fileLoader;
+        const xhr = fileLoader.xhr;
+        evt.data.requestData = {
+            document: evt.data.requestData.upload
+        };
+        xhr.setRequestHeader('Cache-Control', 'no-cache');
+        xhr.setRequestHeader('X-CUSTOM', 'HEADER');
+        xhr.setRequestHeader('accept', 'image/*');
+        !this.props.loginUser.token_info.access_token && evt.stop();
+        xhr.setRequestHeader('Authorization', this.props.loginUser.token_info.access_token)
+        xhr.withCredentials = true;
+        if (xhr.statusText === 'Unauthorized') {
+            console.log('?????')
+            this.props.tryLogout();
+        }
+        console.log('333', xhr)
+        console.log('2222', evt)
+        // Prevented the default behavior.
+        // evt.stop();
+    }
+
+    fileUploadResponse = (evt) => {
+        // Prevent the default response handler.
+        evt.stop();
+        // Get XHR and response.
+        const data = evt.data,
+            xhr = data.fileLoader.xhr,
+            response = xhr.responseText.split('|');
+        if (response[1]) {
+            // An error occurred during upload.
+            data.message = response[1];
+            evt.cancel();
+        } else {
+            data.url = JSON.parse(response[0]).data.url
+        }
+    }
     render() {
+        const {showModal, content} = this.props;
         const { formatMessage } = this.props.intl;
-        const selectTemplate = <Button className="email-theme-btn" size="small" onClick={() => {}}><Icon type="download" />{ formatMessage({ id: 'page.emailTemplates.selectTemplate' }) }</Button>;
+        const selectTemplate = <Button className="email-theme-btn" size="small" onClick={showModal}><Icon type="download" />{ formatMessage({ id: 'page.emailTemplates.selectTemplate' }) }</Button>;
         const cloudAttachment = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {}}><Icon type="file" />{ formatMessage({ id: 'page.emailTemplates.cloudAttachment' }) }</Button>
         const localAttachment = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {}}><Icon type="link" />{ formatMessage({ id: 'page.emailTemplates.localAttachment' }) }</Button>
-        const additionalCtrl = <Fragment>{selectTemplate}{cloudAttachment}{localAttachment}</Fragment>
+        const additionalCtrl = <div className="pl-lg pt-md pb-sm" style={{background: '#f8f8f8'}}>{selectTemplate}{cloudAttachment}{localAttachment}</div>
         return (
-            <RichEditor additionalCtrl={additionalCtrl}/>
+            <Fragment>
+                {additionalCtrl}
+                <CKEditor
+                    content={content}
+                    events={{
+                        blur: this.onBlur,
+                        afterPaste: this.afterPaste,
+                        change: this.onChange,
+                        fileUploadRequest: this.fileUploadHandler,
+                        fileUploadResponse: this.fileUploadResponse
+                    }}
+                    config={config}/>
+            </Fragment>
         );
     }
 }

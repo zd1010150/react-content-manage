@@ -37,6 +37,12 @@ import {
   fetchNewTemplateData
 } from "../emailTemplates/flow/action";
 
+import {
+  fetchSelectedTemplateData,
+  newEmailQueryByPaging,
+  newEmailSetTemplatesData
+} from "../newEmail/flow/action";
+
 export {
   setEditFolderData,
   deleteUserFolderData,
@@ -67,5 +73,8 @@ export {
   setAllUser,
   getAllUser,
   updateFieldOption,
-  fetchNewTemplateData
+  fetchNewTemplateData,
+  fetchSelectedTemplateData,
+  newEmailQueryByPaging,
+  newEmailSetTemplatesData
 };

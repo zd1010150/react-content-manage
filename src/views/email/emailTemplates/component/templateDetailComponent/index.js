@@ -47,6 +47,7 @@ const TemplateDetail = ({
         <Radios
             selectedUser={selectedUser}
             setSharedByVisible={setSharedByVisible}
+            formatMessage={formatMessage}
         />
     );
     const actionsRight = (

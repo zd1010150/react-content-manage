@@ -20,6 +20,11 @@ import {
   addedPermissionUser,
   fieldOption
 } from "../emailTemplates/flow/reducer";
+import {
+  selectedEmailTemplate,
+  newEmailTemplatesDataTablePagination,
+  newEmailTemplates
+} from "../newEmail/flow/reducer";
 
 export default combineReducers({
   ui,
@@ -40,5 +45,8 @@ export default combineReducers({
   editTemplate,
   addedPermissionDepartment,
   addedPermissionUser,
-  fieldOption
+  fieldOption,
+  selectedEmailTemplate,
+  newEmailTemplatesDataTablePagination,
+  newEmailTemplates
 });

@@ -18,7 +18,9 @@ import {withRouter} from "react-router";
 class EmailTemplates extends React.Component {
     componentDidMount() {
         const {getUserFolderData, loginUser, setSelectedUser} = this.props;
-        this.props.fetchTeams();
+        if(location.pathname !== '/user/email-setting'){
+            this.props.fetchTeams();
+        }
         // get current user's folders as default
         getUserFolderData(loginUser.id);
         // set the radio button content as current user's name

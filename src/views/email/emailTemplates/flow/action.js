@@ -44,7 +44,7 @@ const url = "/";
 
 export const sortValues = array => dispatch => dispatch(setNewOrder(array));
 
-export const getUserFolderData = userId => (dispatch, getState) =>
+export const getUserFolderData = (userId, callback) => (dispatch, getState) =>
   get(`/admin/email_folders/user/${userId}`, {}, dispatch).then(data => {
     //data will be {own: {data: []}, shared_by: {data: []}}
 
@@ -70,6 +70,7 @@ export const getUserFolderData = userId => (dispatch, getState) =>
           dispatch(setSharedFolderData([]));
         }
       }
+      callback && callback(data);
     }
   });
 
@@ -151,7 +152,14 @@ export const createTemplateData = ({
   category,
   cb
 }) => (dispatch, getState) => {
-    console.log('??????', {folderId, name, api_name: apiName, content, description, category })
+  console.log("??????", {
+    folderId,
+    name,
+    api_name: apiName,
+    content,
+    description,
+    category
+  });
   post(
     `/admin/email_templates/email_folders/${folderId}`,
     { name, api_name: apiName, content, description, category },

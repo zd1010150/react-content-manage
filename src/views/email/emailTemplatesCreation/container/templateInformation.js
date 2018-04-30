@@ -88,7 +88,7 @@ const FieldInfo = ({selectedLabel, selectedValue, template, fieldOption, formatM
                                      onChange={selectLabel}/>
         </Col>
         <Col className="gutter-row field-value" offset={2} span={10}>
-            <SelectComponentVertical items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}
+            <SelectComponentVertical defaultValue={fieldValues[0]} items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}
                                      onChange={selectValue}/>
         </Col>
     </Row>
@@ -112,7 +112,6 @@ class TemplateInformation extends React.Component {
         const {getUserFolderData, loginUser, isNewTemplateRouter, selectedFolder, setNewTemplateFolder, setNewTemplateCategory, editTemplate} = this.props;
         getUserFolderData(loginUser.id);
         if (isNewTemplateRouter()) {
-            console.log('111111')
             if (selectedFolder.id) {
                 // this.setState({defaultFolderName: selectedFolder.name});
                 setNewTemplateFolder(selectedFolder.id);
@@ -182,6 +181,7 @@ class TemplateInformation extends React.Component {
                     <TemplateContent registerGetContentHook={registerGetContentHook}
                                      setTemplateContent={setNewTemplateContent}
                                      content={newTemplate.content}
+                                     selectedValue={this.state.selectedValue}
                     />
                 </Fragment>
                 }
@@ -210,6 +210,7 @@ class TemplateInformation extends React.Component {
                     <TemplateContent registerGetContentHook={registerGetContentHook}
                                      setTemplateContent={setEditTemplateContent}
                                      content={editTemplate.content}
+                                     selectedValue={this.state.selectedValue}
                     />
                 </Fragment>
                 }
