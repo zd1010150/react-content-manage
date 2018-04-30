@@ -44,7 +44,6 @@ class FieldAddContainer extends React.Component {
         isDuplicate, saveFieldToRemote, objectType, addedField, history, resetAddedFieldAttr, fieldPrefix,
       } = this.props;
       this.form.validateFieldsAndScroll((err, values) => {
-        debugger;
         if (!err && !isDuplicate) {
           const create_data = Object.assign(values, {
             field_name: `${fieldPrefix}${values.field_name}`,

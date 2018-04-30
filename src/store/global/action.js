@@ -74,7 +74,6 @@ export const tryFetchAllUsersIfNeeded = () => (dispatch, getState) => {
 
 //
 export const tryFetchAllTeamsIfNeeded = () => (dispatch, getState) => {
-  console.log('fetching teams');
   // TODO: check current state of teams substore to avoid unnecessary fetch
   return get('/admin/teams/struct/info').then((data) => {
     if (data && data.teams) {
