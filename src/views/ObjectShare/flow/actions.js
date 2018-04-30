@@ -1,5 +1,6 @@
 import { get, patch } from 'store/http/httpAction';
 import {
+  UPDATE_SELECTION,
   CHANGE_FROM_SELECTION,
   REMOVE_FROM_SELECTION,
   SET_ACTIVE_TEAM,
@@ -42,4 +43,11 @@ export const changeSelections = (changedUserIds, allUsers) => ({
 export const setActiveTeam = (activeTeamId, teams, allUsers) => ({
   type: SET_ACTIVE_TEAM,
   payload: { activeTeamId, teams, allUsers },
+});
+
+
+//
+export const updateSelection = (id, record, isTeam, isRemove) => ({
+  type: UPDATE_SELECTION,
+  payload: { id, record, isTeam, isRemove },
 });

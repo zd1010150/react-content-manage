@@ -8,7 +8,13 @@ import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
 import { getThemeByType } from 'utils/common';
 import { tryFetchAllTeamsIfNeeded, tryFetchAllUsersIfNeeded } from 'store/global/action';
-import { changeSelections, removeFromSelection, setActiveTeam, tryFetchShareTo } from '../flow/actions';
+import {
+  changeSelections,
+  removeFromSelection,
+  setActiveTeam,
+  tryFetchShareTo,
+  updateSelection,
+} from '../flow/actions';
 
 const { DetailTools, ObjectTypes } = Enums;
 const { Sharing } = DetailTools;
@@ -59,11 +65,18 @@ class ObjectShare extends Component {
 
   handleSelect = (selectedTeam) => {
     const { setActiveTeam, flatTeams, users } = this.props;
-    console.log(selectedTeam);
     setActiveTeam(selectedTeam[0], flatTeams, users);
   }
 
   handleUserOrTeamBtnClick = () => this.setState({ showTreeSection: !this.state.showTreeSection })
+
+  handleTeamSelection = (id) => {
+    const { flatTeams, updateSelection } = this.props;
+    const record = flatTeams.find(team => team.id == id);
+    updateSelection(id, record, true, false);
+  }
+
+  handleUserSelection = (id, record, isTeam) => this.props.updateSelection(id, record, isTeam, false)
 
   render() {
     const { showModal, showTreeSection } = this.state;
@@ -158,5 +171,6 @@ const mapDispatchToProps = {
   tryFetchShareTo,
   tryFetchAllTeamsIfNeeded,
   tryFetchAllUsersIfNeeded,
+  updateSelection,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ObjectShare));

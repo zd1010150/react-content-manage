@@ -4,11 +4,26 @@ import {
   REMOVE_FROM_SELECTION,
   SET_ACTIVE_TEAM,
   SET_SHARE_TO,
+  UPDATE_SELECTION,
 } from './actionTypes';
 
+const teamKey = 'sharedTeams';
+const userKey = 'sharedUsers';
+
+const getUpdatedData = (id, record, isTeam, isRemove, state) => {
+  const key = isTeam ? teamKey : userKey;
+  const isEntityExist = state[key].find(entity => entity.id == id);
+  if (isRemove && isEntityExist) {
+    return state[key].filter(entity => entity.id !== id);
+  } else if (!isRemove && !isEntityExist) {
+    return [...state[key], record];
+  }
+  return state[key];
+};
+
 const initialState = {
-  sharedTeams: [],
-  sharedUsers: [],
+  [teamKey]: [],
+  [userKey]: [],
   title: '',
   usersInTeam: [],
 };
@@ -49,8 +64,22 @@ const objectShare = (state = initialState, action) => {
       const usersInTeam = action.payload.allUsers.filter(user => user.team_id == activeTeamId);
       return {
         ...state,
-        title: targetTeam.name,
+        title: targetTeam ? targetTeam.name : '',
         usersInTeam,
+      };
+
+
+    case UPDATE_SELECTION:
+      const {
+        id,
+        record,
+        isTeam,
+        isRemove,
+      } = action.payload;
+      const subStoreKey = isTeam ? teamKey : userKey;
+      return {
+        ...state,
+        [subStoreKey]: getUpdatedData(id, record, isTeam, isRemove, state),
       };
 
 
