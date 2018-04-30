@@ -21,7 +21,7 @@ class companyInfo extends Component {
 
     return (
       <Fragment>
-        <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_COMPANYINFORMATION_VIEW} nullComponent={<Unauthentication />}>
+        <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_COMPANYINFORMATION_VIEW} errorComponent={<Unauthentication />}>
           <ComponanyInfoPanel {...this.props} />
           <CompaneyUserStatic userInfo={userInfo} history={history} />
           <Logo companyLogo={companyLogo} setLogo={setLogo} />
