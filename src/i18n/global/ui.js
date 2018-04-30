@@ -45,7 +45,6 @@ export default {
       replace: '替换',
       preview: '预览',
       selectFile: '选择文件',
-      upload: '开始上传',
       uploading: '正在上传',
       mergeLead: '合并选中的潜在客户',
       convert: '进行转化',
@@ -57,6 +56,7 @@ export default {
       selectFileAndUpload: '选择文件并上传',
       addUserToShare: '分享给其他用户',
       addUserOrTeamToShare: '分享给其他用户或群组',
+      newOpport: '新Opportunity',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -171,7 +171,6 @@ export default {
       replace: 'Replace',
       preview: 'Preview',
       selectFile: 'Select File',
-      upload: 'Start Upload',
       uploading: 'Uploading...',
       mergeLead: 'Merge Leads',
       convert: 'Continue to Convert',
@@ -183,6 +182,7 @@ export default {
       selectFileAndUpload: 'Select File And Upload',
       addUserToShare: 'Add User to Share',
       addUserOrTeamToShare: 'Add User or Team to Share',
+      newOpport: 'New Opportunity',
     },
     input: {
       searchStore: 'Search entire store here...',

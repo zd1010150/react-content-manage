@@ -14,6 +14,7 @@ import TaskDetails from './TaskDetails/index';
 import FindDuplicates from './FindDuplicates/index';
 import PageLoading from './PageLoading/index';
 import SelectionZone from './SelectionZone/index';
+import SimpleTable from './SimpleTable/index';
 
 export {
   TopPanel,
@@ -32,4 +33,5 @@ export {
   FindDuplicates,
   PageLoading,
   SelectionZone,
+  SimpleTable,
 };
