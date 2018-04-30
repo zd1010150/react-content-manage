@@ -54,6 +54,8 @@ class SelectionModal extends Component {
 
   handleSearch = value => this.setState({ searchText: value })
 
+  handleTextChange = value => this.setState({ searchText: value })
+
   handleCheckboxChange = checkedValues => this.setState({ checkedValues })
 
   render() {
@@ -76,6 +78,7 @@ class SelectionModal extends Component {
           labelColor="#4e4e4e"
           placeholder={formatMessage({ id: 'global.ui.input.searchUser' })}
           addonAfter={<Icon type="search" size="small" />}
+          handleChange={this.handleTextChange}
           handleSearch={this.handleSearch}
           withSearch
         />

@@ -25,8 +25,8 @@ class DeleteConfirmDialog extends React.Component {
     } = this.props;
     const { formatMessage } = intl;
     const footer = [
-      <Button type="danger" size="small" onClick={() => this.onOk()}><Icon type="delete" />{formatMessage({ id: `global.ui.button.${confirmText}` })}</Button>,
-      <Button className="mr-lg" size="small" onClick={() => this.onCancel()}><Icon type="close" />{formatMessage({ id: 'global.ui.button.cancel' })}</Button>,
+      <Button key="ok" type="danger" size="small" onClick={() => this.onOk()}><Icon type="delete" />{formatMessage({ id: `global.ui.button.${confirmText}` })}</Button>,
+      <Button key="cancel" className="mr-lg" size="small" onClick={() => this.onCancel()}><Icon type="close" />{formatMessage({ id: 'global.ui.button.cancel' })}</Button>,
     ];
     const config = Object.assign({}, {
       footer,

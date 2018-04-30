@@ -11,7 +11,7 @@ import { Panel } from 'components/ui/index';
 import { fetchPermission, savePermission, toggleDepartmentDialog, setDepartment, setSeletedDeparmentPermission, fetchAllPermission, setExpandedKeys } from '../flow/action';
 import { intlShape, injectIntl } from 'react-intl';
 import DepartmentDialog from '../../Users/component/departmentDialog';
-import { getTeamIds } from '../flow/reselect';
+import { getTeamIds, getAllExpandedKeys, getParentsOfNode } from '../flow/reselect';
 import styles from '../index.less';
 
 const { TreeNode } = Tree;
@@ -38,9 +38,27 @@ class permissionProfile extends Component {
     setDepartment({ department_id, department_name });
     fetchPermission(department_id);
   }
-  onCheckPermission(checkedKeys) {
-    this.props.setSeletedDeparmentPermission(checkedKeys, false);
+
+  permissionChange(e, permission) {
+    const isChecked = e.target.checked;
+    const { permissions } = this.props.selectedDepartment;
+    const allPermissions = this.props.permissions;
+    const newPermissions = [...permissions];
+    if (isChecked) {
+      newPermissions.push(permission);
+    } else if (!isChecked && newPermissions.indexOf(permission) > -1) {
+      newPermissions.splice(newPermissions.indexOf(permission), 1);
+    }
+    const getAllParentSelectedPermissions = (selectedPermissions, allPermissions) => {
+      let parents = [...selectedPermissions];
+      selectedPermissions.forEach((p) => {
+        parents = [...parents, ...getParentsOfNode(allPermissions, p).filter(t => parents.indexOf(t) < 0)];
+      });
+      return parents;
+    };
+    this.props.setSeletedDeparmentPermission(getAllParentSelectedPermissions(newPermissions, allPermissions), false);
   }
+
   onSubmit() {
     const { savePermission, selectedDepartment } = this.props;
     if (_.isEmpty(`${selectedDepartment.department_id}`)) {
@@ -56,17 +74,26 @@ class permissionProfile extends Component {
     fetchPermission(selectedDepartment.department_id);
   }
   renderTreeNodes(data) {
+    const { permissions, department_id } = this.props.selectedDepartment;
     if (!_.isArray(data) && !_.isEmpty(data)) {
       return Object.keys(data).map((tab) => {
         const tabPermission = data[tab];
+        const treeEl = (<Checkbox
+          onChange={e => this.permissionChange(e, tabPermission.id)}
+          checked={permissions.indexOf(tabPermission.id) > -1}
+          disabled={_.isEmpty(`${department_id}`)}
+
+        >
+          {tabPermission.name}
+        </Checkbox>);
         if (!_.isEmpty(tabPermission.child_rec)) {
           return (
-            <TreeNode className={cx('tree-node-line')} title={tabPermission.name} key={tabPermission.id}>
+            <TreeNode className={cx('tree-node-line')} title={treeEl} key={tabPermission.id} selectable={false}>
               {this.renderTreeNodes(tabPermission.child_rec)}
             </TreeNode>
           );
         }
-        return <TreeNode className={cx('tree-node-line')} title={tabPermission.name} key={tabPermission.id} />;
+        return (<TreeNode className={cx('tree-node-line')} title={treeEl} key={tabPermission.id} selectable={false} />);
       });
     }
   }
@@ -109,13 +136,11 @@ class permissionProfile extends Component {
           <div className="section-header">{formatMessage({ id: 'page.permissionProfile.permissionSetting' })}</div>
           <div className="section-content mt-lg mb-lg">
             <Tree
-              checkable
               defaultExpandAll
               autoExpandParent={false}
               checkedKeys={selectedDepartment.permissions}
               expandedKeys={treeExpandKeys}
               onExpand={expandedKeys => this.onExpand(expandedKeys)}
-              onCheck={checkedKeys => this.onCheckPermission(checkedKeys)}
             >
               { this.renderTreeNodes(permissions)}
             </Tree>
@@ -141,7 +166,7 @@ const mapStateToProps = ({ global, setup }) => ({
   selectedDepartment: setup.permissionPro.selectedDepartment,
   isDisplayDepartmentDialog: setup.permissionPro.ui.isDisplayDepartmentDialog,
   teamIds: getTeamIds({ global }),
-  treeExpandKeys: setup.permissionPro.ui.treeExpandKeys,
+  treeExpandKeys: getAllExpandedKeys({ setup }),
 });
 const mapDispatchToProps = {
   fetchPermission,

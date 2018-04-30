@@ -13,6 +13,7 @@ import FilterCriteria from './FilterCriteria/index';
 import TaskDetails from './TaskDetails/index';
 import FindDuplicates from './FindDuplicates/index';
 import PageLoading from './PageLoading/index';
+import SelectionZone from './SelectionZone/index';
 
 export {
   TopPanel,
@@ -30,4 +31,5 @@ export {
   TaskDetails,
   FindDuplicates,
   PageLoading,
+  SelectionZone,
 };

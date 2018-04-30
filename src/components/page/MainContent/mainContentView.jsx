@@ -27,7 +27,7 @@ import {
   UIDemo,
   Users,
   GlobalSearch,
-
+  ObjectShare,
 } from 'views/index';
 import Enums from 'utils/EnumsManager';
 
@@ -41,7 +41,9 @@ const MainContent = () => (
     <Route path="/setup/company-info/company-info" component={CompanyInfo} />
     <Route path="/setup/company-info/users" component={Users} />
     <Route path="/setup/company-info/chart" component={OrganisationChart} />
-    <Route path="/user/email-setting" component={EmailTemplates} />
+    <Route path="/setup/company-info/permissions" component={PermissionProfile} />
+    <Route path="/setup/:objectType/fields" component={Fields} />
+    <Route path="/setup/:objectType/pageLayout" component={Layouts} />
     <Route path="/setup/email/templates" component={EmailTemplates} />
     <Route
       path="/setup/email/template-edit/:templateId"
@@ -53,30 +55,41 @@ const MainContent = () => (
     />
     <Route path="/:objectType/:objectId/email/new" component={NewEmail} />
     <Route path="/setup/email/campaign" component={EmailCampaign} exact />
-    <Route
-      path="/setup/email/campaign/edit/:campaignId"
-      component={EditCampaign}
-    />
+    <Route path="/setup/email/campaign/edit/:campaignId" component={EditCampaign} />
     <Route path="/setup/email/campaign/new" component={NewCampaign} />
-    <Route
-      path="/setup/company-info/permissions"
-      component={PermissionProfile}
-    />
-    <Route path="/setup/:objectType/fields" component={Fields} />
-    <Route path="/setup/:objectType/pageLayout" component={Layouts} />
-    <Route path="/my-setting" component={MySetting} />
 
+    <Route path="/my-setting" component={MySetting} />
+    <Route path="/email/new" component={NewEmail} />
+    <Route path="/user/email-setting" component={EmailTemplates} />
     <Route path="/dashboard" component={Dashboard} exact />
-    <Route path="/:objectType/sharing/:objectId" component={FindDuplicates} />
-    <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
+    <Route path="/globalSearch" component={GlobalSearch} exat />
+
     <Route path="/leads/convert/find/:objectId" component={FindDuplicates} />
     <Route path="/leads/convert/convert/:objectId" component={ConvertLeads} />
     <Route path="/leads/merge/" component={MergeLeads} />
 
-    <Route path="/:objectType/:objectId/attachments/0000-0000" component={ClientAttachments} />
+
+    <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
+    <Route
+      path="/:objectType/sharing/:objectId"
+      render={(props) => {
+        const { match } = props;
+        const { objectId, objectType } = match.params;
+        if ([Leads, Accounts].indexOf(objectType) !== -1) {
+          return (
+            <ObjectShare
+              {...props}
+              objectId={objectId}
+              objectType={objectType}
+            />
+          );
+        }
+        // TOOD: return 404 page
+        return null;
+      }}
+    />
+    <Route path="/:objectType/:objectId/attachments" component={ClientAttachments} exact />
     <Route path="/:objectType/:objectId/tasks/:taskId" component={ObjectTask} />
-    <Route path="/dashboard" component={Dashboard} exact />
-    <Route path="/globalSearch" component={GlobalSearch} exat />
     <Route path="/:objectType/views/:viewId" component={ObjectView} />
     <Route
       path="/:objectType/:objectId"

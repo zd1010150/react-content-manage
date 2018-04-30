@@ -1,6 +1,6 @@
-import { get, post } from 'store/http/httpAction';
 import _ from 'lodash';
-import { TOGGLE_LANGUAGE, SET_PERMISSION, SET_ACCOUNTINFO, SET_PAGETITLE, SET_GLOBAL_SETTING, RESET_USER, SET_TEAMS_GLOBAL, SET_LOGO } from './actionType';
+import { get, post } from 'store/http/httpAction';
+import { RESET_USER, SET_ACCOUNTINFO, SET_GLOBAL_SETTING, SET_LOGO, SET_PAGETITLE,SET_USERS_GLOBAL, SET_PERMISSION, SET_TEAMS_GLOBAL, TOGGLE_LANGUAGE } from './actionType';
 
 
 export const toggleLanguage = language => ({
@@ -55,3 +55,29 @@ export const fetchTeams = () => dispatch => get('/admin/teams/struct/info').then
   }
 });
 
+
+//
+export const setUsers = users => ({
+  type: SET_USERS_GLOBAL,
+  users,
+});
+
+export const tryFetchAllUsersIfNeeded = () => (dispatch, getState) => {
+  // TODO: check current state of users substore to avoid unnecessary fetch
+  return get('/admin/users/all').then((data) => {
+    if (data && data.data) {
+      dispatch(setUsers(data.data));
+    }
+  });
+};
+
+
+//
+export const tryFetchAllTeamsIfNeeded = () => (dispatch, getState) => {
+  // TODO: check current state of teams substore to avoid unnecessary fetch
+  return get('/admin/teams/struct/info').then((data) => {
+    if (data && data.teams) {
+      dispatch(setTeams(data.teams));
+    }
+  });
+};

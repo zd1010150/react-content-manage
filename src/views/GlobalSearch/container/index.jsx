@@ -8,7 +8,6 @@ import { injectIntl } from 'react-intl';
 import { toTimezone } from 'utils/dateTimeUtils';
 import Enums from 'utils/EnumsManager';
 import { Link } from 'react-router-dom';
-
 import { fetchResultFromRemote, fetchResultByObjtype } from '../flow/action';
 
 
@@ -50,7 +49,7 @@ class GlobalSearch extends React.Component {
         },
       };
     }
-    renderColumnByType = (type, column) => {
+    renderColumnByType = (type, column, objectType) => {
       const configs = {
         title: column.field_label,
         dataIndex: column.field_name,
@@ -74,7 +73,7 @@ class GlobalSearch extends React.Component {
           // As requested, we use Name and Email fields as a entry point to object details
           if (column.field_name === 'name'
                     || column.field_name === 'email') {
-            const { theme, objectType } = this.props;
+            const theme = objTypeAndClassTypeMap[objectType];
             extraConfigs.render = (text, record) => (
               <Link
                 className={`${theme}-theme-text`}
@@ -96,7 +95,7 @@ class GlobalSearch extends React.Component {
     }
     renderColumns = (objType) => {
       const { columnsMeta } = this.props;
-      const columns = columnsMeta[objType].map(column => this.renderColumnByType(column.crm_data_type, column));
+      const columns = columnsMeta[objType].map(column => this.renderColumnByType(column.crm_data_type, column, objType));
       return columns;
     }
     render() {
