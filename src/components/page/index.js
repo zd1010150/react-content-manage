@@ -16,6 +16,8 @@ import PageLoading from './PageLoading/index';
 import Permission from './Permission/index';
 import SelectionZone from './SelectionZone/index';
 import SimpleTable from './SimpleTable/index';
+import Unauthentication from './Unauthentication/index';
+
 
 export {
   TopPanel,
@@ -36,4 +38,5 @@ export {
   Permission,
   SelectionZone,
   SimpleTable,
+    Unauthentication,
 };

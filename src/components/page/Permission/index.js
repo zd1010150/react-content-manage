@@ -7,18 +7,22 @@ import _ from 'lodash';
 class Permission extends React.Component {
   render() {
     const {
-      accountPermissions, permission, children,
+      accountPermissions, permission, children, nullComponent,
     } = this.props;
     return (
       <React.Fragment>
-        { !_.isEmpty(permission) && accountPermissions.indexOf(permission) > -1 ? children : ''}
+        { !_.isEmpty(permission) && accountPermissions.indexOf(permission) > -1 ? children : nullComponent}
       </React.Fragment>
     );
   }
 }
+Permission.defaultProps = {
+  nullComponent: '',
+};
 Permission.propTypes = {
   permission: PropTypes.string.isRequired,
   accountPermissions: PropTypes.array.isRequired,
+  nullComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
 };
 const mapStateToProps = ({ global }) => ({
   accountPermissions: global.permissions,

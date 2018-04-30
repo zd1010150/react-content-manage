@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import ComponanyInfoPanel from '../component/companyInfoPanel';
 import CompaneyUserStatic from '../component/companyUserStatic';
 import Logo from '../component/logo';
@@ -19,9 +21,11 @@ class companyInfo extends Component {
 
     return (
       <Fragment>
-        <ComponanyInfoPanel {...this.props} />
-        <CompaneyUserStatic userInfo={userInfo} history={history} />
-        <Logo companyLogo={companyLogo} setLogo={setLogo} />
+        <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_COMPANYINFORMATION_VIEW} nullComponent={<Unauthentication />}>
+          <ComponanyInfoPanel {...this.props} />
+          <CompaneyUserStatic userInfo={userInfo} history={history} />
+          <Logo companyLogo={companyLogo} setLogo={setLogo} />
+        </Permission>
       </Fragment>
     );
   }
