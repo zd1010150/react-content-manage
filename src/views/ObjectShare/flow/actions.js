@@ -51,3 +51,12 @@ export const updateSelection = (id, record, isTeam, isRemove) => ({
   type: UPDATE_SELECTION,
   payload: { id, record, isTeam, isRemove },
 });
+
+
+//
+export const tryUpdateShares = (objectType, objectId, params) => dispatch =>
+  patch(`/admin/${objectType}/${objectId}/shares`, params, dispatch).then((data) => {
+    if (data) {
+      debugger;
+    }
+  });

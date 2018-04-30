@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { getThemeByType } from 'utils/common';
 import { tryFetchAllTeamsIfNeeded, tryFetchAllUsersIfNeeded } from 'store/global/action';
@@ -14,6 +15,7 @@ import {
   setActiveTeam,
   tryFetchShareTo,
   updateSelection,
+  tryUpdateShares,
 } from '../flow/actions';
 
 const { DetailTools, ObjectTypes } = Enums;
@@ -61,6 +63,23 @@ class ObjectShare extends Component {
     const { changeSelections, users } = this.props;
     changeSelections(checkedValues, users);
     this.setState({ showModal: !this.state.showModal });
+  }
+
+  handleCancelClick = () => this.props.history.goBack()
+
+  handleSaveClick = () => {
+    const {
+      objectId,
+      objectType,
+      sharedTeams,
+      sharedUsers,
+      tryUpdateShares,
+    } = this.props;
+    const params = {
+      share_to_teams: sharedTeams.map(team => team.id),
+      share_to_users: sharedUsers.map(user => user.id),
+    };
+    tryUpdateShares(objectType, objectId, params);
   }
 
   handleSelect = (selectedTeam) => {
@@ -146,6 +165,22 @@ class ObjectShare extends Component {
             </Col>
           </Row>
         )}
+        <Row className="mt-md">
+          <Button
+            className={`${theme}-theme-btn`}
+            onClick={this.handleSaveClick}
+          >
+            <Icon size="small" type="save" />
+            {formatMessage({ id: 'global.ui.button.save' })}
+          </Button>
+          <Button
+            className="ml-sm"
+            onClick={this.handleCancelClick}
+          >
+            <Icon size="small" type="close" />
+            {formatMessage({ id: 'global.ui.button.cancel' })}
+          </Button>
+        </Row>
       </Panel>
     );
   }
@@ -172,5 +207,6 @@ const mapDispatchToProps = {
   tryFetchAllTeamsIfNeeded,
   tryFetchAllUsersIfNeeded,
   updateSelection,
+  tryUpdateShares,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ObjectShare));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(ObjectShare)));
