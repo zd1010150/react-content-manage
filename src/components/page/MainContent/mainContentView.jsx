@@ -29,10 +29,11 @@ import {
   GlobalSearch,
   ObjectShare,
   NewOpportunity,
+  ClientDetails,
 } from 'views/index';
 import Enums from 'utils/EnumsManager';
 
-const { ObjectTypes } = Enums;
+const { ObjectTypes, PhantomId } = Enums;
 const { Leads, Accounts, Opportunities } = ObjectTypes;
 
 const MainContent = () => (
@@ -62,7 +63,22 @@ const MainContent = () => (
     <Route path="/leads/merge/" component={MergeLeads} />
 
 
-    <Route path="/accounts/:objectId/opportunities/0000-0000" component={NewOpportunity} />
+    <Route
+      path="/accounts/:accountId/opportunities/0000-0000"
+      render={(props) => {
+        const { match } = props;
+        const { accountId } = match.params;
+        return (
+          <ClientDetails
+            {...props}
+            key={`${Opportunities}_${PhantomId}`}
+            accountId={accountId}
+            objectId={PhantomId}
+            objectType={Opportunities}
+          />
+        );
+      }}
+    />
     <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
     <Route
       path="/:objectType/sharing/:objectId"

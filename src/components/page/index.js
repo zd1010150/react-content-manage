@@ -17,7 +17,7 @@ import Permission from './Permission/index';
 import SelectionZone from './SelectionZone/index';
 import SimpleTable from './SimpleTable/index';
 import Unauthentication from './Unauthentication/index';
-
+import PrimaryDetails from './PrimaryDetails/index';
 
 export {
   TopPanel,
@@ -38,5 +38,6 @@ export {
   Permission,
   SelectionZone,
   SimpleTable,
-    Unauthentication,
+  Unauthentication,
+  PrimaryDetails,
 };

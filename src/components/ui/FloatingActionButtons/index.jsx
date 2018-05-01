@@ -24,6 +24,11 @@ const buttons = [
     icon: 'reload',
     func: '_onRevertClick',
   },
+  {
+    key: 'GoBack',
+    icon: 'logout',
+    func: '_onGoBackClick',
+  },
 ];
 
 const renderButton = (btn, theme, formatMessage, methods) => {
@@ -61,6 +66,16 @@ const renderButton = (btn, theme, formatMessage, methods) => {
           </Button>
         </Popconfirm>
       );
+    case 'GoBack':
+      return (
+        <Button
+          key={btn.key}
+          className={btnCls}
+          onClick={methods[btn.func]}
+        >
+          <Icon type={btn.icon} size="small" />
+        </Button>
+      );
     default:
       return null;
   }
@@ -72,6 +87,7 @@ const propTypes = {
   onSaveClick: PropTypes.func,
   onSaveAndNewClick: PropTypes.func,
   onRevertClick: PropTypes.func,
+  onGoBackClick: PropTypes.func,
 };
 
 
@@ -81,6 +97,7 @@ const FloatActionButtons = ({
   onSaveClick,
   onSaveAndNewClick,
   onRevertClick,
+  onGoBackClick,
 }) => {
 
   const _onSaveClick = $ => {
@@ -101,10 +118,17 @@ const FloatActionButtons = ({
     }
   }
 
+  const _onGoBackClick = $ => {
+    if (_.isFunction(onGoBackClick)) {
+      onGoBackClick();
+    }
+  }
+
   const privateMethods = {
     _onSaveClick,
     _onSaveAndNewClick,
     _onRevertClick,
+    _onGoBackClick,
   };
 
   return (

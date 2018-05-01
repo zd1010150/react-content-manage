@@ -27,6 +27,7 @@ import GlobalSearch from './GlobalSearch/index';
 import ObjectView from './ObjectView/index';
 import ObjectShare from './ObjectShare/index';
 import NewOpportunity from './NewOpportunity/index';
+import ClientDetails from './ClientDetails/index';
 
 export {
   Dashboard,
@@ -56,4 +57,5 @@ export {
   ObjectView,
   ObjectShare,
   NewOpportunity,
+  ClientDetails,
 };
