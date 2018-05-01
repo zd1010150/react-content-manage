@@ -14,6 +14,8 @@ import {
     EmailTemplateButton,
     EmailTemplateIcon
 } from "../../component";
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 const cx = classNames.bind(styles);
 
 const TemplateDetail = ({
@@ -51,16 +53,18 @@ const TemplateDetail = ({
         />
     );
     const actionsRight = (
-        <EmailTemplateButton
-            className="btn-ellipse email-theme-btn"
-            size="small"
-            onClick={() => {
-                setEditFolderViewVisible(true);
-            }}
-        >
-            <EmailTemplateIcon type="edit"/>
-            {formatMessage({id: "page.emailTemplates.editFolders"})}
-        </EmailTemplateButton>
+        <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_EDITMYFOLDERS}>
+            <EmailTemplateButton
+                className="btn-ellipse email-theme-btn"
+                size="small"
+                onClick={() => {
+                    setEditFolderViewVisible(true);
+                }}
+            >
+                <EmailTemplateIcon type="edit"/>
+                {formatMessage({id: "page.emailTemplates.editFolders"})}
+            </EmailTemplateButton>
+        </Permission>
     );
     const pagination = {
         defaultCurrent: templatesDataTablePagination.currentPage,
@@ -79,38 +83,44 @@ const TemplateDetail = ({
             render: record =>
                 <span>
           {isCurrentUser() &&
-          <EmailTemplateIcon
-              type="edit"
-              onClick={() => {
-                  fetchTemplateData({
-                      templateId: record.id,
-                      cb: history.push("template-edit/" + record.id)
-                  });
-              }}
-          />}
+          <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_UPDATE}>
+              <EmailTemplateIcon
+                  type="edit"
+                  onClick={() => {
+                      fetchTemplateData({
+                          templateId: record.id,
+                          cb: history.push("template-edit/" + record.id)
+                      });
+                  }}
+              />
+          </Permission>}
                     {!isCurrentUser() &&
-                    <EmailTemplateIcon
-                        type="eye-o"
-                        onClick={() => {
-                            fetchTemplateData({
-                                templateId: record.id,
-                                cb: () => showModal(),
-                                cbErr: () => alert("no access")
-                            });
-                        }}
-                    />}
+                    <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_VIEW}>
+                        <EmailTemplateIcon
+                            type="eye-o"
+                            onClick={() => {
+                                fetchTemplateData({
+                                    templateId: record.id,
+                                    cb: () => showModal(),
+                                    cbErr: () => alert("no access")
+                                });
+                            }}
+                        />
+                    </Permission>}
 
                     {isCurrentUser() &&
-                    <Popconfirm
-                        title="Are you sure to delete it?"
-                        onConfirm={() =>
-                            deleteTemplate({
-                                templateId: record.id,
-                                folderId: selectedFolder.id
-                            })}
-                    >
-                        <EmailTemplateIcon type="delete" className="danger pl-lg"/>
-                    </Popconfirm>}
+                    <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_DELETE}>
+                        <Popconfirm
+                            title="Are you sure to delete it?"
+                            onConfirm={() =>
+                                deleteTemplate({
+                                    templateId: record.id,
+                                    folderId: selectedFolder.id
+                                })}
+                        >
+                            <EmailTemplateIcon type="delete" className="danger pl-lg"/>
+                        </Popconfirm>
+                    </Permission>}
         </span>
         },
         {
