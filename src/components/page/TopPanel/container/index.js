@@ -35,7 +35,7 @@ class topPanel extends React.Component {
   }
   render() {
     const {
-      language, account, name, logo,
+      language, account, name, logo, accountPermissions
     } = this.props;
     return (
       <div
@@ -43,7 +43,7 @@ class topPanel extends React.Component {
       >
         <div className={cx('siteTitle')}> <img src={logo} className={cx('crm-logo')} alt="company logo" /></div>
         <TopNav />
-        <UserSettings name={name} logoutHandler={() => this.onLogoutClick()} />
+        <UserSettings accountPermissions={accountPermissions} name={name} logoutHandler={() => this.onLogoutClick()} />
         <Language language={language} onChange={language => this.changeLanguage(language)} />
         <Permission permission={PERMISSIONS.SETUP}>
           <Link className={cx('setupBtn')} to="/setup/company-info/company-info"><Icon className="mr-sm" type="setting" />Setup</Link>
@@ -71,6 +71,7 @@ const mapStateToProps = ({ loginUser, global }) => ({
   account: global.account,
   name: loginUser.name,
   logo: global.companyLogo,
+  accountPermissions: global.permissions,
 });
 const mapDispatchToProp = {
   toggleLanguage,

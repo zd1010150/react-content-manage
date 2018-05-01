@@ -68,6 +68,7 @@ const PERMISSIONS = Object.freeze({
   SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_EDITMYFOLDERS: 'Setup-EmailCommunications-EmailTemplates-EditMyFolders',
   SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_UPDATE: 'Setup-EmailCommunications-EmailTemplates-Update',
   SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_VIEW: 'Setup-EmailCommunications-EmailTemplates-View',
+  SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_ASSIGN:   'Setup-EmailCommunications-EmailTemplates-Assign',
   SETUP_LEADS: 'Setup-Leads',
   SETUP_LEADS_FIELDS: 'Setup-Leads-Fields',
   SETUP_LEADS_FIELDS_ADD: 'Setup-Leads-Fields-Add',
