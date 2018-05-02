@@ -75,7 +75,6 @@ const setUpdateValues = updatedData => ({
 export const tryUpdateClient = (objectId, objectType, accountId) => (dispatch, getState) => {
   getRequestMethod(objectId)(getUpdateUrl(objectId, objectType, accountId), mapToRequestBody(getState()), dispatch).then(data => {
     if (data && !_.isEmpty(data.data)) {
-      debugger;
       if (objectId === PhantomId) {
         // set success and push new history to be exist one
         dispatch(setNewId(data.data.id));

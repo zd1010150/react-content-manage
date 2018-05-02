@@ -92,7 +92,7 @@ export const getUpdateUrl = (id, type, accountId) => {
   *-------------------------------------------------------------------*/
 /**
  * 
- * @param {string} id 
+ * @param {string} id
  */
 export const getRequestMethod = (id = PhantomId) => {
   if (id === PhantomId) {
