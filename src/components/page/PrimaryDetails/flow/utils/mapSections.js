@@ -4,6 +4,7 @@ import getValueByType from './getValueByType';
 const FieldKeys = {
   Active: 'active',
   Value: 'value',
+  Options: 'options',
 };
 
 /**
@@ -136,6 +137,22 @@ export const resetAllFieldsValue = (sections) => {
   sectionCopy.forEach((section) => {
     section.fields.forEach((field) => {
       field.value = field.initialValue;
+    });
+  });
+  return sectionCopy;
+};
+
+
+/**
+ * Update field initial value after save
+ * @param {object} data
+ * @param {array} sections
+ */
+export const updateSections = (data, sections) => {
+  const sectionCopy = _.cloneDeep(sections);
+  sectionCopy.forEach((section) => {
+    section.fields.forEach((field) => {
+      field.initialValue = data[field.name];
     });
   });
   return sectionCopy;

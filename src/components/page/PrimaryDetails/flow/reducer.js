@@ -9,6 +9,8 @@ import {
   SET_NEW_ID,
   RESET_ID,
   RESET,
+  UPDATE_VALUES,
+  SET_FIELD_OPTIONS,
 } from './actionTypes';
 import {
   setActiveById,
@@ -17,6 +19,7 @@ import {
   setFieldValueByKey,
   resetFieldValue,
   resetAllFieldsValue,
+  updateSections,
 } from './utils/mapSections';
 
 const initialState = {
@@ -77,6 +80,28 @@ const details = (state = initialState, action) => {
       return {
         ...state,
         newId,
+      };
+
+
+    case UPDATE_VALUES:
+      const { updatedData } = action.payload;
+      return {
+        ...state,
+        sections: updateSections(updatedData, state.sections),
+      };
+
+
+    case SET_FIELD_OPTIONS:
+      const { lookupFieldId, options } = action.payload;
+      return {
+        ...state,
+        sections: setFieldValueByKey(
+          lookupFieldId,
+          action.payload.code,
+          state.sections,
+          'options',
+          options,
+        ),
       };
 
 
