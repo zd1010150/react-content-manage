@@ -26,7 +26,6 @@ const {
 
 
 const defaultProps = {
-  initialValue: '',
   options: [],
   size: 'small',
   type: '',
@@ -103,7 +102,7 @@ const CustomField = ({
 
   const _onBlur = $ => {
     if (_.isFunction(onBlur)) {
-      onBlur();
+      onBlur(id);
     }
   };
 
