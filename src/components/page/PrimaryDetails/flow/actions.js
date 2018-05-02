@@ -1,12 +1,21 @@
 /* eslint arrow-parens: ["error", "as-needed"] */
 import { get } from 'store/http/httpAction';
-import getFetchUrl from './utils/getFetchUrl';
-import getUpdateUrl from './utils/getUpdateUrl';
-import { SET_SECTIONS } from './actionTypes';
+import Enums from 'utils/EnumsManager';
+import { getFetchUrl, getUpdateUrl, getRequestMethod } from './utils/requests';
+import mapToRequestBody from './utils/mapToRequestBody';
+import {
+  SET_SECTIONS,
+  SET_ACTIVE_FIELD,
+  RESET_ACTIVE_FIELD,
+  SET_FIELD_VALUE,
+  RESET_FIELD_VALUE,
+  RESET_ALL_FIELDS,
+  SET_NEW_ID,
+  RESET_ID,
+  RESET,
+} from './actionTypes';
 
-const mapToApi = store => {
-  console.dir(store.objectDetails);
-};
+const { PhantomId } = Enums;
 
 
 /**
@@ -34,19 +43,74 @@ export const tryFetchObjectDetails = (objectId, objectType, accountId) => dispat
 
 /**
  *  TODO: OPERATIONS LIST
- *  save, save and new, revert all, go back
- *  revert single, change field, load options for lookup field when first open
- *  ?
+ *  save and new, go back
+ *  load options for lookup field when first open
+ *  [doing]
+ *  save
+ *  update
+ *  [done]
+ *  check active field is in proper look by type
+ *  toggle field
+ *  change field
+ *  revert single
+ *  revert all
  */
 
 /**
  *  SAVE OR UPDATE A CLIENT
  */
-export const tryUpdateClient = (objectId, objectType) => (dispatch, getState) =>
-  get(getUpdateUrl(objectId, objectType), mapToApi(getState()), dispatch).then(data => {
-    if (data) {
+const setNewId = newId => ({
+  type: SET_NEW_ID,
+  payload: { newId },
+});
+
+export const tryUpdateClient = (objectId, objectType, accountId) => (dispatch, getState) => {
+  getRequestMethod(objectId)(getUpdateUrl(objectId, objectType, accountId), mapToRequestBody(getState()), dispatch).then(data => {
+    if (data && !_.isEmpty(data.data)) {
       debugger;
+      // set success and push new history to be exist one
+      if (objectId === PhantomId) {
+        dispatch(setNewId(data.data.id));
+      }
     }
   });
+};
 
-export const setField = () => {};
+
+// TOGGLE FIELD STATE
+export const setActiveField = (activeId, activeCode) => ({
+  type: SET_ACTIVE_FIELD,
+  payload: { activeId, activeCode },
+});
+
+
+export const resetActiveField = (inactiveId, inactiveCode) => ({
+  type: RESET_ACTIVE_FIELD,
+  payload: { inactiveId, inactiveCode },
+});
+
+
+// SET FIELD NEW VALUE
+export const setFieldValue = (fieldId, code, newValue) => ({
+  type: SET_FIELD_VALUE,
+  payload: { fieldId, code, newValue },
+});
+
+
+export const resetFieldValue = (resetFieldId, resetCode) => ({
+  type: RESET_FIELD_VALUE,
+  payload: { resetFieldId, resetCode },
+});
+
+export const resetAllFieldsValue = () => ({
+  type: RESET_ALL_FIELDS,
+});
+
+// Resets
+export const resetId = () => ({
+  type: RESET_ID,
+});
+
+export const reset = () => ({
+  type: RESET,
+});

@@ -16,7 +16,7 @@ const {
 /**
  *
  * @param {string} type: one of the value in FieldTypes
- * @param {string/number} value
+ * @param {any} value
  * @param {string} lookupKey
  * @param {array} mappedValues
  */
@@ -24,10 +24,16 @@ export default (type, value = '') => {
   switch (type) {
     case DateOnly:
       // TODO: modify function in order to omit offset and format
-      return toTimezone(value, '+1100', 'YYYY-MM-DD');
+      // need to pass undefined in order to make DatePicker works with empty value
+      // because moment will convert undefined to 'today' date/time
+      return !value || value === '' ?
+              undefined :
+              toTimezone(value, '+1100', 'YYYY-MM-DD');
     case DateTime:
       // TODO: modify function in order to omit offset and format
-      return toTimezone(value, '+1100', 'YYYY-MM-DD HH:mm:ss');
+      return !value || value === '' ?
+              undefined :
+              toTimezone(value, '+1100', 'YYYY-MM-DD HH:mm:ss');
     case Email:
     case LongText:
     case NumberInput:

@@ -5,6 +5,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
+import {
+  setActiveField,
+  resetActiveField,
+  setFieldValue,
+  resetFieldValue,
+} from '../flow/actions';
 
 const { FieldTypes } = Enums;
 const { DateOnly, Display } = FieldTypes;
@@ -18,11 +24,11 @@ const propTypes = {
 
 
 class FieldsSection extends Component {
-  // handleBlur = () => this.props.resetActiveField()
+  // TOGGLE FIELD STATE
+  handleDoubleClick = id => this.props.setActiveField(id, this.props.code)
+  handleBlur = id => this.props.resetActiveField(id, this.props.code)
 
-  // handleChange = (id, value) => this.props.setFieldValue(this.props.code, id, value)
-
-  // handleDoubleClick = id => this.props.setActiveField(this.props.code, id)
+  handleChange = (id, value) => this.props.setFieldValue(id, this.props.code, value)
 
   // handleDropdownOpen = (id, options) => {
   //   if (!options || options.length < 1) {
@@ -31,7 +37,7 @@ class FieldsSection extends Component {
   //   }
   // }
 
-  // handleRevertClick = id => this.props.resetFieldValue(this.props.code, id)
+  handleRevertClick = id => this.props.resetFieldValue(id, this.props.code)
 
   render() {
     const {
@@ -69,11 +75,11 @@ class FieldsSection extends Component {
                       lookupDisplayKey={field.lookupDisplayKey}
                       format={field.type === DateOnly ? dateFormat : timeFormat}
                       type={field.active ? field.type : Display}
-                      onChange={this.handleChange}
+                      onBlur={this.handleBlur}
                       onDoubleClick={this.handleDoubleClick}
+                      onChange={this.handleChange}
                       onDropdownOpen={this.handleDropdownOpen}
                       onRevertClick={this.handleRevertClick}
-                      onBlur={this.handleBlur}
                     />
                   );
                 }
@@ -91,10 +97,10 @@ class FieldsSection extends Component {
 FieldsSection.propTypes = propTypes;
 const mapStateToProps = () => ({});
 const mapDispatchToProps = {
-  // setActiveField,
-  // resetActiveField,
-  // setFieldValue,
-  // resetFieldValue,
+  setActiveField,
+  resetActiveField,
+  setFieldValue,
+  resetFieldValue,
   // tryFetchFieldOptions,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FieldsSection);

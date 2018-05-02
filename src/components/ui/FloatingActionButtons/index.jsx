@@ -26,7 +26,7 @@ const buttons = [
   },
   {
     key: 'GoBack',
-    icon: 'logout',
+    icon: 'close',
     func: '_onGoBackClick',
   },
 ];

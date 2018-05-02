@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { isValidClientTypes } from 'utils/propChecks';
 import { ActionButtons, FieldsSection } from '../components/index';
-import { tryFetchObjectDetails } from '../flow/actions';
+import { resetId, tryFetchObjectDetails } from '../flow/actions';
 
 const { PhantomId } = Enums;
 
@@ -29,6 +30,19 @@ class PrimaryDetails extends Component {
     tryFetchObjectDetails(objectId, objectType, accountId);
   }
 
+  componentDidUpdate() {
+    const {
+      history,
+      objectType,
+      newId,
+      resetId,
+    } = this.props;
+    if (newId !== '') {
+      history.push(`/${objectType}/${newId}`);
+      resetId();
+    }
+  }
+
   getPanelTitle = () => {
     const { objectId, theme, intl } = this.props;
     const { formatMessage } = intl;
@@ -40,6 +54,7 @@ class PrimaryDetails extends Component {
 
   render() {
     const {
+      accountId,
       objectId,
       objectType,
       sections,
@@ -48,6 +63,7 @@ class PrimaryDetails extends Component {
 
     const actions = (
       <ActionButtons
+        accountId={accountId}
         objectId={objectId}
         objectType={objectType}
         theme={theme}
@@ -79,8 +95,10 @@ PrimaryDetails.propTypes = propTypes;
 const mapStateToProps = ({ global, clientDetails }) => ({
   language: global.language,
   sections: clientDetails.details.sections,
+  newId: clientDetails.details.newId,
 });
 const mapDispatchToProps = {
+  resetId,
   tryFetchObjectDetails,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(PrimaryDetails));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(PrimaryDetails)));
