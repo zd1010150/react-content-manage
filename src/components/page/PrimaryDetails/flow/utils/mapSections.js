@@ -141,19 +141,3 @@ export const resetAllFieldsValue = (sections) => {
   });
   return sectionCopy;
 };
-
-
-/**
- * Update field initial value after save
- * @param {object} data
- * @param {array} sections
- */
-export const updateSections = (data, sections) => {
-  const sectionCopy = _.cloneDeep(sections);
-  sectionCopy.forEach((section) => {
-    section.fields.forEach((field) => {
-      field.initialValue = data[field.name];
-    });
-  });
-  return sectionCopy;
-};
