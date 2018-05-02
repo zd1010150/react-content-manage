@@ -10,6 +10,7 @@ import {
   resetActiveField,
   setFieldValue,
   resetFieldValue,
+  tryFetchFieldOptions,
 } from '../flow/actions';
 
 const { FieldTypes } = Enums;
@@ -30,12 +31,12 @@ class FieldsSection extends Component {
 
   handleChange = (id, value) => this.props.setFieldValue(id, this.props.code, value)
 
-  // handleDropdownOpen = (id, options) => {
-  //   if (!options || options.length < 1) {
-  //     const { code, tryFetchFieldOptions } = this.props;
-  //     tryFetchFieldOptions(code, id);
-  //   }
-  // }
+  handleDropdownOpen = (id, options) => {
+    if (!options || options.length < 1) {
+      const { code, tryFetchFieldOptions } = this.props;
+      tryFetchFieldOptions(code, id);
+    }
+  }
 
   handleRevertClick = id => this.props.resetFieldValue(id, this.props.code)
 
@@ -101,6 +102,6 @@ const mapDispatchToProps = {
   resetActiveField,
   setFieldValue,
   resetFieldValue,
-  // tryFetchFieldOptions,
+  tryFetchFieldOptions,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FieldsSection);
