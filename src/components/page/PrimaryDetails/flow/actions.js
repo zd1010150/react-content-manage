@@ -1,6 +1,7 @@
 /* eslint arrow-parens: ["error", "as-needed"] */
 import { get } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
+import { setTools } from 'components/page/DetailsToolbar/flow/actions';
 import { getFetchUrl, getUpdateUrl, getRequestMethod } from './utils/requests';
 import mapToRequestBody from './utils/mapToRequestBody';
 import {
@@ -35,8 +36,8 @@ export const tryFetchObjectDetails = (objectId, objectType, accountId) => dispat
       const { tools, sections, modules } = data.data.structure;
       if (tools && sections && modules) {
         dispatch(setSections(data.mapped_values, sections));
-        // TODO: Add actions
-        // dispatch(setTools(tools));
+        dispatch(setTools(tools));
+        // TODO: set modules
         // dispatch(setModules(modules));
       }
     }
