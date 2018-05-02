@@ -13,7 +13,6 @@ import {
   SET_NEW_ID,
   RESET_ID,
   RESET,
-  UPDATE_VALUES,
   SET_FIELD_OPTIONS,
 } from './actionTypes';
 
@@ -44,32 +43,11 @@ export const tryFetchObjectDetails = (objectId, objectType, accountId) => dispat
   });
 
 /**
- *  TODO: OPERATIONS LIST
- *  save and new
- *  [doing]
- *  load options for lookup field when first open
- *  [done]
- *  save
- *  update
- *  go back
- *  check active field is in proper look by type
- *  toggle field
- *  change field
- *  revert single
- *  revert all
- */
-
-/**
  *  SAVE OR UPDATE A CLIENT
  */
 const setNewId = newId => ({
   type: SET_NEW_ID,
   payload: { newId },
-});
-
-const setUpdateValues = updatedData => ({
-  type: UPDATE_VALUES,
-  payload: { updatedData },
 });
 
 export const tryUpdateClient = (objectId, objectType, accountId) => (dispatch, getState) => {
@@ -79,11 +57,22 @@ export const tryUpdateClient = (objectId, objectType, accountId) => (dispatch, g
         // set success and push new history to be exist one
         dispatch(setNewId(data.data.id));
       } else {
-        // set updated value to be initial values
-        // TODO: Issues with this action need to be resolved
-        // dispatch(setUpdateValues(data.data));
-        // Instead, we use refetch for now
+        // TODO: Rethink for better performance
         dispatch(tryFetchObjectDetails(objectId, objectType, accountId));
+      }
+    }
+  });
+};
+
+export const tryUpdateAndAddClient = (objectId, objectType, accountId) => (dispatch, getState) => {
+  getRequestMethod(objectId)(getUpdateUrl(objectId, objectType, accountId), mapToRequestBody(getState()), dispatch).then(data => {
+    if (data && !_.isEmpty(data.data)) {
+      if (objectId === PhantomId) {
+        // try refetch object create info
+        dispatch(tryFetchObjectDetails(objectId, objectType, accountId));
+      } else {
+        // push new url
+        dispatch(setNewId(PhantomId));
       }
     }
   });
