@@ -28,7 +28,6 @@ import {
   Users,
   GlobalSearch,
   ObjectShare,
-  NewOpportunity,
   ClientDetails,
 } from 'views/index';
 import Enums from 'utils/EnumsManager';
