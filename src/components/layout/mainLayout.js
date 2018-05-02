@@ -18,9 +18,19 @@ import SetupLayout from './setupLayout';
 
 const cx = classNames.bind(styles);
 class MainLayout extends React.Component {
+  componentDidMount() {
+    const {
+      fetchGlobalSetting, fetchAccountPermission,
+    } = this.props;
+    const localLoginUser = getStore(EnumsManager.LocalStorageKey);
+    if (!_.isEmpty(localLoginUser)) {
+      fetchGlobalSetting();
+      fetchAccountPermission();
+    }
+  }
     hasLoggedIn = () => {
       const {
-        loginUser, loginSuccess, fetchGlobalSetting, fetchAccountPermission,
+        loginUser, loginSuccess,
       } = this.props;
       // we'll check the login status in localstorage instead of redux/session storage
       // because it will help us to sync the status across application instances
@@ -31,8 +41,7 @@ class MainLayout extends React.Component {
       if (_.isEmpty(loginUser)) {
         loginSuccess(localLoginUser);
       }
-      fetchGlobalSetting();
-      fetchAccountPermission();
+
       return true;
     }
 
