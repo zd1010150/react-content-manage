@@ -4,6 +4,8 @@ import _ from 'lodash';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import classNames from 'classnames/bind';
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import PropTypes from 'prop-types';
 import { Select, Tree, Button, Row, Col, Icon } from 'antd';
 import { Panel } from 'components/ui/index';
@@ -95,29 +97,32 @@ class AssignDepartmentContainer extends React.Component {
       teamIds,
     } = this.props;
     const { formatMessage } = intl;
+    const permissionPrefix = `SETUP_${objectType.toUpperCase()}_PAGELAYOUT`;
     const theme = objTypeAndClassTypeMap[objectType];
     return (
-      <Panel panelClasses={`${theme}-theme-panel`} panelTitle={formatMessage({ id: 'page.layouts.pageLayoutAssignment' })}>
-        <Row className="pl-lg">
-          <Col span={24}>
-            <Tree
-              className="large-team-tree"
-              defaultExpandAll
-              autoExpandParent={false}
-              expandedKeys={this.state.expandedKeys || teamIds}
-              onExpand={expandedKeys => this.onExpand(expandedKeys)}
-            >
-              {this.renderTreeNodes(teams, teamLayouts, allLayout)}
-            </Tree>
-          </Col>
-        </Row>
-        <Row className="pt-lg pb-lg pl-lg">
-          <Col span={24}>
-            <Button type="primary" size="small" htmlType="submit" onClick={() => { this.onSubmit(); }}><Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' })}</Button>
-            <Button type="danger" size="small" className="ml-sm" onClick={() => { this.onCancel(); }}><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
-          </Col>
-        </Row>
-      </Panel>
+      <Permission permission={PERMISSIONS[`${permissionPrefix}_ASSIGN`]} errorComponent={<Unauthentication />}>
+        <Panel panelClasses={`${theme}-theme-panel`} panelTitle={formatMessage({ id: 'page.layouts.pageLayoutAssignment' })}>
+          <Row className="pl-lg">
+            <Col span={24}>
+              <Tree
+                className="large-team-tree"
+                defaultExpandAll
+                autoExpandParent={false}
+                expandedKeys={this.state.expandedKeys || teamIds}
+                onExpand={expandedKeys => this.onExpand(expandedKeys)}
+              >
+                {this.renderTreeNodes(teams, teamLayouts, allLayout)}
+              </Tree>
+            </Col>
+          </Row>
+          <Row className="pt-lg pb-lg pl-lg">
+            <Col span={24}>
+              <Button type="primary" size="small" htmlType="submit" onClick={() => { this.onSubmit(); }}><Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' })}</Button>
+              <Button type="danger" size="small" className="ml-sm" onClick={() => { this.onCancel(); }}><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
+            </Col>
+          </Row>
+        </Panel>
+      </Permission>
 
     );
   }

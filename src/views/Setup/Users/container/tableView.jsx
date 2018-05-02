@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 import React from 'react';
-import _ from 'lodash';
+import { Permission } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import { Table, Button, Icon, Modal, notification } from 'antd';
@@ -58,25 +59,27 @@ class usersTableView extends React.Component {
         usersDataTablePagination, users, queryByPaging, history,
       } = this.props;
       const { formatMessage } = this.props.intl;
-      const rightActions = (<Button
-        key="addBtn"
-        className="btn-ellipse ml-sm"
-        size="small"
-        icon="user-add"
-        onClick={() => {
+      const rightActions = (<Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_USERS_ADD}>
+        <Button
+          key="addBtn"
+          className="btn-ellipse ml-sm"
+          size="small"
+          icon="user-add"
+          onClick={() => {
         history.push('/setup/company-info/users?action=add');
     }}
-      >
-        { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}
-      </Button>);
+        >
+          { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}
+        </Button>
+      </Permission>);
       const columns = [
         {
           title: formatMessage({ id: 'global.ui.table.action' }),
           key: 'id',
           render: record => (
             <span>
-              <Icon type="edit" onClick={() => this.edit(record.id)} />
-              <Icon type="delete" className="danger pl-sm" onClick={() => this.delete(record.id)} />
+              <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_USERS_UPDATE}> <Icon type="edit" onClick={() => this.edit(record.id)} /></Permission>
+              <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_USERS_DELETE}><Icon type="delete" className="danger pl-sm" onClick={() => this.delete(record.id)} /></Permission>
             </span>
           ),
         }, {
@@ -125,7 +128,7 @@ class usersTableView extends React.Component {
           }}
             withSearch
           />
-          <Table dataSource={users} columns={columns} pagination={pagination} className="mt-lg" rowKey="id" size="small"/>
+          <Table dataSource={users} columns={columns} pagination={pagination} className="mt-lg" rowKey="id" size="small" />
           <DeleteConfirmDialog visible={this.state.deleteDialogVisible} onOk={() => this.confirmDelete()} onCancel={() => this.setState({ deleteDialogVisible: false })} >
             <h3>{ formatMessage({ id: 'global.ui.dialog.deleteTitle' })}</h3>
           </DeleteConfirmDialog>

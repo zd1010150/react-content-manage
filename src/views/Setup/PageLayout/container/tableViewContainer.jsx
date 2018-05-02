@@ -1,15 +1,17 @@
 /* eslint-disable no-shadow */
 import React from 'react';
-import _ from 'lodash';
 import classNames from 'classnames/bind';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import { Button, Icon, Modal } from 'antd';
 import { connect } from 'react-redux';
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { Panel, DeleteConfirmDialog } from 'components/ui/index';
 import { objTypeAndClassTypeMap } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import { SECTIONS } from '../flow/edit/operateType';
+
 import {
   setEditLayout,
   setAddLayout,
@@ -66,13 +68,18 @@ class LayoutsTableView extends React.Component {
     }
     saveAndNext() {
       const {
-        saveLayoutName, objectType, setAddLayout,
+        saveLayoutName, objectType, setAddLayout, accountPermissions, fetchAllLayouts,
       } = this.props;
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           saveLayoutName(objectType, values, (layout) => {
             setAddLayout({ isShowDialog: false });
-            this.editLayout(layout);
+            const permissionPrefix = `SETUP_${objectType.toUpperCase()}_PAGELAYOUT`;
+            if (accountPermissions.indexOf(PERMISSIONS[`${permissionPrefix}_UPDATE`]) > -1) {
+              this.editLayout(layout);
+            } else {
+              fetchAllLayouts(objectType);
+            }
           });
         }
       });
@@ -86,27 +93,30 @@ class LayoutsTableView extends React.Component {
         setAddLayout,
       } = this.props;
       const classType = objTypeAndClassTypeMap[objectType];
+      const permissionPrefix = `SETUP_${objectType.toUpperCase()}_PAGELAYOUT`;
       const rightActions = (() => {
         const actions = [];
-        actions.push(<Button
-          key="save"
-          className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`)}
-          size="small"
-          icon="save"
-          onClick={() => this.add()}
-        >
-          { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'page.layouts.layout' }) })}
-                     </Button>);
-        actions.push(<Button
-          key="cancel"
-          className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`)}
-          size="small"
-          icon="edit"
-          onClick={() => this.assignmentLayout()}
-        >
-          { formatMessage({ id: 'page.layouts.assingmentLayout' }) }
+        actions.push(<Permission permission={PERMISSIONS[`${permissionPrefix}_ADD`]} key="save">
+          <Button
+            className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`)}
+            size="small"
+            icon="save"
+            onClick={() => this.add()}
+          >
+            { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'page.layouts.layout' }) })}
+          </Button>
+                     </Permission>);
+        actions.push(<Permission permission={PERMISSIONS[`${permissionPrefix}_ASSIGN`]} key="edit">
+          <Button
+            className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`)}
+            size="small"
+            icon="edit"
+            onClick={() => this.assignmentLayout()}
+          >
+            { formatMessage({ id: 'page.layouts.assingmentLayout' }) }
 
-                     </Button>);
+          </Button>
+                     </Permission>);
 
         return actions;
       })();
@@ -128,8 +138,12 @@ class LayoutsTableView extends React.Component {
                 allLayouts.map(l => (
                   <tr key={l.id}>
                     <td>
-                      <Icon className={`${classType}-theme-icon`} type="edit" onClick={() => this.editLayout(l)} />
-                      <Icon className="pl-sm" type="delete" onClick={() => this.deleteLayout(l)} />
+                      <Permission permission={PERMISSIONS[`${permissionPrefix}_UPDATE`]}>
+                        <Icon className={`${classType}-theme-icon`} type="edit" onClick={() => this.editLayout(l)} />
+                      </Permission>
+                      <Permission permission={PERMISSIONS[`${permissionPrefix}_DELETE`]}>
+                        <Icon className="pl-sm" type="delete" onClick={() => this.deleteLayout(l)} />
+                      </Permission>
                     </td>
                     <td> { l.name }</td>
                     <td> { } {l.created_at}</td>
@@ -162,7 +176,7 @@ LayoutsTableView.propTypes = {
   objectType: PropTypes.string.isRequired,
 
 };
-const mapStateToProps = ({ setup }) => {
+const mapStateToProps = ({ setup, global }) => {
   const {
     tableView,
     currentObjectType,
@@ -172,6 +186,7 @@ const mapStateToProps = ({ setup }) => {
     allLayouts: tableView.allLayouts,
     objectType: currentObjectType,
     addLayout: tableView.addLayout,
+    accountPermissions: global.permissions,
   };
 };
 const mapDispatchToProps = {

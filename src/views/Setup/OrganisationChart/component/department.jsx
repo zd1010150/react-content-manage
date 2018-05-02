@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { intlShape, injectIntl } from 'react-intl';
 import { TeamTree } from 'components/page/index';
 import { DeleteConfirmDialog, DefaultDepartment } from 'components/ui/index';
-
+import PERMISSIONS from 'config/app-permission.config';
 
 class Department extends React.Component {
   state={
@@ -41,17 +41,20 @@ class Department extends React.Component {
   }
   render() {
     const {
-      teams, setTeams, setSelectedTeam, teamIds, intl,
+      teams, setTeams, setSelectedTeam, teamIds, intl, accountPermissions,
     } = this.props;
     const { formatMessage } = intl;
+    const canAdd = accountPermissions.indexOf(PERMISSIONS.SETUP_COMPANYPROFILE_ORGANISATIONALCHART_ADD) > -1;
+    const canDelete = accountPermissions.indexOf(PERMISSIONS.SETUP_COMPANYPROFILE_ORGANISATIONALCHART_DELETE) > -1;
+    const canModifyTeamName = accountPermissions.indexOf(PERMISSIONS.SETUP_COMPANYPROFILE_ORGANISATIONALCHART_UPDATE) > -1;
     return (
       <div>
         <DefaultDepartment onSelect={(id) => { setSelectedTeam(id); }} />
         <TeamTree
           onSelect={selectedKeys => this.selectDepartment(selectedKeys)}
-          canAdd
-          canDelete
-          canModifyTeamName
+          canAdd={canAdd}
+          canDelete={canDelete}
+          canModifyTeamName={canModifyTeamName}
           modifyTeamName={(newTeamName, id) => this.modifyTeamName(newTeamName, id)}
           onExpand={expandedKeys => this.onExpand(expandedKeys)}
           onDelete={id => this.delete(id)}
@@ -83,6 +86,7 @@ Department.propTypes = {
   setAddVisible: PropTypes.func.isRequired,
   updateTeam: PropTypes.func.isRequired,
   teamIds: PropTypes.array.isRequired,
+  accountPermissions: PropTypes.array.isRequired,
 };
 
 export default injectIntl(Department);

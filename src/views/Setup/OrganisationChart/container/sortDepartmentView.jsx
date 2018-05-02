@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types,no-shadow */
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { intlShape, injectIntl } from 'react-intl';
 import { Button, Row, Col, Icon } from 'antd';
 import { Panel } from 'components/ui/index';
@@ -15,21 +16,23 @@ class SortView extends React.Component {
     } = this.props;
     const { formatMessage } = this.props.intl;
     return (
-      <Panel panelTitle="Organisational Chart" contentClasses="pl-lg pr-lg pt-lg pb-lg">
-        <Row>
-          <Col className="gutter-row field-label" span={24}>
-            <TeamTree draggable teams={sortingTeams} setTeams={setSortingTeam} />
-          </Col>
-          <Col className="gutter-row field-value" span={24}>
-            <Button type="danger" size="small" onClick={() => { sortDepartment(sortingTeams, () => { setSortableViewVisible(false); }); }}>
-              <Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' }) }
-            </Button>
-            <Button className="ml-lg" size="small" onClick={() => { setSortableViewVisible(false); }}>
-              <Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' }) }
-            </Button>
-          </Col>
-        </Row>
-      </Panel>
+      <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_ORGANISATIONALCHART_ADD} errorComponent={<Unauthentication />}>
+        <Panel panelTitle="Organisational Chart" contentClasses="pl-lg pr-lg pt-lg pb-lg">
+          <Row>
+            <Col className="gutter-row field-label" span={24}>
+              <TeamTree draggable teams={sortingTeams} setTeams={setSortingTeam} />
+            </Col>
+            <Col className="gutter-row field-value" span={24}>
+              <Button type="danger" size="small" onClick={() => { sortDepartment(sortingTeams, () => { setSortableViewVisible(false); }); }}>
+                <Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' }) }
+              </Button>
+              <Button className="ml-lg" size="small" onClick={() => { setSortableViewVisible(false); }}>
+                <Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' }) }
+              </Button>
+            </Col>
+          </Row>
+        </Panel>
+      </Permission>
     );
   }
 }

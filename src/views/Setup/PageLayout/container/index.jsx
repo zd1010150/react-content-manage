@@ -4,6 +4,8 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import queryString from 'query-string';
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { setCurrentObject } from '../flow/action';
 import { ASSIGN_LAYOUT_TO_DEPARTMENT, LAYOUT_EDIT } from '../flow/pageAction';
 import AssignDepartmentContainer from './assignDepartmentContainer';
@@ -36,7 +38,10 @@ class PageLayoutIndexView extends React.Component {
     }
   }
   render() {
-    return (<div className="edit-container-wrapper">{this.getView(this.props)}</div>);
+
+    const permissionKey = `SETUP_${_.isEmpty(this.props.match.params.objectType) ? '' : this.props.match.params.objectType.toUpperCase()}_PAGELAYOUT`;
+      console.log(PERMISSIONS[permissionKey], "----dandan");
+    return (<Permission permission={PERMISSIONS[permissionKey]} errorComponent={<Unauthentication />}><div className="edit-container-wrapper">{this.getView(this.props)}</div></Permission>);
   }
 }
 
