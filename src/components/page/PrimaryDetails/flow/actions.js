@@ -64,6 +64,20 @@ export const tryUpdateClient = (objectId, objectType, accountId) => (dispatch, g
   });
 };
 
+export const tryUpdateAndAddClient = (objectId, objectType, accountId) => (dispatch, getState) => {
+  getRequestMethod(objectId)(getUpdateUrl(objectId, objectType, accountId), mapToRequestBody(getState()), dispatch).then(data => {
+    if (data && !_.isEmpty(data.data)) {
+      if (objectId === PhantomId) {
+        // try refetch object create info
+        dispatch(tryFetchObjectDetails(objectId, objectType, accountId));
+      } else {
+        // push new url
+        dispatch(setNewId(PhantomId));
+      }
+    }
+  });
+};
+
 
 // TOGGLE FIELD STATE
 export const setActiveField = (activeId, activeCode) => ({
