@@ -10,6 +10,7 @@ import mergence from 'views/MergeLeads/flow/reducer';
 import objectList from 'views/ObjectList/flow/reducer';
 import objectShare from 'views/ObjectShare/flow/reducer';
 import accountOpportunities from 'components/page/SimpleTable/flow/reducer';
+import clientDetails from 'views/ClientDetails/flow/reducer';
 // test
 import multiDndFields from 'components/ui/MultiSelectDnD/flow/reducer';
 // test ends
@@ -27,4 +28,5 @@ export default {
   globalSearch,
   objectShare,
   accountOpportunities,
+  clientDetails,
 };

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { getThemeByType } from 'utils/common';
 import { PrimaryDetails, TaskPanels, Toolbar } from '../components/index';
 import { reset, tryFetchClientDetails } from '../flow/actions';
-
+import { PrimaryDetails as NewPrimaryDetails } from 'components/page/index';
 
 class ObjectDetails extends Component {
   componentDidMount() {
@@ -27,6 +27,7 @@ class ObjectDetails extends Component {
 
   render() {
     const {
+      accountId,
       objectId,
       objectType,
       tools,
@@ -40,11 +41,12 @@ class ObjectDetails extends Component {
       objectId,
       theme,
     };
-
+    
     return (
       <Fragment>
+        <NewPrimaryDetails {...commonProps} accountId={accountId} />
         <Toolbar {...commonProps} tools={tools} />
-        <PrimaryDetails {...commonProps} />
+        {/* <PrimaryDetails {...commonProps} /> */}
         <TaskPanels {...commonProps} modules={modules} />
       </Fragment>
     );
