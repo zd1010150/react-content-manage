@@ -13,6 +13,11 @@ import FilterCriteria from './FilterCriteria/index';
 import TaskDetails from './TaskDetails/index';
 import FindDuplicates from './FindDuplicates/index';
 import PageLoading from './PageLoading/index';
+import Permission from './Permission/index';
+import SelectionZone from './SelectionZone/index';
+import SimpleTable from './SimpleTable/index';
+import Unauthentication from './Unauthentication/index';
+import PrimaryDetails from './PrimaryDetails/index';
 
 export {
   TopPanel,
@@ -30,4 +35,9 @@ export {
   TaskDetails,
   FindDuplicates,
   PageLoading,
+  Permission,
+  SelectionZone,
+  SimpleTable,
+  Unauthentication,
+  PrimaryDetails,
 };

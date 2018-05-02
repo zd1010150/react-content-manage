@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table, Button } from 'antd';
+import { Permission } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { Panel } from 'components/ui/index';
 import { intlShape, injectIntl } from 'react-intl';
 import { PAGE_ACTION } from 'config/app.config';
@@ -12,8 +14,30 @@ class companyUserStatic extends React.Component {
     const { formatMessage } = this.props.intl;
     const rightActions = (() => {
       const actions = [];
-      actions.push(<Button key="addBtn" className="btn-ellipse ml-sm" size="small" icon="user-add" onClick={() => history.push(`/setup/company-info/users?action=${PAGE_ACTION.ADD}`)}>{ formatMessage({ id: 'page.comInfo.addNewUser' })}</Button>);
-      actions.push(<Button key="viewAll" className="btn-ellipse ml-sm" size="small" icon="eye" onClick={() => history.push(`/setup/company-info/users?action=${PAGE_ACTION.VIEWALL}`)}>{ formatMessage({ id: 'global.ui.button.view' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}</Button>);
+      actions.push(<Permission
+        permission={PERMISSIONS.SETUP_COMPANYPROFILE_USERS_ADD}
+        key="addBtn"
+      >
+        <Button
+          className="btn-ellipse ml-sm"
+          size="small"
+          icon="user-add"
+          onClick={() => history.push(`/setup/company-info/users?action=${PAGE_ACTION.ADD}`)}
+        >{ formatMessage({ id: 'page.comInfo.addNewUser' })}
+        </Button>
+      </Permission>);
+      actions.push(<Permission
+        permission={PERMISSIONS.SETUP_COMPANYPROFILE_USERS}
+        key="viewAll"
+      >
+        <Button
+          className="btn-ellipse ml-sm"
+          size="small"
+          icon="eye"
+          onClick={() => history.push(`/setup/company-info/users?action=${PAGE_ACTION.VIEWALL}`)}
+        >{ formatMessage({ id: 'global.ui.button.view' }, { actionType: formatMessage({ id: 'global.properNouns.users' }) })}
+        </Button>
+                   </Permission>);
       return actions;
     })();
     const dataSource = [Object.assign({}, userInfo, { key: 1 })];

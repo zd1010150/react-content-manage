@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import { Button, Col, Row, Table, Tag } from 'antd';
 import { connect } from 'react-redux';
 import { Panel } from 'components/ui/index';
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { objTypeAndClassTypeMap, PAGE_ACTION, PICKLIST_FIELD_TYPE } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import {
@@ -44,7 +46,6 @@ class FieldAddContainer extends React.Component {
         isDuplicate, saveFieldToRemote, objectType, addedField, history, resetAddedFieldAttr, fieldPrefix,
       } = this.props;
       this.form.validateFieldsAndScroll((err, values) => {
-        debugger;
         if (!err && !isDuplicate) {
           const create_data = Object.assign(values, {
             field_name: `${fieldPrefix}${values.field_name}`,
@@ -92,6 +93,7 @@ class FieldAddContainer extends React.Component {
         setFieldAttr,
       } = this.props;
       const classType = objTypeAndClassTypeMap[objectType];
+      const permissionPrefix = `SETUP_${objectType.toUpperCase()}_FIELDS`;
       const rowSelection = {
         selectedRowKeys: addedField.field.notnull ? layouts.map(l => l.id) : addedField.appendPageLayoutIds,
         onChange: this.onSelectChange,
@@ -113,20 +115,21 @@ class FieldAddContainer extends React.Component {
         },
       ];
       return (
-        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.createField' }, { type: addedField.field.type })} contentClasses="pt-lg pb-lg">
-          <FieldForm
-            isDuplicate={isDuplicate}
-            setFieldLableisDuplicate={setFieldLableisDuplicate}
-            action={ADD}
-            editObject={addedField.field}
-            ref={(c) => { this.form = c; }}
-            objType={objectType}
-            prefix={fieldPrefix}
-            checkLabelDuplicate={duplicatFilter}
-            setFieldAttr={setFieldAttr}
-          />
+        <Permission permission={PERMISSIONS[`${permissionPrefix}_ADD`]} errorComponent={<Unauthentication />}>
+          <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.createField' }, { type: addedField.field.type })} contentClasses="pt-lg pb-lg">
+            <FieldForm
+              isDuplicate={isDuplicate}
+              setFieldLableisDuplicate={setFieldLableisDuplicate}
+              action={ADD}
+              editObject={addedField.field}
+              ref={(c) => { this.form = c; }}
+              objType={objectType}
+              prefix={fieldPrefix}
+              checkLabelDuplicate={duplicatFilter}
+              setFieldAttr={setFieldAttr}
+            />
 
-          {
+            {
               addedField.field.type === PICKLIST_FIELD_TYPE ?
                 <div className="panel-section">
                   <div className="section-header">{ formatMessage({ id: 'page.fields.picklistValue' }) }</div>
@@ -144,35 +147,36 @@ class FieldAddContainer extends React.Component {
                   </div>
                 </div> : ''
             }
-          <div className="panel-section">
-            <div className="section-header">{ formatMessage({ id: 'page.fields.addingPagelayoutToDepartment' }) }</div>
-            <div className="section-content  mt-lg mb-lg">
-              <Table rowSelection={rowSelection} columns={columns} dataSource={layouts} rowKey="id" pagination={false} />
+            <div className="panel-section">
+              <div className="section-header">{ formatMessage({ id: 'page.fields.addingPagelayoutToDepartment' }) }</div>
+              <div className="section-content  mt-lg mb-lg">
+                <Table rowSelection={rowSelection} columns={columns} dataSource={layouts} rowKey="id" pagination={false} />
+              </div>
             </div>
-          </div>
-          <Row className="pt-lg pl-lg pr-lg">
-            <Col span={12}>
-              <Button
-                key="cancel"
-                type="danger"
-                icon="left"
-                size="small"
-                onClick={() => this.goPrevious()}
-              >{ formatMessage({ id: 'global.ui.button.previous' })}
-              </Button>
-            </Col>
-            <Col span={12} className="text-right">
-              <Button
-                key="save"
-                size="small"
-                type="primary"
-                icon="save"
-                onClick={() => this.save()}
-              >{ formatMessage({ id: 'global.ui.button.save' })}
-              </Button>
-            </Col>
-          </Row>
-        </Panel>
+            <Row className="pt-lg pl-lg pr-lg">
+              <Col span={12}>
+                <Button
+                  key="cancel"
+                  type="danger"
+                  icon="left"
+                  size="small"
+                  onClick={() => this.goPrevious()}
+                >{ formatMessage({ id: 'global.ui.button.previous' })}
+                </Button>
+              </Col>
+              <Col span={12} className="text-right">
+                <Button
+                  key="save"
+                  size="small"
+                  type="primary"
+                  icon="save"
+                  onClick={() => this.save()}
+                >{ formatMessage({ id: 'global.ui.button.save' })}
+                </Button>
+              </Col>
+            </Row>
+          </Panel>
+        </Permission>
       );
     }
 }

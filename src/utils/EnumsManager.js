@@ -1,5 +1,5 @@
 const BaseEnums = Object.freeze({
-  
+
   FieldTypes: Object.freeze({
     DateOnly: 'date',
     DateTime: 'datetime',
@@ -86,7 +86,7 @@ const EnumsManager = Object.freeze({
   }),
 
   ObjectTypes: BaseEnums.ObjectTypes,
-  
+
   ObjectTypesInArray: Object.freeze(_.values(BaseEnums.ObjectTypes)),
 
   ObjectTypesThemesMapping: Object.freeze({
@@ -104,6 +104,8 @@ const EnumsManager = Object.freeze({
     DUPLICATES: 'DUPLICATES_',
     MERGE: 'MERGE_',
     OBJECTLIST: 'OBJECTLIST_',
+    OBJECTSHARE: 'OBJECTSHARE',
+    OBJECTDETAILS: 'OBJECTDETAILS',
   }),
 
   ViewVisibilityIds: Object.freeze({

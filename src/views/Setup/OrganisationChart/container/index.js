@@ -3,6 +3,8 @@ import React, { Fragment } from 'react';
 import _ from 'lodash';
 import { fetchTeams } from 'store/global/action';
 import { connect } from 'react-redux';
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import EditView from './editDepartmentView';
 import SortView from './sortDepartmentView';
 
@@ -15,7 +17,9 @@ class organizationChartIndexView extends React.Component {
     const { isSortViewVisible, teams } = this.props;
     return (
       <Fragment>
+        <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_ORGANISATIONALCHART} errorComponent={<Unauthentication />}>
         { isSortViewVisible && (!_.isEmpty(teams)) ? <SortView /> : <EditView />}
+        </Permission>
       </Fragment>
 
     );

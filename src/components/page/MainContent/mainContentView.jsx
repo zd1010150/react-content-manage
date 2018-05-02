@@ -27,13 +27,14 @@ import {
   UIDemo,
   Users,
   GlobalSearch,
-
+  ObjectShare,
+  NewOpportunity,
+  ClientDetails,
 } from 'views/index';
 import Enums from 'utils/EnumsManager';
 
-const { ObjectTypes } = Enums;
+const { ObjectTypes, PhantomId } = Enums;
 const { Leads, Accounts, Opportunities } = ObjectTypes;
-
 
 const MainContent = () => (
   <Switch>
@@ -52,7 +53,7 @@ const MainContent = () => (
     <Route path="/setup/email/campaign/new" component={NewCampaign} />
 
     <Route path="/my-setting" component={MySetting} />
-    <Route path="/email/new" component={NewEmail} />
+    <Route path="/:objectType/:objectId/email/new" component={NewEmail} />
     <Route path="/user/email-setting" component={EmailTemplates} />
     <Route path="/dashboard" component={Dashboard} exact />
     <Route path="/globalSearch" component={GlobalSearch} exat />
@@ -62,8 +63,41 @@ const MainContent = () => (
     <Route path="/leads/merge/" component={MergeLeads} />
 
 
-    <Route path="/:objectType/sharing/:objectId" component={FindDuplicates} />
+    <Route
+      path="/accounts/:accountId/opportunities/0000-0000"
+      render={(props) => {
+        const { match } = props;
+        const { accountId } = match.params;
+        return (
+          <ClientDetails
+            {...props}
+            key={`${Opportunities}_${PhantomId}`}
+            accountId={accountId}
+            objectId={PhantomId}
+            objectType={Opportunities}
+          />
+        );
+      }}
+    />
     <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
+    <Route
+      path="/:objectType/sharing/:objectId"
+      render={(props) => {
+        const { match } = props;
+        const { objectId, objectType } = match.params;
+        if ([Leads, Accounts].indexOf(objectType) !== -1) {
+          return (
+            <ObjectShare
+              {...props}
+              objectId={objectId}
+              objectType={objectType}
+            />
+          );
+        }
+        // TOOD: return 404 page
+        return null;
+      }}
+    />
     <Route path="/:objectType/:objectId/attachments" component={ClientAttachments} exact />
     <Route path="/:objectType/:objectId/tasks/:taskId" component={ObjectTask} />
     <Route path="/:objectType/views/:viewId" component={ObjectView} />

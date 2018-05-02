@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import { Button, Icon, Radio, Col, Row } from 'antd';
 import { connect } from 'react-redux';
 import { Panel } from 'components/ui/index';
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { objTypeAndClassTypeMap } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import { setAddedFieldAttr, resetAddedFieldAttr } from '../flow/action';
@@ -35,22 +37,24 @@ class FieldAddSelecteTypeContainer extends React.Component {
       types,
     } = this.props;
     const classType = objTypeAndClassTypeMap[objectType];
+    const permissionPrefix = `SETUP_${objectType.toUpperCase()}_FIELDS`;
     return (
-      <Panel
-        panelClasses={`${classType}-theme-panel`}
-        panelTitle={formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.fields' }) })}
-        contentClasses="pt-lg pb-lg"
-      >
-        <table style={{ width: '100%' }}>
-          <thead className="ant-table-thead">
-            <tr>
-              <th>{ formatMessage({ id: 'page.fields.dataType' }) }</th>
-              <th>{ formatMessage({ id: 'page.fields.description' }) }</th>
-            </tr>
-          </thead>
-          <tbody className="ant-table-tbody">
+      <Permission permission={PERMISSIONS[`${permissionPrefix}_ADD`]} errorComponent={<Unauthentication/>}>
+        <Panel
+          panelClasses={`${classType}-theme-panel`}
+          panelTitle={formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.fields' }) })}
+          contentClasses="pt-lg pb-lg"
+        >
+          <table style={{ width: '100%' }}>
+            <thead className="ant-table-thead">
+              <tr>
+                <th>{ formatMessage({ id: 'page.fields.dataType' }) }</th>
+                <th>{ formatMessage({ id: 'page.fields.description' }) }</th>
+              </tr>
+            </thead>
+            <tbody className="ant-table-tbody">
 
-            {
+              {
                   Object.keys(types).map(type => (
                     <tr key={type}>
                       <td>
@@ -65,31 +69,32 @@ class FieldAddSelecteTypeContainer extends React.Component {
                   ))
               }
 
-          </tbody>
-        </table>
-        <Row className="pt-lg pl-lg pr-lg">
-          <Col span={12}>
-            <Button
-              key="cancel"
-              type="danger"
-              icon="close"
-              size="small"
-              onClick={this.cancel}
-            >{ formatMessage({ id: 'global.ui.button.cancel' })}
-            </Button>
-          </Col>
-          <Col span={12} className="text-right">
-            <Button
-              key="save"
-              size="small"
-              disabled={_.isEmpty(addedField.field.type)}
-              type="primary"
-              onClick={this.goNext}
-            >{ formatMessage({ id: 'global.ui.button.next' })}<Icon type="right" />
-            </Button>
-          </Col>
-        </Row>
-      </Panel>
+            </tbody>
+          </table>
+          <Row className="pt-lg pl-lg pr-lg">
+            <Col span={12}>
+              <Button
+                key="cancel"
+                type="danger"
+                icon="close"
+                size="small"
+                onClick={this.cancel}
+              >{ formatMessage({ id: 'global.ui.button.cancel' })}
+              </Button>
+            </Col>
+            <Col span={12} className="text-right">
+              <Button
+                key="save"
+                size="small"
+                disabled={_.isEmpty(addedField.field.type)}
+                type="primary"
+                onClick={this.goNext}
+              >{ formatMessage({ id: 'global.ui.button.next' })}<Icon type="right" />
+              </Button>
+            </Col>
+          </Row>
+        </Panel>
+      </Permission>
     );
   }
 }

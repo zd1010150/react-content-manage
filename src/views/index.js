@@ -25,6 +25,9 @@ import ConvertLeads from './ConvertLeads/index';
 import ObjectList from './ObjectList/index';
 import GlobalSearch from './GlobalSearch/index';
 import ObjectView from './ObjectView/index';
+import ObjectShare from './ObjectShare/index';
+import NewOpportunity from './NewOpportunity/index';
+import ClientDetails from './ClientDetails/index';
 
 export {
   Dashboard,
@@ -52,4 +55,7 @@ export {
   ObjectList,
   GlobalSearch,
   ObjectView,
+  ObjectShare,
+  NewOpportunity,
+  ClientDetails,
 };
