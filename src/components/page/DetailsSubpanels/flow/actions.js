@@ -35,8 +35,7 @@ const getModuleFetchUrl = (code, objectType, objectId, params) => {
       url = `tasks/object/${objectType}/${objectId}/history/index`;
       break;
     case EmailSent:
-      // TODO: API not finished yet
-      url = `crm_logs/object/${objectType}/${objectId}/index`;
+      url = `emails/object/${objectType}/${objectId}/index`;
       break;
     case Attachments:
       url = `files/object/${objectType}/${objectId}/index`;

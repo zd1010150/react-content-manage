@@ -53,7 +53,7 @@ const propTypes = {
 };
 
 
-class TaskPanel extends Component {
+class Subpanel extends Component {
   componentDidMount() {
     const {
       code,
@@ -76,9 +76,6 @@ class TaskPanel extends Component {
 
     let link = '';
     switch (code) {
-      case Opportunities:
-        link = '';
-        break;
       case TaskOpen:
         link = `/${objectType}/${objectId}/tasks/${PhantomId}`;
         break;
@@ -371,4 +368,4 @@ const mapDispatchToProps = {
   tryDeleteTask,
   tryFetchModuleData,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TaskPanel));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Subpanel));
