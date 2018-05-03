@@ -4,6 +4,8 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import queryString from 'query-string';
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { setCurrentObject } from '../flow/action';
 import { FIELD_TYPE_SELECT, FIELD_EDIT, FIELD_ADD, PICKLIST_OPTION_EDIT } from '../flow/pageAction';
 import FieldAddContainer from './fieldAddContainer';
@@ -44,7 +46,8 @@ class FieldsIndexView extends React.Component {
     }
   }
   render() {
-    return (<div>{this.getView(this.props)}</div>);
+    const permissionKey = `SETUP_${_.isEmpty(this.props.match.params.objectType) ? '' : this.props.match.params.objectType.toUpperCase()}_FIELDS`;
+    return (<Permission permission={PERMISSIONS[permissionKey]} errorComponent={<Unauthentication />}>{this.getView(this.props)}</Permission>);
   }
 }
 

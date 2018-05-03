@@ -6,6 +6,8 @@ import { Row, Col, Button, Icon } from 'antd';
 import { Panel } from 'components/ui/index';
 import { setTeams } from 'store/global/action';
 import { updateUsers } from 'views/Setup/Users/flow/action';
+import { Permission } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import AddDepartment from '../component/add';
 import Department from '../component/department';
 import User from '../component/user';
@@ -53,19 +55,25 @@ class EditView extends React.Component {
       setSortingTeam,
       selectedTeamName,
       teamIds,
+      accountPermissions,
     } = this.props;
     const { formatMessage } = this.props.intl;
-    const actionsRight = <div><Button className="btn-ellipse" size="small" onClick={() => { setSortableViewVisible(true); setSortingTeam(JSON.parse(JSON.stringify(teams))); }}><Icon type="edit" />{ formatMessage({ id: 'page.organChart.editStructure' }) }</Button></div>;
+    const actionsRight = (<Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_ORGANISATIONALCHART_UPDATE}>
+      <Button className="btn-ellipse" size="small" onClick={() => { setSortableViewVisible(true); setSortingTeam(JSON.parse(JSON.stringify(teams))); }}>
+        <Icon type="edit" />{ formatMessage({ id: 'page.organChart.editStructure' }) }
+      </Button>
+                          </Permission>);
     return (
       <Panel panelTitle={formatMessage({ id: 'page.organChart.organisitionChart' })} contentClasses="pl-lg pr-lg pt-lg pb-lg" actionsRight={actionsRight}>
-        { isAddVisible ? <AddDepartment
+        { isAddVisible ? <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_ORGANISATIONALCHART_ADD}><AddDepartment
           newTeam={newTeam}
           setNewDepartName={setNewDepartName}
           addDepartment={addDepartment}
           setAddVisible={setAddVisible}
           resetNewDepartment={resetNewDepartment}
           selectedTeamName={selectedTeamName}
-        /> : ''}
+        />
+        </Permission> : ''}
 
         <Row>
           <Col className="gutter-row field-label pr-lg" span={8}>
@@ -77,6 +85,7 @@ class EditView extends React.Component {
               setAddVisible={setAddVisible}
               deleteDepartment={deleteDepartment}
               updateTeam={updateTeam}
+              accountPermissions={accountPermissions}
             />
           </Col>
           <Col className="gutter-row field-value pl-lg" span={16}>
@@ -114,6 +123,7 @@ const mapStateToProps = ({ global, setup }) => {
     selectedUser: orgChart.selectedUser,
     newTeam: orgChart.newTeam,
     selectedTeamName: getSelectedTeamName({ global, orgChart }),
+    accountPermissions: global.permissions,
   };
 };
 

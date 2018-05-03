@@ -6,7 +6,8 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'antd';
 import { connect } from 'react-redux';
-import { RightSider } from 'components/page/index';
+import { RightSider, Permission } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { Panel, DeleteConfirmDialog } from 'components/ui/index';
 import { objTypeAndClassTypeMap } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
@@ -130,6 +131,7 @@ class FieldsTableView extends React.Component {
         allFields,
       } = this.props;
       const classType = objTypeAndClassTypeMap[objectType];
+      const permissionPrefix = `SETUP_${objectType.toUpperCase()}_FIELDS`;
       const rightActions = (() => {
         const actions = [];
         actions.push(<Button
@@ -150,25 +152,27 @@ class FieldsTableView extends React.Component {
         >
           { formatMessage({ id: 'global.ui.button.cancel' })}
         </Button>);
-        actions.push(<Button
-          key="addBtn"
-          className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')}
-          size="small"
-          icon="plus"
-          onClick={() => this.addNewField()}
-        >
-          { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}
-                     </Button>);
-        if (!_.isEmpty(toFields)) {
-          actions.push(<Button
-            key="viewAll"
+        actions.push(<Permission permission={PERMISSIONS[`${permissionPrefix}_ADD`]} key="addBtn">
+          <Button
             className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')}
             size="small"
-            icon="eye"
-            onClick={() => this.mappingField()}
+            icon="plus"
+            onClick={() => this.addNewField()}
           >
-            { formatMessage({ id: 'global.ui.button.edit' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}
-                       </Button>);
+            { formatMessage({ id: 'global.ui.button.addBtn' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}
+          </Button>
+                     </Permission>);
+        if (!_.isEmpty(toFields)) {
+          actions.push(<Permission permission={PERMISSIONS[`${permissionPrefix}_UPDATE`]} key="viewAll">
+            <Button
+              className={classNames('btn-ellipse', 'ml-sm', `${classType}-theme-btn`, !isEditing ? '' : 'no-display')}
+              size="small"
+              icon="eye"
+              onClick={() => this.mappingField()}
+            >
+              { formatMessage({ id: 'global.ui.button.edit' }, { actionType: formatMessage({ id: 'global.properNouns.field' }) })}
+            </Button>
+                       </Permission>);
         }
 
         return actions;
@@ -203,10 +207,10 @@ class FieldsTableView extends React.Component {
       const getFieldEl = (fields, category) => fields.map(f => (
         <tr key={f.id}>
           <td>
-            <Icon type="edit" className={`${classType}-theme-icon`} onClick={() => this.editField(f, category)} />
+            <Permission permission={PERMISSIONS[`${permissionPrefix}_UPDATE`]} ><Icon type="edit" className={`${classType}-theme-icon`} onClick={() => this.editField(f, category)} /></Permission>
             {
-                category === fieldCategory.CUSTOM ? <Icon type="delete" className="danger pl-sm" onClick={() => this.deleteField(f.id)} /> : ''
-              }
+              category === fieldCategory.CUSTOM ? <Permission permission={PERMISSIONS[`${permissionPrefix}_DELETE`]}><Icon type="delete" className="danger pl-sm" onClick={() => this.deleteField(f.id)} /></Permission> : ''
+            }
           </td>
           <td>{f.field_label}</td>
           {

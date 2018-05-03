@@ -6,6 +6,8 @@ import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Panel } from 'components/ui/index';
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { objTypeAndClassTypeMap, PAGE_ACTION, PICKLIST_FIELD_TYPE } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import {
@@ -56,7 +58,7 @@ class FieldEditContainer extends React.Component {
       description: field.description,
     };
     const {
-      updateFieldToRemote, objectType, history, addedField, fieldPrefix,
+      updateFieldToRemote, objectType, history, addedField,
     } = this.props;
     if (addedField.field.category === fieldCategory.CUSTOM) {
       data.field_label = field.field_label;
@@ -119,25 +121,26 @@ class FieldEditContainer extends React.Component {
       setPickListValueManagement,
     } = this.props;
     const classType = objTypeAndClassTypeMap[objectType];
-
+    const permissionPrefix = `SETUP_${objectType.toUpperCase()}_FIELDS`;
     return (
       <Fragment>
-        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.editField' })} contentClasses="pt-lg pb-lg">
-          <FieldForm
-            isDuplicate={isDuplicate}
-            setFieldLableisDuplicate={setFieldLableisDuplicate}
-            action={EDIT}
-            editObject={addedField.field}
-            ref={(c) => { this.form = c; }}
-            objType={objectType}
-            prefix={fieldPrefix}
-            checkLabelDuplicate={duplicatFilter}
-            onSubmit={values => this.onSubmit(values)}
-            onCancel={() => this.onCancel()}
-          />
-        </Panel>
+        <Permission permission={PERMISSIONS[`${permissionPrefix}_UPDATE`]} errorComponent={<Unauthentication />}>
+          <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.editField' })} contentClasses="pt-lg pb-lg">
+            <FieldForm
+              isDuplicate={isDuplicate}
+              setFieldLableisDuplicate={setFieldLableisDuplicate}
+              action={EDIT}
+              editObject={addedField.field}
+              ref={(c) => { this.form = c; }}
+              objType={objectType}
+              prefix={fieldPrefix}
+              checkLabelDuplicate={duplicatFilter}
+              onSubmit={values => this.onSubmit(values)}
+              onCancel={() => this.onCancel()}
+            />
+          </Panel>
 
-        {
+          {
           addedField.field.type === PICKLIST_FIELD_TYPE ?
             <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.values' })} >
               <div className="panel-section">
@@ -161,7 +164,7 @@ class FieldEditContainer extends React.Component {
               </div>
             </Panel> : ''
         }
-        {
+          {
               addedField.field.type === PICKLIST_FIELD_TYPE && !_.isEmpty(addedField.deactiveList) ?
                 <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.deactiveValues' })} contentClasses="pt-lg pb-lg">
                   <table style={{ width: '100%' }}>
@@ -190,7 +193,7 @@ class FieldEditContainer extends React.Component {
                 </Panel> : ''
           }
 
-
+        </Permission>
       </Fragment>
     );
   }

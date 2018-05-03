@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { Permission } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { Modal, Button, notification, Icon } from 'antd';
 import { Panel, Upload } from 'components/ui/index';
 import { intlShape, injectIntl } from 'react-intl';
@@ -38,7 +40,9 @@ class logo extends React.Component {
     render() {
       const { companyLogo } = this.props;
       const { formatMessage } = this.props.intl;
-      const rightActions = <Button className="btn-ellipse ml-sm" size="small" icon="edit" onClick={() => this.showUploadDialog()}>{ formatMessage({ id: 'global.ui.button.update' })}</Button>;
+      const rightActions = (<Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_COMPANYINFORMATION_UPDATELOGO}>
+        <Button className="btn-ellipse ml-sm" size="small" icon="edit" onClick={() => this.showUploadDialog()}>{ formatMessage({ id: 'global.ui.button.update' })}</Button>
+      </Permission>);
       const uploadProps = {
         name: 'document',
         action: '/admin/files/company_logo',

@@ -3,7 +3,8 @@
 import React, { Component, Fragment } from 'react';
 import _ from 'lodash';
 import classNames from 'classnames/bind';
-import PropTypes from 'prop-types';
+import { Permission } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { fetchTeams } from 'store/global/action';
 import { Input, Checkbox, Button, Icon, Tree } from 'antd';
 import { connect } from 'react-redux';
@@ -147,11 +148,13 @@ class permissionProfile extends Component {
           </div>
         </div>
         <div className="pb-lg pl-lg">
-          <Button type="primary" htmlType="submit" disabled={_.isEmpty(`${selectedDepartment.department_id}`)} onClick={() => { this.onSubmit(); }}>
-            <Icon type="save" />
-            { formatMessage({ id: 'global.ui.button.save' })}
-          </Button>
-          <Button type="danger" className="ml-sm" onClick={() => { this.onCancel(); }}><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
+          <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_PERMISSIONPROFILE_UPDATE}>
+            <Button type="primary" htmlType="submit" disabled={_.isEmpty(`${selectedDepartment.department_id}`)} onClick={() => { this.onSubmit(); }}>
+              <Icon type="save" />
+              { formatMessage({ id: 'global.ui.button.save' })}
+            </Button>
+            <Button type="danger" className="ml-sm" onClick={() => { this.onCancel(); }}><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
+          </Permission>
         </div>
       </Panel>
     );

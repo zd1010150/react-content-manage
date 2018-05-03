@@ -8,7 +8,10 @@ import { connect } from 'react-redux';
 import { Panel, FloatingLabelInput, SelectionPool, SearchPool } from 'components/ui/index';
 import { objTypeAndClassTypeMap } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { FIELD_EDIT } from '../flow/pageAction';
+
 import {
   setPickListValueManagement,
   toggleAdding,
@@ -103,34 +106,35 @@ class PickListOptionEditContainer extends React.Component {
       visibleTeams,
     } = this.props;
     const classType = objTypeAndClassTypeMap[objectType];
-
+    const permissionPrefix = `SETUP_${objectType.toUpperCase()}_FIELDS`;
     return (
-      <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.updateExistingValue' })}>
-        <div className="panel-section">
-          <div className="section-content mb-lg">
+      <Permission permission={PERMISSIONS[`${permissionPrefix}_UPDATE`]} errorComponent={<Unauthentication/>}>
 
-            <FloatingLabelInput
-              labelText=""
-              value={manageList.valueText}
-              handleChange={val => setPickListValueManagement({ valueText: val })}
-            />
+        <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.updateExistingValue' })}>
+          <div className="panel-section">
+            <div className="section-content mb-lg">
 
-          </div>
-          <div className="section-header">
-            {formatMessage({ id: 'page.fields.restriction' })} <Icon type="plus-square-o" className={`${classType}-theme-icon`} style={{ float: 'right' }} onClick={() => { this.addRestriction(); }} />
+              <FloatingLabelInput
+                labelText=""
+                value={manageList.valueText}
+                handleChange={val => setPickListValueManagement({ valueText: val })}
+              />
 
-          </div>
-          <div className="section-content  mt-lg">
-            <p>{formatMessage({ id: 'page.fields.restrictionInfo' })}</p>
-            <SelectionPool
-              theme={classType}
-              users={manageList.unvisibleUsers}
-              teams={manageList.unvisibleTeams}
-              onTagClose={(itemId, isTeam) => this.removeItem(itemId, isTeam)}
-              closable
-              withIcon
-            />
-            {
+            </div>
+            <div className="section-header">
+              {formatMessage({ id: 'page.fields.restriction' })} <Icon type="plus-square-o" className={`${classType}-theme-icon`} style={{ float: 'right' }} onClick={() => { this.addRestriction(); }} />
+            </div>
+            <div className="section-content  mt-lg">
+              <p>{formatMessage({ id: 'page.fields.restrictionInfo' })}</p>
+              <SelectionPool
+                theme={classType}
+                users={manageList.unvisibleUsers}
+                teams={manageList.unvisibleTeams}
+                onTagClose={(itemId, isTeam) => this.removeItem(itemId, isTeam)}
+                closable
+                withIcon
+              />
+              {
                   ui.isShowAdding ?
                     <Row className="pt-lg" gutter={16}>
                       <Col span={12}>
@@ -155,14 +159,14 @@ class PickListOptionEditContainer extends React.Component {
                     </Row>
                       : ''
               }
-            <div className="pt-lg">
-              <Button type="primary" size="small" className="mr-lg " onClick={() => { this.onCancel(); }}><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
-              <Button size="small" className={`${classType}-theme-btn`} htmlType="submit" onClick={() => { this.onSubmit(); }}><Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' })}</Button>
+              <div className="pt-lg">
+                <Button type="primary" size="small" className="mr-lg " onClick={() => { this.onCancel(); }}><Icon type="close" />{ formatMessage({ id: 'global.ui.button.cancel' })}</Button>
+                <Button size="small" className={`${classType}-theme-btn`} htmlType="submit" onClick={() => { this.onSubmit(); }}><Icon type="save" />{ formatMessage({ id: 'global.ui.button.save' })}</Button>
+              </div>
             </div>
           </div>
-        </div>
-      </Panel>
-
+        </Panel>
+      </Permission>
 
     );
   }

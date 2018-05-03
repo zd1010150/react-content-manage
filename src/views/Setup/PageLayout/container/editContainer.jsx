@@ -7,7 +7,8 @@ import PropTypes from 'prop-types';
 import { Button, Radio, Row, Col, Divider, Layout } from 'antd';
 import { connect } from 'react-redux';
 import { EditBox, DeleteConfirmDialog } from 'components/ui/index';
-import { RightSider } from 'components/page/index';
+import { RightSider, Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import { objTypeAndClassTypeMap, FORM_LAYOUT_CONFIG } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import { toggleRightSider } from 'components/page/RightSider/flow/action';
@@ -42,6 +43,12 @@ const { Header, Content } = Layout;
 class EditContainer extends React.Component {
     state={
       deleteDialogVisible: false,
+    }
+    componentWillUnmount() {
+      const {
+        toggleRightSider,
+      } = this.props;
+      toggleRightSider(true);
     }
     componentDidMount() {
       const {
@@ -124,6 +131,7 @@ class EditContainer extends React.Component {
         intl,
         objectType,
         currentTab,
+        layoutId,
         setCanDrop,
         canDrop,
         layoutName,
@@ -131,7 +139,7 @@ class EditContainer extends React.Component {
       } = this.props;
       const { formatMessage } = intl;
       const theme = objTypeAndClassTypeMap[objectType];
-
+      const permissionPrefix = `SETUP_${objectType.toUpperCase()}_PAGELAYOUT`;
       const getMainView = () => {
         switch (currentTab) {
           case MODULES:
@@ -161,54 +169,55 @@ class EditContainer extends React.Component {
         }
       };
       return (
-        <BodyWrapper setCanDrop={setCanDrop}>
-          {
+        <Permission permission={PERMISSIONS[`${permissionPrefix}_UPDATE`]} errorComponent={<Unauthentication />}>
+          <BodyWrapper setCanDrop={setCanDrop}>
+            {
             getMainView()
           }
-          <RightSider>
-            <Layout>
-              <Content style={{ backgroundColor: '#fff' }}>
-                <Row className="pt-lg pl-lg pr-lg">
-                  <EditBox type="input" spanClasses={cx('layout-title')} value={layoutName} onBlur={value => setCurrentLayout({ name: value })} />
+            <RightSider>
+              <Layout>
+                <Content style={{ backgroundColor: '#fff' }}>
+                  <Row className="pt-lg pl-lg pr-lg">
+                    <EditBox type="input" spanClasses={cx('layout-title')} value={layoutName} onBlur={value => setCurrentLayout({ name: value })} />
 
-                </Row>
-                <Divider />
-                <Row className="pl-lg pr-lg">
-                  <Col span={24}>
-                    <Button icon="layout" size="small" className={`${theme}-theme-btn ml-sm`} onClick={() => this.preview()}>{formatMessage({ id: 'global.ui.button.preview' })}</Button>
-                    <Button icon="save" type="danger" size="small" className="ml-sm" onClick={() => this.save()}>{formatMessage({ id: 'global.ui.button.save' })}</Button>
-                    <Button icon="close" type="default" size="small" className="ml-sm" onClick={() => this.cancel()}>{formatMessage({ id: 'global.ui.button.cancel' })}</Button>
-                  </Col>
-                </Row>
-                <Divider />
-                <Row className="pl-lg pr-lg">
-                  { OPERATES.map(o => (
-                    <Col span={24} key={o}>
-                      <Radio className={`${theme}-theme-radio mt-sm`} value={o} checked={o === currentTab} onChange={(e) => { this.changeTab(e); }}>
-                        { formatMessage({ id: `page.layouts.operates.${o}` })}
-                      </Radio>
+                  </Row>
+                  <Divider />
+                  <Row className="pl-lg pr-lg">
+                    <Col span={24}>
+                      <Button icon="layout" size="small" className={`${theme}-theme-btn ml-sm`} onClick={() => this.preview()}>{formatMessage({ id: 'global.ui.button.preview' })}</Button>
+                      <Button icon="save" type="danger" size="small" className="ml-sm" onClick={() => this.save()}>{formatMessage({ id: 'global.ui.button.save' })}</Button>
+                      <Button icon="close" type="default" size="small" className="ml-sm" onClick={() => this.cancel()}>{formatMessage({ id: 'global.ui.button.cancel' })}</Button>
                     </Col>
+                  </Row>
+                  <Divider />
+                  <Row className="pl-lg pr-lg">
+                    { OPERATES.map(o => (
+                      <Col span={24} key={o}>
+                        <Radio className={`${theme}-theme-radio mt-sm`} value={o} checked={o === currentTab} onChange={(e) => { this.changeTab(e); }}>
+                          { formatMessage({ id: `page.layouts.operates.${o}` })}
+                        </Radio>
+                      </Col>
                   )) }
-                </Row>
-                <Divider />
-                <Row>
-                  <Col span={24}>
-                    <div className={cx('sider-view-wrapper')}>
-                      {
+                  </Row>
+                  <Divider />
+                  <Row>
+                    <Col span={24}>
+                      <div className={cx('sider-view-wrapper')}>
+                        {
                           getSiderView()
                       }
-                    </div>
-                  </Col>
-                </Row>
-              </Content>
-            </Layout>
-          </RightSider>
-          <DragLayer canDrop={canDrop} theme={theme} intl={intl} />
-          <DeleteConfirmDialog visible={this.state.deleteDialogVisible} onOk={() => this.confirmCancel()} onCancel={() => this.setState({ deleteDialogVisible: false })} confirmText="ok">
-            <h3>{ formatMessage({ id: 'page.layouts.cancelEditing' })}</h3>
-          </DeleteConfirmDialog>
-        </BodyWrapper>
-
+                      </div>
+                    </Col>
+                  </Row>
+                </Content>
+              </Layout>
+            </RightSider>
+            <DragLayer canDrop={canDrop} theme={theme} intl={intl} />
+            <DeleteConfirmDialog visible={this.state.deleteDialogVisible} onOk={() => this.confirmCancel()} onCancel={() => this.setState({ deleteDialogVisible: false })} confirmText="ok">
+              <h3>{ formatMessage({ id: 'page.layouts.cancelEditing' })}</h3>
+            </DeleteConfirmDialog>
+          </BodyWrapper>
+        </Permission>
 
       );
     }
