@@ -1,7 +1,10 @@
-import { PrimaryDetails } from 'components/page/index';
+import { DetailsSubpanels, DetailsToolbar, PrimaryDetails } from 'components/page/index';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import Enums from 'utils/EnumsManager';
 import { getThemeByType } from 'utils/common';
+
+const { PhantomId } = Enums;
 
 class ObjectDetails extends Component {
   componentDidMount() {
@@ -13,20 +16,23 @@ class ObjectDetails extends Component {
       accountId,
       objectId,
       objectType,
+      tools,
+      deleted,
+      modules,
     } = this.props;
     const theme = getThemeByType(objectType);
 
     const commonProps = {
-      objectType,
       objectId,
+      objectType,
       theme,
     };
 
     return (
       <Fragment>
+        {objectId !== PhantomId && <DetailsToolbar {...commonProps} tools={tools} deleted={deleted} />}
         <PrimaryDetails {...commonProps} accountId={accountId} />
-        {/* <Toolbar {...commonProps} tools={tools} />
-        <TaskPanels {...commonProps} modules={modules} /> */}
+        {objectId !== PhantomId && <DetailsSubpanels {...commonProps} modules={modules} />}
       </Fragment>
     );
   }
@@ -34,9 +40,9 @@ class ObjectDetails extends Component {
 
 
 const mapStateToProps = ({ clientDetails }) => ({
-  tools: clientDetails.tools,
-  modules: clientDetails.modules,
+  tools: clientDetails.toolbar.tools,
+  deleted: clientDetails.toolbar.deleted,
+  modules: clientDetails.subpanels.modules,
 });
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {};
 export default connect(mapStateToProps, mapDispatchToProps)(ObjectDetails);

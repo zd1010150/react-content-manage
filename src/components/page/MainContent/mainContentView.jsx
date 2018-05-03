@@ -28,7 +28,6 @@ import {
   Users,
   GlobalSearch,
   ObjectShare,
-  NewOpportunity,
   ClientDetails,
 } from 'views/index';
 import Enums from 'utils/EnumsManager';
@@ -109,9 +108,9 @@ const MainContent = () => (
         const { objectId, objectType } = match.params;
         if ([Leads, Accounts, Opportunities].indexOf(objectType) !== -1) {
           return (
-            <ObjectDetails
+            <ClientDetails
               {...props}
-              key={objectType}
+              key={`${objectType}_${objectId}`}
               objectId={objectId}
               objectType={objectType}
             />

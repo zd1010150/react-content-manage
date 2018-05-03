@@ -5,7 +5,7 @@ import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { isValidClientTypes } from 'utils/propChecks';
-import { resetAllFieldsValue, tryUpdateClient } from '../flow/actions';
+import { resetAllFieldsValue, tryUpdateClient, tryUpdateAndAddClient } from '../flow/actions';
 
 const propTypes = {
   intl: intlShape.isRequired,
@@ -27,7 +27,14 @@ class ActionButtons extends Component {
   }
 
   handleSaveAndNewClick = () => {
-    console.log(' save & new click ');
+    console.log(' save and new click ');
+    const {
+      accountId,
+      objectId,
+      objectType,
+      tryUpdateAndAddClient,
+    } = this.props;
+    tryUpdateAndAddClient(objectId, objectType, accountId);
   }
 
   handleRevertClick = () => this.props.resetAllFieldsValue()
@@ -68,5 +75,6 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = {
   resetAllFieldsValue,
   tryUpdateClient,
+  tryUpdateAndAddClient,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(ActionButtons)));
