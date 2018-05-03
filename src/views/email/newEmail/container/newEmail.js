@@ -13,7 +13,7 @@ import {
 import {connect} from 'react-redux';
 import {Panel} from 'components/ui/index';
 import validateEmail, {validateEmailGroup} from 'utils/emailValidation';
-import { setStore, getStore, removeStore } from 'utils/localStorage';
+import {setStore, getStore, removeStore} from 'utils/localStorage';
 import EnumsManager from 'utils/EnumsManager';
 import classNames from 'classnames/bind';
 import NewEmailContent from './newEmailContent';
@@ -177,7 +177,7 @@ class NewEmail extends React.Component {
                 message: 'email receiver must be email'
             });
             return false
-        } else if(this.state.subject === ''){
+        } else if (this.state.subject === '') {
             notification.error({
                 message: 'subject cannot be empty'
             });
@@ -201,19 +201,22 @@ class NewEmail extends React.Component {
         this.hooksFn.getHTMLContent = fn;
     };
 
-    onFileUpload = (response, error) =>{
-        console.log('1111', response)
+    onFileUpload = (response, error) => {
+        console.log('response', response)
         if (_.isEmpty(error)) {
-            const imageUrl = response && response[0].data.url;
-            this.setState((prevState)=>({
-                attachments: [...prevState.attachments, {file_name: !!response[0].data.name ? response[0].data.name : 'file', url: imageUrl}]
-            }))
+            const files = response.map((r)=>{
+                return {
+                    file_name: !!r.data.name ? r.data.name : 'file',
+                    url: r.data.url
+                }
+            })
+            this.setState({attachments: files})
         }
     }
 
     send = () => {
         const {sendEmail, loginUser, match} = this.props;
-        if(!this.checkFieldInput()){
+        if (!this.checkFieldInput()) {
             return
         }
         const {history} = this.props;
@@ -239,21 +242,21 @@ class NewEmail extends React.Component {
         }) : undefined;
 
         const dataObj = {
-                from,
-                to,
-                cc,
-                bcc,
-                subject: this.state.subject,
-                content_type: 'html',
-                content: htmlContent,
-                attachments: this.state.attachments,
-                email_able_type: match.params.objectType,
-                email_able_id: match.params.objectId
-            };
+            from,
+            to,
+            cc,
+            bcc,
+            subject: this.state.subject,
+            content_type: 'html',
+            content: htmlContent,
+            attachments: this.state.attachments,
+            email_able_type: match.params.objectType,
+            email_able_id: match.params.objectId
+        };
         console.log('dataObj', dataObj)
 
-        const pendingSavedEmails =  _.uniqBy(this.state.sendTo.concat(this.state.cc).concat(this.state.bcc).concat(savedEmails));
-        sendEmail({userEmail, dataObj}, ()=>{
+        const pendingSavedEmails = _.uniqBy(this.state.sendTo.concat(this.state.cc).concat(this.state.bcc).concat(savedEmails));
+        sendEmail({userEmail, dataObj}, () => {
             setStore(EnumsManager.LocalStorageEmails, pendingSavedEmails);
             history.push(`/${match.params.objectType}/${match.params.objectId}`);
         });
@@ -374,7 +377,8 @@ class NewEmail extends React.Component {
                            bcc={this.state.bcc}
                            subject={this.state.subject}
                            formatMessage={formatMessage}/>
-                <NewEmailContent onFileUpload={this.onFileUpload} content={selectedEmailTemplate.content} showModal={this.showModal}
+                <NewEmailContent onFileUpload={this.onFileUpload} content={selectedEmailTemplate.content}
+                                 showModal={this.showModal}
                                  registerGetContentHook={this.registerGetContentHook}/>
             </Panel>
 
