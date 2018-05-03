@@ -152,14 +152,6 @@ export const createTemplateData = ({
   category,
   cb
 }) => (dispatch, getState) => {
-  console.log("??????", {
-    folderId,
-    name,
-    api_name: apiName,
-    content,
-    description,
-    category
-  });
   post(
     `/admin/email_templates/email_folders/${folderId}`,
     { name, api_name: apiName, content, description, category },

@@ -74,7 +74,7 @@ export default class FileUpload extends Component {
         };
         return (
             <Upload {...uploadProps}>
-                <Button className="email-theme-btn mt-sm" size="small">
+                <Button className="email-theme-btn ml-sm" size="small">
                     <Icon type="upload" /> {label}
                 </Button>
             </Upload>

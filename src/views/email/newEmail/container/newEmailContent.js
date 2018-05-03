@@ -52,14 +52,12 @@ class NewEmailContent extends React.Component {
         }
         xhr.setRequestHeader('Authorization', this.props.loginUser.token_info.access_token)
         xhr.withCredentials = true;
-        if (xhr.statusText === 'Unauthorized') {
-            console.log('?????')
-            this.props.tryLogout();
-        }
-        console.log('333', xhr)
-        console.log('2222', evt)
-        // Prevented the default behavior.
-        // evt.stop();
+        setTimeout(()=>{
+            if (xhr.statusText === 'Unauthorized') {
+                evt.stop();
+                return this.props.tryLogout();
+            }
+        }, 2000)
     }
 
     fileUploadResponse = (evt) => {
