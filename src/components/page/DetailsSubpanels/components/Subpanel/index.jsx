@@ -83,7 +83,7 @@ class TaskPanel extends Component {
         link = `/${objectType}/${objectId}/tasks/${PhantomId}`;
         break;
       case EmailSent:
-        link = '';
+        link = `/${objectType}/${objectId}/email/new`;
         break;
       case Attachments:
         link = `/${objectType}/${objectId}/attachments`;
