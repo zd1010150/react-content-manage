@@ -19,6 +19,7 @@ import SimpleTable from './SimpleTable/index';
 import Unauthentication from './Unauthentication/index';
 import PrimaryDetails from './PrimaryDetails/index';
 import DetailsToolbar from './DetailsToolbar/index';
+import DetailsSubpanels from './DetailsSubpanels/index';
 
 
 export {
@@ -43,4 +44,5 @@ export {
   Unauthentication,
   PrimaryDetails,
   DetailsToolbar,
+  DetailsSubpanels,
 };

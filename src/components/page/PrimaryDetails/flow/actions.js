@@ -2,6 +2,7 @@
 import { get } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
 import { setTools } from 'components/page/DetailsToolbar/flow/actions';
+import { setModules } from 'components/page/DetailsSubpanels/flow/actions';
 import { getFetchUrl, getUpdateUrl, getRequestMethod } from './utils/requests';
 import mapToRequestBody from './utils/mapToRequestBody';
 import {
@@ -37,8 +38,7 @@ export const tryFetchObjectDetails = (objectId, objectType, accountId) => dispat
       if (tools && sections && modules) {
         dispatch(setSections(data.mapped_values, sections));
         dispatch(setTools(tools));
-        // TODO: set modules
-        // dispatch(setModules(modules));
+        dispatch(setModules(modules));
       }
     }
   });
