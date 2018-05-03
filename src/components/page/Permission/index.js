@@ -20,7 +20,7 @@ Permission.defaultProps = {
   errorComponent: '',
 };
 Permission.propTypes = {
-  permission: PropTypes.string.isRequired,
+  permission: PropTypes.string,
   accountPermissions: PropTypes.array.isRequired,
   errorComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
 };

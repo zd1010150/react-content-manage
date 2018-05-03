@@ -1,17 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import { Select, Input, InputNumber, DatePicker, Row, Col, Icon, Tooltip } from 'antd';
-const { TextArea } = Input;
-const Option = Select.Option;
+import { Col, DatePicker, Icon, Input, InputNumber, Row, Select, Tooltip } from 'antd';
 import classNames from 'classnames/bind';
-import styles from './index.less';
-const cx = classNames.bind(styles);
-
-import { DisplayField, EmailInput } from './index';
-import { getRange } from 'utils/common';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Enums from 'utils/EnumsManager';
-//presets
+import { DisplayField, EmailInput } from './index';
+import styles from './index.less';
+import { getDisplayValue } from './utils';
+
+const { TextArea } = Input;
+const { Option } = Select;
+const cx = classNames.bind(styles);
 const {
   DateOnly,
   DateTime,
@@ -26,7 +25,6 @@ const {
 
 
 const defaultProps = {
-  initialValue: '',
   options: [],
   size: 'small',
   type: '',
@@ -46,7 +44,10 @@ const propTypes = {
   format: PropTypes.string,
   helpText: PropTypes.string,
   id: PropTypes.number.isRequired,
-  initialValue: PropTypes.string,
+  initialValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   label: PropTypes.string.isRequired,
   labelCol: PropTypes.shape({
     xs: PropTypes.number,
@@ -77,6 +78,8 @@ const propTypes = {
 
 
 const CustomField = ({
+  fetched,
+  fieldType,
   format,
   helpText,
   id,
@@ -100,10 +103,9 @@ const CustomField = ({
   valueCol,
   useDefaultRowCls,
 }) => {
-
-  const _onBlur = $ => {
+  const _onBlur = () => {
     if (_.isFunction(onBlur)) {
-      onBlur();
+      onBlur(id);
     }
   };
 
@@ -113,9 +115,9 @@ const CustomField = ({
     }
   };
 
-  const _onDropdownOpen = $ => {
+  const _onDropdownOpen = () => {
     if (_.isFunction(onDropdownOpen)) {
-      onDropdownOpen(id, options);
+      onDropdownOpen(id, fetched);
     }
   }
 
@@ -131,7 +133,7 @@ const CustomField = ({
     case DateTime:
       field = (
         <DatePicker
-          { ...others }
+          {...others}
           format={format}
           showTime={type === DateTime}
           // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
@@ -140,7 +142,7 @@ const CustomField = ({
           onChange={(date, dateString) => onChange(id, dateString)}
           // Overrides the default onBlur becasue when the calendar opens the input field lost focus
           onBlur={null}
-          onOpenChange={state => {
+          onOpenChange={(state) => {
             if (!state) return _onBlur();
           }}
         />
@@ -149,7 +151,7 @@ const CustomField = ({
     case Email:
       field = (
         <EmailInput
-          { ...others }
+          {...others}
           id={id}
           value={value}
           onChange={_onChange}
@@ -159,7 +161,7 @@ const CustomField = ({
     case LongText:
       field = (
         <TextArea
-          { ...others }          
+          {...others}
           autosize={{ minRows: 2, maxRows: 6 }}
           value={value}
           onChange={e => _onChange(id, e.target.value)}
@@ -169,17 +171,19 @@ const CustomField = ({
     case Lookup:
       field = (
         <Select
-          { ...others }
-          optionFilterProp="value"
-          showSearch
+          {...others}
+          // TODO: enable async search functionality
+          // optionFilterProp="value"
+          // showSearch
           value={value}
-          onChange={value => _onChange(id, value)}
+          onChange={newValue => _onChange(id, newValue)}
           onFocus={_onDropdownOpen}
         >
-          {options.map(option => 
+          {options.map(option => (
             <Option key={option.id} value={option.id}>
               {option[lookupDisplayKey]}
-            </Option>)}
+            </Option>
+          ))}
         </Select>
       );
       break;
@@ -193,25 +197,27 @@ const CustomField = ({
         // Warning: The Precision represents as scale in antd's InputNumber,
         //          we need to use scale to set InputNumber's precision
         <InputNumber
-          { ...others }
+          {...others}
+          // TODO: add precision check on new value
           // precision={scale}
           // {...numRange}
           value={value}
-          onChange={value => _onChange(id, value)}
+          onChange={newValue => _onChange(id, newValue)}
         />
       );
       break;
     case PickList:
       field = (
         <Select
-          { ...others }
+          {...others}
           value={value}
-          onChange={value => _onChange(id, value)}
+          onChange={newValue => _onChange(id, newValue)}
         >
-          {options.map(option =>
+          {options.map(option => (
             <Option key={option.id} value={option.option_value}>
               {option.option_value}
-            </Option>)}
+            </Option>
+          ))}
         </Select>
       );
       break;
@@ -225,12 +231,19 @@ const CustomField = ({
       );
       break;
     case Display:
+      // parse value for Lookup field
+      if (fieldType === Lookup) {
+        console.log('test lookup');
+      }
       field = (
         <DisplayField
           id={id}
           isValueChanged={value !== initialValue}
           readOnly={readOnly}
-          value={value}
+          value={fieldType === Lookup ?
+                  getDisplayValue(value, options, lookupDisplayKey) :
+                  value
+          }
           onRevertClick={onRevertClick}
           onDoubleClick={onDoubleClick}
         />
@@ -246,13 +259,14 @@ const CustomField = ({
         <span className={required ? `${cx('required')} ${cx('label')}` : cx('label')}>
           {label}
         </span>
-        {helpText ? <Tooltip title={helpText}>
-          <Icon
-            size="small"
-            type="question-circle"
-            className={cx('helpIcon')}
-          />
-        </Tooltip> : <div className={cx('iconPlaceholder')} />}
+        {helpText ? (
+          <Tooltip title={helpText}>
+            <Icon
+              size="small"
+              type="question-circle"
+              className={cx('helpIcon')}
+            />
+          </Tooltip>) : <div className={cx('iconPlaceholder')} />}
       </Col>
       <Col {...valueCol}>{field}</Col>
     </Row>
