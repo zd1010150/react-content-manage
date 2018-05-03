@@ -83,6 +83,14 @@ const details = (state = initialState, action) => {
 
     case SET_FIELD_OPTIONS:
       const { lookupFieldId, options } = action.payload;
+      // set field fetched to true
+      setFieldValueByKey(
+        lookupFieldId,
+        action.payload.code,
+        state.sections,
+        'optionsFetched',
+        true,
+      );
       return {
         ...state,
         sections: setFieldValueByKey(

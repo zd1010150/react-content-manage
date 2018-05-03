@@ -14,7 +14,7 @@ const defaultProps = {
 };
 const propTypes = {
   objectId: PropTypes.string.isRequired,
-  objectType: isValidClientTypes.isRequired,
+  objectType: isValidClientTypes,
   modules: PropTypes.array,
   theme: PropTypes.oneOf(ThemeTypesInArray).isRequired,
 };

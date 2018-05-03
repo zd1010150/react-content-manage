@@ -1,19 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl, intlShape } from 'react-intl';
-import { Icon, Tooltip } from 'antd';
+import { Icon } from 'antd';
 import classNames from 'classnames/bind';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { injectIntl, intlShape } from 'react-intl';
 import styles from './index.less';
+
 const cx = classNames.bind(styles);
 
 
 const defaultProps = {
-  readOnly: false,
-  isValueChanged: false,
+  onDoubleClick: () => {},
+  onRevertClick: () => {},
+  value: '',
 };
 const propTypes = {
   intl: intlShape.isRequired,
-  id: PropTypes.number,
+  id: PropTypes.number.isRequired,
   isValueChanged: PropTypes.bool.isRequired,
   onDoubleClick: PropTypes.func,
   onRevertClick: PropTypes.func,
@@ -34,7 +36,6 @@ const DisplayField = ({
   readOnly,
   value,
 }) => {
-
   const _onDoubleClick = $ => {
     if (!readOnly
         && _.isFunction(onDoubleClick)) {
@@ -50,6 +51,7 @@ const DisplayField = ({
 
   const i18nPrefix = 'page.customField';
   const { formatMessage } = intl;
+
 
   return (
     <div
@@ -80,7 +82,8 @@ const DisplayField = ({
       )}
     </div>
   );
-}
+};
+
 
 DisplayField.defaultProps = defaultProps;
 DisplayField.propTypes = propTypes;
