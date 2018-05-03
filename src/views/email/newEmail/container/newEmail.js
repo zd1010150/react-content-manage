@@ -33,8 +33,6 @@ for (let i = 0; i < savedEmails.length; i++) {
 }
 const InputComponent = ({isNormal, label, handleChange, value}) => {
 
-    console.log('???', savedEmails)
-
     return <Row className={`pt-lg ${cx('new-email-input-row')}`}>
         <Col className="gutter-row field-label mt-sm" span={2}>
             {label}
@@ -141,7 +139,6 @@ class NewEmail extends React.Component {
     }
 
     handleSendTo = (value) => {
-        console.log('value', value)
         this.setState({
             sendTo: value
         })
@@ -202,7 +199,6 @@ class NewEmail extends React.Component {
     };
 
     onFileUpload = (response, error) => {
-        console.log('response', response)
         if (_.isEmpty(error)) {
             const files = response.map((r)=>{
                 return {
@@ -261,7 +257,6 @@ class NewEmail extends React.Component {
             history.push(`/${match.params.objectType}/${match.params.objectId}`);
         });
 
-        // console.log('????', htmlContent, this.state)
     }
 
     discard = () => {
