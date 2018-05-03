@@ -20,7 +20,7 @@ const {
  * @param {string} lookupKey
  * @param {array} mappedValues
  */
-export default (type, value = '') => {
+export const getValueByType = (type, value = '') => {
   switch (type) {
     case DateOnly:
       // TODO: modify function in order to omit offset and format
@@ -34,13 +34,24 @@ export default (type, value = '') => {
       return !value || value === '' ?
               undefined :
               toTimezone(value, '+1100', 'YYYY-MM-DD HH:mm:ss');
+    case Lookup:
+      return value && value.id ? value.id : null;
     case Email:
     case LongText:
     case NumberInput:
     case TextInput:
     case PickList:
-    case Lookup:
     default:
       return value;
   }
+};
+
+export const getOptionsByType = (type, value, meta) => {
+  const { picklists } = meta;
+  if (type === Lookup) {
+    return value && value.id ? [value] : [];
+  } else if (type === PickList) {
+    return picklists;
+  }
+  return null;
 };

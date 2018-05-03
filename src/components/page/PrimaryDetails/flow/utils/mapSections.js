@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import getValueByType from './getValueByType';
+import { getValueByType, getOptionsByType } from './formatDataUtils';
 
 const FieldKeys = {
   Active: 'active',
@@ -14,21 +14,21 @@ const FieldKeys = {
  */
 const formatFields = (fields, mappedValues) =>
   fields.map((field) => {
-    let {
-      id,
+    let { value } = field;
+
+    const {
       page_readonly,
       page_required,
       meta,
-      value,
       position,
     } = field;
 
     const {
+      id,
       field_name,
       field_label,
       crm_data_type,
       helper_text,
-      picklists,
       lookup_own_field_name,
       precision,
       scale,
@@ -40,19 +40,22 @@ const formatFields = (fields, mappedValues) =>
     }
 
     const initialValue = getValueByType(crm_data_type, value, lookup_own_field_name);
+    const initialOptions = getOptionsByType(crm_data_type, value, meta);
 
     return {
       active: false,
       helpText: helper_text,
-      // Id field is required by lookup field for further data fetching
+      // The 'id' field is required by lookup field for further data fetching
       id,
       initialValue,
       key: id,
       label: field_label,
-      // lookup_own_field_name is required because it varies by different entity
+      // The 'lookup_own_field_name' is required because it will be used to display value and it varies
       lookupDisplayKey: lookup_own_field_name,
       name: field_name,
-      options: picklists,
+      options: initialOptions,
+      // A tag to avoid further data fetch for Lookup field
+      optionsFetched: false,
       position,
       precision,
       readOnly: page_readonly,
