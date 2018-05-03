@@ -41,6 +41,41 @@ export const fetchSelectedTemplateData = ({ templateId, objectType, objectId, cb
   });
 };
 
+//send email
+export const sendEmail = ({ userEmail, dataObj }, cb, cbErr) => (
+    dispatch,
+    getState
+) => {
+    //todo add auth before go production
+    // post(
+    //     `/admin/emails/auth/${userEmail}`,
+    // ).then(data => {
+    //     console.log("data", data);
+    //     if (!_.isEmpty(data)) {
+    //         // console.log("data", data);
+    //     }
+    //     if (_.isFunction(cb)) {
+    //         cb();
+    //     }
+    // }).catch((e)=>{
+    //     console.log("e", e);
+    // });
+
+    post(
+        "/admin/emails",
+        dataObj,
+        dispatch
+    ).then(data => {
+        if (!_.isEmpty(data)) {
+            console.log("data", data);
+            if (_.isFunction(cb)) {
+                cb();
+            }
+        }
+
+    });
+};
+
 //Set Templates
 export const newEmailSetTemplatesData = payload => ({
   type: NEW_EMAIL_SET_TEMPLATES,

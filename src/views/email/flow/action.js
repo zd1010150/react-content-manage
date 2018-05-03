@@ -40,7 +40,8 @@ import {
 import {
   fetchSelectedTemplateData,
   newEmailQueryByPaging,
-  newEmailSetTemplatesData
+  newEmailSetTemplatesData,
+  sendEmail
 } from "../newEmail/flow/action";
 
 export {
@@ -76,5 +77,6 @@ export {
   fetchNewTemplateData,
   fetchSelectedTemplateData,
   newEmailQueryByPaging,
-  newEmailSetTemplatesData
+  newEmailSetTemplatesData,
+  sendEmail
 };

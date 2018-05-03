@@ -25,7 +25,6 @@ class PicturesWall extends React.Component {
                 return false;
             }
             this.setState({isMaxSizeError: false});
-            console.log('123131', fileList[0].type)
             if (!_.isEmpty(uploadConfig.accept) && uploadConfig.accept.indexOf(fileList[0].type) < 0) {
                 this.setState({isTypeError: true, fileList: []});
                 onError('type');

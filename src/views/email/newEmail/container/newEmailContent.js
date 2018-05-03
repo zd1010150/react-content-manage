@@ -4,6 +4,8 @@ import {intlShape, injectIntl} from 'react-intl';
 import {Row, Col, Input, Select, Button, Icon, Radio, Table} from 'antd';
 import {connect} from 'react-redux';
 import {Panel, CKEditor} from 'components/ui/index';
+import {tryLogout} from 'views/LoginForm/flow/actions';
+import FileUpload from '../component/fileUpload';
 import config from '../../ckConfig.js';
 import classNames from 'classnames/bind';
 import styles from '../newEmail.less';
@@ -39,7 +41,15 @@ class NewEmailContent extends React.Component {
         xhr.setRequestHeader('Cache-Control', 'no-cache');
         xhr.setRequestHeader('X-CUSTOM', 'HEADER');
         xhr.setRequestHeader('accept', 'image/*');
-        !this.props.loginUser.token_info.access_token && evt.stop();
+        if(this.props.loginUser){
+            if(!this.props.loginUser.token_info.access_token){
+                evt.stop();
+                return this.props.tryLogout();
+            }
+        }else{
+            evt.stop();
+            return this.props.tryLogout();
+        }
         xhr.setRequestHeader('Authorization', this.props.loginUser.token_info.access_token)
         xhr.withCredentials = true;
         if (xhr.statusText === 'Unauthorized') {
@@ -68,12 +78,13 @@ class NewEmailContent extends React.Component {
         }
     }
     render() {
-        const {showModal, content} = this.props;
+        const {showModal, content, onFileUpload} = this.props;
         const { formatMessage } = this.props.intl;
         const selectTemplate = <Button className="email-theme-btn" size="small" onClick={showModal}><Icon type="download" />{ formatMessage({ id: 'page.emailTemplates.selectTemplate' }) }</Button>;
-        const cloudAttachment = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {}}><Icon type="file" />{ formatMessage({ id: 'page.emailTemplates.cloudAttachment' }) }</Button>
-        const localAttachment = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {}}><Icon type="link" />{ formatMessage({ id: 'page.emailTemplates.localAttachment' }) }</Button>
-        const additionalCtrl = <div className="pl-lg pt-md pb-sm" style={{background: '#f8f8f8'}}>{selectTemplate}{cloudAttachment}{localAttachment}</div>
+        // const cloudAttachment = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {}}><Icon type="file" />{ formatMessage({ id: 'page.emailTemplates.cloudAttachment' }) }</Button>
+        // const localAttachment = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {}}><Icon type="link" />{ formatMessage({ id: 'page.emailTemplates.localAttachment' }) }</Button>
+        const localAttachment = <FileUpload label={formatMessage({ id: 'page.emailTemplates.localAttachment'})} onFileUpload={onFileUpload}/>
+        const additionalCtrl = <div className="pl-lg pt-md pb-sm" style={{background: '#f8f8f8'}}>{selectTemplate}{localAttachment}</div>
         return (
             <Fragment>
                 {additionalCtrl}
@@ -92,11 +103,11 @@ class NewEmailContent extends React.Component {
     }
 }
 
-const mapStateToProps = ({ global }) => ({
-
+const mapStateToProps = ({ global, loginUser }) => ({
+    loginUser: loginUser
 });
 const mapDispatchToProps = {
-
+    tryLogout: tryLogout
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(NewEmailContent));

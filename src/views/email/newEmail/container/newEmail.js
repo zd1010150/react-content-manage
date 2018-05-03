@@ -1,17 +1,20 @@
 import React, {Fragment} from 'react';
 import _ from 'lodash';
 import {intlShape, injectIntl} from 'react-intl';
-import {Row, Col, Input, Button, Icon, Radio, Table, notification, Modal} from 'antd';
+import {Row, Col, Input, Button, Icon, Radio, Table, notification, Modal, Select} from 'antd';
 import {
     getUserFolderData,
     setSelectedUser,
     newEmailQueryByPaging,
     fetchSelectedTemplateData,
-    newEmailSetTemplatesData
+    newEmailSetTemplatesData,
+    sendEmail
 } from '../../flow/action';
 import {connect} from 'react-redux';
 import {Panel} from 'components/ui/index';
-import validateEmail from 'utils/emailValidation';
+import validateEmail, {validateEmailGroup} from 'utils/emailValidation';
+import { setStore, getStore, removeStore } from 'utils/localStorage';
+import EnumsManager from 'utils/EnumsManager';
 import classNames from 'classnames/bind';
 import NewEmailContent from './newEmailContent';
 import {FloatingLabelInput, StyledSelect} from 'components/ui/index';
@@ -19,18 +22,39 @@ import {withRouter} from 'react-router';
 import styles from '../newEmail.less';
 const cx = classNames.bind(styles);
 const RadioGroup = Radio.Group;
+const Option = Select.Option;
 
-const InputComponent = ({label, handleChange, value}) => {
+
+const savedEmails = getStore(EnumsManager.LocalStorageEmails) ? JSON.parse(getStore(EnumsManager.LocalStorageEmails)) : [];
+const children = [];
+for (let i = 0; i < savedEmails.length; i++) {
+    console.log('savedEmails', savedEmails)
+    !!savedEmails[i] && children.push(<Option key={savedEmails[i]}>{savedEmails[i]}</Option>);
+}
+const InputComponent = ({isNormal, label, handleChange, value}) => {
+
+    console.log('???', savedEmails)
+
     return <Row className={`pt-lg ${cx('new-email-input-row')}`}>
         <Col className="gutter-row field-label mt-sm" span={2}>
             {label}
         </Col>
         <Col className={`gutter-row field-value ${cx('new-email-input')}`} span={22}>
-            <FloatingLabelInput
-                noLabel={true}
-                handleChange={handleChange}
-                value={value}
-            />
+            {/*<FloatingLabelInput*/}
+            {/*noLabel={true}*/}
+            {/*handleChange={handleChange}*/}
+            {/*value={value}*/}
+            {/*/>*/}
+            {!isNormal && <Select
+                mode="tags"
+                size="default"
+                onChange={handleChange}
+                style={{width: '100%'}}
+            >
+                {children}
+            </Select>}
+            {!!isNormal && <Input value={value} onChange={handleChange}/>}
+
         </Col>
     </Row>
 }
@@ -48,7 +72,7 @@ const BasicInfo = ({
                         label={formatMessage({id: 'page.emailTemplates.to'})}/>
         <InputComponent value={cc} handleChange={handleCc} label={formatMessage({id: 'page.emailTemplates.cc'})}/>
         <InputComponent value={bcc} handleChange={handleBcc} label={formatMessage({id: 'page.emailTemplates.bcc'})}/>
-        <InputComponent value={subject} handleChange={handleSubject}
+        <InputComponent isNormal={true} value={subject} handleChange={handleSubject}
                         label={formatMessage({id: 'page.emailTemplates.subject'})}/>
     </Fragment>
 }
@@ -66,13 +90,14 @@ class NewEmail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sendTo: '',
-            cc: '',
-            bcc: '',
+            sendTo: [],
+            cc: [],
+            bcc: [],
             subject: '',
             visible: false,
             selectedFolderId: '',
-            showFolders: []
+            showFolders: [],
+            attachments: []
         }
     }
 
@@ -116,6 +141,7 @@ class NewEmail extends React.Component {
     }
 
     handleSendTo = (value) => {
+        console.log('value', value)
         this.setState({
             sendTo: value
         })
@@ -130,9 +156,9 @@ class NewEmail extends React.Component {
             bcc: value
         })
     }
-    handleSubject = (value) => {
+    handleSubject = (e) => {
         this.setState({
-            subject: value
+            subject: e.target.value
         })
     }
 
@@ -141,22 +167,33 @@ class NewEmail extends React.Component {
      * to, cc, bcc must be email format
      */
     checkFieldInput() {
-        if (this.state.sendTo === '') {
-            return notification.error({
+        if (this.state.sendTo.length === 0) {
+            notification.error({
                 message: 'email receiver cannot be empty'
             });
-        } else if (!validateEmail(this.state.sendTo)) {
-            return notification.error({
+            return false
+        } else if (!validateEmailGroup(this.state.sendTo)) {
+            notification.error({
                 message: 'email receiver must be email'
             });
-        } else if (this.state.cc !== '' && !validateEmail(this.state.cc)) {
-            return notification.error({
+            return false
+        } else if(this.state.subject === ''){
+            notification.error({
+                message: 'subject cannot be empty'
+            });
+            return false
+        } else if (this.state.cc.length !== 0 && !validateEmailGroup(this.state.cc)) {
+            notification.error({
                 message: 'cc target must be email'
             });
-        } else if (this.state.bcc !== '' && !validateEmail(this.state.bcc)) {
-            return notification.error({
+            return false
+        } else if (this.state.bcc.length !== 0 && !validateEmailGroup(this.state.bcc)) {
+            notification.error({
                 message: 'bcc target must be email'
             });
+            return false
+        } else {
+            return true
         }
     }
 
@@ -164,8 +201,21 @@ class NewEmail extends React.Component {
         this.hooksFn.getHTMLContent = fn;
     };
 
+    onFileUpload = (response, error) =>{
+        console.log('1111', response)
+        if (_.isEmpty(error)) {
+            const imageUrl = response && response[0].data.url;
+            this.setState((prevState)=>({
+                attachments: [...prevState.attachments, {file_name: !!response[0].data.name ? response[0].data.name : 'file', url: imageUrl}]
+            }))
+        }
+    }
+
     send = () => {
-        this.checkFieldInput();
+        const {sendEmail, loginUser, match} = this.props;
+        if(!this.checkFieldInput()){
+            return
+        }
         const {history} = this.props;
         const fn = this.hooksFn.getHTMLContent;
         let htmlContent = "<p></p>";
@@ -173,12 +223,47 @@ class NewEmail extends React.Component {
             htmlContent = fn();
         }
         //todo connect send email api
-        console.log('????', htmlContent, this.state)
+        const userEmail = loginUser.email;
+        const from = {
+            name: loginUser.name,
+            address: loginUser.email
+        };
+        const to = this.state.sendTo ? this.state.sendTo.map((v) => {
+            return {address: v}
+        }) : undefined;
+        const cc = this.state.cc ? this.state.cc.map((v) => {
+            return {address: v}
+        }) : undefined;
+        const bcc = this.state.bcc ? this.state.bcc.map((v) => {
+            return {address: v}
+        }) : undefined;
+
+        const dataObj = {
+                from,
+                to,
+                cc,
+                bcc,
+                subject: this.state.subject,
+                content_type: 'html',
+                content: htmlContent,
+                attachments: this.state.attachments,
+                email_able_type: match.params.objectType,
+                email_able_id: match.params.objectId
+            };
+        console.log('dataObj', dataObj)
+
+        const pendingSavedEmails =  _.uniqBy(this.state.sendTo.concat(this.state.cc).concat(this.state.bcc).concat(savedEmails));
+        sendEmail({userEmail, dataObj}, ()=>{
+            setStore(EnumsManager.LocalStorageEmails, pendingSavedEmails);
+            history.push(`/${match.params.objectType}/${match.params.objectId}`);
+        });
+
+        // console.log('????', htmlContent, this.state)
     }
 
     discard = () => {
-        const {history} = this.props;
-        history.push('/')
+        const {history, match} = this.props;
+        history.push(`/${match.params.objectType}/${match.params.objectId}`);
     }
 
     handleFolderChange = (id) => {
@@ -289,7 +374,8 @@ class NewEmail extends React.Component {
                            bcc={this.state.bcc}
                            subject={this.state.subject}
                            formatMessage={formatMessage}/>
-                <NewEmailContent content={selectedEmailTemplate.content} showModal={this.showModal} registerGetContentHook={this.registerGetContentHook}/>
+                <NewEmailContent onFileUpload={this.onFileUpload} content={selectedEmailTemplate.content} showModal={this.showModal}
+                                 registerGetContentHook={this.registerGetContentHook}/>
             </Panel>
 
         );
@@ -312,7 +398,8 @@ const mapDispatchToProps = {
     getUserFolderData,
     newEmailQueryByPaging,
     fetchSelectedTemplateData,
-    newEmailSetTemplatesData
+    newEmailSetTemplatesData,
+    sendEmail
 };
 
 
