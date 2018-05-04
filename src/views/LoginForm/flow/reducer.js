@@ -1,12 +1,10 @@
-import {
-  LOGIN_SUCCESS, LOGINOROUT_FAILURE, LOGOUT_SUCCESS,
-} from './actionTypes';
+import Enums from 'utils/EnumsManager';
+import { getStore, removeStore, setStore } from '../../../utils/localStorage';
 import { MY_SETTING_SET_AVATOR } from '../../MySetting/flow/actionType';
-import EnumsManager from '../../../utils/EnumsManager';
-import { setStore, getStore, removeStore } from '../../../utils/localStorage';
+import { LOGINOROUT_FAILURE, LOGIN_SUCCESS, LOGOUT_SUCCESS } from './actionTypes';
 
-const initialState = getStore(EnumsManager.LocalStorageKey)
-  ? JSON.parse(getStore(EnumsManager.LocalStorageKey))
+const initialState = getStore(Enums.LocalStorageKey)
+  ? JSON.parse(getStore(Enums.LocalStorageKey))
   : {};
 
 const loginUser = (state = initialState, action) => {
@@ -14,16 +12,21 @@ const loginUser = (state = initialState, action) => {
   let user;
   switch (type) {
     case LOGIN_SUCCESS:
-      setStore(EnumsManager.LocalStorageKey, payload);
+      setStore(Enums.LocalStorageKey, payload);
       return payload;
+
+
     case MY_SETTING_SET_AVATOR:
       user = Object.assign({}, state, { avatar: action.avatar });
-      setStore(EnumsManager.LocalStorageKey, JSON.stringify(user));
+      setStore(Enums.LocalStorageKey, JSON.stringify(user));
       return user;
+
+
     case LOGOUT_SUCCESS:
     case LOGINOROUT_FAILURE:
-      removeStore(EnumsManager.LocalStorageKey);
+      removeStore(Enums.LocalStorageKey);
       return {};
+
 
     default:
       return state;

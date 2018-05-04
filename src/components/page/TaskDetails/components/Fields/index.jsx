@@ -201,6 +201,7 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.dueDate` })}
             </div>
             <DatePicker
+              allowClear={false}
               format="YYYY-MM-DD"
               onChange={(date, dateString) => this.handleFieldChange('dueTime', dateString)}
               placeholder={formatMessage({ id: 'global.ui.input.datetimepicker.placeholder' })}
