@@ -231,10 +231,6 @@ const CustomField = ({
       );
       break;
     case Display:
-      // parse value for Lookup field
-      if (fieldType === Lookup) {
-        console.log('test lookup');
-      }
       field = (
         <DisplayField
           id={id}

@@ -101,7 +101,7 @@ class Toolbar extends Component {
         </Col>
         <Col {...colLayout} style={{ textAlign: 'right' }}>
           {objectType === Leads && (
-            <Link to={`${objectType}/${PhantomId}`}>
+            <Link to={`/${objectType}/${PhantomId}`}>
               <Button { ...btnConfigs }>
                 <Icon size="small" type="plus" {...iconConfig} />
                 {formatMessage({ id: `global.properNouns.${theme}` })}

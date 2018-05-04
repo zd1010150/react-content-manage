@@ -7,9 +7,12 @@ import { withRouter } from 'react-router-dom';
 import { isValidClientTypes } from 'utils/propChecks';
 import { resetAllFieldsValue, tryUpdateClient, tryUpdateAndAddClient } from '../flow/actions';
 
+const defaultProps = {
+  accountId: '',
+};
 const propTypes = {
   intl: intlShape.isRequired,
-  accountId: PropTypes.string.isRequired,
+  accountId: PropTypes.string,
   objectId: PropTypes.string.isRequired,
   objectType: isValidClientTypes,
 };
@@ -70,6 +73,7 @@ class ActionButtons extends Component {
 }
 
 
+ActionButtons.defaultProps = defaultProps;
 ActionButtons.propTypes = propTypes;
 const mapStateToProps = () => ({});
 const mapDispatchToProps = {

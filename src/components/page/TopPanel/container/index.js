@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input, Icon } from 'antd';
 import { withRouter } from 'react-router';
+import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -26,7 +27,8 @@ class topPanel extends React.Component {
     fetchGlobalSetting();
   }
   onLogoutClick = () => {
-    this.props.tryLogout();
+    const { formatMessage } = this.props.intl;
+    this.props.tryLogout(formatMessage({ id: 'global.info.logoutSuccess' }));
   }
   onSearch = (keys) => {
     const { setSearchKey, history } = this.props;
@@ -80,6 +82,6 @@ const mapDispatchToProp = {
   setSearchKey,
 };
 
-const TopPanel = connect(mapStateToProps, mapDispatchToProp)(withRouter(topPanel));
+const TopPanel = connect(mapStateToProps, mapDispatchToProp)(withRouter(injectIntl(topPanel)));
 export default TopPanel;
 

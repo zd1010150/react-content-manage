@@ -65,10 +65,21 @@ const MainContent = () => (
     <Route path="/globalSearch" component={GlobalSearch} exat />
 
     <Route path="/leads/convert/find/:objectId" component={FindDuplicates} />
-    <Route path="/leads/convert/convert/:objectId" component={ConvertLeads} />
     <Route path="/leads/merge/" component={MergeLeads} />
 
-
+    <Route
+      path="/leads/convert/convert/:objectId"
+      render={(props) => {
+        const { match } = props;
+        const { objectId } = match.params;
+        return (
+          <ConvertLeads
+            {...props}
+            objectId={objectId}
+          />
+        );
+      }}
+    />
     <Route
       path="/accounts/:accountId/opportunities/0000-0000"
       render={(props) => {
