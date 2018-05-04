@@ -1,9 +1,28 @@
-/* eslint-disable max-len */
+/* eslint-disable max-len, no-case-declarations */
 import { combineReducers } from 'redux';
 import { flattenTree } from 'utils/common';
 import { moments, years } from 'utils/dateTimeUtils';
 import { navLanguage } from 'utils/navigationUtil';
 import { SET_ACCOUNTINFO, SET_GLOBAL_SETTING, SET_LOGO, SET_PAGETITLE, SET_PERMISSION, SET_TEAMS_GLOBAL, SET_USERS_GLOBAL, TOGGLE_LANGUAGE } from './actionType';
+import Enums from 'utils/EnumsManager';
+import { getStore, setStore } from 'utils/localStorage';
+
+const { LocalStorageKeys } = Enums;
+const { User, Timezone } = LocalStorageKeys;
+
+
+const setTimezoneInStorage = (timezones = [], countries = []) => {
+  const user = getStore(User);
+  const parsedUser = JSON.parse(user);  
+  const timezone = timezones.find(tz => tz.id === parsedUser.time_zone);
+  // TODO: when backend finishes, the time format should be get from country by loginuser country
+  const country = countries.find(cty => cty.id === parsedUser.country);
+  return setStore(Timezone, {
+    dateFormat: 'YYYY-MM-DD',
+    timeFormat: 'YYYY-MM-DD HH:mm:ss',
+    ...timezone,
+  });
+};
 
 // 页面默认语言为 en，此处只是mock
 
@@ -78,7 +97,10 @@ const settings = (state = {
 }, action) => {
   switch (action.type) {
     case SET_GLOBAL_SETTING:
+      setTimezoneInStorage(action.settings.timezones);
       return mapSettingData(state, action.settings);
+
+
     case SET_TEAMS_GLOBAL:
       return {
         ...state,
