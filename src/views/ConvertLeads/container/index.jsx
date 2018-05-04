@@ -8,7 +8,12 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { PlatformSettings, PortalSettings } from '../components/index';
-import { reset, tryConvertLead, tryFetchLeadIfNeeded } from '../flow/actions';
+import {
+  reset,
+  tryConvertLead,
+  tryFetchLeadIfNeeded,
+  tryFetchTypes,
+} from '../flow/actions';
 
 const { PhantomId } = Enums;
 
@@ -22,16 +27,16 @@ class ConvertLeads extends Component {
   state = {
     accountNum: '',
     password: '',
-    type: '',
-    types: [],
+    typeId: '',
     loginAccount: '',
     portalPassword: generator.generate(),
   }
 
   componentDidMount() {
     // fetch lead's email if needed
-    const { objectId, tryFetchLeadIfNeeded } = this.props;
+    const { objectId, tryFetchLeadIfNeeded, tryFetchTypes } = this.props;
     tryFetchLeadIfNeeded(objectId);
+    tryFetchTypes();
   }
 
   componentDidUpdate() {
@@ -61,11 +66,10 @@ class ConvertLeads extends Component {
     const {
       accountNum,
       password,
-      type,
-      types,
+      typeId,
       portalPassword,
     } = this.state;
-    const { intl, email } = this.props;
+    const { intl, email, types } = this.props;
     const { formatMessage } = intl;
     const i18n = 'page.convertLeads';
 
@@ -77,7 +81,7 @@ class ConvertLeads extends Component {
         <PlatformSettings
           accountNum={accountNum}
           password={password}
-          type={type}
+          typeId={typeId}
           types={types}
           onChange={this.onFieldChange}
         />
@@ -115,10 +119,12 @@ const mapStateToProps = ({ global, conversion }) => ({
   email: conversion.email,
   success: conversion.success,
   newAccountId: conversion.newAccountId,
+  types: conversion.types,
 });
 const mapDispatchToProps = {
   reset,
-  tryFetchLeadIfNeeded,
   tryConvertLead,
+  tryFetchLeadIfNeeded,  
+  tryFetchTypes,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(ConvertLeads)));

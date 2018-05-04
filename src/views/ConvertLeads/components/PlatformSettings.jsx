@@ -4,10 +4,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 const { Option } = Select;
-import classNames from 'classnames/bind';
-import styles from '../index.less';
-const cx = classNames.bind(styles);
-
 
 const defaultProps = {
   types: [],
@@ -35,7 +31,7 @@ const PlatformSettings = ({
   intl,  
   accountNum,
   password,
-  type,
+  typeId,
   types,
   onChange,
 }) => {
@@ -67,12 +63,19 @@ const PlatformSettings = ({
             <Col {...valueCol}>
               {field === 'type' && (
                 <Select
-                  className={`${cx('select')} full-width`}
+                  className="full-width"
                   size="small"
-                  value={type}
-                  onChange={value => _onChange('type', value)}
+                  value={typeId}
+                  onChange={newValue => _onChange('typeId', newValue)}
                 >
-                  {types.map(option => <Option key={option.id}>{'123'}</Option>)}
+                  {types.map(option => (
+                    <Option
+                      key={option.id}
+                      value={option.id}
+                    >
+                      {option.option_value}
+                    </Option>
+                  ))}
                 </Select>
               )}
               {field === 'accountNum' && <Input size="small" value={accountNum} onChange={e => _onChange('accountNum', e.target.value)} />}
