@@ -1,5 +1,6 @@
 import { Button, Icon } from 'antd';
 import { Panel } from 'components/ui/index';
+import generator from 'generate-password';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
@@ -21,7 +22,7 @@ class ConvertLeads extends Component {
     type: '',
     types: [],
     loginAccount: '',
-    portalPassword: '',
+    portalPassword: generator.generate(),
   }
 
   componentDidMount() {

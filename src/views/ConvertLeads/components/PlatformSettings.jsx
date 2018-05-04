@@ -76,7 +76,7 @@ const PlatformSettings = ({
                 </Select>
               )}
               {field === 'accountNum' && <Input size="small" value={accountNum} onChange={e => _onChange('accountNum', e.target.value)} />}
-              {field === 'password' && <Input size="small" value={password} onChange={e => _onChange('password', e.target.value)} type="password" />}
+              {field === 'password' && <Input size="small" value={password} onChange={e => _onChange('password', e.target.value)} />}
             </Col>
           </Row>
         );
