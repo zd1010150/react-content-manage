@@ -8,11 +8,13 @@ import {
   NEW_TEMPLATE_API_NAME,
   NEW_TEMPLATE_DESCRIPTION,
   NEW_TEMPLATE_CONTENT,
+  NEW_TEMPLATE_CATEGORY,
   EDIT_TEMPLATE_FOLDER,
   EDIT_TEMPLATE_NAME,
   EDIT_TEMPLATE_API_NAME,
   EDIT_TEMPLATE_DESCRIPTION,
-  EDIT_TEMPLATE_CONTENT
+  EDIT_TEMPLATE_CONTENT,
+  EDIT_TEMPLATE_CATEGORY
 } from "./actionType";
 
 //set new template folder
@@ -40,6 +42,11 @@ export const setNewTemplateContent = payload => ({
   type: NEW_TEMPLATE_CONTENT,
   payload
 });
+//set new template category
+export const setNewTemplateCategory = payload => ({
+  type: NEW_TEMPLATE_CATEGORY,
+  payload
+});
 
 //set Edit template folder
 export const setEditTemplateFolder = payload => ({
@@ -64,5 +71,10 @@ export const setEditTemplateDescription = payload => ({
 //set Edit template content
 export const setEditTemplateContent = payload => ({
   type: EDIT_TEMPLATE_CONTENT,
+  payload
+});
+//set Edit template category
+export const setEditTemplateCategory = payload => ({
+  type: EDIT_TEMPLATE_CATEGORY,
   payload
 });

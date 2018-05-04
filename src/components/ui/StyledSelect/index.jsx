@@ -32,6 +32,7 @@ const StyledSelect = ({
   options,
   value,
   valueField,
+  style
 }) => {
 
   const _onChange = value => {
@@ -49,8 +50,9 @@ const StyledSelect = ({
         dropdownMatchSelectWidth={false}
         onChange={value => _onChange(value)}
         value={value}
+        style={style}
       >
-        {options.map(option => 
+        {options.map(option =>
           <Option
             key={option[keyField]}
             value={option[valueField]}

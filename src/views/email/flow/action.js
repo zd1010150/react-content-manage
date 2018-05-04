@@ -32,8 +32,17 @@ import {
   setSelectedTeam,
   setSelectedUser,
   setAllUser,
-  getAllUser
+  getAllUser,
+  updateFieldOption,
+  fetchNewTemplateData
 } from "../emailTemplates/flow/action";
+
+import {
+  fetchSelectedTemplateData,
+  newEmailQueryByPaging,
+  newEmailSetTemplatesData,
+  sendEmail
+} from "../newEmail/flow/action";
 
 export {
   setEditFolderData,
@@ -63,5 +72,11 @@ export {
   setSelectedTeam,
   setSelectedUser,
   setAllUser,
-  getAllUser
+  getAllUser,
+  updateFieldOption,
+  fetchNewTemplateData,
+  fetchSelectedTemplateData,
+  newEmailQueryByPaging,
+  newEmailSetTemplatesData,
+  sendEmail
 };

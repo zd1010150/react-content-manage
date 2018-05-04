@@ -14,7 +14,8 @@ import {
     queryByPaging,
     setSelectedFolderData,
     deleteTemplate,
-    fetchTemplateData
+    fetchTemplateData,
+    fetchNewTemplateData
 } from '../../flow/action';
 import {
     TemplateDetail
@@ -61,7 +62,7 @@ class EmailTemplateDetail extends React.Component {
         const {
             setEditFolderViewVisible, setPermissionSettingVisible, isPermissionSettingVisible,
             isSharedByVisible, templates, templatesDataTablePagination, queryByPaging, setSharedByVisible,
-            setSelectedFolderData, selectedFolder, userFolders, sharedFolders, selectedUser, loginUser, deleteTemplate, fetchTemplateData, history,
+            setSelectedFolderData, selectedFolder, userFolders, sharedFolders, selectedUser, loginUser, deleteTemplate, fetchTemplateData, fetchNewTemplateData, history,
             editTemplate
         } = this.props;
         return (
@@ -80,6 +81,7 @@ class EmailTemplateDetail extends React.Component {
                             selectedUser={selectedUser}
                             deleteTemplate={deleteTemplate}
                             fetchTemplateData={fetchTemplateData}
+                            fetchNewTemplateData={fetchNewTemplateData}
                             history={history}
                             editTemplate={editTemplate}
                             formatMessage={formatMessage}
@@ -126,7 +128,8 @@ const mapDispatchToProps = {
     queryByPaging,
     setSelectedFolderData,
     deleteTemplate,
-    fetchTemplateData
+    fetchTemplateData,
+    fetchNewTemplateData
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EmailTemplateDetail));

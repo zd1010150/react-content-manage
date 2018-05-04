@@ -180,7 +180,7 @@ export const Folders = ({formatMessage, setSelectedFolderData, selectedFolder, u
                     </div>
                     <div>{item.name}</div>
                     {isSharedByVisible && item.belonged_user &&
-                    <div>{formatMessage({id: 'page.emailTemplates.sharedBy'}) + item.belonged_user.name}</div>}
+                    <div>{formatMessage({id: 'page.emailTemplates.by'}) + item.belonged_user.name}</div>}
                 </label>
             </div>
         )}

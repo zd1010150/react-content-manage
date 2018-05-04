@@ -5,6 +5,9 @@ import { Row, Col, Button, Icon, Radio, Input, Modal, Popconfirm } from 'antd';
 import { Panel, SelectionPool, SearchPool } from 'components/ui/index';
 import classNames from 'classnames/bind';
 import Enums from 'utils/EnumsManager';
+
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import styles from '../../emailTemplates.less';
 import {
   Department,
@@ -41,14 +44,17 @@ const TemplatePermission = ({
     />
     {
                 !isPermissionVisible && selectedFolder.id && isCurrentUser() &&
-                <Button
-                  className="email-theme-btn mt-sm"
-                  size="small"
-                  onClick={() => {
-                    setPermissionVisible(true);
-                }}
-                ><Icon type="user" />{ formatMessage({ id: 'page.emailTemplates.addNewUser' }) }
-                </Button>
+
+                <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_ASSIGN}>
+                  <Button
+                    className="email-theme-btn mt-sm"
+                    size="small"
+                    onClick={() => {
+                        setPermissionVisible(true);
+                    }}
+                  ><Icon type="user" />{ formatMessage({ id: 'page.emailTemplates.addNewUser' }) }
+                  </Button>
+                </Permission>
             }
     {
                 isPermissionVisible &&
