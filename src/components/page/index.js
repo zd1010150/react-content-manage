@@ -1,5 +1,4 @@
 import TopPanel from './TopPanel';
-import HeaderNav from './HeaderNav';
 import MainContent from './MainContent';
 import CopyRight from './CopyRight';
 import Notification from './Notification';
@@ -18,10 +17,12 @@ import SelectionZone from './SelectionZone/index';
 import SimpleTable from './SimpleTable/index';
 import Unauthentication from './Unauthentication/index';
 import PrimaryDetails from './PrimaryDetails/index';
+import DetailsToolbar from './DetailsToolbar/index';
+import DetailsSubpanels from './DetailsSubpanels/index';
+
 
 export {
   TopPanel,
-  HeaderNav,
   MainContent,
   CopyRight,
   Notification,
@@ -40,4 +41,6 @@ export {
   SimpleTable,
   Unauthentication,
   PrimaryDetails,
+  DetailsToolbar,
+  DetailsSubpanels,
 };

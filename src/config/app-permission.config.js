@@ -47,6 +47,8 @@ const PERMISSIONS = Object.freeze({
   SETUP_COMPANYPROFILE_ORGANISATIONALCHART_UPDATE: 'Setup-CompanyProfile-OrganisationalChart-Update',
   SETUP_COMPANYPROFILE_PERMISSIONPROFILE: 'Setup-CompanyProfile-PermissionProfile',
   SETUP_COMPANYPROFILE_PERMISSIONPROFILE_UPDATE: 'Setup-CompanyProfile-PermissionProfile-Update',
+  SETUP_COMPANYPROFILE_PERMISSIONPROFILE_VIEW: 'Setup-CompanyProfile-PermissionProfile-View',
+  SETUP_COMPANYPROFILE_USERS_VIEW: 'Setup-CompanyProfile-Users-View',
   SETUP_LEADS: 'Setup-Leads',
   SETUP_LEADS_FIELDS: 'Setup-Leads-Fields',
   SETUP_LEADS_FIELDS_ADD: 'Setup-Leads-Fields-Add',
@@ -84,6 +86,7 @@ const PERMISSIONS = Object.freeze({
   SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_UPDATE: 'Setup-EmailCommunications-EmailTemplates-Update',
   SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_ASSIGN: 'Setup-EmailCommunications-EmailTemplates-Assign',
   SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_EDITMYFOLDERS: 'Setup-EmailCommunications-EmailTemplates-EditMyFolders',
+  SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_VIEW: 'Setup-EmailCommunications-EmailTemplates-View',
 
 });
 export default PERMISSIONS;

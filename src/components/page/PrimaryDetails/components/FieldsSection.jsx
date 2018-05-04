@@ -31,10 +31,10 @@ class FieldsSection extends Component {
 
   handleChange = (id, value) => this.props.setFieldValue(id, this.props.code, value)
 
-  handleDropdownOpen = (id, options) => {
-    if (!options || options.length < 1) {
+  handleDropdownOpen = (id, hasFetched) => {
+    if (!hasFetched) {
       const { code, tryFetchFieldOptions } = this.props;
-      tryFetchFieldOptions(code, id);
+      tryFetchFieldOptions(id, code);
     }
   }
 
@@ -74,6 +74,7 @@ class FieldsSection extends Component {
                       key={field.key}
                       {...field}
                       lookupDisplayKey={field.lookupDisplayKey}
+                      fieldType={field.type}
                       format={field.type === DateOnly ? dateFormat : timeFormat}
                       type={field.active ? field.type : Display}
                       onBlur={this.handleBlur}
@@ -81,6 +82,7 @@ class FieldsSection extends Component {
                       onChange={this.handleChange}
                       onDropdownOpen={this.handleDropdownOpen}
                       onRevertClick={this.handleRevertClick}
+                      fetched={field.optionsFetched}
                     />
                   );
                 }

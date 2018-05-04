@@ -17,14 +17,14 @@ const logoutSuccess = json => ({
   payload: { json },
 });
 
-export const tryLogin = values => dispatch => post('/admin/login', values, dispatch)
+export const tryLogin = (values, successMessage) => dispatch => post('/admin/login', values, dispatch, { successMessage })
   .then((json) => {
     if (json && (!_.isEmpty(json.data))) {
       dispatch(loginSuccess(json.data));
     }
   });
 
-export const tryLogout = () => dispatch => post('/admin/logout', {}, dispatch).then(() => {
+export const tryLogout = successMessage => dispatch => post('/admin/logout', {}, dispatch, { successMessage }).then(() => {
   dispatch(logoutSuccess());
 });
 

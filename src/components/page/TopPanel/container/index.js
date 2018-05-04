@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input, Icon } from 'antd';
 import { withRouter } from 'react-router';
+import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -26,7 +27,8 @@ class topPanel extends React.Component {
     fetchGlobalSetting();
   }
   onLogoutClick = () => {
-    this.props.tryLogout();
+    const { formatMessage } = this.props.intl;
+    this.props.tryLogout(formatMessage({ id: 'global.info.logoutSuccess' }));
   }
   onSearch = (keys) => {
     const { setSearchKey, history } = this.props;
@@ -35,7 +37,7 @@ class topPanel extends React.Component {
   }
   render() {
     const {
-      language, account, name, logo,
+      language, account, name, logo, accountPermissions
     } = this.props;
     return (
       <div
@@ -43,7 +45,7 @@ class topPanel extends React.Component {
       >
         <div className={cx('siteTitle')}> <img src={logo} className={cx('crm-logo')} alt="company logo" /></div>
         <TopNav />
-        <UserSettings name={name} logoutHandler={() => this.onLogoutClick()} />
+        <UserSettings accountPermissions={accountPermissions} name={name} logoutHandler={() => this.onLogoutClick()} />
         <Language language={language} onChange={language => this.changeLanguage(language)} />
         <Permission permission={PERMISSIONS.SETUP}>
           <Link className={cx('setupBtn')} to="/setup/company-info/company-info"><Icon className="mr-sm" type="setting" />Setup</Link>
@@ -71,6 +73,7 @@ const mapStateToProps = ({ loginUser, global }) => ({
   account: global.account,
   name: loginUser.name,
   logo: global.companyLogo,
+  accountPermissions: global.permissions,
 });
 const mapDispatchToProp = {
   toggleLanguage,
@@ -79,6 +82,6 @@ const mapDispatchToProp = {
   setSearchKey,
 };
 
-const TopPanel = connect(mapStateToProps, mapDispatchToProp)(withRouter(topPanel));
+const TopPanel = connect(mapStateToProps, mapDispatchToProp)(withRouter(injectIntl(topPanel)));
 export default TopPanel;
 

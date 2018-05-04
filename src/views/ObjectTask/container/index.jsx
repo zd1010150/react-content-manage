@@ -5,7 +5,7 @@ import { getThemeByType } from 'utils/common';
 
 class ObjectTask extends Component {
   render() {
-    const { match } = this.props;
+    const { match, defaultStateId } = this.props;
     const { objectId, objectType, taskId } = match.params;
     const theme = getThemeByType(objectType);
     
@@ -15,6 +15,7 @@ class ObjectTask extends Component {
         objectId={objectId}
         objectType={objectType}
         taskId={taskId}
+        defaultStateId={defaultStateId}
       />
     );
   }

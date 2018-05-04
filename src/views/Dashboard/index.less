@@ -1,0 +1,31 @@
+@import "~assets/less/theme.less";
+
+.leftSection-wrapper{
+  position: fixed;
+  display: inline-block;
+  left: 15px;
+  top: 60px;
+  width: 490px;
+}
+
+.links{
+  list-style-type: none;
+  margin: 0px;
+  padding:0px;
+}
+.single-link{
+  padding: 3px 15px;
+  &:hover{
+    background-color: @crm-hover-color;
+  }
+}
+.task-table{
+  width: 100%;
+}
+.task-tr:nth-of-type(odd){
+  background-color: @crm-hover-color;
+}
+.task-td{
+  padding: 5px 15px;
+  border-bottom: 1px solid @crm-light-blue;
+}

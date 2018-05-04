@@ -13,12 +13,16 @@ import EditView from './departmentView';
 import EmailTemplateDetail from './emailTemplateDetail';
 import EmailEditFolder from './emailEditFolder';
 import {withRouter} from "react-router";
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 
 
 class EmailTemplates extends React.Component {
     componentDidMount() {
         const {getUserFolderData, loginUser, setSelectedUser} = this.props;
-        this.props.fetchTeams();
+        if(location.pathname !== '/user/email-setting'){
+            this.props.fetchTeams();
+        }
         // get current user's folders as default
         getUserFolderData(loginUser.id);
         // set the radio button content as current user's name
@@ -29,9 +33,10 @@ class EmailTemplates extends React.Component {
         const {isEditFolderViewVisible, location, intl} = this.props;
         return (
             <Fragment>
-                {location.pathname !== '/user/email-setting' && <EditView intl={intl}/>}
-                {!isEditFolderViewVisible ? <EmailTemplateDetail intl={intl}/> : <EmailEditFolder intl={intl}/>}
-
+                <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES} errorComponent={<Unauthentication />}>
+                    {location.pathname !== '/user/email-setting' && <EditView intl={intl}/>}
+                    {!isEditFolderViewVisible ? <EmailTemplateDetail intl={intl}/> : <EmailEditFolder intl={intl}/>}
+                </Permission>
             </Fragment>
 
         );

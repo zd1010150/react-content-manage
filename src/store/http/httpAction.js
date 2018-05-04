@@ -1,8 +1,8 @@
 import http from 'utils/http';
+import _ from 'lodash';
 import { notification } from 'antd';
 import { UNAUTHENTICATION, SUCCESS_HTTP_CODE } from 'config/app.config.js';
 import { tryLogout } from 'views/LoginForm/flow/actions';
-import _ from 'lodash';
 import {
   HTTP_ACTION_DONE,
   HTTP_ACTION_DOING,
@@ -12,29 +12,39 @@ import allInfos from 'i18n/global/info';
 
 import { addError } from '../error/action';
 
-const successNotify = (method, url) => {
-  if (method === 'get' || url.indexOf('/admin/login') > -1) {
-    return;
-  }
-  const info = allInfos[window.globalLanguage];
+const successNotify = (message) => {
   notification.success({
-    message: info[method],
+    message,
     duration: 3,
   });
 };
-const dispatch = (method, url, request, dispatcher = () => {}) => {
+
+const defaultCallback = (callbackConfig, method, requestResult = { data: {}, statusCode: 0 }) => {
+  const { successMessage, callbackAction } = callbackConfig;
+  const info = allInfos[window.globalLanguage];
+  if (!_.isEmpty(callbackAction)) {
+    callbackAction(requestResult);
+  } else if (SUCCESS_HTTP_CODE.indexOf(requestResult.statusCode) > -1 && method !== 'get') {
+    if (!_.isEmpty(successMessage)) {
+      successNotify(successMessage);
+    } else {
+      successNotify(info[method]);
+    }
+  }
+};
+const dispatch = (method, url, request, dispatcher = () => {}, callbackConfig) => {
   dispatcher({
     type: HTTP_ACTION_DOING,
     payload: {},
   });
   return request.then(({ data, statusCode }) => {
     dispatcher({ type: HTTP_ACTION_DONE });
+    defaultCallback(callbackConfig, method, { data, statusCode });
     if (statusCode === UNAUTHENTICATION.CODE) { // 如果是401为授权，就跳转到登录界面
       dispatcher(tryLogout());
       return Promise.reject();
     }
     if (SUCCESS_HTTP_CODE.indexOf(statusCode) > -1) {
-      successNotify(method, url);
       return data;
     }
     if (data && (data.error || data.errors || data.message)) {
@@ -62,14 +72,14 @@ const dispatch = (method, url, request, dispatcher = () => {}) => {
   });
 };
 
-export const post = (url, data = {}, dispatcher, apiDomain = '', realHeaders = {}) =>
-  (dispatch('post', url, http('post', url, data, realHeaders, apiDomain), dispatcher));
+export const post = (url, data = {}, dispatcher, callbackConfig = { successMessage: '', callbackAction: null }, httpConfig = { realHeaders: {}, apiDomain: '' }) =>
+  (dispatch('post', url, http('post', url, data, httpConfig.realHeaders, httpConfig.apiDomain), dispatcher, callbackConfig));
 
-export const get = (url, data, dispatcher, apiDomain = '', realHeaders = {}) =>
-  (dispatch('get', url, http('get', url, data, realHeaders, apiDomain), dispatcher));
+export const get = (url, data, dispatcher, callbackConfig = { successMessage: '', callbackAction: null }, httpConfig = { realHeaders: {}, apiDomain: '' }) =>
+  (dispatch('get', url, http('get', url, data, httpConfig.realHeaders, httpConfig.apiDomain), dispatcher, callbackConfig));
 
-export const httpDelete = (url, data, dispatcher, apiDomain = '', realHeaders = {}) =>
-  (dispatch('httpDelete', url, http('delete', url, data, realHeaders, apiDomain), dispatcher));
+export const httpDelete = (url, data, dispatcher, callbackConfig = { successMessage: '', callbackAction: null }, httpConfig = { realHeaders: {}, apiDomain: '' }) =>
+  (dispatch('httpDelete', url, http('delete', url, data, httpConfig.realHeaders, httpConfig.apiDomain), dispatcher, callbackConfig));
 
-export const patch = (url, data, dispatcher, apiDomain = '', realHeaders = {}) =>
-  (dispatch('patch', url, http('patch', url, data, realHeaders, apiDomain), dispatcher));
+export const patch = (url, data, dispatcher, callbackConfig = { successMessage: '', callbackAction: null }, httpConfig = { realHeaders: {}, apiDomain: '' }) =>
+  (dispatch('patch', url, http('patch', url, data, httpConfig.realHeaders, httpConfig.apiDomain), dispatcher, callbackConfig));

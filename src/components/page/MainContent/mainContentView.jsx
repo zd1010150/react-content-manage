@@ -28,7 +28,7 @@ import {
   Users,
   GlobalSearch,
   ObjectShare,
-  NewOpportunity,
+    Task,
   ClientDetails,
 } from 'views/index';
 import Enums from 'utils/EnumsManager';
@@ -46,8 +46,15 @@ const MainContent = () => (
     <Route path="/setup/:objectType/fields" component={Fields} />
     <Route path="/setup/:objectType/pageLayout" component={Layouts} />
     <Route path="/setup/email/templates" component={EmailTemplates} />
-    <Route path="/setup/email/template-edit/:templateId" component={EmailTemplatesCreation} />
-    <Route path="/setup/email/templates-creation" component={EmailTemplatesCreation} />
+    <Route
+      path="/setup/email/template-edit/:templateId"
+      component={EmailTemplatesCreation}
+    />
+    <Route
+      path="/setup/email/templates-creation"
+      component={EmailTemplatesCreation}
+    />
+    <Route path="/:objectType/:objectId/email/new" component={NewEmail} />
     <Route path="/setup/email/campaign" component={EmailCampaign} exact />
     <Route path="/setup/email/campaign/edit/:campaignId" component={EditCampaign} />
     <Route path="/setup/email/campaign/new" component={NewCampaign} />
@@ -57,12 +64,24 @@ const MainContent = () => (
     <Route path="/user/email-setting" component={EmailTemplates} />
     <Route path="/dashboard" component={Dashboard} exact />
     <Route path="/globalSearch" component={GlobalSearch} exat />
+    <Route path="/Task" component={Task} />
 
     <Route path="/leads/convert/find/:objectId" component={FindDuplicates} />
-    <Route path="/leads/convert/convert/:objectId" component={ConvertLeads} />
     <Route path="/leads/merge/" component={MergeLeads} />
 
-
+    <Route
+      path="/leads/convert/convert/:objectId"
+      render={(props) => {
+        const { match } = props;
+        const { objectId } = match.params;
+        return (
+          <ConvertLeads
+            {...props}
+            objectId={objectId}
+          />
+        );
+      }}
+    />
     <Route
       path="/accounts/:accountId/opportunities/0000-0000"
       render={(props) => {
@@ -99,6 +118,17 @@ const MainContent = () => (
       }}
     />
     <Route path="/:objectType/:objectId/attachments" component={ClientAttachments} exact />
+    <Route
+      path="/:objectType/:objectId/tasks/:taskId/completed"
+      render={(props) => {
+        return (
+          <ObjectTask
+            {...props}
+            defaultStateId={1}
+          />
+        );
+      }}
+    />
     <Route path="/:objectType/:objectId/tasks/:taskId" component={ObjectTask} />
     <Route path="/:objectType/views/:viewId" component={ObjectView} />
     <Route
@@ -109,9 +139,9 @@ const MainContent = () => (
         const { objectId, objectType } = match.params;
         if ([Leads, Accounts, Opportunities].indexOf(objectType) !== -1) {
           return (
-            <ObjectDetails
+            <ClientDetails
               {...props}
-              key={objectType}
+              key={`${objectType}_${objectId}`}
               objectId={objectId}
               objectType={objectType}
             />

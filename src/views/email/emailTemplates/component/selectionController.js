@@ -12,12 +12,12 @@ import ItemTypes from './ItemTypes';
 import Enums from 'utils/EnumsManager';
 const RadioGroup = Radio.Group;
 const TabPane = Tabs.TabPane;
-export const Radios = ({selectedUser, setSharedByVisible}) => (
+export const Radios = ({selectedUser, setSharedByVisible, formatMessage}) => (
     <RadioGroup defaultValue={1} onChange={e => {
         e.target.value === 1 ? setSharedByVisible(false) : setSharedByVisible(true)
     }}>
         <Radio className="email-theme-radio" value={1}>{selectedUser.name}</Radio>
-        <Radio className="email-theme-radio" value={2}>Shared By</Radio>
+        <Radio className="email-theme-radio" value={2}>{ formatMessage({id: 'page.emailTemplates.sharedBy'}) }</Radio>
     </RadioGroup>
 );
 

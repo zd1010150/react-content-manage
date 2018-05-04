@@ -12,10 +12,15 @@ import {
   EMAIL_TEMPLATES_SET_SELECTED_DEPARTMENT,
   EMAIL_TEMPLATES_SET_USER,
   EMAIL_TEMPLATES_SET_SELECT_USER,
-  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS
+  EMAIL_TEMPLATES_SETUP_TEMPLATES_PAGENATIONS,
+  EMAIL_TEMPLATES_UPDATE_FIELD_OPTION
 } from "./actionType";
 
-import { updateTemplate, setTemplatesData } from "./emailTemplateFlow/action";
+import {
+  updateTemplate,
+  replaceTemplate,
+  setTemplatesData
+} from "./emailTemplateFlow/action";
 import {
   setUserFolderData,
   setSharedFolderData,
@@ -39,25 +44,33 @@ const url = "/";
 
 export const sortValues = array => dispatch => dispatch(setNewOrder(array));
 
-export const getUserFolderData = userId => dispatch =>
+export const getUserFolderData = (userId, callback) => (dispatch, getState) =>
   get(`/admin/email_folders/user/${userId}`, {}, dispatch).then(data => {
     //data will be {own: {data: []}, shared_by: {data: []}}
-    console.log("1111", data);
+
+    const storedUserFolder = getState().setup.emailTemplates.userFolders;
+    const storedSharedFolder = getState().setup.emailTemplates.sharedFolders;
     if (!_.isEmpty(data)) {
-      dispatch(setTemplatesData([]));
-      dispatch(setPermissionTeams([]));
-      dispatch(setPermissionUsers([]));
-      dispatch(setSelectedFolder({}));
-      if (data.own && !_.isEmpty(data.own.data)) {
-        dispatch(setUserFolderData(data.own.data));
-      } else {
-        dispatch(setUserFolderData([]));
+      if (
+        !_.isEqual(storedUserFolder, data.own.data) ||
+        !_.isEqual(storedSharedFolder, data.shared_by.data)
+      ) {
+        dispatch(setTemplatesData([]));
+        dispatch(setPermissionTeams([]));
+        dispatch(setPermissionUsers([]));
+        dispatch(setSelectedFolder({}));
+        if (data.own && !_.isEmpty(data.own.data)) {
+          dispatch(setUserFolderData(data.own.data));
+        } else {
+          dispatch(setUserFolderData([]));
+        }
+        if (data.shared_by && !_.isEmpty(data.shared_by.data)) {
+          dispatch(setSharedFolderData(data.shared_by.data));
+        } else {
+          dispatch(setSharedFolderData([]));
+        }
       }
-      if (data.shared_by && !_.isEmpty(data.shared_by.data)) {
-        dispatch(setSharedFolderData(data.shared_by.data));
-      } else {
-        dispatch(setSharedFolderData([]));
-      }
+      callback && callback(data);
     }
   });
 
@@ -136,11 +149,12 @@ export const createTemplateData = ({
   apiName,
   content,
   description,
+  category,
   cb
 }) => (dispatch, getState) => {
   post(
     `/admin/email_templates/email_folders/${folderId}`,
-    { name, api_name: apiName, content, description },
+    { name, api_name: apiName, content, description, category },
     dispatch
   ).then(data => {
     if (!_.isEmpty(data)) {
@@ -153,13 +167,36 @@ export const createTemplateData = ({
   });
 };
 
+export const updateFieldOption = payload => ({
+  type: EMAIL_TEMPLATES_UPDATE_FIELD_OPTION,
+  payload
+});
+
+export const fetchNewTemplateData = ({ cb, cbErr }) => (dispatch, getState) => {
+  get(`/admin/email_templates/create`, dispatch).then(data => {
+    console.log("data", data);
+    if (!_.isEmpty(data)) {
+      dispatch(updateFieldOption(data.field_options));
+      if (_.isFunction(cb)) {
+        cb();
+      }
+    } else {
+      if (_.isFunction(cbErr)) {
+        cbErr();
+      }
+    }
+  });
+};
+
 export const fetchTemplateData = ({ templateId, cb, cbErr }) => (
   dispatch,
   getState
 ) => {
+  dispatch(replaceTemplate({}));
   get(`/admin/email_templates/${templateId}`, dispatch).then(data => {
     console.log("data", data);
     if (!_.isEmpty(data)) {
+      dispatch(updateFieldOption(data.field_options));
       dispatch(updateTemplate(data.data));
       if (_.isFunction(cb)) {
         cb();
@@ -179,11 +216,19 @@ export const updateTemplateData = ({
   apiName,
   content,
   description,
+  category,
   cb
 }) => (dispatch, getState) => {
   patch(
     `/admin/email_templates/${templateId}`,
-    { name, api_name: apiName, content, folder_id: folderId, description },
+    {
+      name,
+      api_name: apiName,
+      content,
+      folder_id: folderId,
+      description,
+      category
+    },
     dispatch
   ).then(data => {
     console.log("data", data);
@@ -300,7 +345,7 @@ export const setAllUser = users => ({
 
 export const getAllUser = () => dispatch =>
   get("/admin/users/all", {}, dispatch).then(data => {
-    if (!_.isEmpty(data.data)) {
+    if (data && !_.isEmpty(data.data)) {
       dispatch(setAllUser(data.data));
     }
   });

@@ -26,9 +26,13 @@ class EmailTemplatesCreation extends React.Component {
         const {createTemplateData, updateTemplateData, newTemplate, editTemplate, history} = this.props;
         const fn = this.hooksFn.getHTMLContent;
         let htmlContent = "<p></p>";
+        if(editTemplate.content && editTemplate.content !== ''){
+            htmlContent = editTemplate.content;
+        }
         if (fn) {
             htmlContent = fn();
         }
+        console.log('????', htmlContent)
 
         if(this.isNewTemplateRouter()){
             createTemplateData({
@@ -37,6 +41,7 @@ class EmailTemplatesCreation extends React.Component {
                 apiName: newTemplate.apiName,
                 content: htmlContent,
                 description: newTemplate.description,
+                category: newTemplate.category,
                 cb: ()=> history.push('/setup/email/templates')
             })
         }else{
@@ -47,6 +52,7 @@ class EmailTemplatesCreation extends React.Component {
                 apiName: editTemplate.apiName,
                 content: htmlContent,
                 description: editTemplate.description,
+                category: editTemplate.category,
                 cb: ()=> history.push('/setup/email/templates')
 
             })

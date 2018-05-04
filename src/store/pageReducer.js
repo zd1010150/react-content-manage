@@ -11,6 +11,9 @@ import objectList from 'views/ObjectList/flow/reducer';
 import objectShare from 'views/ObjectShare/flow/reducer';
 import accountOpportunities from 'components/page/SimpleTable/flow/reducer';
 import clientDetails from 'views/ClientDetails/flow/reducer';
+import dashboard from 'views/Dashboard/flow/reducer';
+import conversion from 'views/ConvertLeads/flow/reducer';
+import task from 'views/Task/flow/reducer';
 // test
 import multiDndFields from 'components/ui/MultiSelectDnD/flow/reducer';
 // test ends
@@ -29,4 +32,7 @@ export default {
   objectShare,
   accountOpportunities,
   clientDetails,
+  dashboard,
+  conversion,
+  task,
 };
