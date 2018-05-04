@@ -23,3 +23,9 @@ export const fetchLatestObject = () => dispatch => get('/admin/objects/recent-vi
     objects: (data && data.data) || [],
   }));
 });
+
+export const fetchLatestActivity = () => dispatch => get('/admin/tasks/me/not_start/limit/10/index', {}, dispatch).then((data) => {
+  dispatch(setData({
+    activities: (data && data.data) || [],
+  }));
+});

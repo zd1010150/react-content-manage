@@ -59,6 +59,7 @@ export default {
       addUserToShare: '分享给其他用户',
       addUserOrTeamToShare: '分享给其他用户或群组',
       newOpport: '新Opportunity',
+      viewAll: '查看全部',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -73,7 +74,9 @@ export default {
     },
     table: {
       action: '操作',
+      complete: '完成',
       createBy: '创建人',
+      createDate: '创建时间',
       date: '日期',
       dueAt: '截止时间',
       dueOn: '截止日期',
@@ -187,6 +190,7 @@ export default {
       addUserToShare: 'Add User to Share',
       addUserOrTeamToShare: 'Add User or Team to Share',
       newOpport: 'New Opportunity',
+      viewAll: 'View All',
     },
     input: {
       searchStore: 'Search entire store here...',
@@ -201,7 +205,9 @@ export default {
     },
     table: {
       action: 'Actions',
+      complete: 'Complete',
       createBy: 'Created By',
+      createDate: 'Create Date',
       date: 'Date',
       dueAt: 'Due Time',
       dueOn: 'Due Date',
