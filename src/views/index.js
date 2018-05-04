@@ -14,7 +14,6 @@ import {
 import NewEmail from './email/newEmail';
 import PermissionProfile from './Setup/PermissionProfile';
 import Fields from './Setup/Fields';
-import ObjectDetails from './ObjectDetails/index';
 import FindDuplicates from './FindDuplicates/index';
 import Layouts from './Setup/PageLayout';
 import ObjectTask from './ObjectTask/index';
@@ -44,7 +43,6 @@ export {
   NewEmail,
   PermissionProfile,
   Fields,
-  ObjectDetails,
   FindDuplicates,
   Layouts,
   ObjectTask,

@@ -20,7 +20,6 @@ import {
   NewEmail,
   ObjectList,
   ObjectView,
-  ObjectDetails,
   ObjectTask,
   OrganisationChart,
   PermissionProfile,
