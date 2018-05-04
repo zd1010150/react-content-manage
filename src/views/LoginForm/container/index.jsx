@@ -11,9 +11,10 @@ class LoginForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const me = this;
+    const { formatMessage } = this.props.intl;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        me.props.tryLogin(values);
+        me.props.tryLogin(values, formatMessage({ id: 'global.info.loginSuccess' }));
       }
     });
   }
