@@ -1,8 +1,10 @@
-import { SET_EMAIL, SET_SUCCESS } from './actionTypes';
+/* eslint-disable no-case-declarations */
+import { SET_EMAIL, SET_SUCCESS, RESET } from './actionTypes';
 
 const initialState = {
   email: '',
   success: false,
+  newAccountId: '',
 };
 
 const conversion = (state = initialState, action) => {
@@ -15,10 +17,16 @@ const conversion = (state = initialState, action) => {
 
 
     case SET_SUCCESS:
+      const { newAccountId } = action.payload;
       return {
         ...state,
         success: true,
+        newAccountId,
       };
+
+
+    case RESET:
+      return initialState;
 
 
     default:

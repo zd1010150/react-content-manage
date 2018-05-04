@@ -1,6 +1,6 @@
 /* eslint arrow-parens: ["error", "as-needed"] */
 import { get, post } from 'store/http/httpAction';
-import { SET_EMAIL, SET_SUCCESS } from './actionTypes';
+import { SET_EMAIL, SET_SUCCESS, RESET } from './actionTypes';
 import { findLead, formatPayload } from './utils';
 
 const setEmail = email => ({
@@ -21,14 +21,19 @@ export const tryFetchLeadIfNeeded = objectId => (dispatch, getState) => {
 };
 
 
-export const setSuccess = () => ({
+export const setSuccess = newAccountId => ({
   type: SET_SUCCESS,
+  payload: { newAccountId },
 });
 
 export const tryConvertLead = (objectId, payload) => dispatch =>
   post(`/admin/leads/${objectId}/convert`, formatPayload(payload), dispatch).then(data => {
-    if (data) {
-      debugger;
-      dispatch(setSuccess());
+    if (data && data.status === 'SUCCESS' && data.account.id) {
+      dispatch(setSuccess(data.account.id));
     }
   });
+
+
+export const reset = () => ({
+  type: RESET,
+});

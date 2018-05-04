@@ -6,8 +6,11 @@ import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import Enums from 'utils/EnumsManager';
 import { PlatformSettings, PortalSettings } from '../components/index';
-import { tryConvertLead, tryFetchLeadIfNeeded } from '../flow/actions';
+import { reset, tryConvertLead, tryFetchLeadIfNeeded } from '../flow/actions';
+
+const { PhantomId } = Enums;
 
 const propTypes = {
   intl: intlShape.isRequired,
@@ -29,7 +32,17 @@ class ConvertLeads extends Component {
     // fetch lead's email if needed
     const { objectId, tryFetchLeadIfNeeded } = this.props;
     tryFetchLeadIfNeeded(objectId);
-    // random generate password
+  }
+
+  componentDidUpdate() {
+    const { history, success, newAccountId } = this.props;
+    if (success && newAccountId) {
+      history.push(`/accounts/${newAccountId}/tasks/${PhantomId}`);
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.reset();
   }
 
   onCancelClick = () => {
@@ -101,8 +114,10 @@ const mapStateToProps = ({ global, conversion }) => ({
   language: global.language,
   email: conversion.email,
   success: conversion.success,
+  newAccountId: conversion.newAccountId,
 });
 const mapDispatchToProps = {
+  reset,
   tryFetchLeadIfNeeded,
   tryConvertLead,
 };

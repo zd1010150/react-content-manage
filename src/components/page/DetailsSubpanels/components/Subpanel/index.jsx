@@ -132,19 +132,20 @@ class Subpanel extends Component {
   }
 
   parsePagination = meta => {
-    let extraParams = {};
-    if (!_.isEmpty(meta)) {
-      const { pagination } = meta;
-      const { current_page, total } = pagination;
-      extraParams = {
-        current: current_page,
-        total,
-      };
+    // hide pagination if unnecessary
+    if (!_.isObject(meta)
+        || !_.isObject(meta.pagination)
+        || meta.pagination.total <= PageSizeSmall) {
+      return false;
     }
+
+    const { pagination } = meta;
+    const { current_page, total } = pagination;
     return {
       pageSize: PageSizeSmall,
-      showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
-      ...extraParams,
+      showTotal: (totalNums, range) => `${range[0]}-${range[1]} of ${totalNums} items`,
+      current: current_page,
+      total,
     };
   }
 
@@ -336,17 +337,20 @@ class Subpanel extends Component {
     const source = !_.isEmpty(tasks[code]) ? tasks[code] : {};
     const { data, meta } = source;
 
+    const pagination = this.parsePagination(meta);
+
     return (
       <Panel
         panelTitle={formatMessage({ id: `${i18n}.${code}` })}
         panelClasses={`${theme}-theme-panel`}
+        contentClasses={pagination ? '' : 'pb-lg'}
         actionsRight={this.getActionBtnByModule()}
       >
         <Table
           columns={this.renderColumnsByModule()}
           dataSource={data}
           onChange={this.handleTableChange}
-          pagination={this.parsePagination(meta)}
+          pagination={pagination}
           rowKey="id"
           size="small"
         />

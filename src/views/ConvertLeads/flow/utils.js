@@ -14,8 +14,8 @@ export const formatPayload = ({
       password: portalPassword,
     },
     opportunity: {
-      type,
-      password,
+      c__salesforce_id: type,
+      c__a1: password,
     },
   };
   console.dir(a);
