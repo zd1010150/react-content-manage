@@ -29,14 +29,14 @@ const initialState = {
 
 const mapResponseToStore = ({
   id,
-  assign_to_user_id,
+  assigner,
   subject,
   status_code,
   priority_code,
   due_date,
   comments,
 }) => ({
-  assigneeId: assign_to_user_id,
+  assigneeId: assigner.id,
   comments,
   dueTime: toTimezone(due_date, '+1100', 'YYYY-MM-DD'),
   id,
