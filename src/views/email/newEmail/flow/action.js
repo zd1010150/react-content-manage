@@ -42,19 +42,23 @@ export const fetchSelectedTemplateData = ({ templateId, objectType, objectId, cb
 };
 
 //send email
-export const sendEmail = ({ userEmail, dataObj }, cb, cbErr) => (
+export const sendEmail = ({ userEmail, dataObj, noAuthMessage, emailSendMessage }, cb, cbErr) => (
     dispatch,
     getState
 ) => {
     post(
         `/admin/emails/auth/${userEmail}`,
+        {},
+        dispatch,
+        { successMessage: noAuthMessage }
     ).then(data => {
         if (!_.isEmpty(data)) {
             if(data.status === 'success'){
                 return post(
                     "/admin/emails",
                     dataObj,
-                    dispatch
+                    dispatch,
+                    { successMessage: emailSendMessage }
                 )
             }else{
                 cb(data.status, data.auth_link);
