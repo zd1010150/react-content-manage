@@ -56,8 +56,8 @@ const PortalSettings = ({
           >
             <Col {...labalCol}>{formatMessage({ id: `${i18n}.${field}` })}</Col>
             <Col {...valueCol}>
-              {field === 'loginAccount' && <div>{loginAccount}</div>}
-              {field === 'portalPassword' && <Input size="small" type="password" value={portalPassword} onChange={e => _onChange('portalPassword', e.target.value)} />}
+              {field === 'loginAccount' && <div><b>{loginAccount}</b></div>}
+              {field === 'portalPassword' && <Input size="small" value={portalPassword} onChange={e => _onChange('portalPassword', e.target.value)} />}
             </Col>
           </Row>
         );
