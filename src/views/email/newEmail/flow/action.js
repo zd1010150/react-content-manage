@@ -46,33 +46,28 @@ export const sendEmail = ({ userEmail, dataObj }, cb, cbErr) => (
     dispatch,
     getState
 ) => {
-    //todo add auth before go production
-    // post(
-    //     `/admin/emails/auth/${userEmail}`,
-    // ).then(data => {
-    //     console.log("data", data);
-    //     if (!_.isEmpty(data)) {
-    //         // console.log("data", data);
-    //     }
-    //     if (_.isFunction(cb)) {
-    //         cb();
-    //     }
-    // }).catch((e)=>{
-    //     console.log("e", e);
-    // });
-
     post(
-        "/admin/emails",
-        dataObj,
-        dispatch
+        `/admin/emails/auth/${userEmail}`,
     ).then(data => {
         if (!_.isEmpty(data)) {
-            console.log("data", data);
-            if (_.isFunction(cb)) {
-                cb();
+            if(data.status === 'success'){
+                return post(
+                    "/admin/emails",
+                    dataObj,
+                    dispatch
+                )
+            }else{
+                cb(data.status, data.auth_link);
             }
         }
-
+    }).then((data)=>{
+        if (!_.isEmpty(data)) {
+            if (_.isFunction(cb)) {
+                cb(data.status);
+            }
+        }
+    }).catch((e)=>{
+        console.log("e", e);
     });
 };
 

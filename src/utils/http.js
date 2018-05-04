@@ -41,6 +41,19 @@ export default async (type = 'GET', url = '', data = {}, headers = {}, apiDomain
     });
   }
 
+  // 下面_fetch方法是不是可以这么写？
+  // function _fetch(fetchPromise, timeout) {
+  //     const abortPromise = new Promise(((resolve, reject) => {
+  //         setTimeout(()=>{
+  //             reject(new Error('abort promise'));
+  //         }, timeout)
+  //     }));
+  //     return Promise.race([
+  //         fetchPromise,
+  //         abortPromise,
+  //     ]);
+  // }
+
   function _fetch(fetchPromise, timeout) {
     let abortFn = null;
     // 这是一个可以被reject的promise

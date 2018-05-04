@@ -221,7 +221,6 @@ class NewEmail extends React.Component {
         if (fn) {
             htmlContent = fn();
         }
-        //todo connect send email api
         const userEmail = loginUser.email;
         const from = {
             name: loginUser.name,
@@ -252,9 +251,17 @@ class NewEmail extends React.Component {
         console.log('dataObj', dataObj)
 
         const pendingSavedEmails = _.uniqBy(this.state.sendTo.concat(this.state.cc).concat(this.state.bcc).concat(savedEmails));
-        sendEmail({userEmail, dataObj}, () => {
-            setStore(EnumsManager.LocalStorageEmails, pendingSavedEmails);
-            history.push(`/${match.params.objectType}/${match.params.objectId}`);
+        sendEmail({userEmail, dataObj}, (status, authLink) => {
+            console.log('authLink',status, authLink)
+            if(status === 'success'){
+                setStore(EnumsManager.LocalStorageEmails, pendingSavedEmails);
+                history.push(`/${match.params.objectType}/${match.params.objectId}`);
+            }else{
+                window.open(
+                    authLink,
+                    '_blank' // <- This is what makes it open in a new window.
+                );
+            }
         });
 
     }
