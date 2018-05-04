@@ -116,6 +116,17 @@ const MainContent = () => (
       }}
     />
     <Route path="/:objectType/:objectId/attachments" component={ClientAttachments} exact />
+    <Route
+      path="/:objectType/:objectId/tasks/:taskId/completed"
+      render={(props) => {
+        return (
+          <ObjectTask
+            {...props}
+            defaultStateId={1}
+          />
+        );
+      }}
+    />
     <Route path="/:objectType/:objectId/tasks/:taskId" component={ObjectTask} />
     <Route path="/:objectType/views/:viewId" component={ObjectView} />
     <Route
