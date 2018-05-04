@@ -1,5 +1,12 @@
 @import "../../theme.less";
 
+.ant-btn{
+  &:hover, &:focus{
+    color: @crm-white;
+    background-color: darken(@secondary-dark-color, 20%);
+    border-color: darken(@secondary-dark-color, 20%);
+  }
+}
 .ant-btn > .anticon + span, .ant-btn > span + .anticon{
   margin-left: 3px;
 }
@@ -25,9 +32,9 @@
   @{selector}{
     background-color: @theme-color-value;
     &:hover, &:focus{
-      color: @theme-color-value;
-      background-color: @crm-white;
-      border-color: @theme-color-value;
+      color: @crm-white;
+      background-color: darken(@theme-color-value, 10%);
+      border-color: darken(@theme-color-value, 10%);
     }
   }
 }
