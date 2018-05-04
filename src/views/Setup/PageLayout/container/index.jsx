@@ -38,9 +38,7 @@ class PageLayoutIndexView extends React.Component {
     }
   }
   render() {
-
     const permissionKey = `SETUP_${_.isEmpty(this.props.match.params.objectType) ? '' : this.props.match.params.objectType.toUpperCase()}_PAGELAYOUT`;
-      console.log(PERMISSIONS[permissionKey], "----dandan");
     return (<Permission permission={PERMISSIONS[permissionKey]} errorComponent={<Unauthentication />}><div className="edit-container-wrapper">{this.getView(this.props)}</div></Permission>);
   }
 }

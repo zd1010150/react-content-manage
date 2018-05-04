@@ -50,6 +50,7 @@ class TaskFields extends Component {
 
   componentDidMount() {
     const {
+      defaultStateId,
       objectId,
       objectType,
       taskId,
@@ -58,8 +59,9 @@ class TaskFields extends Component {
       tryFetchRecentAssignees,
       tryFetchTaskSubjects,
     } = this.props;
+    
     if (taskId !== PhantomId) {
-      tryFetchTask(taskId, objectId, objectType);
+      tryFetchTask(taskId, objectId, objectType, defaultStateId);
     } else {
       // TODO: refactor to move those fetch methods to field separately
       tryFetchAssignees(objectId, objectType);

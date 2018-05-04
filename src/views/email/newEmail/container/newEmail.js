@@ -164,29 +164,30 @@ class NewEmail extends React.Component {
      * to, cc, bcc must be email format
      */
     checkFieldInput() {
+        const { formatMessage } = this.props.intl;
         if (this.state.sendTo.length === 0) {
             notification.error({
-                message: 'email receiver cannot be empty'
+                message: formatMessage({ id: 'page.emailTemplates.emailToEmptyError' })
             });
             return false
         } else if (!validateEmailGroup(this.state.sendTo)) {
             notification.error({
-                message: 'email receiver must be email'
+                message: formatMessage({ id: 'page.emailTemplates.emailToFormatError' })
             });
             return false
         } else if (this.state.subject === '') {
             notification.error({
-                message: 'subject cannot be empty'
+                message: formatMessage({ id: 'page.emailTemplates.emailSubjectEmptyError' })
             });
             return false
         } else if (this.state.cc.length !== 0 && !validateEmailGroup(this.state.cc)) {
             notification.error({
-                message: 'cc target must be email'
+                message: formatMessage({ id: 'page.emailTemplates.emailCcFormatError' })
             });
             return false
         } else if (this.state.bcc.length !== 0 && !validateEmailGroup(this.state.bcc)) {
             notification.error({
-                message: 'bcc target must be email'
+                message: formatMessage({ id: 'page.emailTemplates.emailBccFormatError' })
             });
             return false
         } else {
@@ -212,6 +213,7 @@ class NewEmail extends React.Component {
 
     send = () => {
         const {sendEmail, loginUser, match} = this.props;
+        const { formatMessage } = this.props.intl;
         if (!this.checkFieldInput()) {
             return
         }
@@ -249,10 +251,10 @@ class NewEmail extends React.Component {
             email_able_id: match.params.objectId
         };
         console.log('dataObj', dataObj)
-
+        const noAuthMessage = formatMessage({ id: 'page.emailTemplates.noAuthMessage' });
+        const emailSendMessage = formatMessage({ id: 'page.emailTemplates.emailSendMessage' });
         const pendingSavedEmails = _.uniqBy(this.state.sendTo.concat(this.state.cc).concat(this.state.bcc).concat(savedEmails));
-        sendEmail({userEmail, dataObj}, (status, authLink) => {
-            console.log('authLink',status, authLink)
+        sendEmail({userEmail, dataObj, noAuthMessage, emailSendMessage}, (status, authLink) => {
             if(status === 'success'){
                 setStore(EnumsManager.LocalStorageEmails, pendingSavedEmails);
                 history.push(`/${match.params.objectType}/${match.params.objectId}`);

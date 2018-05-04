@@ -81,6 +81,7 @@ class TaskDetails extends Component {
   render() {
     const {
       intl,
+      defaultStateId,
       objectId,
       objectType,
       taskId,
@@ -90,7 +91,7 @@ class TaskDetails extends Component {
     const { formatMessage } = intl;
     const i18nPrefix = 'page.taskDetails';
     const titleKey = taskId === PhantomId ? 'newTitle' : 'editTitle';
-
+    
     return (
       <Panel
         panelTitle={formatMessage({ id: `${i18nPrefix}.${titleKey}` })}
@@ -98,6 +99,7 @@ class TaskDetails extends Component {
       >
         <Row style={{ margin: '10px 15px' }}>
           <Fields
+            defaultStateId={defaultStateId}
             objectId={objectId}
             objectType={objectType}
             taskId={taskId}

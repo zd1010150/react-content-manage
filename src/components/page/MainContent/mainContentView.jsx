@@ -28,6 +28,7 @@ import {
   Users,
   GlobalSearch,
   ObjectShare,
+    Task,
   ClientDetails,
 } from 'views/index';
 import Enums from 'utils/EnumsManager';
@@ -63,6 +64,7 @@ const MainContent = () => (
     <Route path="/user/email-setting" component={EmailTemplates} />
     <Route path="/dashboard" component={Dashboard} exact />
     <Route path="/globalSearch" component={GlobalSearch} exat />
+    <Route path="/Task" component={Task} />
 
     <Route path="/leads/convert/find/:objectId" component={FindDuplicates} />
     <Route path="/leads/merge/" component={MergeLeads} />
@@ -116,6 +118,17 @@ const MainContent = () => (
       }}
     />
     <Route path="/:objectType/:objectId/attachments" component={ClientAttachments} exact />
+    <Route
+      path="/:objectType/:objectId/tasks/:taskId/completed"
+      render={(props) => {
+        return (
+          <ObjectTask
+            {...props}
+            defaultStateId={1}
+          />
+        );
+      }}
+    />
     <Route path="/:objectType/:objectId/tasks/:taskId" component={ObjectTask} />
     <Route path="/:objectType/views/:viewId" component={ObjectView} />
     <Route

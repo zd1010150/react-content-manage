@@ -39,7 +39,7 @@ class usersIndexView extends React.Component {
     const { location } = this.props;
     const pairs = queryString.parse(location.search);
     const currentView = _.isEmpty(pairs.action) || (pairs.action && pairs.action === PAGE_ACTION.VIEWALL) ? <TableView /> : <AddView actionType={pairs.action} />;
-    return (<Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_USERS}><div>{currentView}</div></Permission>);
+    return (<Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_USERS} errorComponent={<Unauthentication />}><div>{currentView}</div></Permission>);
   }
 }
 

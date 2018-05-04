@@ -6,7 +6,7 @@
   color:#4e4e4e;
   border-radius: 5px;
   background:#fff;
-  border-top:3px solid #4e4e4e;
+  border-top:3px solid @secondary-dark-color;
   box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
   .panel-header{
     padding: 6px 15px;
@@ -48,6 +48,17 @@
     .section-footer{
       padding: 5px 15px;
     }
+  }
+}
+.panel.grey-header-panel{
+  .panel-header{
+    background-color: @secondary-dark-color;
+    .panel-title{
+      color: @crm-white;
+    }
+  &:hover{
+    background-color: #313131;
+  }
   }
 }
 

@@ -21,6 +21,7 @@ import mergeLeads from 'views/MergeLeads/i18n';
 import convertLeads from 'views/ConvertLeads/i18n';
 import primaryDetails from 'components/page/PrimaryDetails/i18n';
 import dashboard from 'views/Dashboard/i18n';
+import task from 'views/Task/i18n';
 
 export default {
   comInfo,
@@ -46,4 +47,5 @@ export default {
   convertLeads,
   primaryDetails,
   dashboard,
+  task,
 };
