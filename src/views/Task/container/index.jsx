@@ -133,7 +133,7 @@ class TaskListView extends React.Component {
     };
     return (
       <Panel panelTitle={formatMessage({ id: 'page.task.myOpenActivity' })} contentClasses="pt-lg pb-lg pl-lg pr-lg">
-        <Select defaultValue={ALL_STATUS.OVERDUE_TODAY} style={{ width: 120 }} onChange={val => this.handlePeriodChange(val)}>
+        <Select defaultValue={ALL_STATUS.OVERDUE_TODAY} style={{ width: 150 }} onChange={val => this.handlePeriodChange(val)}>
           {
               Object.keys(ALL_STATUS).map(key => <Option value={ALL_STATUS[key]} key={key}> { formatMessage({ id: `page.task.${key}` })}</Option>)
             }

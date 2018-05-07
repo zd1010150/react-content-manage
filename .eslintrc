@@ -35,6 +35,7 @@
      "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx"] }],
      "import/no-unresolved": [2, {"ignore": ["salt-ui"]}],
      "react/prefer-stateless-function": [2, { "ignorePureComponents": true }],
-     "import/no-extraneous-dependencies": ["error", {"devDependencies": true, "optionalDependencies": false, "peerDependencies": false}]
+     "import/no-extraneous-dependencies": ["error", {"devDependencies": true, "optionalDependencies": false, "peerDependencies": false}],
+     "no-case-declarations": [0]
    }
  }

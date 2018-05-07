@@ -46,7 +46,7 @@ export default {
   },
   en: {
     general: {
-      newTitle: 'New View',
+      newTitle: 'Add New View',
       existTitle: 'Edit View',
     },
     viewName: {

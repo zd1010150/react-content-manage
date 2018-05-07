@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import PropTypes from 'prop-types';
 import {Select, Input, Row, Col} from 'antd';
 import classNames from 'classnames/bind';
 import styles from '../emailTemplatesCreation.less';
@@ -20,19 +21,58 @@ export const SelectComponent = ({defaultValue, items, label, onChange, value}) =
         </Col>
     </Row>
 }
+SelectComponent.SelectComponent = {
+    defaultValue: '',
+    items: [],
+    label: '',
+    value: v=>v
+};
+SelectComponent.propTypes = {
+    defaultValue: PropTypes.string,
+    items: PropTypes.array,
+    label: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.func.isRequired,
+}
 
-export const SelectComponentVertical = ({defaultValue, items, label, onChange}) => {
+export const SelectComponentVertical = ({defaultValue, items, label, onChange, value,labelInValue}) => {
     return <Fragment>
         <div>
             {label}
         </div>
-        <Select onChange={onChange} defaultValue={defaultValue} className="full-width">
+        {labelInValue &&
+            <Select labelInValue={labelInValue} onChange={onChange} defaultValue={defaultValue} className="full-width">
+                { items && items.map((item, index) =>
+                    <Select.Option key={item.id ? item.id : index} value={item.id}>{value(item)}</Select.Option>
+                )}
+            </Select>
+        }
+        {!labelInValue &&
+        <Select labelInValue={labelInValue} onChange={onChange} value={defaultValue} className="full-width">
             {items && items.map((item, index) =>
                 <Select.Option key={index} value={item}>{item}</Select.Option>
             )}
         </Select>
+        }
+
     </Fragment>
 }
+SelectComponentVertical.SelectComponent = {
+    defaultValue: '',
+    items: [],
+    label: '',
+    value: v=>v,
+    labelInValue: false
+};
+SelectComponentVertical.propTypes = {
+    defaultValue: PropTypes.string,
+    items: PropTypes.array,
+    label: PropTypes.string,
+    onChange: PropTypes.func,
+    value: PropTypes.func,
+    labelInValue: PropTypes.bool,
+}
+
 
 export const InputComponent = ({style, type, disableInput, value, label, onChange}) => {
     return <Row style={style} className={`pt-lg ${cx('new-template-input-row')}`}>
@@ -53,6 +93,21 @@ export const InputComponent = ({style, type, disableInput, value, label, onChang
         </Col>
     </Row>
 }
+InputComponent.SelectComponent = {
+    style: {},
+    type: 'text',
+    label: '',
+    disableInput: false,
+    value: ''
+};
+InputComponent.propTypes = {
+    style: PropTypes.object,
+    type: PropTypes.string,
+    disableInput: PropTypes.bool,
+    value: PropTypes.string,
+    label: PropTypes.string,
+    onChange: PropTypes.func,
+}
 
 export const TextAreaComponent = ({style, value, label, onChange}) => {
     return <Row style={style} className={`pt-lg ${cx('new-template-input-row')}`}>
@@ -64,4 +119,15 @@ export const TextAreaComponent = ({style, value, label, onChange}) => {
                 onChange(e.target.value)}}/>
         </Col>
     </Row>
+}
+TextAreaComponent.SelectComponent = {
+    style: {},
+    label: '',
+    value: ''
+};
+TextAreaComponent.propTypes = {
+    style: PropTypes.object,
+    value: PropTypes.string,
+    label: PropTypes.string,
+    onChange: PropTypes.func,
 }

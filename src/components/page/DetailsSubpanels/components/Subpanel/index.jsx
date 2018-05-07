@@ -360,12 +360,12 @@ class Subpanel extends Component {
 }
 
 
-const mapStateToProps = ({ global, objectDetails }) => ({
+const mapStateToProps = ({ global, clientDetails }) => ({
   language: global.language,
   categories: global.settings.categories,
   priorities: global.settings.priorities,
   statuses: global.settings.statuses,
-  tasks: objectDetails.tasks,
+  tasks: clientDetails.subpanels,
 });
 const mapDispatchToProps = {
   tryDeleteAttachment,

@@ -180,16 +180,14 @@ export const getVisibleTeamandUsers = valId => dispatch => get(`/admin/picklists
   }
 });
 export const getUnVisibleTeamandUsers = valId => dispatch => get(`/admin/picklists/${valId}/restriction`, {}, dispatch).then((data) => {
-  if (!_.isEmpty(data.teams)) {
-    dispatch(setPickListValueManagement({
-      unvisibleTeams: data.teams,
-    }));
-  }
-  if (!_.isEmpty(data.users)) {
-    dispatch(setPickListValueManagement({
-      unvisibleUsers: data.users,
-    }));
-  }
+  dispatch(setPickListValueManagement({
+    unvisibleTeams: data.teams || [],
+  }));
+
+
+  dispatch(setPickListValueManagement({
+    unvisibleUsers: data.users || [],
+  }));
 });
 
 export const updateRestriciontToRemote = (valId, user_ids, team_ids, cb) => dispatch => patch(`/admin/picklists/${valId}/restriction`, { team_ids, user_ids }, dispatch).then(() => {
