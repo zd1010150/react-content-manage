@@ -13,7 +13,6 @@ const replaceDialog = (state = {
   const { type, ...payload } = action;
   switch (type) {
     case SETUP_FIELDS_SET_REPLACE_DIALOG_ATTR:
-      debugger;
       return Object.assign({}, state, { ...payload });
     default:
       return state;
