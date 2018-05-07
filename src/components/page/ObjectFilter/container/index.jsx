@@ -8,16 +8,6 @@ import { getThemeByType } from 'utils/common';
 import { FieldsSelection, FilterCriteria, ViewActions, ViewName, ViewVisibility } from '../components/index';
 import { resetView, fetchViewById } from '../flow/actions';
 
-
-const defaultProps = {
-};
-const propTypes = {
-  intl: intlShape.isRequired,
-  fetchViewById: PropTypes.func.isRequired,
-  resetView: PropTypes.func.isRequired,
-};
-
-
 const sections = [
   {
     titleI18n: 'viewName',
@@ -36,6 +26,16 @@ const sections = [
     component: ViewVisibility,
   },
 ];
+
+
+const defaultProps = {
+};
+const propTypes = {
+  intl: intlShape.isRequired,
+  fetchViewById: PropTypes.func.isRequired,
+  resetView: PropTypes.func.isRequired,
+};
+
 
 class ObjectFilter extends Component {
   componentDidMount() {
@@ -84,7 +84,8 @@ class ObjectFilter extends Component {
 
 ObjectFilter.defaultProps = defaultProps;
 ObjectFilter.propTypes = propTypes;
-const mapStateToProps = ({ objectView }) => ({
+const mapStateToProps = ({ global, objectView }) => ({
+  language: global.language,
   objectView,
 });
 const mapDispatchToProps = {

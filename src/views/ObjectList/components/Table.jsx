@@ -1,4 +1,6 @@
 import { Icon, Popconfirm, Table } from 'antd';
+import { Permission } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
@@ -13,6 +15,7 @@ import {
   tryFetchDataByView,
   tryDeleteClientByType,
 } from '../flow/actions';
+
 const { FieldTypes, DefaultPageConfigs, PhantomId } = Enums;
 const {
   DateOnly,
@@ -150,8 +153,9 @@ class TableWrapper extends Component {
     };
   }
 
-  renderColumns = data => {
-    const { formatMessage } = this.props.intl;
+  renderColumns = (data) => {
+    const { intl, objectType } = this.props;
+    const { formatMessage } = intl;
     const me = this;
     const columns = data.map(column => me.renderColumnByType(column.crm_data_type, column));
     columns.unshift({
@@ -159,13 +163,15 @@ class TableWrapper extends Component {
       key: 'actions',
       width: 30,
       render: (text, record) => (
-        <Popconfirm
-          title={formatMessage({ id: `global.ui.dialog.deleteTitle` })}
-          onConfirm={$ => me.handleDeleteClick(record.id)}
-          placement="right"
-        >
-          <Icon className="cursor-pointer" size="small" type='delete' />
-        </Popconfirm>
+        <Permission permission={PERMISSIONS[`${objectType.toUpperCase()}_DELETE`]}>
+          <Popconfirm
+            title={formatMessage({ id: `global.ui.dialog.deleteTitle` })}
+            onConfirm={$ => me.handleDeleteClick(record.id)}
+            placement="right"
+          >
+            <Icon className="cursor-pointer" size="small" type='delete' />
+          </Popconfirm>
+        </Permission>
       ),
     });
     return columns;

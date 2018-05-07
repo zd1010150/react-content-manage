@@ -109,9 +109,9 @@ const CustomField = ({
     }
   };
 
-  const _onChange = (id, value) => {
+  const _onChange = (id, value, extra) => {
     if (_.isFunction(onChange)) {
-      onChange(id, value);
+      onChange(id, value, extra);
     }
   };
 
@@ -139,7 +139,7 @@ const CustomField = ({
           // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
           // In this way we can use string outside, and only convert to certain time format in reducer.
           value={moment(value)}
-          onChange={(date, dateString) => onChange(id, dateString)}
+          onChange={(date, dateString) => onChange(id, dateString, date)}
           // Overrides the default onBlur becasue when the calendar opens the input field lost focus
           onBlur={null}
           onOpenChange={(state) => {
