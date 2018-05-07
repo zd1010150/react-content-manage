@@ -34,7 +34,6 @@ export default class ImportTemplateButton extends Component {
     onAllDone(response, error) {
         const {setTemplateContent} = this.props;
         if (_.isEmpty(error)) {
-            console.log('11111', response)
             response && setTemplateContent(response[0].content);
             // const imageUrl = response && response[0].data.url;
             // this.setState({url: imageUrl});

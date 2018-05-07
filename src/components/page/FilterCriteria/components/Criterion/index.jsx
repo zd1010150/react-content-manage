@@ -23,7 +23,10 @@ const propTypes = {
   intl: intlShape.isRequired,
   displayNum: PropTypes.number.isRequired,
   condition: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   type: PropTypes.oneOf([
     ...Enums.FieldTypesInArray,
     '', // TODO: not best practice
@@ -90,7 +93,7 @@ const Criterion = ({
       </Col>
       <Col {...colLayout}>
         {type ? <ValueCriteriaField {...valueCriteriaFieldProps} />
-              : <span className={cx('message')}>{formatMessage({ id: 'page.customField.message'})}</span>}
+              : <span className={cx('message')}>{formatMessage({ id: 'page.filterCriteria.columns.emptyMsg'})}</span>}
       </Col>
       <Col {...sideColLayout}>
         <Popconfirm

@@ -6,9 +6,9 @@ import {
 } from './actionTypes';
 
 
-export const loginSuccess = args => ({
+export const loginSuccess = userData => ({
   type: LOGIN_SUCCESS,
-  ...args,
+  payload: { userData },
 });
 
 
@@ -20,7 +20,7 @@ const logoutSuccess = json => ({
 export const tryLogin = (values, successMessage) => dispatch => post('/admin/login', values, dispatch, { successMessage })
   .then((json) => {
     if (json && (!_.isEmpty(json.data))) {
-      dispatch(loginSuccess(json.data));
+      dispatch(loginSuccess(json.data, json.data.time_zone));
     }
   });
 

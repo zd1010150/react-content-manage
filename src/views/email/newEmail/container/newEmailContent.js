@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import {intlShape, injectIntl} from 'react-intl';
 import {Row, Col, Input, Select, Button, Icon, Radio, Table} from 'antd';
@@ -107,6 +108,13 @@ const mapStateToProps = ({ global, loginUser }) => ({
 const mapDispatchToProps = {
     tryLogout: tryLogout
 };
+
+NewEmailContent.propTypes = {
+    onFileUpload: PropTypes.func.isRequired,
+    content: PropTypes.string,
+    showModal: PropTypes.func.isRequired,
+    registerGetContentHook: PropTypes.func.isRequired,
+}
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(NewEmailContent));
 

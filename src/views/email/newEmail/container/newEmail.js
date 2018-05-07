@@ -28,7 +28,6 @@ const Option = Select.Option;
 const savedEmails = getStore(EnumsManager.LocalStorageEmails) ? JSON.parse(getStore(EnumsManager.LocalStorageEmails)) : [];
 const children = [];
 for (let i = 0; i < savedEmails.length; i++) {
-    console.log('savedEmails', savedEmails)
     !!savedEmails[i] && children.push(<Option key={savedEmails[i]}>{savedEmails[i]}</Option>);
 }
 const InputComponent = ({isNormal, label, handleChange, value}) => {
@@ -38,11 +37,6 @@ const InputComponent = ({isNormal, label, handleChange, value}) => {
             {label}
         </Col>
         <Col className={`gutter-row field-value ${cx('new-email-input')}`} span={22}>
-            {/*<FloatingLabelInput*/}
-            {/*noLabel={true}*/}
-            {/*handleChange={handleChange}*/}
-            {/*value={value}*/}
-            {/*/>*/}
             {!isNormal && <Select
                 mode="tags"
                 size="default"
@@ -304,11 +298,11 @@ class NewEmail extends React.Component {
             type="delete"/>{ formatMessage({id: 'page.emailTemplates.discard'}) }</Button>
         const actionsRight = <div>{SendButton}{DiscardButton}</div>;
         const modalHeader = <Row>
-            <Col className="gutter-row field-label pt-md" span={20}>
+            <Col className="gutter-row field-label pt-md" span={22}>
                 {formatMessage({id: 'page.emailTemplates.selectTemplate'})}
             </Col>
-            <Col className="gutter-row field-label" span={4}>
-                <Button className="email-theme-btn mr-sm" shape="circle" icon="save" onClick={this.handleSave}></Button>
+            <Col className="gutter-row field-label" span={2}>
+                {/*<Button className="email-theme-btn mr-sm" shape="circle" icon="save" onClick={this.handleSave}></Button>*/}
                 <Button shape="circle" icon="close" onClick={this.handleCancel}></Button>
             </Col>
         </Row>
@@ -371,6 +365,9 @@ class NewEmail extends React.Component {
                         pagination={pagination}
                         className="mt-lg"
                         rowKey="id"/>
+                    <div className={`ml-sm ${cx('hint-msg')}`}>
+                        {formatMessage({id: 'page.emailTemplates.doubleClickHint'})}
+                    </div>
                 </Modal>
                 <BasicInfo handleSendTo={this.handleSendTo}
                            handleCc={this.handleCc}
