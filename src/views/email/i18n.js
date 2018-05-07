@@ -57,6 +57,7 @@ export default {
     emailCcFormatError: "抄送邮箱格式不正确",
     emailBccFormatError: "密抄邮箱格式不正确",
     emailSubjectEmptyError: "邮件主题不能为空",
+      doubleClickHint: "双击以选择模板",
     emailCampaignsSeparator:
       "............................................................................................",
     emailCampaign: "活动邮件",
@@ -146,7 +147,7 @@ export default {
     emailCcFormatError: "cc target must be email",
     emailBccFormatError: "bcc target must be email",
     emailSubjectEmptyError: "subject cannot be empty",
-
+      doubleClickHint: "Double click to select template",
     emailCampaignsSeparator:
       "............................................................................................",
     emailCampaign: "Email Campaigns",
