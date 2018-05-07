@@ -97,7 +97,7 @@ class TaskDetails extends Component {
         panelTitle={formatMessage({ id: `${i18nPrefix}.${titleKey}` })}
         panelClasses={`${theme}-theme-panel`}
       >
-        <Row style={{ margin: '10px 15px' }}>
+        <Row className="mt-md mb-md ml-lg mr-lg">
           <Fields
             defaultStateId={defaultStateId}
             objectId={objectId}
@@ -105,7 +105,7 @@ class TaskDetails extends Component {
             taskId={taskId}
           />
         </Row>
-        <Row style={{ margin: '10px 15px' }}>
+        <Row className="mt-md mb-md ml-lg mr-lg">
           <Actions
             objectId={objectId}
             objectType={objectType}
@@ -133,4 +133,7 @@ const mapDispatchToProps = {
   trySaveNewTask,
   tryUpdateTask,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(TaskDetails)));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(injectIntl(TaskDetails)));
