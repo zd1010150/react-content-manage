@@ -6,6 +6,7 @@ import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
 import { setOptions, tryFetchOptionsById } from '../flow/actions';
+
 const { Option } = Select;
 const { FieldTypes, PhantomId } = Enums;
 const { Lookup, PickList } = FieldTypes;
@@ -96,7 +97,7 @@ class MassUpdateModal extends Component {
 
     return (
       <StyledModal
-        title={formatMessage({ id: `global.ui.button.massUpdate` })}
+        title={formatMessage({ id: 'global.ui.button.massUpdate' })}
         visible={visible}
         onOk={this._onOk}
         onCancel={this._onCancel}
@@ -107,10 +108,10 @@ class MassUpdateModal extends Component {
             style={{
               textAlign: 'right',
               lineHeight: 2,
-              paddingRight: 24,
+              paddingRight: 34,
             }}
           >
-            {formatMessage({ id: `global.form.field` })}
+            {formatMessage({ id: 'global.form.field' })}
           </Col>
           <Col {...valueCol}>
             <Select
@@ -119,33 +120,33 @@ class MassUpdateModal extends Component {
               size="small"
               onChange={this.handleFieldChange}
             >
-              {columns.map(col =>
+              {columns.map(col => (
                 <Option key={col.id} value={col.id}>
                   {col.field_label}
                 </Option>
-              )}
+              ))}
             </Select>
           </Col>
         </Row>
         {fieldId !== PhantomId && (
           <CustomField
             id={fieldId}
-            label={formatMessage({ id: `global.form.value` })}
+            label={formatMessage({ id: 'global.form.value' })}
             lookupDisplayKey={lookupDisplayKey}
             name={fieldName}
-            options={selectedFieldOptions}            
+            options={selectedFieldOptions}
             type={type}
             value={value}
             labelCol={labelCol}
             valueCol={valueCol}
             useDefaultRowCls={false}
-            onChange={this.handleValueChange}            
+            onChange={this.handleValueChange}
           />
         )}
       </StyledModal>
     );
   }
-};
+}
 
 
 const mapStateToProps = ({ objectList }) => ({
