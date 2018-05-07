@@ -37,7 +37,7 @@ const formatData = data => {
     // TODO: replace offset with user info timezone, need to consider undefined
     if (crm_data_type === DateOnly
         || crm_data_type === DateTime) {
-      newValue = toTimezone(value, '+1100', crm_data_type === DateOnly ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss');
+      newValue = toTimezone(value, crm_data_type === DateTime);
     }
 
     // Attach options to Picklist and Lookup field for RightSider

@@ -43,7 +43,10 @@ export const toTimezone = (str, isConvertingTime = false) => {
 export const toUtc = (str, isConvertingTime = false) => {
   const timeSetting = getTimeSetting(isConvertingTime);
   console.log(timeSetting.offset, timeSetting.format);
-  return moment.utc(`${str}${timeSetting.offset}`).format(timeSetting.format);
+  if (isConvertingTime) {
+    return moment.utc(`${str}${timeSetting.offset}`).format(timeSetting.format);
+  }
+  return str;
 };
 // TODO:
 // add format and offset to localstorage to avoid extra params to function after confirm the json format of global setting response

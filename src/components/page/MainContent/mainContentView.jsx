@@ -1,7 +1,8 @@
 /* eslint-disable react/no-typos */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import {
   ClientAttachments,
   CompanyInfo,
@@ -129,7 +130,28 @@ const MainContent = () => (
       }}
     />
     <Route path="/:objectType/:objectId/tasks/:taskId" component={ObjectTask} />
-    <Route path="/:objectType/views/:viewId" component={ObjectView} />
+    <Route
+      path="/:objectType/views/:viewId"
+      exact
+      render={(props) => {
+        const { match } = props;
+        const { objectType, viewId } = match.params;
+        if ([Leads, Accounts, Opportunities].indexOf(objectType) !== -1) {
+          const pageCode = viewId === PhantomId ? 'CREATEVIEWLIST' : 'EDITVIEWLIST';
+          const permissionCode = PERMISSIONS[`${objectType.toUpperCase()}_${pageCode}`];
+          return (
+            <Permission
+              permission={permissionCode}
+              errorComponent={<Unauthentication />}
+            >
+              <ObjectView {...props} objectType={objectType} />
+            </Permission>
+          );
+        }
+        // TOOD: return 404 page
+        return null;
+      }}
+    />
     <Route
       path="/:objectType/:objectId"
       exact
@@ -157,7 +179,13 @@ const MainContent = () => (
         const { match } = props;
         const { objectType } = match.params;
         if ([Leads, Accounts, Opportunities].indexOf(objectType) !== -1) {
-          return <ObjectList key={objectType} {...props} objectType={objectType} />;
+          const viewCode = PERMISSIONS[`${objectType.toUpperCase()}_VIEW`];
+          console.log(viewCode);
+          return (
+            <Permission permission={viewCode} errorComponent={<Unauthentication />}>
+              <ObjectList key={objectType} {...props} objectType={objectType} />
+            </Permission>
+          );
         }
         // TOOD: return 404 page
         return null;

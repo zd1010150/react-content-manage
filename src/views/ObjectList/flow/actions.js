@@ -112,11 +112,11 @@ export const setViews = views => ({
     });
 
 export const tryFetchViewsByType = objectType => dispatch =>
-    get(`/admin/list_views/object/${objectType}`, {}, dispatch).then((data) => {
-      if (data && !_.isEmpty(data.data)) {
-        dispatch(setViews(data.data));
-      }
-    });
+  get(`/admin/list_views/object/${objectType}`, {}, dispatch).then((data) => {
+    if (data && data.data) {
+      dispatch(setViews(data.data));
+    }
+  });
 
 
 //

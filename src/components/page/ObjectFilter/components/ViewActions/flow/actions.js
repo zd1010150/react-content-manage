@@ -1,33 +1,36 @@
-import { post, patch } from 'store/http/httpAction';
-import { toUtc } from 'utils/dateTimeUtils';
+import { patch, post } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
-import { SAVE_FAILED, SAVE_SUCCESS } from './actionTypes';
+import { toUtc } from 'utils/dateTimeUtils';
+import { SAVE_SUCCESS } from './actionTypes';
 
 const {
   DateOnly,
   DateTime,
 } = Enums.FieldTypes;
 
-
 // Format redux to cater for API data format requirement
-const mapDataToAPI = (object_type, data) => {
-  const { name, fields, filterCriteria, visibilities } = data;
-
+const mapDataToAPI = (objectType, data) => {
+  const {
+    name,
+    fields,
+    filterCriteria,
+    visibilities,
+  } = data;
   const { view_name } = name;
-  
+
   const { condition_logic, filters } = filterCriteria;
-  const formattedFilter = filters.map(filter => {
-
-    const { displayNum, fieldId, conditionId, value } = filter;
-    
+  const formattedFilter = filters.map((filter) => {
+    const {
+      displayNum,
+      fieldId,
+      conditionId,
+      value,
+      type,
+    } = filter;
     let newValue = filter.value;
-    // TODO: replace the format with the value from backend
-    // TODO: replace offset with user info timezone, need to consider undefined
-    if (filter.type === DateOnly
-        || filter.type === DateTime) {
-      newValue = toUtc(value, '+1100', filter.type === DateOnly ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss');
+    if (type === DateOnly || type === DateTime) {
+      newValue = toUtc(value, type === DateTime);
     }
-
     return {
       id: fieldId,
       display_num: displayNum,
@@ -43,33 +46,35 @@ const mapDataToAPI = (object_type, data) => {
   }));
 
   const { selectedOption, selectedTeams, selectedUsers } = visibilities;
-  const assign_to_users = selectedUsers.map(user => user.id);
-  const assign_to_teams = selectedTeams.map(team => team.id);
+  const assignees = selectedUsers.map(user => user.id);
+  const assignedTeams = selectedTeams.map(team => team.id);
 
   return {
     view_name,
-    object_type,
+    object_type: objectType,
     condition_logic,
     filters: formattedFilter,
     selectors,
     assign_option: selectedOption,
-    assign_to_users,
-    assign_to_teams,
+    assign_to_users: assignees,
+    assign_to_teams: assignedTeams,
   };
 };
 
-export const saveSuccess = _ => ({
+export const saveSuccess = () => ({
   type: SAVE_SUCCESS,
 });
 
-export const trySaveNew = (objectType, viewData) => dispatch => post('/admin/list_views', mapDataToAPI(objectType, viewData), dispatch).then((data) => {
-  if (data && !_.isEmpty(data.data)) {
-    dispatch(saveSuccess());
-  }
-});
+export const trySaveNew = (objectType, viewData) => dispatch =>
+  post('/admin/list_views', mapDataToAPI(objectType, viewData), dispatch).then((data) => {
+    if (data && !_.isEmpty(data.data)) {
+      dispatch(saveSuccess());
+    }
+  });
 
-export const trySave = (objectType, viewData, id) => dispatch => patch(`/admin/list_views/${id}`, mapDataToAPI(objectType, viewData), dispatch).then((data) => {
-  if (data && !_.isEmpty(data.data)) {
-    dispatch(saveSuccess());
-  }
-});
+export const trySave = (objectType, viewData, id) => dispatch =>
+  patch(`/admin/list_views/${id}`, mapDataToAPI(objectType, viewData), dispatch).then((data) => {
+    if (data && !_.isEmpty(data.data)) {
+      dispatch(saveSuccess());
+    }
+  });

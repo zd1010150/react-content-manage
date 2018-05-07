@@ -90,7 +90,7 @@ const Criterion = ({
       </Col>
       <Col {...colLayout}>
         {type ? <ValueCriteriaField {...valueCriteriaFieldProps} />
-              : <span className={cx('message')}>{formatMessage({ id: 'page.customField.message'})}</span>}
+              : <span className={cx('message')}>{formatMessage({ id: 'page.filterCriteria.columns.emptyMsg'})}</span>}
       </Col>
       <Col {...sideColLayout}>
         <Popconfirm

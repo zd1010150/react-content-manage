@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import { CardContainer } from 'components/ui/index';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import styles from '../index.less';
 import { addToSelection, removeFromSelection, setNewOrder } from './flow/actions';
@@ -11,6 +12,7 @@ const cx = classNames.bind(styles);
 
 
 const propTypes = {
+  intl: intlShape.isRequired,
   availableFields: PropTypes.array.isRequired,
   selectedFields: PropTypes.array.isRequired,
 };
@@ -37,13 +39,15 @@ class FieldsSelection extends Component {
       sm: 10,
     };
 
-    const { availableFields, selectedFields, theme } = this.props;
+    const { intl, theme, availableFields, selectedFields } = this.props;
+    const { formatMessage } = intl;
+    const i18n = 'page.objectFilter.selectors.sectionTitles';
     
     return (
       <Row>
         <Col {...colLayout}>
           <CardContainer
-            title="Available Fields"
+            title={formatMessage({ id: `${i18n}.available` })}
             data={availableFields}
             theme={theme}
             onSelect={this.onSelectIds}
@@ -62,7 +66,7 @@ class FieldsSelection extends Component {
         </Col>
         <Col {...colLayout}>
           <CardContainer
-            title="Selected Fields"
+            title={formatMessage({ id: `${i18n}.selected` })}
             data={selectedFields}
             theme={theme}
             onSelect={this.onSelectIds}
@@ -87,4 +91,4 @@ const mapDispatchToProps = {
   removeFromSelection,
   setNewOrder,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(FieldsSelection);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(FieldsSelection));
