@@ -28,7 +28,7 @@ import {
   Users,
   GlobalSearch,
   ObjectShare,
-    Task,
+  Task,
   ClientDetails,
 } from 'views/index';
 import Enums from 'utils/EnumsManager';
