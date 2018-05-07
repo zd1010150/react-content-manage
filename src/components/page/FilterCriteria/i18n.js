@@ -19,8 +19,8 @@ export default {
       field: 'Field',
       condition: 'Condition',
       value: 'Value',
-      tip: 'Use comma to separate filter rules except for Date or Datetime field',
-      emptyMsg: 'Please select a field and a condition firstly on the left-hand side',
+      tip: 'Use comma to separate filter rules except for Date or Datetime field.',
+      emptyMsg: 'Please select a field and a condition firstly on the left-hand side.',
     },
     buttons: {
       newFilter: 'New Filter',

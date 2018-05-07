@@ -65,11 +65,11 @@ const ValueCriteriaField = ({
           style={{ width: '100%' }}
           size="small"
           onChange={value => handleValueChange(displayNum, value)}
+          value={value}
         />
       );
     case PickList:
     case Lookup:
-      // TODO: replace with a customized component to enable select value from right side bar
       return (
         <Input
           size="small"
