@@ -71,7 +71,7 @@ class Topbar extends Component {
           <Permission permission={PERMISSIONS[`${objectType.toUpperCase()}_EDITVIEWLIST`]}>
             <Link to={`/${objectType}/views/${activeViewId}`}>
               <Button className="mr-sm" size="small" disabled={activeViewId === PhantomId} >
-                <Icon type="edit" size="small" />
+                <Icon className="font-sm" type="edit" size="small" />
                 {formatMessage({ id: `${i18n}.button.edit` })}
                 {formatMessage({ id: 'global.properNouns.view' })}
               </Button>
@@ -80,7 +80,7 @@ class Topbar extends Component {
           <Permission permission={PERMISSIONS[`${objectType.toUpperCase()}_CREATEVIEWLIST`]}>
             <Link to={`/${objectType}/views/${Enums.PhantomId}`}>
               <Button size="small">
-                <Icon type="plus" size="small" />
+                <Icon className="font-sm" type="plus" size="small" />
                 {formatMessage({ id: `${i18n}.button.new` })}
                 {formatMessage({ id: 'global.properNouns.view' })}
               </Button>

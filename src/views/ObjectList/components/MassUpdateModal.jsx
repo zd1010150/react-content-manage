@@ -5,11 +5,12 @@ import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
+import { toUtc } from 'utils/dateTimeUtils';
 import { setOptions, tryFetchOptionsById } from '../flow/actions';
 
 const { Option } = Select;
 const { FieldTypes, PhantomId } = Enums;
-const { Lookup, PickList } = FieldTypes;
+const { DateOnly, DateTime, Lookup, PickList } = FieldTypes;
 
 
 const defaultProps = {
@@ -44,17 +45,17 @@ class MassUpdateModal extends Component {
     fieldName: '',
     lookupDisplayKey: '',
     type: '',
-    value: '',    
+    value: '',
   }
 
-  _onCancel = $ => {
+  _onCancel = () => {
     const { onCancel } = this.props;
     if (_.isFunction(onCancel)) {
       onCancel();
     }
   }
 
-  _onOk = $ => {
+  _onOk = () => {
     const { onOk, selectedFieldOptions } = this.props;
     if (_.isFunction(onOk)) {
       let { fieldName, type, value } = this.state;
@@ -63,11 +64,14 @@ class MassUpdateModal extends Component {
         const option = selectedFieldOptions.find(option => option[lookupDisplayKey] === value);
         value = option.id;
       }
+      if (type === DateOnly || type === DateTime) {
+        value = toUtc(value, type === DateTime);
+      }
       onOk(fieldName, value);
     }
   }
 
-  handleFieldChange = fieldId => {
+  handleFieldChange = (fieldId) => {
     const { columns, setOptions, tryFetchOptionsById } = this.props;
     const column = columns.find(col => col.id === fieldId);
     if (this.state.fieldId !== fieldId) {
@@ -80,11 +84,13 @@ class MassUpdateModal extends Component {
         setOptions(column.picklists);
       }
     }
+    const isDateField = column.crm_data_type === DateOnly || column.crm_data_type === DateTime;
+    const value = isDateField ? undefined : '';
     return this.setState({
       fieldId: column.id,
       fieldName: column.field_name,
       type: column.crm_data_type,
-      value: '',
+      value,
     });
   }
 
@@ -95,6 +101,8 @@ class MassUpdateModal extends Component {
     const { intl, visible, columns, selectedFieldOptions } = this.props;
     const { formatMessage } = intl;
 
+    // System auto-generate field should not be available to mass update
+    const availabelColumns = columns.filter(col => col.is_sys_auto !== 1);
     return (
       <StyledModal
         title={formatMessage({ id: 'global.ui.button.massUpdate' })}
@@ -120,7 +128,7 @@ class MassUpdateModal extends Component {
               size="small"
               onChange={this.handleFieldChange}
             >
-              {columns.map(col => (
+              {availabelColumns.map(col => (
                 <Option key={col.id} value={col.id}>
                   {col.field_label}
                 </Option>
@@ -141,6 +149,9 @@ class MassUpdateModal extends Component {
             valueCol={valueCol}
             useDefaultRowCls={false}
             onChange={this.handleValueChange}
+            format={type === DateTime
+                      ? 'YYYY-MM-DD HH:mm:ss'
+                      : 'YYYY-MM-DD'}
           />
         )}
       </StyledModal>
@@ -157,4 +168,7 @@ const mapDispatchToProps = {
   setOptions,
   tryFetchOptionsById,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(MassUpdateModal));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(injectIntl(MassUpdateModal));

@@ -34,7 +34,7 @@ class Toolbar extends Component {
     visible: false,
   }
 
-  handleMassDelete = $ => {
+  handleMassDelete = () => {
     const { objectType, selectedRowKeys, meta, tableParams, tryDeleteClientsByType } = this.props;
     tryDeleteClientsByType(objectType, selectedRowKeys, tableParams, meta);
   }
@@ -50,9 +50,9 @@ class Toolbar extends Component {
     this.setState({ visible: false });
   }
 
-  handleModalClose = $ => this.setState({ visible: false })
+  handleModalClose = () => this.setState({ visible: false })
 
-  handleModalOpen = $ => this.setState({ visible: true })
+  handleModalOpen = () => this.setState({ visible: true })
 
   render() {
     const { visible } = this.state;
@@ -139,4 +139,7 @@ const mapDispatchToProps = {
   tryDeleteClientsByType,
   tryUpdateClients,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Toolbar));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(injectIntl(Toolbar));
