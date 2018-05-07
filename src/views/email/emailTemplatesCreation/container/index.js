@@ -32,7 +32,6 @@ class EmailTemplatesCreation extends React.Component {
         if (fn) {
             htmlContent = fn();
         }
-        console.log('????', htmlContent)
 
         if(this.isNewTemplateRouter()){
             createTemplateData({

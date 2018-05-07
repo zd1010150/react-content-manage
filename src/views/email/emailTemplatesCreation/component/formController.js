@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import PropTypes from 'prop-types';
 import {Select, Input, Row, Col} from 'antd';
 import classNames from 'classnames/bind';
 import styles from '../emailTemplatesCreation.less';
@@ -19,6 +20,13 @@ export const SelectComponent = ({defaultValue, items, label, onChange, value}) =
             </Select>
         </Col>
     </Row>
+}
+SelectComponent.prototype = {
+    defaultValue: PropTypes.string,
+    items: PropTypes.array,
+    label: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.func.isRequired,
 }
 
 export const SelectComponentVertical = ({defaultValue, items, label, onChange, value,labelInValue}) => {
@@ -43,6 +51,14 @@ export const SelectComponentVertical = ({defaultValue, items, label, onChange, v
 
     </Fragment>
 }
+SelectComponentVertical.prototype = {
+    defaultValue: PropTypes.string,
+    items: PropTypes.array,
+    label: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.func,
+    labelInValue: PropTypes.bool,
+}
 
 
 export const InputComponent = ({style, type, disableInput, value, label, onChange}) => {
@@ -63,6 +79,15 @@ export const InputComponent = ({style, type, disableInput, value, label, onChang
             }
         </Col>
     </Row>
+}
+
+InputComponent.prototype = {
+    style: PropTypes.object,
+    type: PropTypes.string,
+    disableInput: PropTypes.bool,
+    value: PropTypes.string,
+    label: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
 }
 
 export const TextAreaComponent = ({style, value, label, onChange}) => {

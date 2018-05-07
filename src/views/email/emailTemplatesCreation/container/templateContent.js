@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import {intlShape, injectIntl} from 'react-intl';
 import {Row, Col, Input, Select, Button, Icon, Radio, Table, Modal, Checkbox} from 'antd';
@@ -156,14 +157,6 @@ class TemplateContent extends React.Component {
             }
         ];
 
-        // const selectTemplate = <label>
-        //     <input type="file" id="uploadFile" onChange={() => {
-        //     }} style={{display: 'none'}}/>
-        //     <a size="small" className={`mr-md ${cx('new-template-link-button')}`}><Icon
-        //         className={cx('new-template-import-icon')} type="download"/>
-        //         {formatMessage({id: 'page.emailTemplates.importHtmlTemplate'})}
-        //     </a>
-        // </label>;
         const selectTemplate = <ImportTemplateButton setTemplateContent={setTemplateContent}/>;
         const attachment = <Button className="email-theme-btn ml-sm" size="small" onClick={this.showModal}><Icon
             type="link"/>{ formatMessage({id: 'page.emailTemplates.attachment'}) }</Button>
@@ -228,6 +221,13 @@ const mapStateToProps = ({global, loginUser}) => ({
 const mapDispatchToProps = {
     tryLogout: tryLogout
 };
+
+TemplateContent.prototype = {
+    selectedValue: PropTypes.string,
+    content: PropTypes.string,
+    setTemplateContent: PropTypes.func.isRequired,
+    registerGetContentHook: PropTypes.func.isRequired,
+}
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(TemplateContent));
 

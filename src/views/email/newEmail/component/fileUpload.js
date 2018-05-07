@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import {Select, Input, Row, Col, Button, Icon, Upload, notification} from 'antd';
 import _ from 'lodash';
@@ -81,4 +82,10 @@ export default class FileUpload extends Component {
 
         );
     }
+}
+
+FileUpload.prototype = {
+    label: PropTypes.string.isRequired,
+    tryLogout: PropTypes.func.isRequired,
+    onFileUpload: PropTypes.func.isRequired,
 }
