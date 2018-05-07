@@ -21,7 +21,13 @@ export const SelectComponent = ({defaultValue, items, label, onChange, value}) =
         </Col>
     </Row>
 }
-SelectComponent.prototype = {
+SelectComponent.SelectComponent = {
+    defaultValue: '',
+    items: [],
+    label: '',
+    value: v=>v
+};
+SelectComponent.propTypes = {
     defaultValue: PropTypes.string,
     items: PropTypes.array,
     label: PropTypes.string,
@@ -51,11 +57,18 @@ export const SelectComponentVertical = ({defaultValue, items, label, onChange, v
 
     </Fragment>
 }
-SelectComponentVertical.prototype = {
+SelectComponentVertical.SelectComponent = {
+    defaultValue: '',
+    items: [],
+    label: '',
+    value: v=>v,
+    labelInValue: false
+};
+SelectComponentVertical.propTypes = {
     defaultValue: PropTypes.string,
     items: PropTypes.array,
     label: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     value: PropTypes.func,
     labelInValue: PropTypes.bool,
 }
@@ -80,14 +93,20 @@ export const InputComponent = ({style, type, disableInput, value, label, onChang
         </Col>
     </Row>
 }
-
-InputComponent.prototype = {
+InputComponent.SelectComponent = {
+    style: {},
+    type: 'text',
+    label: '',
+    disableInput: false,
+    value: ''
+};
+InputComponent.propTypes = {
     style: PropTypes.object,
     type: PropTypes.string,
     disableInput: PropTypes.bool,
     value: PropTypes.string,
     label: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
 }
 
 export const TextAreaComponent = ({style, value, label, onChange}) => {
@@ -100,4 +119,15 @@ export const TextAreaComponent = ({style, value, label, onChange}) => {
                 onChange(e.target.value)}}/>
         </Col>
     </Row>
+}
+TextAreaComponent.SelectComponent = {
+    style: {},
+    label: '',
+    value: ''
+};
+TextAreaComponent.propTypes = {
+    style: PropTypes.object,
+    value: PropTypes.string,
+    label: PropTypes.string,
+    onChange: PropTypes.func,
 }

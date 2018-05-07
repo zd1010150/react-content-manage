@@ -109,7 +109,7 @@ const mapDispatchToProps = {
     tryLogout: tryLogout
 };
 
-NewEmailContent.prototype = {
+NewEmailContent.propTypes = {
     onFileUpload: PropTypes.func.isRequired,
     content: PropTypes.string,
     showModal: PropTypes.func.isRequired,

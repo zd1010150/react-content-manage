@@ -279,7 +279,7 @@ TemplateInformation.defaultProps = {
     newTemplate: {}
 };
 
-TemplateInformation.prototype = {
+TemplateInformation.propTypes = {
     isNewTemplateRouter: PropTypes.func.isRequired,
     save: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,

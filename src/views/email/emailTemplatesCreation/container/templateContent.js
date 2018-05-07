@@ -222,7 +222,7 @@ const mapDispatchToProps = {
     tryLogout: tryLogout
 };
 
-TemplateContent.prototype = {
+TemplateContent.propTypes = {
     selectedValue: PropTypes.string,
     content: PropTypes.string,
     setTemplateContent: PropTypes.func.isRequired,

@@ -84,7 +84,7 @@ export default class FileUpload extends Component {
     }
 }
 
-FileUpload.prototype = {
+FileUpload.propTypes = {
     label: PropTypes.string.isRequired,
     tryLogout: PropTypes.func.isRequired,
     onFileUpload: PropTypes.func.isRequired,
