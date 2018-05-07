@@ -63,32 +63,38 @@ const BasicInfo = ({
     </Fragment>
 }
 
-const FieldInfo = ({selectedLabel, selectedValue, template, fieldOption, formatMessage, selectLabel, selectValue}) => {
-    console.log('template', template)
+const convertFieldToMap = (data) => {
+    return data.reduce((newObj, current)=>{
+        let obj = {};
+        obj[current.id] = {label: current.field_label, value: current.field_value};
+        return {
+            ...newObj,
+            ...obj
+        }
+    }, {})
+}
+
+const FieldInfo = ({selectedField, selectField, selectedLabel, selectedValue, template, fieldOption, formatMessage, selectLabel, selectValue}) => {
+    console.log('selectedField', selectedField)
     console.log('fieldOption', fieldOption)
     let fieldLabels, fieldValues = [];
     let fieldObj = {};
-
+    let convertObj;
     if (!_.isEmpty(template) && !_.isEmpty(fieldOption)) {
-        fieldLabels = fieldOption[template.category].map((obj, index) => {
-            return obj.field_label
-        });
-        if(!!selectedLabel){
-            fieldOption[template.category].map((obj, index) => {
-                fieldObj[obj.field_label] = obj.field_value
-            });
-            fieldValues = [fieldObj[selectedLabel]]
-        }
+        convertObj  = convertFieldToMap(fieldOption[template.category]);
     }
 
+    if(!!selectedField.label){
+        fieldValues = [convertObj[selectedField.key]["value"]]
+    }
 
     return <Row className={`pt-lg ${cx(['new-template-input-row', 'new-template-folder-information'])}`}>
         <Col className="gutter-row field-value" span={10}>
-            <SelectComponentVertical items={fieldLabels} label={formatMessage({id: 'page.emailTemplates.selectField'})}
-                                     onChange={selectLabel}/>
+            <SelectComponentVertical labelInValue={true} items={fieldOption[template.category]} value={v => v.field_label} label={formatMessage({id: 'page.emailTemplates.selectField'})}
+                                     onChange={selectField}/>
         </Col>
         <Col className="gutter-row field-value" offset={2} span={10}>
-            <SelectComponentVertical defaultValue={fieldValues[0]} items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}
+            <SelectComponentVertical labelInValue={false} defaultValue={selectedValue} items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}
                                      onChange={selectValue}/>
         </Col>
     </Row>
@@ -105,7 +111,7 @@ const ActionButtonGroup = ({save, cancel, formatMessage}) => {
 class TemplateInformation extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {defaultFolderName: '', selectedLabel: '', selectedValue: ''}
+        this.state = {defaultFolderName: '', selectedField: {}, selectedLabel: '', selectedValue: ''}
     }
 
     componentDidMount() {
@@ -118,6 +124,12 @@ class TemplateInformation extends React.Component {
             }
             setNewTemplateCategory("leads");
         }
+    }
+
+    selectField = (value) => {
+        this.setState({selectedField: value}, ()=>{
+            this.setState({selectedValue: ''})
+        })
     }
 
     selectLabel = (value) => {
@@ -173,8 +185,10 @@ class TemplateInformation extends React.Component {
                         formatMessage={formatMessage}/>
                     <FieldInfo selectedLabel={this.state.selectedLabel}
                                selectedValue={this.state.selectedValue}
+                               selectedField={this.state.selectedField}
                                selectLabel={this.selectLabel}
                                selectValue={this.selectValue}
+                               selectField={this.selectField}
                                template={newTemplate}
                                fieldOption={fieldOption}
                                formatMessage={formatMessage}/>

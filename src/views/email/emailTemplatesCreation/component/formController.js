@@ -21,18 +21,29 @@ export const SelectComponent = ({defaultValue, items, label, onChange, value}) =
     </Row>
 }
 
-export const SelectComponentVertical = ({defaultValue, items, label, onChange}) => {
+export const SelectComponentVertical = ({defaultValue, items, label, onChange, value,labelInValue}) => {
     return <Fragment>
         <div>
             {label}
         </div>
-        <Select onChange={onChange} defaultValue={defaultValue} className="full-width">
+        {labelInValue &&
+            <Select labelInValue={labelInValue} onChange={onChange} defaultValue={defaultValue} className="full-width">
+                { items && items.map((item, index) =>
+                    <Select.Option key={item.id ? item.id : index} value={item.id}>{value(item)}</Select.Option>
+                )}
+            </Select>
+        }
+        {!labelInValue &&
+        <Select labelInValue={labelInValue} onChange={onChange} value={defaultValue} className="full-width">
             {items && items.map((item, index) =>
                 <Select.Option key={index} value={item}>{item}</Select.Option>
             )}
         </Select>
+        }
+
     </Fragment>
 }
+
 
 export const InputComponent = ({style, type, disableInput, value, label, onChange}) => {
     return <Row style={style} className={`pt-lg ${cx('new-template-input-row')}`}>
