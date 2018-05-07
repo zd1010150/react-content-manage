@@ -1,15 +1,17 @@
-import { Button, Col, Icon, Row, Popconfirm } from 'antd';
-import { StyledModal } from 'components/ui/index';
+import { Button, Col, Icon, Popconfirm, Row } from 'antd';
+import { Permission } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
-const { ThemeTypes, PhantomId, ObjectTypes, ThemeTypesInArray, ObjectTypesInArray } = Enums;
 import { MassUpdateModal } from './index';
-const { Leads } = ObjectTypes;
-import { connect } from 'react-redux';
 import { tryUpdateClients, tryDeleteClientsByType } from '../flow/actions';
+
+const { ThemeTypes, PhantomId, ObjectTypes, ThemeTypesInArray, ObjectTypesInArray } = Enums;
+const { Leads } = ObjectTypes;
 
 
 const defaultProps = {
@@ -62,53 +64,60 @@ class Toolbar extends Component {
       size: 'small',
     };
     const iconConfig = {
-      className: 'icon-thinner font-sm',
+      className: 'font-sm',
     };
 
     return (
       <Row className="ml-lg mr-md mt-md mb-md">
         <Col {...colLayout} style={{ textAlign: 'left' }}>
-          <Button
-            { ...btnConfigs }
-            disabled={selectedRowKeys.length < 2}
-            onClick={this.handleModalOpen}
-          >
-            <Icon size="small" type="edit" {...iconConfig} />
-            {formatMessage({ id: `${i18n}.massUpdate` })}
-          </Button>
+          <Permission permission={PERMISSIONS[`${objectType.toUpperCase()}_MASSUPDATE`]}>
+            <Button
+              {...btnConfigs}
+              disabled={selectedRowKeys.length < 2}
+              onClick={this.handleModalOpen}
+            >
+              <Icon size="small" type="edit" {...iconConfig} />
+              {formatMessage({ id: `${i18n}.massUpdate` })}
+            </Button>
+          </Permission>
           <MassUpdateModal
             visible={visible}
             onOk={this.handleMassUpdate}
             onCancel={this.handleModalClose}
           />
-          <Popconfirm
-            title={formatMessage({ id: 'global.ui.dialog.deleteTitle' })}
-            onConfirm={this.handleMassDelete}
-            okText={formatMessage({ id: `${i18n}.ok` })}
-            cancelText={formatMessage({ id: `${i18n}.cancel` })}
-          >
-            <Button
-              { ...btnConfigs }
-              disabled={selectedRowKeys.length < 2}
+          <Permission permission={PERMISSIONS[`${objectType.toUpperCase()}_MASSDELETE`]}>
+            <Popconfirm
+              title={formatMessage({ id: 'global.ui.dialog.deleteTitle' })}
+              onConfirm={this.handleMassDelete}
+              okText={formatMessage({ id: `${i18n}.ok` })}
+              cancelText={formatMessage({ id: `${i18n}.cancel` })}
             >
-              <Icon size="small" type="delete" {...iconConfig} />
-              {formatMessage({ id: `${i18n}.massDelete` })}
-            </Button>
-          </Popconfirm>
+              <Button
+                {...btnConfigs}
+                disabled={selectedRowKeys.length < 2}
+              >
+                <Icon size="small" type="delete" {...iconConfig} />
+                {formatMessage({ id: `${i18n}.massDelete` })}
+              </Button>
+            </Popconfirm>
+          </Permission>
           <span className={`${theme}-theme-text ml-lg`}>
             {selectedRowKeys.length} {formatMessage({ id: 'global.ui.table.selectedItems' })}
           </span>
         </Col>
         <Col {...colLayout} style={{ textAlign: 'right' }}>
           {objectType === Leads && (
-            <Link to={`/${objectType}/${PhantomId}`}>
-              <Button { ...btnConfigs }>
-                <Icon size="small" type="plus" {...iconConfig} />
-                {formatMessage({ id: `global.properNouns.${theme}` })}
-              </Button>
-            </Link>
+            <Permission permission={PERMISSIONS.LEADS_ADD}>
+              <Link to={`/${objectType}/${PhantomId}`}>
+                <Button {...btnConfigs}>
+                  <Icon size="small" type="plus" {...iconConfig} />
+                  {formatMessage({ id: 'global.ui.button.new' })}
+                  {formatMessage({ id: `global.properNouns.${theme}` })}
+                </Button>
+              </Link>
+            </Permission>
           )}
-          <Button { ...btnConfigs } disabled={true}>
+          <Button {...btnConfigs} disabled>
             {formatMessage({ id: `${i18n}.addToCampaign` })} (Coming Soon)
           </Button>
         </Col>

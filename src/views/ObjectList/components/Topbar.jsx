@@ -1,5 +1,7 @@
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Icon, Row } from 'antd';
+import { Permission } from 'components/page/index';
 import { StyledSelect } from 'components/ui/index';
+import PERMISSIONS from 'config/app-permission.config';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
@@ -7,6 +9,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { setActiveView, tryFetchDataByView, tryFetchViewsByType } from '../flow/actions';
+
 const { DefaultPageConfigs, PhantomId, ObjectTypes, ObjectTypesInArray } = Enums;
 const { Leads } = ObjectTypes;
 const { PageSize } = DefaultPageConfigs;
@@ -65,16 +68,24 @@ class Topbar extends Component {
           />
         </Col>
         <Col sm={12} style={{ textAlign: 'right' }}>
-          <Link to={`/${objectType}/views/${activeViewId}`}>
-            <Button className="mr-sm" size="small" disabled={activeViewId === PhantomId} >
-              {formatMessage({ id: `${i18n}.button.edit` })}
-            </Button>
-          </Link>
-          <Link to={`/${objectType}/views/${Enums.PhantomId}`}>
-            <Button size="small">
-              {formatMessage({ id: `${i18n}.button.createNew` })}
-            </Button>
-          </Link>
+          <Permission permission={PERMISSIONS[`${objectType.toUpperCase()}_EDITVIEWLIST`]}>
+            <Link to={`/${objectType}/views/${activeViewId}`}>
+              <Button className="mr-sm" size="small" disabled={activeViewId === PhantomId} >
+                <Icon type="edit" size="small" />
+                {formatMessage({ id: `${i18n}.button.edit` })}
+                {formatMessage({ id: 'global.properNouns.view' })}
+              </Button>
+            </Link>
+          </Permission>
+          <Permission permission={PERMISSIONS[`${objectType.toUpperCase()}_CREATEVIEWLIST`]}>
+            <Link to={`/${objectType}/views/${Enums.PhantomId}`}>
+              <Button size="small">
+                <Icon type="plus" size="small" />
+                {formatMessage({ id: `${i18n}.button.new` })}
+                {formatMessage({ id: 'global.properNouns.view' })}
+              </Button>
+            </Link>
+          </Permission>
         </Col>
       </Row>
     );

@@ -17,6 +17,7 @@ export default {
     fields: '字段',
     dashboard: '总览',
     report: '报告',
+    view: '视图',
   },
   en: {
     lead: 'Lead',
@@ -35,5 +36,6 @@ export default {
     fields: 'Fields',
     dashboard: 'Dashboard',
     report: 'Report',
+    view: 'View',
   },
 };
