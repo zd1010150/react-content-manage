@@ -130,7 +130,28 @@ const MainContent = () => (
       }}
     />
     <Route path="/:objectType/:objectId/tasks/:taskId" component={ObjectTask} />
-    <Route path="/:objectType/views/:viewId" component={ObjectView} />
+    <Route
+      path="/:objectType/views/:viewId"
+      exact
+      render={(props) => {
+        const { match } = props;
+        const { objectType, viewId } = match.params;
+        if ([Leads, Accounts, Opportunities].indexOf(objectType) !== -1) {
+          const pageCode = viewId === PhantomId ? 'CREATEVIEWLIST' : 'EDITVIEWLIST';
+          const permissionCode = PERMISSIONS[`${objectType.toUpperCase()}_${pageCode}`];
+          return (
+            <Permission
+              permission={permissionCode}
+              errorComponent={<Unauthentication />}
+            >
+              <ObjectView {...props} objectType={objectType} />
+            </Permission>
+          );
+        }
+        // TOOD: return 404 page
+        return null;
+      }}
+    />
     <Route
       path="/:objectType/:objectId"
       exact
