@@ -57,20 +57,6 @@ class TaskListView extends React.Component {
     setPeriod(start, end, overDue);
     queryByPeriod(start, end, overDue);
   }
-  searchUser(value) {
-    this.props.queryBySearchKey(value);
-  }
-  edit(id) {
-    const self = this;
-    this.props.fetchEditUser(id, (user) => {
-      const { id, name } = getTreeItemByKey(self.props.teams, user.team_id);
-      self.props.setDepartment({
-        department_id: id,
-        department_name: name,
-      });
-      self.props.history.push(`/setup/company-info/users?action=${PAGE_ACTION.EDIT}`);
-    });
-  }
   getPriorities(p) {
     const { priorities } = this.props;
     const s = _.find(priorities, { id: p });
@@ -98,7 +84,7 @@ class TaskListView extends React.Component {
         key: 'id',
         render: record => (
           <span>
-            {/* <Link><Icon type="edit" onClick={() => this.edit(record.id)} /></Link> */}
+            <Link to={`/${record.taskable_type}/${record.relate_user && record.relate_user.id}/tasks/${record.id}/completed`}><Icon type="close" /></Link>
           </span>
         ),
       }, {

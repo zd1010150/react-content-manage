@@ -69,7 +69,7 @@ class LeftSection extends React.Component {
                   {activities.map(a => (<tr key={a.id} className={cx('task-tr')}>
                     <td className={cx('task-td')}>
                       <div className="clearfix">
-                        <span className="pull-left"><Link to="leads">{a.subject}</Link></span>
+                        <span className="pull-left text-bolder"><Link to={`/${a.taskable_type}/${a.relate_user && a.relate_user.id}/tasks/${a.id}`} className="text-bolder">{a.subject}</Link></span>
                         <span className="pull-right text2">
                           { this.getStatus(a.status_code) }
                         </span>

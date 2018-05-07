@@ -1,5 +1,6 @@
 import Enums from 'utils/EnumsManager';
 import { SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS, SET_ACTIVE_VIEW } from './actionTypes';
+
 const { PhantomId } = Enums;
 
 const initialState = {
@@ -16,7 +17,12 @@ const initialState = {
 const objectList = (state = initialState, action) => {
   switch (action.type) {
     case SET_DATA:
-      const { columns, data, meta, tableParams } = action.payload;
+      const {
+        columns,
+        data,
+        meta,
+        tableParams,
+      } = action.payload;
       return {
         ...state,
         columns,
@@ -26,7 +32,7 @@ const objectList = (state = initialState, action) => {
         tableParams,
       };
 
-    
+
     case SET_ROW_SELECTION:
       const { selectedRowKeys } = action.payload;
       return {

@@ -116,7 +116,7 @@ class TableWrapper extends Component {
     switch(type) {
       case DateOnly:
       case DateTime:
-        extraConfigs.render = text => toTimezone(text, '+1100', 'YYYY-MM-DD');
+        extraConfigs.render = text => toTimezone(text, type === DateTime);
         break;
       case Lookup:
         extraConfigs.dataIndex = `${column.field_name}.${column.lookup_own_field_name}`;

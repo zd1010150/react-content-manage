@@ -10,6 +10,7 @@ import {
   REMOVE_MY_SUBJECT,
   SET_TASK_SUCCESS,
   RESET_TASK,
+  SET_DEFAULT_STATE,
 } from './actionTypes';
 
 
@@ -134,10 +135,17 @@ export const setTaskFields = data => ({
   payload: { data },
 });
 
-export const tryFetchTask = (taskId, objectId, objectType) => dispatch =>
+export const tryFetchTask = (taskId, objectId, objectType, defaultStateId = '') => dispatch =>
   get(`/admin/tasks/${taskId}`, {}, dispatch).then((data) => {
     if (data && !_.isEmpty(data.data)) {
-      dispatch(setTaskFields(data.data));
+      if (defaultStateId === '') {
+        dispatch(setTaskFields(data.data));
+      } else {
+        dispatch(setTaskFields({
+          ...data.data,
+          status_code: defaultStateId,
+        }));
+      }
       // TODO: move out from this part for better performance
       dispatch(tryFetchAssignees(objectId, objectType));
       // TODO: move out from this part for better performance
@@ -152,3 +160,9 @@ export const tryFetchTask = (taskId, objectId, objectType) => dispatch =>
 export const reset = () => ({
   type: RESET_TASK,
 });
+
+
+// export const setDefaultState = defaultStateId => ({
+//   type: SET_DEFAULT_STATE,
+//   payload: { defaultStateId },
+// });

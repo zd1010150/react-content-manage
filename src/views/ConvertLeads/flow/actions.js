@@ -1,6 +1,6 @@
 /* eslint arrow-parens: ["error", "as-needed"] */
 import { get, post } from 'store/http/httpAction';
-import { SET_EMAIL, SET_SUCCESS, RESET } from './actionTypes';
+import { SET_EMAIL, SET_SUCCESS, RESET, SET_TYPES } from './actionTypes';
 import { findLead, formatPayload } from './utils';
 
 const setEmail = email => ({
@@ -37,3 +37,18 @@ export const tryConvertLead = (objectId, payload) => dispatch =>
 export const reset = () => ({
   type: RESET,
 });
+
+
+export const setTypes = types => ({
+  type: SET_TYPES,
+  payload: { types },
+});
+
+export const tryFetchTypes = () => dispatch =>
+  get('/admin/metadata/object/opportunities/name/type', {}, dispatch).then(data => {
+    if (data
+        && !_.isEmpty(data.data)
+        && !_.isEmpty(data.data.picklists)) {
+      dispatch(setTypes(data.data.picklists));
+    }
+  });

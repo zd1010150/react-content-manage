@@ -1,5 +1,21 @@
 @import "../../theme.less";
 
+.ant-btn{
+  &:hover, &:focus{
+    color: @crm-white;
+    background-color: darken(@secondary-dark-color, 20%);
+    border-color: darken(@secondary-dark-color, 20%);
+  }
+}
+.ant-btn-primary{
+  background-color: @secondary-dark-color;
+  border-color: @secondary-dark-color;
+  &:hover, &:focus{
+    color: @crm-white;
+    background-color: darken(@secondary-dark-color, 20%);
+    border-color: darken(@secondary-dark-color, 20%);
+  }
+}
 .ant-btn > .anticon + span, .ant-btn > span + .anticon{
   margin-left: 3px;
 }
@@ -13,9 +29,9 @@
   }
 }
 .ant-btn-danger:hover, .ant-btn-danger:focus{
-  color: @error-color;
-  background-color: @crm-white;
-  border-color: @error-color;
+  color: @crm-white;
+  background-color: darken(@error-color, 10%);
+  border-color: darken(@error-color, 10%);
 }
 
 .theme-btn(@theme){
@@ -25,9 +41,9 @@
   @{selector}{
     background-color: @theme-color-value;
     &:hover, &:focus{
-      color: @theme-color-value;
-      background-color: @crm-white;
-      border-color: @theme-color-value;
+      color: @crm-white;
+      background-color: darken(@theme-color-value, 10%);
+      border-color: darken(@theme-color-value, 10%);
     }
   }
 }

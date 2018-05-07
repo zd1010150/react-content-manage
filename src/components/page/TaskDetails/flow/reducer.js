@@ -11,6 +11,7 @@ import {
   SET_TASK_RECENT_ASSIGNEES,
   SET_TASK_SUBJECTS,
   RESET_TASK,
+  SET_DEFAULT_STATE,
 } from './actionTypes';
 
 const initialState = {
@@ -29,14 +30,14 @@ const initialState = {
 
 const mapResponseToStore = ({
   id,
-  assign_to_user_id,
+  assigner,
   subject,
   status_code,
   priority_code,
   due_date,
   comments,
 }) => ({
-  assigneeId: assign_to_user_id,
+  assigneeId: assigner.id,
   comments,
   dueTime: toTimezone(due_date, '+1100', 'YYYY-MM-DD'),
   id,
@@ -105,8 +106,9 @@ const taskDetails = (state = initialState, action) => {
       };
 
 
-    case SET_TASK_FIELD:
+    case SET_TASK_FIELD:      
       const { field, value } = action.payload;
+      console.log(field);
       return {
         ...state,
         [field]: value,
