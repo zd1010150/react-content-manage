@@ -122,7 +122,7 @@ export default {
       viewName: '视图名称',
     },
     errors: {
-      inputRequired: '必填项',
+      inputRequired: '必填项!',
     },
     criteria: {
       field: '字段',
