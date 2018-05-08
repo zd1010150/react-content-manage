@@ -17,7 +17,7 @@
 
     &.required:after {
       content: '*';
-      color: @crm-red;
+      color: @error-color;
       margin-left: 5px;
     }
   }
@@ -72,9 +72,10 @@
       }
     }
 
-    &.hasError {
-      border-bottom-color: @crm-red;
-    }
+    // TODO: Add error color to both hr when has error after rewrite this component
+    // &.hasError {
+    //   border-bottom-color: @error-color;
+    // }
   }
 
   button, button:hover {

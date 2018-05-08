@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
-import { Button } from 'antd';
+import { Button, Icon } from 'antd';
 
 import Enums from 'utils/EnumsManager';
 
@@ -24,7 +24,8 @@ const Buttons = ({ intl, theme, handleAddClick }) => {
       className={`ml-sm ${theme}-theme-btn`}
       onClick={handleAddClick}
     >
-      + {formatMessage({ id: `${i18nPrefix}.buttons.newFilter`})}
+      <Icon className="font-sm" type="plus" />
+      {formatMessage({ id: `${i18nPrefix}.buttons.newFilter` })}
     </Button>
   );
 };

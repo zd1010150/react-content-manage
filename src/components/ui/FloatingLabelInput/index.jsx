@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-for */
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Input } from 'antd';
 import classNames from 'classnames/bind';
+import { ErrorText } from 'components/ui/index';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -11,6 +12,7 @@ const defaultProps = {
   labelText: 'Default Label',
   withSearch: false,
   enterButton: true,
+  useOldValidation: true,
 };
 const propTypes = {
   labelText: PropTypes.string,
@@ -22,6 +24,7 @@ const propTypes = {
   handleSearch: PropTypes.func,
   handleFocus: PropTypes.func,
   enterButton: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
+  useOldValidation: PropTypes.bool,
 };
 
 class FloatingLabelInput extends Component {
@@ -110,6 +113,8 @@ class FloatingLabelInput extends Component {
       required,
       noLabel,
       enterButton,
+      useOldValidation,
+      validationMsgId,
     } = this.props;
 
     const shouldShowPlaceholder = isFocused && isEmpty;

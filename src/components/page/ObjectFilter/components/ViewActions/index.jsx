@@ -56,4 +56,7 @@ const mapDispatchToProps = {
   trySave,
   trySaveNew,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(ViewActions);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ViewActions);

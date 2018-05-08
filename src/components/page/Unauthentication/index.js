@@ -18,7 +18,7 @@ class Unauthentication extends React.Component {
     return (
       <Panel >
         <div className={cx('error-anthentication')}>
-          <h3 className={cx('error-anthentication-msg')}> <Icon type="exclamation-circle-o" /> { _.isEmpty(message) ? formatMessage({ id: 'global.error.NO_AUTHENTICATION' }) : message } </h3>
+          <h3 className={cx('error-anthentication-msg')}> <Icon type="exclamation-circle-o" /> { _.isEmpty(message) ? formatMessage({ id: 'global.errors.NO_AUTHENTICATION' }) : message } </h3>
         </div>
       </Panel>
     );
