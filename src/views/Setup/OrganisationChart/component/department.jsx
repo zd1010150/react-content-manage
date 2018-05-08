@@ -20,6 +20,7 @@ class Department extends React.Component {
     });
   }
   onExpand(expandedKeys) {
+    debugger;
     this.setState({ expandedKeys });
   }
   delete = (id) => {

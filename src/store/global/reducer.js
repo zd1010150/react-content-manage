@@ -33,9 +33,10 @@ const setTimezoneInStorage = (timezones = [], countries = []) => {
   });
 };
 
-// 页面默认语言为 en，此处只是mock
 
-const language = (state = getStore(LanguaegOfApp), action) => {
+const initLanugae = `${getStore(LanguaegOfApp)}` === 'null' || `${getStore(LanguaegOfApp)}` === 'undefined' ? navLanguage : getStore(LanguaegOfApp);
+
+const language = (state = initLanugae, action) => {
   let globalLanguage;
   switch (action.type) {
     case TOGGLE_LANGUAGE:
