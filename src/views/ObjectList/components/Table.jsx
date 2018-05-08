@@ -1,5 +1,6 @@
 import { Icon, Popconfirm, Table } from 'antd';
 import { Permission } from 'components/page/index';
+import { PopDeleteConfirm } from 'components/ui/index';
 import PERMISSIONS from 'config/app-permission.config';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -111,12 +112,13 @@ class TableWrapper extends Component {
     const configs = {
       title: column.field_label,
       dataIndex: column.field_name,
-      columnId: column.id,  // customized property, used by table sorter
+      // customized property 'columnId', used by table sorter
+      columnId: column.id,
       sorter: true,
     };
     const extraConfigs = {};
 
-    switch(type) {
+    switch (type) {
       case DateOnly:
       case DateTime:
         extraConfigs.render = text => toTimezone(text, type === DateTime);
@@ -145,7 +147,7 @@ class TableWrapper extends Component {
         break;
       default:
         throw new Error('No such type is found when set up column.');
-    };
+    }
 
     return {
       ...configs,
@@ -154,8 +156,7 @@ class TableWrapper extends Component {
   }
 
   renderColumns = (data) => {
-    const { intl, objectType } = this.props;
-    const { formatMessage } = intl;
+    const { objectType } = this.props;
     const me = this;
     const columns = data.map(column => me.renderColumnByType(column.crm_data_type, column));
     columns.unshift({
@@ -164,13 +165,12 @@ class TableWrapper extends Component {
       width: 30,
       render: (text, record) => (
         <Permission permission={PERMISSIONS[`${objectType.toUpperCase()}_DELETE`]}>
-          <Popconfirm
-            title={formatMessage({ id: `global.ui.dialog.deleteTitle` })}
-            onConfirm={$ => me.handleDeleteClick(record.id)}
+          <PopDeleteConfirm
+            onConfirm={() => me.handleDeleteClick(record.id)}
             placement="right"
           >
-            <Icon className="cursor-pointer" size="small" type='delete' />
-          </Popconfirm>
+            <Icon className="cursor-pointer" size="small" type="delete" />
+          </PopDeleteConfirm>
         </Permission>
       ),
     });
@@ -178,9 +178,13 @@ class TableWrapper extends Component {
   }
 
   render() {
-    const { intl, columns, data, meta, selectedRowKeys } = this.props;
-    const { formatMessage } = intl;
-    
+    const {
+      columns,
+      data,
+      meta,
+      selectedRowKeys,
+    } = this.props;
+
     return (
       <Table
         columns={this.renderColumns(columns)}
@@ -190,7 +194,7 @@ class TableWrapper extends Component {
         rowKey="id"
         rowSelection={{
           selectedRowKeys,
-          onChange: this.handleSelectionChange
+          onChange: this.handleSelectionChange,
         }}
         size="small"
       />
@@ -216,4 +220,7 @@ const mapDispatchToProps = {
   tryFetchDataByView,
   tryDeleteClientByType,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TableWrapper));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(injectIntl(TableWrapper));

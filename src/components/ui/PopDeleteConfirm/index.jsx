@@ -12,12 +12,14 @@ const defaultProps = {
   iconType: 'exclamation-circle',
   msgId: 'global.ui.dialog.deleteTitle',
   onConfirm: null,
+  placement: 'top',
 };
 const propTypes = {
   intl: intlShape.isRequired,
   iconType: PropTypes.string,
   msgId: PropTypes.string,
   onConfirm: PropTypes.func,
+  placement: PropTypes.string,
 };
 
 const PopDeleteConfirm = ({
@@ -26,6 +28,7 @@ const PopDeleteConfirm = ({
   iconType,
   msgId,
   onConfirm,
+  placement,
 }) => {
   const { formatMessage } = intl;
   const title = (
@@ -41,6 +44,7 @@ const PopDeleteConfirm = ({
       onConfirm={onConfirm}
       overlayClassName="popDeleteConfirm"
       okType="danger"
+      placement={placement}
     >
       {children}
     </Popconfirm>
