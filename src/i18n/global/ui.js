@@ -110,7 +110,7 @@ export default {
     dialog: {
       info: '提示',
       warning: '警告',
-      deleteTitle: '确定删除这条记录？',
+      deleteTitle: '此记录将被删除，您确定吗？',
       revertTitle: '所有修改后的值将会被重置，您确定吗？',
       massDelete: '所有选中的记录将会被删除，您确定吗？',
     },
@@ -253,7 +253,7 @@ export default {
       viewName: 'View Name',
     },
     errors: {
-      inputRequired: 'The input is required.',
+      inputRequired: 'The input is required!',
     },
     criteria: {
       field: 'Field',

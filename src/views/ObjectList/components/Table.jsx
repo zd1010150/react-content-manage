@@ -1,10 +1,9 @@
-import { Icon, Popconfirm, Table } from 'antd';
+import { Icon, Table } from 'antd';
 import { Permission } from 'components/page/index';
 import { PopDeleteConfirm } from 'components/ui/index';
 import PERMISSIONS from 'config/app-permission.config';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
@@ -17,7 +16,7 @@ import {
   tryDeleteClientByType,
 } from '../flow/actions';
 
-const { FieldTypes, DefaultPageConfigs, PhantomId } = Enums;
+const { FieldTypes, DefaultPageConfigs } = Enums;
 const {
   DateOnly,
   DateTime,
@@ -31,27 +30,20 @@ const {
 const { Options, PageSize } = DefaultPageConfigs;
 
 
-const defaultProps = {
-  activeViewId: PhantomId,
-  columns: [],
-  data: [],
-  meta: {},
-};
 const propTypes = {
-  intl: intlShape.isRequired,
   activeViewId: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]).isRequired,
   columns: PropTypes.array.isRequired,
-  data: PropTypes.array.isRequired,  
+  data: PropTypes.array.isRequired,
   meta: PropTypes.object.isRequired,
-  selectedRowKeys: PropTypes.array,
-  tableParams: PropTypes.object,
-  setRowSelection: PropTypes.func,
-  tryFetchData: PropTypes.func,
-  tryFetchDataByView: PropTypes.func,
-  tryDeleteClientByType: PropTypes.func,
+  selectedRowKeys: PropTypes.array.isRequired,
+  tableParams: PropTypes.object.isRequired,
+  setRowSelection: PropTypes.func.isRequired,
+  tryFetchData: PropTypes.func.isRequired,
+  tryFetchDataByView: PropTypes.func.isRequired,
+  tryDeleteClientByType: PropTypes.func.isRequired,
 };
 
 
@@ -62,12 +54,12 @@ class TableWrapper extends Component {
     tryFetchData(objectType, { per_page: PageSize });
   }
 
-  handleDeleteClick = id => {
+  handleDeleteClick = (id) => {
     const { objectType, tryDeleteClientByType, tableParams, meta } = this.props;
     tryDeleteClientByType(objectType, id, tableParams, meta);
   }
 
-  handleSelectionChange = selectedRowKeys => this.props.setRowSelection(selectedRowKeys)
+  handleSelectionChange = selectedKeys => this.props.setRowSelection(selectedKeys)
 
   handleTableChange = (pagination, filters, sorter) => {
     let paginationParams = {};
@@ -89,7 +81,7 @@ class TableWrapper extends Component {
     return tryFetchDataByView(objectType, activeViewId, { ...paginationParams, ...sorterParams });
   }
 
-  parsePagination = meta => {
+  parsePagination = (meta) => {
     const { pagination } = meta;
     let extraParams = {};
     if (!_.isEmpty(pagination)) {
@@ -203,7 +195,6 @@ class TableWrapper extends Component {
 }
 
 
-TableWrapper.defaultProps = defaultProps;
 TableWrapper.propTypes = propTypes;
 const mapStateToProps = ({ global, objectList }) => ({
   language: global.language,
@@ -223,4 +214,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(injectIntl(TableWrapper));
+)(TableWrapper);

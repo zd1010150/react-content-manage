@@ -14,6 +14,12 @@
     pointer-events: none;
     user-select: none;
     color: rgba(0, 0, 0, 0.3);
+
+    &.required:after {
+      content: '*';
+      color: @crm-red;
+      margin-left: 5px;
+    }
   }
 
   label.toTop {
@@ -64,6 +70,10 @@
       &.highlighted {
         transform: scaleX(1);
       }
+    }
+
+    &.hasError {
+      border-bottom-color: @crm-red;
     }
   }
 
