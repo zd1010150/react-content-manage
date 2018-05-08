@@ -113,6 +113,7 @@ export default {
       deleteTitle: '此记录将被删除，您确定吗？',
       revertTitle: '所有修改后的值将会被重置，您确定吗？',
       massDelete: '所有选中的记录将会被删除，您确定吗？',
+      multipleDnd: '按住Shift键并点击记录，可同时选择多条数据进行拖拽。',
     },
     tree: {
       default: '默认部门',
@@ -245,6 +246,7 @@ export default {
       deleteTitle: 'Are you sure to delete this record?',
       revertTitle: 'Are you sure to revert all values?',
       massDelete: 'Are you sure to delete all selected records?',
+      multipleDnd: 'Drag and drop is enabled. Press shift and click on an item can select multiple items.',
     },
     tree: {
       default: 'No Department',

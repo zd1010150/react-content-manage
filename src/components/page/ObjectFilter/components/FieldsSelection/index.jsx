@@ -1,8 +1,8 @@
-import { Button, Col, Icon, Row } from 'antd';
+import { Button, Col, Icon, Row, Tooltip } from 'antd';
 import classNames from 'classnames/bind';
 import { CardContainer } from 'components/ui/index';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import styles from '../index.less';
@@ -43,6 +43,15 @@ class FieldsSelection extends Component {
     const { formatMessage } = intl;
     const i18n = 'page.objectFilter.selectors.sectionTitles';
     
+    const cardTitle = (
+      <Fragment>
+        {formatMessage({ id: `${i18n}.selected` })}
+        <Tooltip title={formatMessage({ id: 'global.ui.dialog.multipleDnd' })}>
+          <Icon className="font-sm ml-sm" type="info-circle-o" />
+        </Tooltip>
+      </Fragment>
+    );
+
     return (
       <Row>
         <Col {...colLayout}>
@@ -66,7 +75,7 @@ class FieldsSelection extends Component {
         </Col>
         <Col {...colLayout}>
           <CardContainer
-            title={formatMessage({ id: `${i18n}.selected` })}
+            title={cardTitle}
             data={selectedFields}
             theme={theme}
             onSelect={this.onSelectIds}
