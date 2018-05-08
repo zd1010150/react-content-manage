@@ -98,7 +98,7 @@ class MassUpdateModal extends Component {
 
   render() {
     const { fieldId, fieldName, lookupDisplayKey, type, value } = this.state;
-    const { intl, visible, columns, selectedFieldOptions } = this.props;
+    const { intl, visible, columns, selectedFieldOptions, theme } = this.props;
     const { formatMessage } = intl;
 
     // System auto-generate field should not be available to mass update
@@ -110,6 +110,7 @@ class MassUpdateModal extends Component {
         onOk={this._onOk}
         onCancel={this._onCancel}
         okDisabled={fieldId === PhantomId}
+        theme={theme}
       >
         <Row className="mb-md">
           <Col

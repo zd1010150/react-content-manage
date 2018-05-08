@@ -85,6 +85,7 @@ class Toolbar extends Component {
             visible={visible}
             onOk={this.handleMassUpdate}
             onCancel={this.handleModalClose}
+            theme={theme}
           />
           <Permission permission={PERMISSIONS[`${objectType.toUpperCase()}_MASSDELETE`]}>
             <PopDeleteConfirm
