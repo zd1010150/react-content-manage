@@ -41,6 +41,12 @@ class EmailTemplateEditFolder extends React.Component {
         });
     }
 
+    setTempId = () => {
+        this.setState(prevState => {
+            prevState.tempId -= 1;
+        });
+    }
+
     setSelectedCards = (index) => {
         const {cards} = this.state;
         const selectedCards = cards.map((card, i) => {
@@ -155,6 +161,8 @@ class EmailTemplateEditFolder extends React.Component {
                         setDragging={this.setDragging}
                         handleItemSelection={this.handleItemSelection}
                         saveEditFolder={this.saveEditFolder}
+                        tempId={this.state.tempId}
+                        setTempId={this.setTempId}
                         {...others}/>
         );
     }
