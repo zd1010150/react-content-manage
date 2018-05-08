@@ -1,8 +1,21 @@
 import _ from 'lodash';
 import { get, post } from 'store/http/httpAction';
-import { RESET_USER, SET_ACCOUNTINFO, SET_GLOBAL_SETTING, SET_LOGO, SET_PAGETITLE,SET_USERS_GLOBAL, SET_PERMISSION, SET_TEAMS_GLOBAL, TOGGLE_LANGUAGE } from './actionType';
+import { RESET_USER,
+  SET_ACCOUNTINFO,
+  SET_GLOBAL_SETTING,
+  SET_LOGO,
+  SET_PAGETITLE,
+  SET_USERS_GLOBAL,
+  SET_PERMISSION,
+  SET_TEAMS_GLOBAL,
+  TOGGLE_LANGUAGE,
+  SET_APP_ROUTER_HASH,
+} from './actionType';
 
-
+export const setRouterHash = hash => ({
+  type: SET_APP_ROUTER_HASH,
+  hash,
+});
 export const toggleLanguage = language => ({
   type: TOGGLE_LANGUAGE,
   language,
@@ -60,22 +73,22 @@ export const setUsers = users => ({
   users,
 });
 
-export const tryFetchAllUsersIfNeeded = () => (dispatch, getState) => {
+export const tryFetchAllUsersIfNeeded = () => (dispatch, getState) =>
   // TODO: check current state of users substore to avoid unnecessary fetch
-  return get('/admin/users/all').then((data) => {
+  get('/admin/users/all').then((data) => {
     if (data && data.data) {
       dispatch(setUsers(data.data));
     }
-  });
-};
+  })
+;
 
 
 //
-export const tryFetchAllTeamsIfNeeded = () => (dispatch, getState) => {
+export const tryFetchAllTeamsIfNeeded = () => (dispatch, getState) =>
   // TODO: check current state of teams substore to avoid unnecessary fetch
-  return get('/admin/teams/struct/info').then((data) => {
+  get('/admin/teams/struct/info').then((data) => {
     if (data && data.teams) {
       dispatch(setTeams(data.teams));
     }
   });
-};
+

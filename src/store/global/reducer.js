@@ -3,17 +3,26 @@ import { combineReducers } from 'redux';
 import { flattenTree } from 'utils/common';
 import { moments, years } from 'utils/dateTimeUtils';
 import { navLanguage } from 'utils/navigationUtil';
-import { SET_ACCOUNTINFO, SET_GLOBAL_SETTING, SET_LOGO, SET_PAGETITLE, SET_PERMISSION, SET_TEAMS_GLOBAL, SET_USERS_GLOBAL, TOGGLE_LANGUAGE } from './actionType';
+import { SET_ACCOUNTINFO,
+  SET_GLOBAL_SETTING,
+  SET_LOGO,
+  SET_PAGETITLE,
+  SET_PERMISSION,
+  SET_TEAMS_GLOBAL,
+  SET_USERS_GLOBAL,
+  TOGGLE_LANGUAGE,
+  SET_APP_ROUTER_HASH,
+} from './actionType';
 import Enums from 'utils/EnumsManager';
 import { getStore, setStore } from 'utils/localStorage';
 
 const { LocalStorageKeys } = Enums;
-const { User, Timezone } = LocalStorageKeys;
+const { User, Timezone, LanguaegOfApp } = LocalStorageKeys;
 
 
 const setTimezoneInStorage = (timezones = [], countries = []) => {
   const user = getStore(User);
-  const parsedUser = JSON.parse(user);  
+  const parsedUser = JSON.parse(user);
   const timezone = timezones.find(tz => tz.id === parsedUser.time_zone);
   // TODO: when backend finishes, the time format should be get from country by loginuser country
   const country = countries.find(cty => cty.id === parsedUser.country);
@@ -26,7 +35,7 @@ const setTimezoneInStorage = (timezones = [], countries = []) => {
 
 // 页面默认语言为 en，此处只是mock
 
-const language = (state = navLanguage, action) => {
+const language = (state = getStore(LanguaegOfApp), action) => {
   let globalLanguage;
   switch (action.type) {
     case TOGGLE_LANGUAGE:
@@ -37,6 +46,7 @@ const language = (state = navLanguage, action) => {
       break;
   }
   window.globalLanguage = globalLanguage;
+  setStore(LanguaegOfApp, globalLanguage);
   return globalLanguage;
 };
 // 权限需要从后端接口获取
@@ -129,6 +139,14 @@ const companyLogo = (state = '', action) => {
   }
 };
 
+const appRoutHash = (state = Math.random(), action) => {
+  switch (action.type) {
+    case SET_APP_ROUTER_HASH:
+      return action.hash;
+    default:
+      return state;
+  }
+};
 
 const rootReducer = combineReducers({
   language,
@@ -137,5 +155,6 @@ const rootReducer = combineReducers({
   pageTitle,
   settings,
   companyLogo,
+  appRoutHash,
 });
 export default rootReducer;

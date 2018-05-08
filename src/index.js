@@ -26,11 +26,6 @@ window.__store__ = store;
 
 ErrorNotification(store);
 
-window.addEventListener('beforeunload', () => {
-  // syncStateAndLocalStorage(store.getState().global);
-  // removeMangentoLanguageCookie();
-});
-
 const AppView = () => (
   <Provider store={store}>
     <I18n>

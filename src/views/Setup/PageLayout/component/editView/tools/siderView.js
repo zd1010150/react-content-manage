@@ -12,11 +12,12 @@ class toolSiderView extends React.Component {
     const {
       selectedTools,
       deleteTool,
-        theme,
+      theme,
+      objectType,
     } = this.props;
     return (
       <SideViewWrapper deleteTool={deleteTool} theme={theme}>
-        { Object.keys(Enums.DetailTools).map(m => (<SingleOption
+        { Object.keys(Enums.DetailToolsByObjectType[objectType]).map(m => (<SingleOption
           key={m}
           code={m}
           isLayoutRequired={false}

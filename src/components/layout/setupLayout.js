@@ -11,9 +11,9 @@ import styles from './layout.less';
 const cx = classNames.bind(styles);
 
 
-const SetupLayout = ({ rightSiderCollapsed, rightSiderWidth }) => (
+const SetupLayout = ({ rightSiderCollapsed, rightSiderWidth, appRoutHash }) => (
 
-  <div className={cx('content-wrapper')}>
+  <div className={cx('content-wrapper')} key={appRoutHash}>
     <SetupSider />
     <div
       className={cx('setup-content-layout-wrapper')}
@@ -31,11 +31,12 @@ SetupLayout.propTypes = {
   rightSiderCollapsed: PropTypes.bool.isRequired,
   rightSiderWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
-const mapStateToProps = ({ ui }) => {
+const mapStateToProps = ({ ui, global }) => {
   const { rightSider } = ui;
   return {
     rightSiderCollapsed: rightSider.collapsed,
     rightSiderWidth: rightSider.width,
+    appRoutHash: global.appRoutHash,
   };
 };
 export default connect(mapStateToProps)(SetupLayout);
