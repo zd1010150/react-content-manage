@@ -112,6 +112,7 @@ export default {
       warning: '警告',
       deleteTitle: '确定删除这条记录？',
       revertTitle: '所有修改后的值将会被重置，您确定吗？',
+      massDelete: '所有选中的记录将会被删除，您确定吗？',
     },
     tree: {
       default: '默认部门',
@@ -241,8 +242,9 @@ export default {
     dialog: {
       info: 'Info',
       warning: 'Warning',
-      deleteTitle: 'Are you sure to delete this record ?',
-      revertTitle: 'Are you sure to revert all values ?',
+      deleteTitle: 'Are you sure to delete this record?',
+      revertTitle: 'Are you sure to revert all values?',
+      massDelete: 'Are you sure to delete all selected records?',
     },
     tree: {
       default: 'No Department',

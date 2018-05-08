@@ -1,5 +1,6 @@
-import { Button, Col, Icon, Popconfirm, Row } from 'antd';
+import { Button, Col, Icon, Row } from 'antd';
 import { Permission } from 'components/page/index';
+import { PopDeleteConfirm } from 'components/ui/index';
 import PERMISSIONS from 'config/app-permission.config';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -86,11 +87,9 @@ class Toolbar extends Component {
             onCancel={this.handleModalClose}
           />
           <Permission permission={PERMISSIONS[`${objectType.toUpperCase()}_MASSDELETE`]}>
-            <Popconfirm
-              title={formatMessage({ id: 'global.ui.dialog.deleteTitle' })}
+            <PopDeleteConfirm
+              msgId="global.ui.dialog.massDelete"
               onConfirm={this.handleMassDelete}
-              okText={formatMessage({ id: `${i18n}.ok` })}
-              cancelText={formatMessage({ id: `${i18n}.cancel` })}
             >
               <Button
                 {...btnConfigs}
@@ -99,7 +98,7 @@ class Toolbar extends Component {
                 <Icon size="small" type="delete" {...iconConfig} />
                 {formatMessage({ id: `${i18n}.massDelete` })}
               </Button>
-            </Popconfirm>
+            </PopDeleteConfirm>
           </Permission>
           <span className={`${theme}-theme-text ml-lg`}>
             {selectedRowKeys.length} {formatMessage({ id: 'global.ui.table.selectedItems' })}
