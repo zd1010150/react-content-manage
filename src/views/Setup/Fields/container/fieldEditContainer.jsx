@@ -79,6 +79,7 @@ class FieldEditContainer extends React.Component {
       options: addedField.picklist.filter(v => v.id !== val.id),
       replacedValId: val.id,
       isVisible: true,
+      replacedValName: val.option_value,
     });
   }
   activeDeactivedVal(val) {

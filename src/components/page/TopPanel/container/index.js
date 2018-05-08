@@ -52,7 +52,7 @@ class topPanel extends React.Component {
         </Permission>
         <Input.Search
           onSearch={this.onSearch}
-          className={classNames('input-material-theme bright')}
+          className={classNames('input-material-theme bright', cx('top-search-input'))}
           placeholder="search"
           style={{ width: 200, marginTop: 7, float: 'right' }}
           enterButton

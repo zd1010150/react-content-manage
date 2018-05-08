@@ -42,7 +42,7 @@ class DepartmentDialog extends React.Component {
           <TeamTree
             onSelect={(selectedKeys, treeData) => this.selectDepartment(false, selectedKeys, treeData)}
             teams={teams}
-            expandedKeys={this.state.expandedKeys || teamIds}
+            expandedKeys={this.state.expandedKeys || teamIds || []}
             onExpand={expandedKeys => this.onExpand(expandedKeys)}
             defaultExpandAll
             autoExpandParent={false}
@@ -64,7 +64,7 @@ DepartmentDialog.propTypes = {
   setDepartment: PropTypes.func,
   teams: PropTypes.array.isRequired,
   noDepartment: PropTypes.bool,
-  teamIds: PropTypes.array.isRequired,
+  teamIds: PropTypes.array,
 };
 
 export default injectIntl(DepartmentDialog);

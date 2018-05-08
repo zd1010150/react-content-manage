@@ -9,14 +9,16 @@ import SideViewWrapper from './siderViewWrapper';
 
 class moduleSiderView extends React.Component {
   render() {
+    // noinspection JSAnnotator
     const {
       selectedModules,
       deleteModule,
       theme,
+      objectType,
     } = this.props;
     return (
       <SideViewWrapper deleteModule={deleteModule} theme={theme}>
-        { Object.keys(Enums.DetailModules).map(m => (<SingleOption
+        { Object.keys(Enums.DetailModulesByObjectType[objectType]).map(m => (<SingleOption
           key={m}
           code={m}
           isLayoutRequired={false}

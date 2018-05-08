@@ -23,7 +23,10 @@ const propTypes = {
   intl: intlShape.isRequired,
   displayNum: PropTypes.number.isRequired,
   condition: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   type: PropTypes.oneOf([
     ...Enums.FieldTypesInArray,
     '', // TODO: not best practice

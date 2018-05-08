@@ -157,9 +157,9 @@ class EditContainer extends React.Component {
       const getSiderView = () => {
         switch (currentTab) {
           case MODULES:
-            return <ModuleViewSider theme={theme} />;
+            return <ModuleViewSider theme={theme} objectType={objectType} />;
           case TOOLS:
-            return <ToolViewSider theme={theme} />;
+            return <ToolViewSider theme={theme} objectType={objectType} />;
           case SECTIONS:
             return <SectionViewSider theme={theme} />;
           case PREVIEW:

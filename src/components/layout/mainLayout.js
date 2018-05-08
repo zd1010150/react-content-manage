@@ -82,6 +82,4 @@ const mapDispatchToProp = {
   fetchGlobalSetting,
   fetchAccountPermission,
 };
-
-
 export default connect(mapStateToProps, mapDispatchToProp)(MainLayout);

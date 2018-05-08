@@ -28,7 +28,7 @@ import {
   Users,
   GlobalSearch,
   ObjectShare,
-    Task,
+  Task,
   ClientDetails,
 } from 'views/index';
 import Enums from 'utils/EnumsManager';
@@ -36,12 +36,13 @@ import Enums from 'utils/EnumsManager';
 const { ObjectTypes, PhantomId } = Enums;
 const { Leads, Accounts, Opportunities } = ObjectTypes;
 
+
 const MainContent = () => (
   <Switch>
     <Route path="/setup/company-info/ui-demo" component={UIDemo} />
     <Route path="/setup/company-info/company-info" component={CompanyInfo} />
     <Route path="/setup/company-info/users" component={Users} />
-    <Route path="/setup/company-info/chart" component={OrganisationChart} />
+    <Route path="/setup/company-info/chart" component={OrganisationChart}/>
     <Route path="/setup/company-info/permissions" component={PermissionProfile} />
     <Route path="/setup/:objectType/fields" component={Fields} />
     <Route path="/setup/:objectType/pageLayout" component={Layouts} />
@@ -180,7 +181,6 @@ const MainContent = () => (
         const { objectType } = match.params;
         if ([Leads, Accounts, Opportunities].indexOf(objectType) !== -1) {
           const viewCode = PERMISSIONS[`${objectType.toUpperCase()}_VIEW`];
-          console.log(viewCode);
           return (
             <Permission permission={viewCode} errorComponent={<Unauthentication />}>
               <ObjectList key={objectType} {...props} objectType={objectType} />
