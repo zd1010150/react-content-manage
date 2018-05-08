@@ -218,10 +218,13 @@ class TemplateInformation extends React.Component {
                         formatMessage={formatMessage}/>
                     <FieldInfo selectedLabel={this.state.selectedLabel}
                                selectedValue={this.state.selectedValue}
+                               selectedField={this.state.selectedField}
                                selectLabel={this.selectLabel}
                                selectValue={this.selectValue}
+                               selectField={this.selectField}
                                template={editTemplate}
-                               fieldOption={fieldOption} formatMessage={formatMessage}/>
+                               fieldOption={fieldOption}
+                               formatMessage={formatMessage}/>
                     <TemplateContent registerGetContentHook={registerGetContentHook}
                                      setTemplateContent={setEditTemplateContent}
                                      content={editTemplate.content}
