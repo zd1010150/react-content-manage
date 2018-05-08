@@ -18,8 +18,6 @@ const loginUser = (state = initialState, action) => {
       const { userData } = action.payload;
       setStore(User, userData);
       return userData;
-
-
     case MY_SETTING_SET_AVATOR:
       user = Object.assign({}, state, { avatar: action.avatar });
       setStore(User, JSON.stringify(user));

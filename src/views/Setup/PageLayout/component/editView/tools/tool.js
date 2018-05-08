@@ -13,7 +13,6 @@ const cx = classNames.bind(styles);
 
 const spec = {
   beginDrag(props) {
-    console.log("dandan---- tool begin drag:", props.code);
     return {
       code: props.code,
       sourceCode: props.code,
@@ -35,7 +34,7 @@ class Tool extends React.Component {
   }
   render() {
     const {
-      connectDragSource, isDragging, intl, code, theme,
+      connectDragSource, isDragging, intl, code,
     } = this.props;
     const { formatMessage } = intl;
     return connectDragSource(<div>

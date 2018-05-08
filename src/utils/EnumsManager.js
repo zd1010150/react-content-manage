@@ -45,6 +45,7 @@ const BaseEnums = Object.freeze({
     Logs: 'Logs',
   }),
 
+
 });
 
 const EnumsManager = Object.freeze({
@@ -56,8 +57,9 @@ const EnumsManager = Object.freeze({
     User: 'crmLoginUser',
     Email: 'crmEmails',
     Timezone: 'crmTimezone',
+    LanguaegOfApp: 'crmAppLanguage',
   }),
-  
+
   PhantomId: '0000-0000',
 
   DefaultPageConfigs: Object.freeze({
@@ -147,10 +149,47 @@ const EnumsManager = Object.freeze({
   AntdGridMax: 24,
 
   DetailTools: BaseEnums.DetailTools,
+  DetailToolsByObjectType: {
+    [BaseEnums.ObjectTypes.Leads]: {
+      ...BaseEnums.DetailTools,
+    },
+    [BaseEnums.ObjectTypes.Accounts]: {
+      Delete: 'Delete',
+      Sharing: 'Sharing',
+    },
+    [BaseEnums.ObjectTypes.Opportunities]: {
+      Delete: 'Delete',
+      Sharing: 'Sharing',
+    },
+  },
 
   DetailToolsInArray: Object.freeze(_.values(BaseEnums.DetailTools)),
 
   DetailModules: BaseEnums.DetailModules,
+  DetailModulesByObjectType: {
+    [BaseEnums.ObjectTypes.Leads]: {
+      TaskOpen: 'TaskOpen',
+      TaskHistory: 'TaskHistory',
+      EmailSent: 'EmailSent',
+      Attachments: 'Attachments',
+      Logs: 'Logs',
+    },
+    [BaseEnums.ObjectTypes.Accounts]: {
+      Opportunities: 'Opportunities',
+      TaskOpen: 'TaskOpen',
+      TaskHistory: 'TaskHistory',
+      EmailSent: 'EmailSent',
+      Attachments: 'Attachments',
+      Logs: 'Logs',
+    },
+    [BaseEnums.ObjectTypes.Opportunities]: {
+      TaskOpen: 'TaskOpen',
+      TaskHistory: 'TaskHistory',
+      EmailSent: 'EmailSent',
+      Attachments: 'Attachments',
+      Logs: 'Logs',
+    },
+  },
 
   DetailModulesInArray: Object.freeze(_.values(BaseEnums.DetailModules)),
 
