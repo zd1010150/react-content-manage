@@ -25,7 +25,7 @@ const ConditionLogic = ({ intl, hasError, ...others }) => {
         labelColor="#4e4e4e"
         {...others}
       />
-      {hasError && <ErrorText intlId="global.errors.missFilter" />}
+      {hasError && <ErrorText intlId="global.errors.filterNumRequired" />}
     </Fragment>
   );
 };
