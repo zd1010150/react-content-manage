@@ -8,6 +8,7 @@ import { setViewName } from './flow/actions';
 
 const propTypes = {
   intl: intlShape.isRequired,
+  viewName: PropTypes.string.isRequired,
   setViewName: PropTypes.func.isRequired,
 };
 
@@ -43,4 +44,7 @@ const mapStateToProps = ({ global, objectView }) => ({
 const mapDispatchToProps = {
   setViewName,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ViewName));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(injectIntl(ViewName));

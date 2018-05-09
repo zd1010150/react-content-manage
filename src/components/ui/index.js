@@ -29,6 +29,9 @@ import FilterField from "./FilterField/index";
 import FilterResultsTable from "./FilterResultsTable/index";
 import RadioField from "./RadioField/index";
 import CKEditor from "./RichEditor/ckEditor";
+import PopDeleteConfirm from './PopDeleteConfirm/index';
+import ErrorText from './ErrorText/index';
+
 
 export {
   Upload,
@@ -63,5 +66,7 @@ export {
   FilterField,
   FilterResultsTable,
   RadioField,
-  CKEditor
+  CKEditor,
+  PopDeleteConfirm,
+  ErrorText,
 };

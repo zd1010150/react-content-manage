@@ -1,21 +1,22 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Row, Col, Select, Checkbox, Button, Icon } from 'antd';
-const Option = Select.Option;
-const CheckboxGroup = Checkbox.Group;
+/* eslint-disable no-underscore-dangle */
+import { Button, Checkbox, Col, Icon, Row, Select } from 'antd';
 import classNames from 'classnames/bind';
-import styles from './index.less';
-const cx = classNames.bind(styles);
-
+import { RightSider } from 'components/page/index';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
 import Enums from 'utils/EnumsManager';
 import { Buttons, ConditionLogic, Filters } from './components/index';
-import { RightSider } from 'components/page/index';
+import styles from './index.less';
+
+const { Option } = Select;
+const CheckboxGroup = Checkbox.Group;
+const cx = classNames.bind(styles);
+
 
 const ClientTypes = [
   Enums.ObjectTypes.Leads,
   Enums.ObjectTypes.Accounts,
-  Enums.ObjectTypes.Opportunities,  
+  Enums.ObjectTypes.Opportunities,
 ];
 
 const defaultProps = {
@@ -143,12 +144,14 @@ class FilterCriteria extends Component {
     
     return (
       <Fragment>
-        {enableTopSelection && <Row>
-          <div>From</div>
-          <Select size="small" style={{ width: '100%', marginBottom: 30 }} onChange={this._onUserTypeChange}>
-            {ClientTypes.map(type => <Option key={type} value={type}>{type}</Option>)}
-          </Select>
-        </Row>}
+        {enableTopSelection && (
+          <Row>
+            <div>From</div>
+            <Select size="small" style={{ width: '100%', marginBottom: 30 }} onChange={this._onUserTypeChange}>
+              {ClientTypes.map(type => <Option key={type} value={type}>{type}</Option>)}
+            </Select>
+          </Row>
+        )}
         <Row>
           <Filters
             filters={filters}
@@ -165,14 +168,23 @@ class FilterCriteria extends Component {
           <Buttons theme={theme} handleAddClick={this._handleAddNewClick} />
         </Row>
         <Row>
-          <ConditionLogic value={logicText} handleChange={this._handleLogicChange} />
+          <ConditionLogic
+            value={logicText}
+            handleChange={this._handleLogicChange}
+            hasError={logicText === '' && filters.length > 0}
+          />
         </Row>
-        {enableCheckbox && <Row>
-          <Checkbox
-            style={{ marginTop: 30 }}
-            className={`${theme}-theme-checkbox`}
-            onChange={this._handleCheckboxChange}>Opt-out Unsubscribers</Checkbox>
-        </Row>}
+        {enableCheckbox && (
+          <Row>
+            <Checkbox
+              style={{ marginTop: 30 }}
+              className={`${theme}-theme-checkbox`}
+              onChange={this._handleCheckboxChange}
+            >
+              Opt-out Unsubscribers
+            </Checkbox>
+          </Row>
+        )}
         <RightSider collapsed={collapsed}>
           <CheckboxGroup
             value={siderSelection.map(select => select.id)}

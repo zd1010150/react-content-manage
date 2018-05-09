@@ -21,6 +21,8 @@ import convertLeads from 'views/ConvertLeads/i18n';
 import primaryDetails from 'components/page/PrimaryDetails/i18n';
 import dashboard from 'views/Dashboard/i18n';
 import task from 'views/Task/i18n';
+import objectList from 'views/ObjectList/i18n';
+
 
 export default {
   comInfo,
@@ -46,4 +48,5 @@ export default {
   primaryDetails,
   dashboard,
   task,
+  objectList,
 };

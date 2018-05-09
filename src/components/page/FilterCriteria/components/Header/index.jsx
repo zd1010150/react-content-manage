@@ -1,17 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl, intlShape } from 'react-intl';
-import { Row, Col, Icon, Tooltip } from 'antd';
+import { Col, Icon, Row, Tooltip } from 'antd';
 import classNames from 'classnames/bind';
+import React from 'react';
+import { injectIntl, intlShape } from 'react-intl';
 import styles from './index.less';
+
 const cx = classNames.bind(styles);
 
 const colLayout = {
   xs: 24,
   sm: 7,
   push: 1,
-}
-const criteriaColumns = [ 'field', 'condition', 'value' ];
+};
+const criteriaColumns = ['field', 'condition', 'value'];
 
 const propTypes = {
   intl: intlShape.isRequired,
@@ -23,7 +23,11 @@ const Header = ({ intl }) => {
   return (
     <Row gutter={16}>
       {criteriaColumns.map((col, i) => (
-        <Col key={i} {...colLayout}>
+        <Col
+          key={i}
+          className={col === 'value' ? '' : 'required'}
+          {...colLayout}
+        >
           {formatMessage({ id: `${i18nPrefix}.columns.${col}` })}
           {col === 'value' && (
             <Tooltip placement="right" title={formatMessage({ id: `${i18nPrefix}.columns.tip` })}>
