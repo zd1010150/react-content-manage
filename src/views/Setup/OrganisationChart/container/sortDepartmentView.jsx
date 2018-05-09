@@ -16,10 +16,10 @@ class SortView extends React.Component {
     } = this.props;
     const { formatMessage } = this.props.intl;
     return (
-      <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_ORGANISATIONALCHART_ADD} errorComponent={<Unauthentication />}>
+      <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_ORGANISATIONALCHART_UPDATE} errorComponent={<Unauthentication />}>
         <Panel panelTitle="Organisational Chart" contentClasses="pl-lg pr-lg pt-lg pb-lg">
           <Row>
-            <Col className="gutter-row field-label" span={24}>
+            <Col className="gutter-row field-label pb-md" span={24}>
               <TeamTree draggable teams={sortingTeams} setTeams={setSortingTeam} />
             </Col>
             <Col className="gutter-row field-value" span={24}>
