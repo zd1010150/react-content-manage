@@ -7,6 +7,7 @@ export default {
     nameRequired: '请输入名称！',
     fieldOrConditionRequired: '每个筛选条件的字段和条件均为必填项！',
     selectionRequired: '请选择至少一个字段用于显示！',
+    oneFieldRequired: '至少有一个必填项缺少值！',
   },
   en: {
     NO_AUTHENTICATION: 'No authentication to access this page!',
@@ -16,5 +17,6 @@ export default {
     nameRequired: 'The name field is required!',
     fieldOrConditionRequired: '"Field" and "Condition" are required for every filter criterion! Please select a value for them',
     selectionRequired: 'Please select at least one field for display purpose!',
+    oneFieldRequired: 'At least one required field is missing value!',
   },
 };

@@ -113,11 +113,11 @@ class FindPanel extends Component {
               size="small"
               onClick={this.handleSearchClick}
             >
-              <Icon size="small" type="search" />
+              <Icon className="font-sm" type="search" />
               {formatMessage({ id: `${i18n}.button.search` })}
             </Button>
             <Button size="small" onClick={this.handleCancelClick}>
-              <Icon size="small" type="close" />
+              <Icon className="font-sm" type="close" />
               {formatMessage({ id: `${i18n}.button.cancel` })}
             </Button>
           </Col>
