@@ -162,7 +162,8 @@ class TemplateInformation extends React.Component {
             isNewTemplateRouter,
             save,
             cancel,
-            fieldOption
+            fieldOption,
+            onFileUpload
         } = this.props;
 
         return (
@@ -197,6 +198,8 @@ class TemplateInformation extends React.Component {
                                      setTemplateContent={setNewTemplateContent}
                                      content={newTemplate.content}
                                      selectedValue={this.state.selectedValue}
+                                     attachments={[]}
+                                     onFileUpload={onFileUpload}
                     />
                 </Fragment>
                 }
@@ -228,7 +231,9 @@ class TemplateInformation extends React.Component {
                     <TemplateContent registerGetContentHook={registerGetContentHook}
                                      setTemplateContent={setEditTemplateContent}
                                      content={editTemplate.content}
+                                     attachments={editTemplate.attachments}
                                      selectedValue={this.state.selectedValue}
+                                     onFileUpload={onFileUpload}
                     />
                 </Fragment>
                 }

@@ -78,15 +78,15 @@ export const getUserFolderData = (userId, callback) => (dispatch, getState) =>
 export const setSelectedFolderData = selectedFolder => (dispatch, getState) => {
   dispatch(setSelectedFolder(selectedFolder));
 
-  const sharedToTeams = selectedFolder.shared_to_teams.map(item => ({
+  const sharedToTeams = selectedFolder.shared_to_teams ? selectedFolder.shared_to_teams.map(item => ({
     id: item.id,
     name: item.name
-  }));
-  const shardToUsers = selectedFolder.shared_to_users.map(item => ({
+  })) : [];
+  const shardToUsers = selectedFolder.shared_to_users ? selectedFolder.shared_to_users.map(item => ({
     id: item.id,
     name: item.name,
     team_id: true
-  }));
+  })) : [];
   dispatch(setPermissionTeams(sharedToTeams));
   dispatch(setPermissionUsers(shardToUsers));
 };
@@ -150,11 +150,12 @@ export const createTemplateData = ({
   content,
   description,
   category,
+  attachments,
   cb
 }) => (dispatch, getState) => {
   post(
     `/admin/email_templates/email_folders/${folderId}`,
-    { name, api_name: apiName, content, description, category },
+    { name, api_name: apiName, content, description, category, attachments },
     dispatch
   ).then(data => {
     if (!_.isEmpty(data)) {
@@ -217,6 +218,7 @@ export const updateTemplateData = ({
   content,
   description,
   category,
+  attachments,
   cb
 }) => (dispatch, getState) => {
   patch(
@@ -227,7 +229,8 @@ export const updateTemplateData = ({
       content,
       folder_id: folderId,
       description,
-      category
+      category,
+      attachments
     },
     dispatch
   ).then(data => {

@@ -8,6 +8,12 @@ import TemplateInformation from './templateInformation';
 import {withRouter} from 'react-router';
 
 class EmailTemplatesCreation extends React.Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            attachments: []
+        }
+    }
     componentDidMount() {
 
     }
@@ -20,6 +26,16 @@ class EmailTemplatesCreation extends React.Component {
 
     isNewTemplateRouter = () => {
         return this.props.location.pathname === '/setup/email/templates-creation'
+    }
+
+    onFileUpload = (response, error) => {
+        console.log('111', response, error)
+        if (_.isEmpty(error)) {
+            const files = response.map((r)=>{
+                return r.data.id
+            })
+            this.setState({attachments: files})
+        }
     }
 
     save = () => {
@@ -41,6 +57,7 @@ class EmailTemplatesCreation extends React.Component {
                 content: htmlContent,
                 description: newTemplate.description,
                 category: newTemplate.category,
+                attachments: this.state.attachments,
                 cb: ()=> history.push('/setup/email/templates')
             })
         }else{
@@ -52,6 +69,7 @@ class EmailTemplatesCreation extends React.Component {
                 content: htmlContent,
                 description: editTemplate.description,
                 category: editTemplate.category,
+                attachments: this.state.attachments,
                 cb: ()=> history.push('/setup/email/templates')
 
             })
@@ -65,7 +83,7 @@ class EmailTemplatesCreation extends React.Component {
     render() {
         return (
             <Fragment>
-                <TemplateInformation isNewTemplateRouter={this.isNewTemplateRouter} save={this.save} cancel={this.cancel} registerGetContentHook={this.registerGetContentHook}/>
+                <TemplateInformation onFileUpload={this.onFileUpload} isNewTemplateRouter={this.isNewTemplateRouter} save={this.save} cancel={this.cancel} registerGetContentHook={this.registerGetContentHook}/>
             </Fragment>
 
         );
