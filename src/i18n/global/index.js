@@ -5,7 +5,7 @@ import pageTitle from './pageTitle';
 import language from './language';
 import form from './form';
 import properNouns from './properNouns';
-import error from './error';
+import errors from './errors';
 import crm from './crm';
 import sider from './sider';
 import info from './info';
@@ -16,7 +16,7 @@ export default{
   language,
   form,
   properNouns,
-  error,
+  errors,
   crm,
   sider,
   info,

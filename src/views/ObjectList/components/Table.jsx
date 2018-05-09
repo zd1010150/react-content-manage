@@ -1,9 +1,9 @@
-import { Icon, Popconfirm, Table } from 'antd';
+import { Icon, Table } from 'antd';
 import { Permission } from 'components/page/index';
+import { PopDeleteConfirm } from 'components/ui/index';
 import PERMISSIONS from 'config/app-permission.config';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
@@ -16,7 +16,7 @@ import {
   tryDeleteClientByType,
 } from '../flow/actions';
 
-const { FieldTypes, DefaultPageConfigs, PhantomId } = Enums;
+const { FieldTypes, DefaultPageConfigs } = Enums;
 const {
   DateOnly,
   DateTime,
@@ -30,27 +30,20 @@ const {
 const { Options, PageSize } = DefaultPageConfigs;
 
 
-const defaultProps = {
-  activeViewId: PhantomId,
-  columns: [],
-  data: [],
-  meta: {},
-};
 const propTypes = {
-  intl: intlShape.isRequired,
   activeViewId: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]).isRequired,
   columns: PropTypes.array.isRequired,
-  data: PropTypes.array.isRequired,  
+  data: PropTypes.array.isRequired,
   meta: PropTypes.object.isRequired,
-  selectedRowKeys: PropTypes.array,
-  tableParams: PropTypes.object,
-  setRowSelection: PropTypes.func,
-  tryFetchData: PropTypes.func,
-  tryFetchDataByView: PropTypes.func,
-  tryDeleteClientByType: PropTypes.func,
+  selectedRowKeys: PropTypes.array.isRequired,
+  tableParams: PropTypes.object.isRequired,
+  setRowSelection: PropTypes.func.isRequired,
+  tryFetchData: PropTypes.func.isRequired,
+  tryFetchDataByView: PropTypes.func.isRequired,
+  tryDeleteClientByType: PropTypes.func.isRequired,
 };
 
 
@@ -61,12 +54,12 @@ class TableWrapper extends Component {
     tryFetchData(objectType, { per_page: PageSize });
   }
 
-  handleDeleteClick = id => {
+  handleDeleteClick = (id) => {
     const { objectType, tryDeleteClientByType, tableParams, meta } = this.props;
     tryDeleteClientByType(objectType, id, tableParams, meta);
   }
 
-  handleSelectionChange = selectedRowKeys => this.props.setRowSelection(selectedRowKeys)
+  handleSelectionChange = selectedKeys => this.props.setRowSelection(selectedKeys)
 
   handleTableChange = (pagination, filters, sorter) => {
     let paginationParams = {};
@@ -88,7 +81,7 @@ class TableWrapper extends Component {
     return tryFetchDataByView(objectType, activeViewId, { ...paginationParams, ...sorterParams });
   }
 
-  parsePagination = meta => {
+  parsePagination = (meta) => {
     const { pagination } = meta;
     let extraParams = {};
     if (!_.isEmpty(pagination)) {
@@ -111,12 +104,13 @@ class TableWrapper extends Component {
     const configs = {
       title: column.field_label,
       dataIndex: column.field_name,
-      columnId: column.id,  // customized property, used by table sorter
+      // customized property 'columnId', used by table sorter
+      columnId: column.id,
       sorter: true,
     };
     const extraConfigs = {};
 
-    switch(type) {
+    switch (type) {
       case DateOnly:
       case DateTime:
         extraConfigs.render = text => toTimezone(text, type === DateTime);
@@ -145,7 +139,7 @@ class TableWrapper extends Component {
         break;
       default:
         throw new Error('No such type is found when set up column.');
-    };
+    }
 
     return {
       ...configs,
@@ -154,8 +148,7 @@ class TableWrapper extends Component {
   }
 
   renderColumns = (data) => {
-    const { intl, objectType } = this.props;
-    const { formatMessage } = intl;
+    const { objectType } = this.props;
     const me = this;
     const columns = data.map(column => me.renderColumnByType(column.crm_data_type, column));
     columns.unshift({
@@ -164,13 +157,12 @@ class TableWrapper extends Component {
       width: 30,
       render: (text, record) => (
         <Permission permission={PERMISSIONS[`${objectType.toUpperCase()}_DELETE`]}>
-          <Popconfirm
-            title={formatMessage({ id: `global.ui.dialog.deleteTitle` })}
-            onConfirm={$ => me.handleDeleteClick(record.id)}
+          <PopDeleteConfirm
+            onConfirm={() => me.handleDeleteClick(record.id)}
             placement="right"
           >
-            <Icon className="cursor-pointer" size="small" type='delete' />
-          </Popconfirm>
+            <Icon className="cursor-pointer" size="small" type="delete" />
+          </PopDeleteConfirm>
         </Permission>
       ),
     });
@@ -178,9 +170,13 @@ class TableWrapper extends Component {
   }
 
   render() {
-    const { intl, columns, data, meta, selectedRowKeys } = this.props;
-    const { formatMessage } = intl;
-    
+    const {
+      columns,
+      data,
+      meta,
+      selectedRowKeys,
+    } = this.props;
+
     return (
       <Table
         columns={this.renderColumns(columns)}
@@ -190,7 +186,7 @@ class TableWrapper extends Component {
         rowKey="id"
         rowSelection={{
           selectedRowKeys,
-          onChange: this.handleSelectionChange
+          onChange: this.handleSelectionChange,
         }}
         size="small"
       />
@@ -199,7 +195,6 @@ class TableWrapper extends Component {
 }
 
 
-TableWrapper.defaultProps = defaultProps;
 TableWrapper.propTypes = propTypes;
 const mapStateToProps = ({ global, objectList }) => ({
   language: global.language,
@@ -216,4 +211,7 @@ const mapDispatchToProps = {
   tryFetchDataByView,
   tryDeleteClientByType,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TableWrapper));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TableWrapper);

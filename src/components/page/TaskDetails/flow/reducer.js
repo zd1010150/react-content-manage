@@ -20,10 +20,13 @@ const initialState = {
   assignees: [],
   assigneeId: '',
   comments: '',
+  // default due date is today
   dueTime: moment().format('YYYY-MM-DD'),
-  priorityCode: '',
+  // default priority is 'Normal'
+  priorityCode: 1,
   recentAssignees: [],
-  statusCode: '',
+  // default status is 'Not Started'
+  statusCode: 0,
   subject: '',
   synced: false,
 };
@@ -39,7 +42,7 @@ const mapResponseToStore = ({
 }) => ({
   assigneeId: assigner.id,
   comments,
-  dueTime: toTimezone(due_date, '+1100', 'YYYY-MM-DD'),
+  dueTime: toTimezone(due_date),
   id,
   priorityCode: priority_code,
   statusCode: status_code,
@@ -108,7 +111,6 @@ const taskDetails = (state = initialState, action) => {
 
     case SET_TASK_FIELD:      
       const { field, value } = action.payload;
-      console.log(field);
       return {
         ...state,
         [field]: value,
@@ -132,14 +134,11 @@ const taskDetails = (state = initialState, action) => {
     
     case RESET_TASK:
       return {
-        ...state,
-        assigneeId: '',
-        comments: '',
-        dueTime: moment().format('YYYY-MM-DD'),
-        priorityCode: '',
-        statusCode: '',
-        subject: '',
-        synced: false,
+        ...initialState,
+        globalSubjects: state.globalSubjects,
+        mySubjects: state.mySubjects,
+        assignees: state.assignees,
+        recentAssignees: state.recentAssignees,
       };
 
 

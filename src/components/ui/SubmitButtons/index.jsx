@@ -26,14 +26,14 @@ const SubmitButtons = ({
         className={`${theme}-theme-btn ml-sm`}
         onClick={onSaveClick}
       >
-        <Icon type="save" size="small" />
+        <Icon className="font-sm" type="save" size="small" />
         {formatMessage({ id: `${i18nPrefix}.save` })}
       </Button>
       <Button
         className="ml-sm"
       >
         <Link to={`/${objectType}`}>
-          <Icon type="close" size="small" />
+          <Icon className="font-sm" type="close" size="small" />
           {formatMessage({ id: `${i18nPrefix}.cancel` })}
         </Link>
       </Button>
