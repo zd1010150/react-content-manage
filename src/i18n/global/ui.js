@@ -60,6 +60,8 @@ export default {
       newOpport: '新Opportunity',
       viewAll: '查看全部',
       new: '新',
+      saveChange: '保存修改',
+      redoAll: '撤销所有修改',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -193,6 +195,8 @@ export default {
       newOpport: 'New Opportunity',
       viewAll: 'View All',
       new: 'New ',
+      saveChange: 'Save Changes',
+      redoAll: 'Redo',
     },
     input: {
       searchStore: 'Search entire store here...',

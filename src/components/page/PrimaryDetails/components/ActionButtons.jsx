@@ -75,7 +75,9 @@ class ActionButtons extends Component {
 
 ActionButtons.defaultProps = defaultProps;
 ActionButtons.propTypes = propTypes;
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ global }) => ({
+  language: global.language,
+});
 const mapDispatchToProps = {
   resetAllFieldsValue,
   tryUpdateClient,
