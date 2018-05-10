@@ -66,8 +66,6 @@ const MainContent = () => (
     <Route path="/dashboard" component={Dashboard} exact />
     <Route path="/globalSearch" component={GlobalSearch} exat />
     <Route path="/Task" component={Task} />
-
-    <Route path="/leads/convert/find/:objectId" component={FindDuplicates} />
     <Route path="/leads/merge/" component={MergeLeads} />
 
     <Route
@@ -99,7 +97,8 @@ const MainContent = () => (
         );
       }}
     />
-    <Route path="/:objectType/find/:objectId" component={FindDuplicates} />
+    <Route path="/leads/convert/find/:objectId" component={FindDuplicates} />
+    <Route path="/leads/find/:objectId" component={FindDuplicates} />
     <Route
       path="/:objectType/sharing/:objectId"
       render={(props) => {

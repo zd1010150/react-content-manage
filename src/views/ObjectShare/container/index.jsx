@@ -171,14 +171,14 @@ class ObjectShare extends Component {
             className={`${theme}-theme-btn`}
             onClick={this.handleSaveClick}
           >
-            <Icon size="small" type="save" />
+            <Icon className="font-sm" size="small" type="save" />
             {formatMessage({ id: 'global.ui.button.save' })}
           </Button>
           <Button
             className="ml-sm"
             onClick={this.handleCancelClick}
           >
-            <Icon size="small" type="close" />
+            <Icon className="font-sm" size="small" type="close" />
             {formatMessage({ id: 'global.ui.button.cancel' })}
           </Button>
         </Row>
