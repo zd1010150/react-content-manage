@@ -24,6 +24,7 @@ const EditFolder = ({
                         setDragging,
                         handleItemSelection,
                         saveEditFolder,
+                        cancel,
                         tempId,
                         setTempId,
                         ...others
@@ -78,6 +79,7 @@ const EditFolder = ({
             </Row>
             <ActionButtonGroup
                 saveEditFolder={saveEditFolder}
+                cancel={cancel}
                 setEditFolderViewVisible={setEditFolderViewVisible}
                 formatMessage={formatMessage}
             />

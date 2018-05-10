@@ -45,6 +45,7 @@ import {
 } from "../newEmail/flow/action";
 
 export {
+  setUserFolderData,
   setEditFolderData,
   deleteUserFolderData,
   updateFolderName,

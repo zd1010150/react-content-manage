@@ -78,15 +78,19 @@ export const getUserFolderData = (userId, callback) => (dispatch, getState) =>
 export const setSelectedFolderData = selectedFolder => (dispatch, getState) => {
   dispatch(setSelectedFolder(selectedFolder));
 
-  const sharedToTeams = selectedFolder.shared_to_teams ? selectedFolder.shared_to_teams.map(item => ({
-    id: item.id,
-    name: item.name
-  })) : [];
-  const shardToUsers = selectedFolder.shared_to_users ? selectedFolder.shared_to_users.map(item => ({
-    id: item.id,
-    name: item.name,
-    team_id: true
-  })) : [];
+  const sharedToTeams = selectedFolder.shared_to_teams
+    ? selectedFolder.shared_to_teams.map(item => ({
+        id: item.id,
+        name: item.name
+      }))
+    : [];
+  const shardToUsers = selectedFolder.shared_to_users
+    ? selectedFolder.shared_to_users.map(item => ({
+        id: item.id,
+        name: item.name,
+        team_id: true
+      }))
+    : [];
   dispatch(setPermissionTeams(sharedToTeams));
   dispatch(setPermissionUsers(shardToUsers));
 };
@@ -354,6 +358,7 @@ export const getAllUser = () => dispatch =>
   });
 
 export {
+  setUserFolderData,
   setEditFolderData,
   deleteUserFolderData,
   updateFolderName,
