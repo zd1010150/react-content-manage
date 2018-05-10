@@ -147,6 +147,41 @@ const TemplateDetail = ({
         }
     ];
 
+    let TemplatesTitleBar;
+    let TemplatesInFolder;
+    if(!isSharedByVisible && isCurrentUser()){
+        TemplatesTitleBar = <TabSwitcher
+            setPermissionSettingVisible={setPermissionSettingVisible}
+            isPermissionSettingVisible={isPermissionSettingVisible}
+            formatMessage={formatMessage}
+        />
+    }else{
+        TemplatesTitleBar =  <Row className="pt-lg">
+            <Col className="gutter-row field-label" span={24}>
+                <div className={cx('template-title')}>{ formatMessage({id: 'page.emailTemplates.templates'}) }</div>
+            </Col>
+        </Row>
+    }
+    if(isSharedByVisible || !isPermissionSettingVisible || !isCurrentUser()){
+        TemplatesInFolder = <Templates
+            fetchNewTemplateData={fetchNewTemplateData}
+            templates={templates}
+            pagination={pagination}
+            columns={columns}
+            setPermissionSettingVisible={setPermissionSettingVisible}
+            formatMessage={formatMessage}
+            isSharedByVisible={isSharedByVisible}
+            isCurrentUser={isCurrentUser}
+            selectedUser={selectedUser}
+        />
+    }else{
+        TemplatesInFolder = <EmailTemplatePermission
+            isCurrentUser={isCurrentUser}
+            selectedFolder={selectedFolder}
+        />
+    }
+
+
     return (
         <Panel
             panelClasses="email-theme-panel"
@@ -154,11 +189,19 @@ const TemplateDetail = ({
             actionsRight={isSharedByVisible || !isCurrentUser() ? null : actionsRight}
         >
             <Modal
-                title="Basic Modal"
+                title={editTemplate.name}
                 visible={visible}
                 onOk={handleOk}
                 onCancel={handleCancel}
             >
+                <div className="mb-md">
+                    {editTemplate.attachments && editTemplate.attachments.map((attachment)=>{
+                        return <span className="mr-sm">
+                            <Icon type="paper-clip" />
+                            <a href={attachment.url} target="_blank">{attachment.file_name}</a>
+                        </span>
+                    })}
+                </div>
                 <div dangerouslySetInnerHTML={{__html: editTemplate.content}}/>
             </Modal>
             <Folders
@@ -170,27 +213,9 @@ const TemplateDetail = ({
                 isSharedByVisible={isSharedByVisible}
                 queryByPaging={queryByPaging}
             />
-            <TabSwitcher
-                setPermissionSettingVisible={setPermissionSettingVisible}
-                isPermissionSettingVisible={isPermissionSettingVisible}
-                formatMessage={formatMessage}
-            />
-            {!isPermissionSettingVisible
-                ? <Templates
-                    fetchNewTemplateData={fetchNewTemplateData}
-                    templates={templates}
-                    pagination={pagination}
-                    columns={columns}
-                    setPermissionSettingVisible={setPermissionSettingVisible}
-                    formatMessage={formatMessage}
-                    isSharedByVisible={isSharedByVisible}
-                    isCurrentUser={isCurrentUser}
-                    selectedUser={selectedUser}
-                />
-                : <EmailTemplatePermission
-                    isCurrentUser={isCurrentUser}
-                    selectedFolder={selectedFolder}
-                />}
+            {TemplatesTitleBar}
+
+            {TemplatesInFolder}
         </Panel>
     );
 };
