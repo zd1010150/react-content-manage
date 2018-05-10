@@ -1,4 +1,4 @@
-import { Row } from 'antd';
+import { Row, notification } from 'antd';
 import { Panel } from 'components/ui/index';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -24,8 +24,7 @@ const mapStoreToRequest = ({
   subject,
   status_code: statusCode,
   priority_code: priorityCode,
-  // Convert only date pass a empty time offset
-  due_date: toUtc(dueTime, '', 'YYYY-MM-DD'),
+  due_date: toUtc(dueTime),
   comments,
   taskable_type: objectType,
   taskable_id: objectId,
@@ -68,6 +67,9 @@ class TaskDetails extends Component {
       tryUpdateTask,
     } = this.props;
 
+    const isValid = this.checkValidation(taskDetails);
+    if (!isValid) return;
+
     const targetData = mapStoreToRequest(taskDetails, objectId, objectType);
     if (taskId === PhantomId) {
       trySaveNewTask(taskId, targetData, saveAndAddNew);
@@ -77,6 +79,43 @@ class TaskDetails extends Component {
   }
 
   handleSaveAndNew = () => this.handleSave(true)
+
+  showNotification = message => notification.error({ duration: 3, message })
+
+  checkValidation = (data) => {
+    const { intl } = this.props;
+    const { formatMessage } = intl;
+    const i18n = 'global.errors';
+    const {
+      assigneeId,
+      dueTime,
+      priorityCode,
+      statusCode,
+      subject,
+    } = data;
+
+    if (assigneeId === '') {
+      this.showNotification(formatMessage({ id: `${i18n}.assigneeRequired` }));
+      return false;
+    }
+    if (dueTime === '') {
+      this.showNotification(formatMessage({ id: `${i18n}.dateRequired` }));
+      return false;
+    }
+    if (priorityCode === '') {
+      this.showNotification(formatMessage({ id: `${i18n}.priorityRequired` }));
+      return false;
+    }
+    if (statusCode === '') {
+      this.showNotification(formatMessage({ id: `${i18n}.statusRequired` }));
+      return false;
+    }
+    if (_.isEmpty(subject)) {
+      this.showNotification(formatMessage({ id: `${i18n}.subjectRequired` }));
+      return false;
+    }
+    return true;
+  }
 
   render() {
     const {
@@ -97,7 +136,7 @@ class TaskDetails extends Component {
         panelTitle={formatMessage({ id: `${i18nPrefix}.${titleKey}` })}
         panelClasses={`${theme}-theme-panel`}
       >
-        <Row style={{ margin: '10px 15px' }}>
+        <Row className="mt-md mb-md ml-lg mr-lg">
           <Fields
             defaultStateId={defaultStateId}
             objectId={objectId}
@@ -105,7 +144,7 @@ class TaskDetails extends Component {
             taskId={taskId}
           />
         </Row>
-        <Row style={{ margin: '10px 15px' }}>
+        <Row className="mt-md mb-md ml-lg mr-lg">
           <Actions
             objectId={objectId}
             objectType={objectType}
@@ -133,4 +172,7 @@ const mapDispatchToProps = {
   trySaveNewTask,
   tryUpdateTask,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(TaskDetails)));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(injectIntl(TaskDetails)));

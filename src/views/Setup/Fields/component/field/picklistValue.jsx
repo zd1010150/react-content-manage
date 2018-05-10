@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { Modal, Row, Col, Icon } from 'antd';
+import { Modal, Row, Col, Icon, notification } from 'antd';
 import { intlShape, injectIntl } from 'react-intl';
 import { PAGE_ACTION, objTypeAndClassTypeMap } from 'config/app.config';
 import { CardContainer, FloatingLabelInput, DeleteConfirmDialog } from 'components/ui/index';
@@ -40,8 +40,9 @@ class PickListValue extends React.Component {
     }
     onDelete(id) {
       const {
-        action, editObject, setReplaceDialog,
+        action, editObject, setReplaceDialog, intl,
       } = this.props;
+      const { formatMessage } = intl;
       const isEdit = action === PAGE_ACTION.EDIT;
       if (!isEdit) {
         this.setState({
@@ -50,6 +51,12 @@ class PickListValue extends React.Component {
         });
       } else {
         const replacedValue = editObject.picklist.filter(v => `${v.id}` === `${id}`)[0];
+        if (editObject.picklist.length < 2) {
+          notification.error({
+            message: formatMessage({ id: 'page.fields.deletePicklistError' }),
+          });
+          return;
+        }
         setReplaceDialog({
           options: editObject.picklist.filter(v => `${v.id}` !== `${id}`),
           isVisible: true,

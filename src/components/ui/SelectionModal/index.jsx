@@ -64,7 +64,7 @@ class SelectionModal extends Component {
     const { formatMessage } = intl;
     const i18nPrefix = 'page.objectFilter.visibility';
 
-    const filteredData = data.filter(record => record.name.indexOf(searchText) !== -1);
+    const filteredData = data.filter(record => record.name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
 
     return (
       <StyledModal
@@ -87,7 +87,7 @@ class SelectionModal extends Component {
           value={checkedValues}
           className={cx('checkboxGroup')}
         >
-          <Row>
+          <Row className="mt-md">
             {filteredData.map(record => (
               <Col xs={12} key={record.id}>
                 <Checkbox className={`${theme}-theme-checkbox`} value={record.id}>

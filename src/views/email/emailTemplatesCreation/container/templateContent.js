@@ -11,6 +11,7 @@ import {SelectComponentVertical, InputComponent, TextAreaComponent} from '../com
 import styles from '../emailTemplatesCreation.less';
 import {tryLogout} from 'views/LoginForm/flow/actions';
 import ImportTemplateButton from '../component/importTemplate';
+import FileUpload from '../../newEmail/component/fileUpload';
 const cx = classNames.bind(styles);
 const RadioGroup = Radio.Group;
 import {apiDomain} from '../../../../config/env.config.js';
@@ -123,7 +124,7 @@ class TemplateContent extends React.Component {
 
 
     render() {
-        const {intl, setTemplateContent, registerGetContentHook, content, selectedValue} = this.props;
+        const {intl, setTemplateContent, registerGetContentHook, content, selectedValue, attachments, onFileUpload} = this.props;
         const {formatMessage} = intl;
 
         const columns = [
@@ -158,8 +159,9 @@ class TemplateContent extends React.Component {
         ];
 
         const selectTemplate = <ImportTemplateButton setTemplateContent={setTemplateContent}/>;
-        const attachment = <Button className="email-theme-btn ml-sm" size="small" onClick={this.showModal}><Icon
-            type="link"/>{ formatMessage({id: 'page.emailTemplates.attachment'}) }</Button>
+        const attachment = <FileUpload attachments={attachments} label={formatMessage({ id: 'page.emailTemplates.localAttachment'})} tryLogout={tryLogout} onFileUpload={onFileUpload}/>
+        // const attachment = <Button className="email-theme-btn ml-sm" size="small" onClick={this.showModal}><Icon
+        //     type="link"/>{ formatMessage({id: 'page.emailTemplates.attachment'}) }</Button>
         // const preview = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {
         // }}><Icon type="eye-o"/>
         //     {formatMessage({id: 'page.emailTemplates.preview'})}

@@ -12,10 +12,10 @@ export default (store) => {
       if (field.value !== field.initialValue) {
         requestBody[field.name] = field.value;
         if (field.type === DateOnly) {
-          requestBody[field.name] = toUtc(field.value, '+1100', 'YYYY-MM-DD');
+          requestBody[field.name] = toUtc(field.value);
         }
         if (field.type === DateTime) {
-          requestBody[field.name] = toUtc(field.value, '+1100', 'YYYY-MM-DD HH:mm:ss');
+          requestBody[field.name] = toUtc(field.value, true);
         }
       }
     });

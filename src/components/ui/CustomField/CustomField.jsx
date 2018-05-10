@@ -252,7 +252,7 @@ const CustomField = ({
   return (
     <Row className={useDefaultRowCls ? cx('row') : rowCls}>
       <Col {...labelCol} style={{ textAlign: 'right' }}>
-        <span className={required ? `${cx('required')} ${cx('label')}` : cx('label')}>
+        <span className={required ? `required ${cx('label')}` : cx('label')}>
           {label}
         </span>
         {helpText ? (

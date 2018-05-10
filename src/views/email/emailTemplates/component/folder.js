@@ -114,7 +114,7 @@ class Card extends Component {
             canDeactivate,
             onIconClick,
             item,
-            deleteUserFolderData,
+            deleteEditFolderData,
             editFolderName
         } = this.props;
 
@@ -122,7 +122,7 @@ class Card extends Component {
         return connectDragSource(
             connectDropTarget(
                 <div>
-                    {/*<div onClick={()=>{deleteUserFolderData(item.id)}}>*/}
+                    {/*<div onClick={()=>{deleteEditFolderData(item.id)}}>*/}
                     <div>
                         <Icon
                             data-index={index}
@@ -130,7 +130,7 @@ class Card extends Component {
                             className={cx(['folder-icon', 'folder-move'])}
                             type="folder"
                         />
-                        <span onClick={()=>{deleteUserFolderData(item.id)}} className="pl-sm"><Icon className={cx('delete-icon')} type="delete"/></span>
+                        <span onClick={()=>{deleteEditFolderData(item.id)}} className="pl-sm"><Icon className={cx('delete-icon')} type="delete"/></span>
                     </div>
                     {isOver &&
                     <div style={{

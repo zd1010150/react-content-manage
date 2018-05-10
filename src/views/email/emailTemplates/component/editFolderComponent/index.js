@@ -14,8 +14,8 @@ const EditFolder = ({
                         editFolders,
                         setEditFolderViewVisible,
                         setEditFolderData,
-                        deleteUserFolderData,
-                        createUserFolder,
+                        deleteEditFolderData,
+                        createEditFolder,
                         isOtherDragging,
                         formatMessage,
                         editFolderName,
@@ -24,6 +24,7 @@ const EditFolder = ({
                         setDragging,
                         handleItemSelection,
                         saveEditFolder,
+                        cancel,
                         tempId,
                         setTempId,
                         ...others
@@ -34,7 +35,7 @@ const EditFolder = ({
                 className="btn-ellipse email-theme-btn"
                 size="small"
                 onClick={() => {
-                    createUserFolder({name: "", id: tempId});
+                    createEditFolder({name: "", id: tempId});
                     setTempId()
                 }}
             >
@@ -50,7 +51,7 @@ const EditFolder = ({
             actionsRight={actionsRight}
         >
             <Row onMouseDown={handleItemSelection} className={cx("folders")}>
-                {userFolders.map((item, key) =>
+                {editFolders.map((item, key) =>
                     <Col
                         key={key}
                         data-index={key}
@@ -61,7 +62,7 @@ const EditFolder = ({
                         <Folder
                             key={item.id}
                             item={item}
-                            deleteUserFolderData={deleteUserFolderData}
+                            deleteEditFolderData={deleteEditFolderData}
                             setEditFolderData={setEditFolderData}
                             editFolderName={editFolderName}
                             id={item.id}
@@ -78,6 +79,7 @@ const EditFolder = ({
             </Row>
             <ActionButtonGroup
                 saveEditFolder={saveEditFolder}
+                cancel={cancel}
                 setEditFolderViewVisible={setEditFolderViewVisible}
                 formatMessage={formatMessage}
             />

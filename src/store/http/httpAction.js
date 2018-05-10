@@ -22,7 +22,8 @@ const successNotify = (message) => {
 const defaultCallback = (callbackConfig, method, requestResult = { data: {}, statusCode: 0 }) => {
   const { successMessage, callbackAction } = callbackConfig;
   const info = allInfos[window.globalLanguage];
-  if (!_.isEmpty(callbackAction)) {
+  // Check with _.isEmpty on js function will return true
+  if (_.isFunction(callbackAction)) {
     callbackAction(requestResult);
   } else if (SUCCESS_HTTP_CODE.indexOf(requestResult.statusCode) > -1 && method !== 'get') {
     if (!_.isEmpty(successMessage)) {

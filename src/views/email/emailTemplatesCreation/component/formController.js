@@ -5,10 +5,10 @@ import classNames from 'classnames/bind';
 import styles from '../emailTemplatesCreation.less';
 const cx = classNames.bind(styles);
 const TextArea = Input.TextArea;
-export const SelectComponent = ({defaultValue, items, label, onChange, value}) => {
+export const SelectComponent = ({defaultValue, items, label, onChange, value, optional}) => {
     return <Row className={`pt-lg ${cx('new-template-input-row')}`}>
         <Col className="gutter-row field-label" span={4}>
-            {label}
+            {label}{!optional && <span className={`${cx('create-template-red-color')}`}>*</span>}
         </Col>
         <Col className="gutter-row field-value" span={20}>
             <Select onChange={(value) => {
@@ -74,10 +74,10 @@ SelectComponentVertical.propTypes = {
 }
 
 
-export const InputComponent = ({style, type, disableInput, value, label, onChange}) => {
+export const InputComponent = ({style, type, disableInput, value, label, onChange, optional}) => {
     return <Row style={style} className={`pt-lg ${cx('new-template-input-row')}`}>
         <Col className="gutter-row field-label" span={4}>
-            {label}
+            {label}{!optional && <span className={`${cx('create-template-red-color')}`}>*</span>}
         </Col>
         <Col className="gutter-row field-value" span={20}>
             {

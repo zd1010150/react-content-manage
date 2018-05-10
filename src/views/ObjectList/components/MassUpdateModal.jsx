@@ -1,4 +1,4 @@
-import { Col, Row, Select } from 'antd';
+import { Col, Row, Select, Tooltip, Icon } from 'antd';
 import { CustomField, StyledModal } from 'components/ui/index';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -98,7 +98,7 @@ class MassUpdateModal extends Component {
 
   render() {
     const { fieldId, fieldName, lookupDisplayKey, type, value } = this.state;
-    const { intl, visible, columns, selectedFieldOptions } = this.props;
+    const { intl, visible, columns, selectedFieldOptions, theme } = this.props;
     const { formatMessage } = intl;
 
     // System auto-generate field should not be available to mass update
@@ -109,6 +109,8 @@ class MassUpdateModal extends Component {
         visible={visible}
         onOk={this._onOk}
         onCancel={this._onCancel}
+        okDisabled={fieldId === PhantomId}
+        theme={theme}
       >
         <Row className="mb-md">
           <Col
@@ -116,10 +118,13 @@ class MassUpdateModal extends Component {
             style={{
               textAlign: 'right',
               lineHeight: 2,
-              paddingRight: 34,
+              paddingRight: 17,
             }}
           >
             {formatMessage({ id: 'global.form.field' })}
+            <Tooltip title={formatMessage({ id: 'page.objectList.tooltip.field' })}>
+              <Icon className="ml-sm icon-thinner font-sm" type="exclamation-circle-o" />
+            </Tooltip>
           </Col>
           <Col {...valueCol}>
             <Select

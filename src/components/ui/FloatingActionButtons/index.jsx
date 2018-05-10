@@ -1,24 +1,27 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl, intlShape } from 'react-intl';
-import { Button, Icon, Popconfirm } from 'antd';
+/* eslint-disable no-fallthrough */
+import { Button, Icon, Tooltip } from 'antd';
 import classNames from 'classnames/bind';
+import { PopDeleteConfirm } from 'components/ui/index';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { injectIntl, intlShape } from 'react-intl';
+import Enums from 'utils/EnumsManager';
 import styles from './index.less';
+
 const cx = classNames.bind(styles);
 
-import Enums from 'utils/EnumsManager';
-// presets
 const buttons = [
   {
     key: 'Save',
     icon: 'save',
     func: '_onSaveClick',
   },
-  {
-    key: 'SaveAndNew',
-    icon: 'plus',
-    func: '_onSaveAndNewClick',
-  },
+  // Existed in prototype and design, but was requested to be removed in Issue #79
+  // {
+  //   key: 'SaveAndNew',
+  //   icon: 'plus',
+  //   func: '_onSaveAndNewClick',
+  // },
   {
     key: 'RevertAll',
     icon: 'reload',
@@ -32,49 +35,50 @@ const buttons = [
 ];
 
 const renderButton = (btn, theme, formatMessage, methods) => {
-  const i18nPrefix = 'global.ui';
+  const i18n = 'global.ui';
   let btnCls = cx('floatBtn');
-  switch(btn.key) {
+  switch (btn.key) {
     case 'Save':
       btnCls += ` ${theme}-theme-btn`;
     case 'SaveAndNew':
       return (
-        <Button
+        <Tooltip
           key={btn.key}
-          className={btnCls}
-          onClick={methods[btn.func]}
+          title={formatMessage({ id: `${i18n}.button.saveChange` })}
+          placement="left"
         >
-          <Icon type={btn.icon} size="small" />
-        </Button>
+          <Button className={btnCls} onClick={methods[btn.func]}>
+            <Icon type={btn.icon} size="small" />
+          </Button>
+        </Tooltip>
       );
     case 'RevertAll':
       btnCls += ' report-theme-btn';
       return (
-        <Popconfirm
+        <PopDeleteConfirm
           key={btn.key}
-          placement="bottomRight"
-          title={formatMessage({ id: `${i18nPrefix}.dialog.revertTitle` })}
+          placement="left"
+          msgId={`${i18n}.dialog.revertTitle`}
           onConfirm={methods[btn.func]}
-          okText={formatMessage({ id: `${i18nPrefix}.button.ok` })}
-          cancelText={formatMessage({ id: `${i18nPrefix}.button.cancel` })}
         >
-          <Button
-            key={btn.key}
-            className={btnCls}
-          >
-            <Icon type={btn.icon} size="small" />
-          </Button>
-        </Popconfirm>
+          <Tooltip title={formatMessage({ id: `${i18n}.button.redoAll` })} placement="left">
+            <Button key={btn.key} className={btnCls}>
+              <Icon type={btn.icon} size="small" />
+            </Button>
+          </Tooltip>
+        </PopDeleteConfirm>
       );
     case 'GoBack':
       return (
-        <Button
+        <Tooltip
           key={btn.key}
-          className={btnCls}
-          onClick={methods[btn.func]}
+          title={formatMessage({ id: `${i18n}.button.goBack` })}
+          placement="left"
         >
-          <Icon type={btn.icon} size="small" />
-        </Button>
+          <Button className={btnCls} onClick={methods[btn.func]}>
+            <Icon type={btn.icon} size="small" />
+          </Button>
+        </Tooltip>
       );
     default:
       return null;
@@ -99,7 +103,6 @@ const FloatActionButtons = ({
   onRevertClick,
   onGoBackClick,
 }) => {
-
   const _onSaveClick = $ => {
     if (_.isFunction(onSaveClick)) {
       onSaveClick();
@@ -131,6 +134,7 @@ const FloatActionButtons = ({
     _onGoBackClick,
   };
 
+  console.log(intl);
   return (
     <div className={cx('btnsContainer')}>
       {buttons.map(btn => renderButton(btn, theme, intl.formatMessage, privateMethods))}

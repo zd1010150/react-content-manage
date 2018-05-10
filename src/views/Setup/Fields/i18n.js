@@ -33,6 +33,7 @@ export default {
     restrictionInfo: '限制以下部门和用户查看该取值',
     doubleClickDepart: '双击添加部门',
       doubleClickUser: '双击添加用户',
+      deletePicklistError: '最后一个取值，不能删除',
   },
   en: {
     label: 'Field Label',
@@ -68,5 +69,6 @@ export default {
     restrictionInfo: 'Restrict departments or users from viewing this value',
     doubleClickDepart: 'Double click to add department to restriction',
       doubleClickUser: 'Double click to add user to restriction',
+      deletePicklistError: 'Can\'t delete the last value',
   },
 };

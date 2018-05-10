@@ -47,6 +47,8 @@ const TemplateDetail = ({
                         }) => {
     const actionsLeft = (
         <Radios
+            queryByPaging={queryByPaging}
+            setSelectedFolderData={setSelectedFolderData}
             selectedUser={selectedUser}
             setSharedByVisible={setSharedByVisible}
             formatMessage={formatMessage}
@@ -77,12 +79,16 @@ const TemplateDetail = ({
             queryByPaging({pageSize, page});
         }
     };
+
+    // 如果是当前用户，并且是在自己的文件夹的tab下，则可以编辑删除；
+    // 如果是当前用户，并且是分享的文件夹tab下，则可以看
+    // 其他情况，一律不能编辑，也不能看
     const columns = [
         {
             key: "id",
             render: record =>
                 <span>
-          {isCurrentUser() &&
+          {isCurrentUser() && !isSharedByVisible &&
           <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_UPDATE}>
               <EmailTemplateIcon
                   type="edit"
@@ -94,33 +100,33 @@ const TemplateDetail = ({
                   }}
               />
           </Permission>}
-                    {!isCurrentUser() &&
-                    <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_VIEW}>
-                        <EmailTemplateIcon
-                            type="eye-o"
-                            onClick={() => {
-                                fetchTemplateData({
-                                    templateId: record.id,
-                                    cb: () => showModal(),
-                                    cbErr: () => alert("no access")
-                                });
-                            }}
-                        />
-                    </Permission>}
+                {(isCurrentUser() && isSharedByVisible) &&
+                <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_VIEW}>
+                    <EmailTemplateIcon
+                        type="eye-o"
+                        onClick={() => {
+                            fetchTemplateData({
+                                templateId: record.id,
+                                cb: () => showModal(),
+                                cbErr: () => alert("no access")
+                            });
+                        }}
+                    />
+                </Permission>}
 
-                    {isCurrentUser() &&
-                    <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_DELETE}>
-                        <Popconfirm
-                            title="Are you sure to delete it?"
-                            onConfirm={() =>
-                                deleteTemplate({
-                                    templateId: record.id,
-                                    folderId: selectedFolder.id
-                                })}
-                        >
-                            <EmailTemplateIcon type="delete" className="danger pl-lg"/>
-                        </Popconfirm>
-                    </Permission>}
+                {isCurrentUser() && !isSharedByVisible &&
+                <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_DELETE}>
+                    <Popconfirm
+                        title="Are you sure to delete it?"
+                        onConfirm={() =>
+                            deleteTemplate({
+                                templateId: record.id,
+                                folderId: selectedFolder.id
+                            })}
+                    >
+                        <EmailTemplateIcon type="delete" className="danger pl-lg"/>
+                    </Popconfirm>
+                </Permission>}
         </span>
         },
         {
@@ -147,6 +153,41 @@ const TemplateDetail = ({
         }
     ];
 
+    let TemplatesTitleBar;
+    let TemplatesInFolder;
+    if(!isSharedByVisible && isCurrentUser()){
+        TemplatesTitleBar = <TabSwitcher
+            setPermissionSettingVisible={setPermissionSettingVisible}
+            isPermissionSettingVisible={isPermissionSettingVisible}
+            formatMessage={formatMessage}
+        />
+    }else{
+        TemplatesTitleBar =  <Row className="pt-lg">
+            <Col className="gutter-row field-label" span={24}>
+                <div className={cx('template-title')}>{ formatMessage({id: 'page.emailTemplates.templates'}) }</div>
+            </Col>
+        </Row>
+    }
+    if(isSharedByVisible || !isPermissionSettingVisible || !isCurrentUser()){
+        TemplatesInFolder = <Templates
+            fetchNewTemplateData={fetchNewTemplateData}
+            templates={templates}
+            pagination={pagination}
+            columns={columns}
+            setPermissionSettingVisible={setPermissionSettingVisible}
+            formatMessage={formatMessage}
+            isSharedByVisible={isSharedByVisible}
+            isCurrentUser={isCurrentUser}
+            selectedUser={selectedUser}
+        />
+    }else{
+        TemplatesInFolder = <EmailTemplatePermission
+            isCurrentUser={isCurrentUser}
+            selectedFolder={selectedFolder}
+        />
+    }
+
+
     return (
         <Panel
             panelClasses="email-theme-panel"
@@ -154,11 +195,19 @@ const TemplateDetail = ({
             actionsRight={isSharedByVisible || !isCurrentUser() ? null : actionsRight}
         >
             <Modal
-                title="Basic Modal"
+                title={editTemplate.name}
                 visible={visible}
                 onOk={handleOk}
                 onCancel={handleCancel}
             >
+                <div className="mb-md">
+                    {editTemplate.attachments && editTemplate.attachments.map((attachment)=>{
+                        return <span className="mr-sm" key={attachment.id}>
+                            <Icon type="paper-clip" />
+                            <a href={attachment.url} target="_blank">{attachment.file_name}</a>
+                        </span>
+                    })}
+                </div>
                 <div dangerouslySetInnerHTML={{__html: editTemplate.content}}/>
             </Modal>
             <Folders
@@ -170,27 +219,9 @@ const TemplateDetail = ({
                 isSharedByVisible={isSharedByVisible}
                 queryByPaging={queryByPaging}
             />
-            <TabSwitcher
-                setPermissionSettingVisible={setPermissionSettingVisible}
-                isPermissionSettingVisible={isPermissionSettingVisible}
-                formatMessage={formatMessage}
-            />
-            {!isPermissionSettingVisible
-                ? <Templates
-                    fetchNewTemplateData={fetchNewTemplateData}
-                    templates={templates}
-                    pagination={pagination}
-                    columns={columns}
-                    setPermissionSettingVisible={setPermissionSettingVisible}
-                    formatMessage={formatMessage}
-                    isSharedByVisible={isSharedByVisible}
-                    isCurrentUser={isCurrentUser}
-                    selectedUser={selectedUser}
-                />
-                : <EmailTemplatePermission
-                    isCurrentUser={isCurrentUser}
-                    selectedFolder={selectedFolder}
-                />}
+            {TemplatesTitleBar}
+
+            {TemplatesInFolder}
         </Panel>
     );
 };

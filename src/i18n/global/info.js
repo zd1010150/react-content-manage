@@ -7,10 +7,10 @@ export default {
     logoutSuccess: '登出成功',
   },
   en: {
-    post: 'Success Add',
-    patch: 'Success Update',
-    httpDelete: 'Success Delete',
-    loginSuccess: 'Login Success',
-    logoutSuccess: 'Logout Success',
+    post: 'Successfully Added',
+    patch: 'Successfully Updated',
+    httpDelete: 'Successfully Deleted',
+    loginSuccess: 'Login Successfully',
+    logoutSuccess: 'Logout Successfully',
   },
 };
