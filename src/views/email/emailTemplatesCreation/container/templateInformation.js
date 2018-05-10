@@ -55,7 +55,7 @@ const BasicInfo = ({
                         label={formatMessage({id: 'page.emailTemplates.emailTemplatesName'})}/>
         <InputComponent disableInput={disableApiInput} value={editTemplate.api_name} onChange={setTemplateApiName}
                         label={formatMessage({id: 'page.emailTemplates.emailTemplateApiName'})}/>
-        <InputComponent value={editTemplate.description} onChange={setTemplateDescription}
+        <InputComponent optional={true} value={editTemplate.description} onChange={setTemplateDescription}
                         label={formatMessage({id: 'page.emailTemplates.newTemplateDescription'})}/>
         <SelectComponent defaultValue={editTemplate.category ? editTemplate.category : 'leads'}
                          onChange={setTemplateCategory} items={categories}
@@ -162,7 +162,8 @@ class TemplateInformation extends React.Component {
             isNewTemplateRouter,
             save,
             cancel,
-            fieldOption
+            fieldOption,
+            onFileUpload
         } = this.props;
 
         return (
@@ -197,6 +198,8 @@ class TemplateInformation extends React.Component {
                                      setTemplateContent={setNewTemplateContent}
                                      content={newTemplate.content}
                                      selectedValue={this.state.selectedValue}
+                                     attachments={[]}
+                                     onFileUpload={onFileUpload}
                     />
                 </Fragment>
                 }
@@ -228,7 +231,9 @@ class TemplateInformation extends React.Component {
                     <TemplateContent registerGetContentHook={registerGetContentHook}
                                      setTemplateContent={setEditTemplateContent}
                                      content={editTemplate.content}
+                                     attachments={editTemplate.attachments}
                                      selectedValue={this.state.selectedValue}
+                                     onFileUpload={onFileUpload}
                     />
                 </Fragment>
                 }

@@ -1,11 +1,11 @@
-import React, { Component, Fragment } from 'react';
+import { FilterCriteria } from 'components/page/index';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
-import { FilterCriteria } from 'components/page/index';
-import { getThemeByType } from 'utils/common';
 import Enums from 'utils/EnumsManager';
+import { getThemeByType } from 'utils/common';
+import { toggleRightSider } from 'components/page/RightSider/flow/action';
 import {
   setConditionLogic,
   addFilter,
@@ -17,7 +17,7 @@ import {
   fetchLookupValuesById,
   insertSiderSelectionToField,
 } from './flow/actions';
-import { toggleRightSider, settingRightSider } from 'components/page/RightSider/flow/action';
+
 
 const defaultProps = {
   siderCollapsed: true,
@@ -45,7 +45,7 @@ class FilterCriteriaWrapper extends Component {
 
   onLogicChange = value => this.props.setConditionLogic(value)
 
-  onAddonClick = displayNum => {
+  onAddonClick = (displayNum) => {
     const {
       filters,
       fields,

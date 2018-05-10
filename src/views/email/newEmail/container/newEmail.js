@@ -194,12 +194,10 @@ class NewEmail extends React.Component {
     };
 
     onFileUpload = (response, error) => {
+        console.log('111', response, error)
         if (_.isEmpty(error)) {
             const files = response.map((r)=>{
-                return {
-                    file_name: !!r.data.name ? r.data.name : 'file',
-                    url: r.data.url
-                }
+                return r.data.id
             })
             this.setState({attachments: files})
         }
@@ -378,7 +376,9 @@ class NewEmail extends React.Component {
                            bcc={this.state.bcc}
                            subject={this.state.subject}
                            formatMessage={formatMessage}/>
-                <NewEmailContent onFileUpload={this.onFileUpload} content={selectedEmailTemplate.content}
+                <NewEmailContent onFileUpload={this.onFileUpload}
+                                 content={selectedEmailTemplate.content}
+                                 attachments={selectedEmailTemplate.attachments}
                                  showModal={this.showModal}
                                  registerGetContentHook={this.registerGetContentHook}/>
             </Panel>

@@ -26,10 +26,10 @@ import {
   setSharedFolderData,
   setSelectedFolder,
   setEditFolderData,
-  deleteUserFolderData,
+  deleteEditFolderData,
   setNewOrder,
   updateFolderName,
-  createUserFolder
+  createEditFolder
 } from "./folderFlow/action";
 import {
   setSelectedPermissionTeam,
@@ -78,15 +78,19 @@ export const getUserFolderData = (userId, callback) => (dispatch, getState) =>
 export const setSelectedFolderData = selectedFolder => (dispatch, getState) => {
   dispatch(setSelectedFolder(selectedFolder));
 
-  const sharedToTeams = selectedFolder.shared_to_teams.map(item => ({
-    id: item.id,
-    name: item.name
-  }));
-  const shardToUsers = selectedFolder.shared_to_users.map(item => ({
-    id: item.id,
-    name: item.name,
-    team_id: true
-  }));
+  const sharedToTeams = selectedFolder.shared_to_teams
+    ? selectedFolder.shared_to_teams.map(item => ({
+        id: item.id,
+        name: item.name
+      }))
+    : [];
+  const shardToUsers = selectedFolder.shared_to_users
+    ? selectedFolder.shared_to_users.map(item => ({
+        id: item.id,
+        name: item.name,
+        team_id: true
+      }))
+    : [];
   dispatch(setPermissionTeams(sharedToTeams));
   dispatch(setPermissionUsers(shardToUsers));
 };
@@ -97,13 +101,14 @@ export const uploadFolders = cb => (dispatch, getState) => {
   post(
     "/admin/email_folders/mass_cud/me",
     {
-      current: setup.emailTemplates.userFolders,
+      current: setup.emailTemplates.editFolders,
       delete: setup.emailTemplates.deletedFolders
     },
     dispatch
   ).then(data => {
-    if (!_.isEmpty(data)) {
-      console.log("data", data);
+    if (!_.isEmpty(data) && data.own && !_.isEmpty(data.own.data)) {
+        console.log("data", data);
+        dispatch(setUserFolderData(data.own.data));
     }
     if (_.isFunction(cb)) {
       cb();
@@ -150,11 +155,12 @@ export const createTemplateData = ({
   content,
   description,
   category,
+  attachments,
   cb
 }) => (dispatch, getState) => {
   post(
     `/admin/email_templates/email_folders/${folderId}`,
-    { name, api_name: apiName, content, description, category },
+    { name, api_name: apiName, content, description, category, attachments },
     dispatch
   ).then(data => {
     if (!_.isEmpty(data)) {
@@ -217,6 +223,7 @@ export const updateTemplateData = ({
   content,
   description,
   category,
+  attachments,
   cb
 }) => (dispatch, getState) => {
   patch(
@@ -227,7 +234,8 @@ export const updateTemplateData = ({
       content,
       folder_id: folderId,
       description,
-      category
+      category,
+      attachments
     },
     dispatch
   ).then(data => {
@@ -306,6 +314,8 @@ export const fetchTemplates = ({
           pagination.total
         )
       );
+    } else {
+        dispatch(setTemplatesData([]));
     }
   });
 };
@@ -351,10 +361,11 @@ export const getAllUser = () => dispatch =>
   });
 
 export {
+  setUserFolderData,
   setEditFolderData,
-  deleteUserFolderData,
+  deleteEditFolderData,
   updateFolderName,
-  createUserFolder,
+  createEditFolder,
   setSelectedPermissionTeam,
   addPermissionTeam,
   addPermissionUser,

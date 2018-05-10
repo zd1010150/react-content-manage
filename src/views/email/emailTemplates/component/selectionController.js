@@ -12,8 +12,11 @@ import ItemTypes from './ItemTypes';
 import Enums from 'utils/EnumsManager';
 const RadioGroup = Radio.Group;
 const TabPane = Tabs.TabPane;
-export const Radios = ({selectedUser, setSharedByVisible, formatMessage}) => (
+export const Radios = ({queryByPaging, setSelectedFolderData, selectedUser, setSharedByVisible, formatMessage}) => (
     <RadioGroup defaultValue={1} onChange={e => {
+        //to empty select folder and templates
+        setSelectedFolderData({});
+        queryByPaging({folderId: undefined});
         e.target.value === 1 ? setSharedByVisible(false) : setSharedByVisible(true)
     }}>
         <Radio className="email-theme-radio" value={1}>{selectedUser.name}</Radio>

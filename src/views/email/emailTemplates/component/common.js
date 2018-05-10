@@ -16,11 +16,9 @@ export const EmailTemplateIcon = ({className, type, onClick})=> {
     return <Icon type={type} className={className} onClick={onClick}/>
 }
 
-export const ActionButtonGroup = ({saveEditFolder, setEditFolderViewVisible, formatMessage}) => {
+export const ActionButtonGroup = ({saveEditFolder, cancel, setEditFolderViewVisible, formatMessage}) => {
     return <div className="pt-md pl-md pb-md">
         <Button className="email-theme-btn mr-md" onClick={saveEditFolder}><Icon type="save"/>{ formatMessage({id: 'page.emailTemplates.save'}) }</Button>
-        <Button onClick={() => {
-            setEditFolderViewVisible(false)
-        }}><Icon type="close"/>{ formatMessage({id: 'page.emailTemplates.cancel'}) }</Button>
+        <Button onClick={cancel}><Icon type="close"/>{ formatMessage({id: 'page.emailTemplates.cancel'}) }</Button>
     </div>
 }

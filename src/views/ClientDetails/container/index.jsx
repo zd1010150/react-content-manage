@@ -7,10 +7,6 @@ import { getThemeByType } from 'utils/common';
 const { PhantomId } = Enums;
 
 class ObjectDetails extends Component {
-  componentDidMount() {
-    console.log('testing');
-  }
-
   render() {
     const {
       accountId,
