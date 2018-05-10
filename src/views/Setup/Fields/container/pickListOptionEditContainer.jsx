@@ -33,12 +33,13 @@ class PickListOptionEditContainer extends React.Component {
     }
   }
   componentDidMount() {
-    const { getUnVisibleTeamandUsers, manageList } = this.props;
+    const { getUnVisibleTeamandUsers, manageList,toggleAdding } = this.props;
     if (!_.isEmpty(`${manageList.valId}`)) {
+
+        toggleAdding(false);
       getUnVisibleTeamandUsers(manageList.valId);
     }
   }
-
   onSubmit() {
     const {
       updatePickListValueStatusToRemote, updateRestriciontToRemote, manageList, history, objectType,
@@ -108,7 +109,7 @@ class PickListOptionEditContainer extends React.Component {
     const classType = objTypeAndClassTypeMap[objectType];
     const permissionPrefix = `SETUP_${objectType.toUpperCase()}_FIELDS`;
     return (
-      <Permission permission={PERMISSIONS[`${permissionPrefix}_UPDATE`]} errorComponent={<Unauthentication/>}>
+      <Permission permission={PERMISSIONS[`${permissionPrefix}_UPDATE`]} errorComponent={<Unauthentication />}>
 
         <Panel panelClasses={`${classType}-theme-panel`} panelTitle={formatMessage({ id: 'page.fields.updateExistingValue' })}>
           <div className="panel-section">
