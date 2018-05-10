@@ -47,6 +47,8 @@ const TemplateDetail = ({
                         }) => {
     const actionsLeft = (
         <Radios
+            queryByPaging={queryByPaging}
+            setSelectedFolderData={setSelectedFolderData}
             selectedUser={selectedUser}
             setSharedByVisible={setSharedByVisible}
             formatMessage={formatMessage}
@@ -77,12 +79,16 @@ const TemplateDetail = ({
             queryByPaging({pageSize, page});
         }
     };
+
+    // 如果是当前用户，并且是在自己的文件夹的tab下，则可以编辑删除；
+    // 如果是当前用户，并且是分享的文件夹tab下，则可以看
+    // 其他情况，一律不能编辑，也不能看
     const columns = [
         {
             key: "id",
             render: record =>
                 <span>
-          {isCurrentUser() &&
+          {isCurrentUser() && !isSharedByVisible &&
           <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_UPDATE}>
               <EmailTemplateIcon
                   type="edit"
@@ -94,33 +100,33 @@ const TemplateDetail = ({
                   }}
               />
           </Permission>}
-                    {!isCurrentUser() &&
-                    <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_VIEW}>
-                        <EmailTemplateIcon
-                            type="eye-o"
-                            onClick={() => {
-                                fetchTemplateData({
-                                    templateId: record.id,
-                                    cb: () => showModal(),
-                                    cbErr: () => alert("no access")
-                                });
-                            }}
-                        />
-                    </Permission>}
+                {(isCurrentUser() && isSharedByVisible) &&
+                <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_VIEW}>
+                    <EmailTemplateIcon
+                        type="eye-o"
+                        onClick={() => {
+                            fetchTemplateData({
+                                templateId: record.id,
+                                cb: () => showModal(),
+                                cbErr: () => alert("no access")
+                            });
+                        }}
+                    />
+                </Permission>}
 
-                    {isCurrentUser() &&
-                    <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_DELETE}>
-                        <Popconfirm
-                            title="Are you sure to delete it?"
-                            onConfirm={() =>
-                                deleteTemplate({
-                                    templateId: record.id,
-                                    folderId: selectedFolder.id
-                                })}
-                        >
-                            <EmailTemplateIcon type="delete" className="danger pl-lg"/>
-                        </Popconfirm>
-                    </Permission>}
+                {isCurrentUser() && !isSharedByVisible &&
+                <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_DELETE}>
+                    <Popconfirm
+                        title="Are you sure to delete it?"
+                        onConfirm={() =>
+                            deleteTemplate({
+                                templateId: record.id,
+                                folderId: selectedFolder.id
+                            })}
+                    >
+                        <EmailTemplateIcon type="delete" className="danger pl-lg"/>
+                    </Popconfirm>
+                </Permission>}
         </span>
         },
         {
