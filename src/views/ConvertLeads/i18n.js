@@ -1,6 +1,6 @@
 export default {
   zh: {
-    title: '升级潜在客户为客户',
+    title: '升级Lead为Account',
     platform: '交易平台设置',
     portal: '客户入口设置',
     type: 'Opportunity类型',

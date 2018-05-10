@@ -15,7 +15,9 @@ import {
   tryFetchTypes,
 } from '../flow/actions';
 
-const { PhantomId } = Enums;
+const { PhantomId, ObjectTypes } = Enums;
+const { Leads } = ObjectTypes;
+
 
 const propTypes = {
   intl: intlShape.isRequired,
@@ -52,7 +54,7 @@ class ConvertLeads extends Component {
 
   onCancelClick = () => {
     const { history, objectId, objectType } = this.props;
-    history.push(`/${objectType}/convert/find/${objectId}`);
+    history.push(`/${Leads}/convert/find/${objectId}`);
   }
 
   onConvertClick = () => {
