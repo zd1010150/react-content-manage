@@ -98,14 +98,14 @@ class ConvertLeads extends Component {
             size="small"
             onClick={this.onConvertClick}
           >
-            <Icon size="small" type="save" />
+            <Icon className="font-sm" type="save" />
             {formatMessage({ id: 'global.ui.button.convertToAccount' })}
           </Button>
           <Button
             size="small"
             onClick={this.onCancelClick}
           >
-            <Icon size="small" type="close" />
+            <Icon className="font-sm" type="close" />
             {formatMessage({ id: 'global.ui.button.cancel' })}
           </Button>
         </div>

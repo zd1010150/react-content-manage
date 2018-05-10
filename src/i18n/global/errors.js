@@ -8,6 +8,11 @@ export default {
     fieldOrConditionRequired: '每个筛选条件的字段和条件均为必填项！',
     selectionRequired: '请选择至少一个字段用于显示！',
     oneFieldRequired: '至少有一个必填项缺少值！',
+    assigneeRequired: '请分配一个负责人！',
+    subjectRequired: '请添加一个主题！',
+    dateRequired: '请选择一个日期！',
+    statusRequired: '请选择一个状态！',
+    priorityRequired: '请选择一个优先级！',
   },
   en: {
     NO_AUTHENTICATION: 'No authentication to access this page!',
@@ -18,5 +23,10 @@ export default {
     fieldOrConditionRequired: '"Field" and "Condition" are required for every filter criterion! Please select a value for them',
     selectionRequired: 'Please select at least one field for display purpose!',
     oneFieldRequired: 'At least one required field is missing value!',
+    assigneeRequired: 'Please choose an assignee!',
+    subjectRequired: 'Please choose a subject!',
+    dueDateRequired: 'Please choose a date!',
+    statusRequired: 'Please choose a status!',
+    priorityRequired: 'Please choose a priority!',
   },
 };
