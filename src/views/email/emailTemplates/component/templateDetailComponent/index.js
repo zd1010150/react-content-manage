@@ -202,7 +202,7 @@ const TemplateDetail = ({
             >
                 <div className="mb-md">
                     {editTemplate.attachments && editTemplate.attachments.map((attachment)=>{
-                        return <span className="mr-sm">
+                        return <span className="mr-sm" key={attachment.id}>
                             <Icon type="paper-clip" />
                             <a href={attachment.url} target="_blank">{attachment.file_name}</a>
                         </span>
