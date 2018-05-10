@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl, intlShape } from 'react-intl';
-import { Icon, Popconfirm } from 'antd';
+import { Icon } from 'antd';
 import classNames from 'classnames/bind';
+import { FloatingLabelInput, StyledModal, PopDeleteConfirm } from 'components/ui/index';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
 import styles from './index.less';
-const cx = classNames.bind(styles);
 
-import { StyledModal, FloatingLabelInput } from 'components/ui/index';
+const cx = classNames.bind(styles);
 
 
 const defaultProps = {};
@@ -74,6 +74,7 @@ class SubjectsModal extends Component {
       <StyledModal
         footer={false}
         onCancel={this._onCancel}
+        onOk={this._onCancel}
         title={formatMessage({ id: `${i18nPrefix}.title` })}
         visible={visible}
       >
@@ -101,18 +102,9 @@ class SubjectsModal extends Component {
               }}
             >
               {subject.name}
-              <Popconfirm
-                cancelText={formatMessage({ id: `global.ui.button.cancel` })}
-                okText={formatMessage({ id: `global.ui.button.ok` })}
-                onConfirm={e => this._onSubjectDelete(subject.id)}
-                title={formatMessage({ id: `global.ui.dialog.deleteTitle` })}
-              >
-                <Icon
-                  className={cx('deleteIcon')}
-                  size="small"
-                  type="delete"
-                />
-              </Popconfirm>
+              <PopDeleteConfirm onConfirm={() => this._onSubjectDelete(subject.id)}>
+                <Icon className={cx('deleteIcon')} type="delete" />
+              </PopDeleteConfirm>
             </li>
           ))}
         </ul>
@@ -120,9 +112,9 @@ class SubjectsModal extends Component {
           addonAfter={<Icon className="cursor-pointer" size="small" type="save" onClick={this._onSaveNewSubject} />}
           handleChange={this.handleChange}
           labelColor="#000"
-          labelText={formatMessage({ id: `${i18nPrefix}.label` })}          
+          labelText={formatMessage({ id: `${i18nPrefix}.label` })}
           placeholder={formatMessage({ id: `${i18nPrefix}.placeholder` })}
-          value={newSubject}          
+          value={newSubject}
         />
       </StyledModal>
     );

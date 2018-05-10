@@ -23,17 +23,10 @@ const {
 export const getValueByType = (type, value = '') => {
   switch (type) {
     case DateOnly:
-      // TODO: modify function in order to omit offset and format
+    case DateTime:
       // need to pass undefined in order to make DatePicker works with empty value
       // because moment will convert undefined to 'today' date/time
-      return !value || value === '' ?
-              undefined :
-              toTimezone(value, '+1100', 'YYYY-MM-DD');
-    case DateTime:
-      // TODO: modify function in order to omit offset and format
-      return !value || value === '' ?
-              undefined :
-              toTimezone(value, '+1100', 'YYYY-MM-DD HH:mm:ss');
+      return !value || value === '' ? undefined : toTimezone(value, type === DateTime);
     case Lookup:
       return value && value.id ? value.id : null;
     case Email:

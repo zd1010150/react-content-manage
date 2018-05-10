@@ -110,7 +110,7 @@ const Actions = ({
             key={i}
             onClick={getFuncByKey(btn.key)}
           >
-            <Icon size="small" type={btn.icon} />
+            <Icon className="font-sm" type={btn.icon} />
             {formatMessage({ id: `${i18nPrefix}.${btn.key}` })}
           </Button>
         );

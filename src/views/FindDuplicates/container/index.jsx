@@ -1,24 +1,25 @@
 import { FindDuplicates } from 'components/page/index';
-import React, { Component } from 'react';
+import React from 'react';
+import Enums from 'utils/EnumsManager';
 import { getThemeByType } from 'utils/common';
 
+const { ObjectTypes } = Enums;
+const { Leads } = ObjectTypes;
 
-class FindDuplicatesWrapper extends Component {
-  render() {
-    const { url, params } = this.props.match;
-    const { objectId, objectType } = params;
-    const theme = getThemeByType(objectType);
 
-    return (
-      <FindDuplicates
-        objectId={objectId}
-        objectType={objectType}
-        theme={theme}
-        withConvert={url.indexOf('/convert/find') !== -1}
-      />
-    );
-  }
-}
+const FindDuplicatesWrapper = ({ match }) => {
+  const { url, params } = match;
+  const { objectId } = params;
+  const theme = getThemeByType(Leads);
+  return (
+    <FindDuplicates
+      objectId={objectId}
+      objectType={Leads}
+      theme={theme}
+      withConvert={url.indexOf('/convert/find') !== -1}
+    />
+  );
+};
 
 
 export default FindDuplicatesWrapper;
