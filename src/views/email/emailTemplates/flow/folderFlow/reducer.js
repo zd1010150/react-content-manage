@@ -9,7 +9,9 @@ import {
     EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
     EMAIL_TEMPLATES_SET_FOLDERS_ORDER,
     EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
-    EMAIL_TEMPLATES_CREATE_USER_FOLDERS
+    EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
+    EMAIL_TEMPLATES_CREATE_EDIT_FOLDERS,
+    EMAIL_TEMPLATES_DELETE_EDIT_FOLDERS
 } from "./actionType";
 
 export const userFolders = (state = [], action) => {
@@ -19,16 +21,6 @@ export const userFolders = (state = [], action) => {
             return action.userFolders;
         case EMAIL_TEMPLATES_DELETE_USER_FOLDERS:
             return state.filter(item => item.id !== action.id);
-        case EMAIL_TEMPLATES_SET_FOLDERS_ORDER:
-            return action.userFolders;
-        case EMAIL_TEMPLATES_UPDATE_FOLDER_NAME:
-            const cloneState = _.cloneDeep(state);
-            _.update(
-                _.find(cloneState, { id: payload.id }),
-                "name",
-                () => payload.name
-            );
-            return cloneState;
         case EMAIL_TEMPLATES_CREATE_USER_FOLDERS:
             return [...state, payload];
         default:
@@ -57,10 +49,24 @@ export const selectedFolder = (state = {}, action) => {
 };
 
 export const editFolders = (state = [], action) => {
-    const { type } = action;
+    const { type, payload } = action;
     switch (type) {
         case EMAIL_TEMPLATES_SET_EDIT_FOLDERS:
-            return [...state, action.editFolders];
+            return action.editFolders;
+        case EMAIL_TEMPLATES_CREATE_EDIT_FOLDERS:
+            return [...state, payload];
+        case EMAIL_TEMPLATES_DELETE_EDIT_FOLDERS:
+            return state.filter(item => item.id !== action.id);
+        case EMAIL_TEMPLATES_SET_FOLDERS_ORDER:
+            return payload;
+        case EMAIL_TEMPLATES_UPDATE_FOLDER_NAME:
+            const cloneState = _.cloneDeep(state);
+            _.update(
+                _.find(cloneState, { id: payload.id }),
+                "name",
+                () => payload.name
+            );
+            return cloneState;
         default:
             return state;
     }
@@ -69,7 +75,7 @@ export const editFolders = (state = [], action) => {
 export const deletedFolders = (state = [], action) => {
     const { type, id } = action;
     switch (type) {
-        case EMAIL_TEMPLATES_DELETE_USER_FOLDERS:
+        case EMAIL_TEMPLATES_DELETE_EDIT_FOLDERS:
             return id > 0 ? [...state, id] : [...state];
         default:
             return state;

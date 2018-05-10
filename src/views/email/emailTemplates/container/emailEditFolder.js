@@ -7,10 +7,10 @@ import {Panel} from 'components/ui/index';
 import {
     setEditFolderViewVisible,
     setEditFolderData,
-    deleteUserFolderData,
+    deleteEditFolderData,
     sortValues,
     updateFolderName,
-    createUserFolder,
+    createEditFolder,
     uploadFolders,
     setUserFolderData
 } from '../../flow/action';
@@ -23,23 +23,28 @@ class EmailTemplateEditFolder extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            cards: props.userFolders,
+            cards: [...props.editFolders],
             selectIndex: -1,
             isOtherDragging: false,
             tempId: -1
         };
     }
 
+    componentDidMount(){
+        const {setEditFolderData, userFolders} = this.props;
+        setEditFolderData(userFolders)
+    }
+
     componentWillReceiveProps(nextProps) {
         const {cards} = this.state;
-        if (nextProps.userFolders.length === this.props.userFolders.length + 1) {
-            const last = nextProps.userFolders[nextProps.userFolders.length - 1];
+        if (nextProps.editFolders.length === this.props.editFolders.length + 1) {
+            const last = nextProps.editFolders[nextProps.editFolders.length - 1];
             return this.setState({
                 cards: [...cards, last],
             });
         }
         return this.setState({
-            cards: [...nextProps.userFolders],
+            cards: [...nextProps.editFolders],
         });
     }
 
@@ -125,17 +130,17 @@ class EmailTemplateEditFolder extends React.Component {
     }
 
     saveEditFolder = () => {
-        const {setEditFolderViewVisible, userFolders, uploadFolders} = this.props;
+        const {setEditFolderViewVisible, editFolders, uploadFolders} = this.props;
         const {formatMessage} = this.props.intl;
         let canSave = true;
-        if(_.uniqBy(userFolders, 'name').length !== userFolders.length){
+        if(_.uniqBy(editFolders, 'name').length !== editFolders.length){
             notification.error({
                 duration: 3,
                 message: formatMessage({id: "page.emailTemplates.duplicatedFolderName"}),
             });
             return false
         }
-        userFolders.map((item, key) => {
+        editFolders.map((item, key) => {
             if(item.name === ''){
                 notification.error({
                     duration: 3,
@@ -151,26 +156,22 @@ class EmailTemplateEditFolder extends React.Component {
     }
 
     cancel = () => {
-        const {setUserFolderData, userFolders, setEditFolderViewVisible} = this.props;
+        const {setEditFolderViewVisible} = this.props;
         setEditFolderViewVisible(false);
-        const savedFolders = userFolders.filter((folder)=>{
-            return folder.created_at !== undefined
-        })
-        setUserFolderData(savedFolders)
     }
 
     render() {
         const {formatMessage} = this.props.intl;
         const {isOtherDragging} = this.state;
 
-        const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteUserFolderData, createUserFolder, ...others} = this.props;
+        const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteEditFolderData, createEditFolder, ...others} = this.props;
         return (
             <EditFolder userFolders={userFolders}
                         editFolders={editFolders}
                         setEditFolderViewVisible={setEditFolderViewVisible}
                         setEditFolderData={setEditFolderData}
-                        deleteUserFolderData={deleteUserFolderData}
-                        createUserFolder={createUserFolder}
+                        deleteEditFolderData={deleteEditFolderData}
+                        createEditFolder={createEditFolder}
                         isOtherDragging={isOtherDragging}
                         formatMessage={formatMessage}
                         editFolderName={this.editFolderName}
@@ -205,10 +206,10 @@ const mapStateToProps = ({global, setup}) => {
 const mapDispatchToProps = {
     setEditFolderViewVisible,
     setEditFolderData,
-    deleteUserFolderData,
+    deleteEditFolderData,
     sortValues,
     updateFolderName,
-    createUserFolder,
+    createEditFolder,
     uploadFolders,
     setUserFolderData
 };

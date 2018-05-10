@@ -12,6 +12,8 @@ import {
     EMAIL_TEMPLATES_SET_FOLDERS_ORDER,
     EMAIL_TEMPLATES_UPDATE_FOLDER_NAME,
     EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
+    EMAIL_TEMPLATES_CREATE_EDIT_FOLDERS,
+    EMAIL_TEMPLATES_DELETE_EDIT_FOLDERS
 } from "./actionType";
 
 const url = "/";
@@ -40,14 +42,14 @@ export const setEditFolderData = editFolders => ({
 });
 
 //Delete User Folders
-export const deleteUserFolderData = id => ({
-    type: EMAIL_TEMPLATES_DELETE_USER_FOLDERS,
+export const deleteEditFolderData = id => ({
+    type: EMAIL_TEMPLATES_DELETE_EDIT_FOLDERS,
     id
 });
 
-export const setNewOrder = userFolders => ({
+export const setNewOrder = payload => ({
     type: EMAIL_TEMPLATES_SET_FOLDERS_ORDER,
-    userFolders
+    payload
 });
 
 export const updateFolderName = ({ id, name }) => ({
@@ -55,7 +57,7 @@ export const updateFolderName = ({ id, name }) => ({
     payload: { id, name }
 });
 
-export const createUserFolder = payload => ({
-    type: EMAIL_TEMPLATES_CREATE_USER_FOLDERS,
+export const createEditFolder = payload => ({
+    type: EMAIL_TEMPLATES_CREATE_EDIT_FOLDERS,
     payload
 });

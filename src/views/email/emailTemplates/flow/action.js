@@ -26,10 +26,10 @@ import {
   setSharedFolderData,
   setSelectedFolder,
   setEditFolderData,
-  deleteUserFolderData,
+  deleteEditFolderData,
   setNewOrder,
   updateFolderName,
-  createUserFolder
+  createEditFolder
 } from "./folderFlow/action";
 import {
   setSelectedPermissionTeam,
@@ -101,13 +101,14 @@ export const uploadFolders = cb => (dispatch, getState) => {
   post(
     "/admin/email_folders/mass_cud/me",
     {
-      current: setup.emailTemplates.userFolders,
+      current: setup.emailTemplates.editFolders,
       delete: setup.emailTemplates.deletedFolders
     },
     dispatch
   ).then(data => {
-    if (!_.isEmpty(data)) {
-      console.log("data", data);
+    if (!_.isEmpty(data) && data.own && !_.isEmpty(data.own.data)) {
+        console.log("data", data);
+        dispatch(setUserFolderData(data.own.data));
     }
     if (_.isFunction(cb)) {
       cb();
@@ -313,6 +314,8 @@ export const fetchTemplates = ({
           pagination.total
         )
       );
+    } else {
+        dispatch(setTemplatesData([]));
     }
   });
 };
@@ -360,9 +363,9 @@ export const getAllUser = () => dispatch =>
 export {
   setUserFolderData,
   setEditFolderData,
-  deleteUserFolderData,
+  deleteEditFolderData,
   updateFolderName,
-  createUserFolder,
+  createEditFolder,
   setSelectedPermissionTeam,
   addPermissionTeam,
   addPermissionUser,
