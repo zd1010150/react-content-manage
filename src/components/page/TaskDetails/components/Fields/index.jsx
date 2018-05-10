@@ -174,7 +174,7 @@ class TaskFields extends Component {
               placeholder="Please select or add a new value from the list"
               value={subject}
             />
-            <SubjectsModal              
+            <SubjectsModal
               globalSubjects={globalSubjects}
               mySubjects={mySubjects}
               onCancel={this.handleSubjectModalCancel}
