@@ -1,14 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { intlShape, injectIntl } from 'react-intl';
-import { Select, Row, Col, Icon, Popconfirm } from 'antd';
-const Option = Select.Option;
+import { Col, Icon, Row, Select } from 'antd';
 import classNames from 'classnames/bind';
+import { ErrorText, PopDeleteConfirm } from 'components/ui/index';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { injectIntl, intlShape } from 'react-intl';
+import Enums from 'utils/EnumsManager';
+import { ValueCriteriaField } from '../index';
 import styles from './index.less';
+
+const { Option } = Select;
 const cx = classNames.bind(styles);
 
-import { ValueCriteriaField } from '../index';
-import Enums from 'utils/EnumsManager';
 
 const sideColLayout = {
   xs: 24,
@@ -17,7 +19,11 @@ const sideColLayout = {
 const colLayout = {
   xs: 24,
   sm: 7,
-}
+};
+const getFieldCls = (hasError) => {
+  const errorCls = hasError ? 'has-error' : '';
+  return `full-width ${errorCls}`;
+};
 
 const propTypes = {
   intl: intlShape.isRequired,
@@ -34,6 +40,7 @@ const propTypes = {
   conditions: PropTypes.array.isRequired,
   fields: PropTypes.array.isRequired,
 };
+
 
 const Criterion = ({
   intl,
@@ -52,8 +59,6 @@ const Criterion = ({
   handleAddonClick,
   handleFilterRemove,
 }) => {
-
-  const i18nPrefix = 'global.ui';
   const { formatMessage } = intl;
   const valueCriteriaFieldProps = {
     displayNum,
@@ -62,6 +67,8 @@ const Criterion = ({
     handleAddonClick,
     value,
   };
+
+  const selectCls = `full-width ${fieldId === Enums.PhantomId}`
   return (
     <Row gutter={16} style={{ marginBottom: 10 }}>
       <Col {...sideColLayout} className={cx('displayNumCol')}>
@@ -70,19 +77,25 @@ const Criterion = ({
       <Col {...colLayout}>
         <Select
           size="small"
-          className={cx('select')}
+          className={getFieldCls(fieldId === Enums.PhantomId)}
           value={fieldId === Enums.PhantomId ? '' : fieldId}
           onChange={newFieldId => handleFieldChange(newFieldId, displayNum)}
         >
-          {fields.map(field =>
-            <Option key={field.id} value={field.id}>{field.field_label}</Option>
-          )}
+          {fields.map(field => (
+            <Option
+              key={field.id}
+              value={field.id}
+            >
+              {field.field_label}
+            </Option>
+          ))}
         </Select>
+        {fieldId === Enums.PhantomId && <ErrorText intlId="global.errors.inputRequired" />}
       </Col>
       <Col {...colLayout}>
         <Select
           size="small"
-          className={cx('select')}
+          className={getFieldCls(conditionId === Enums.PhantomId)}
           value={conditionId === Enums.PhantomId ? '' : conditionId}
           onChange={conditionId => handleConditionChange(conditionId, displayNum)}
         >
@@ -90,20 +103,16 @@ const Criterion = ({
             <Option key={condition.id} value={condition.id}>{condition.display_value}</Option>
           )}
         </Select>
+        {conditionId === Enums.PhantomId && <ErrorText intlId="global.errors.inputRequired" />}
       </Col>
       <Col {...colLayout}>
         {type ? <ValueCriteriaField {...valueCriteriaFieldProps} />
               : <span className={cx('message')}>{formatMessage({ id: 'page.filterCriteria.columns.emptyMsg'})}</span>}
       </Col>
       <Col {...sideColLayout}>
-        <Popconfirm
-          title={formatMessage({ id: `${i18nPrefix}.dialog.deleteTitle`})}
-          onConfirm={e => handleFilterRemove(displayNum)}
-          okText={formatMessage({ id: `${i18nPrefix}.button.ok` })}
-          cancelText={formatMessage({ id: `${i18nPrefix}.button.cancel` })}
-        >
-          <Icon className={cx('deleteIcon')} type="delete" />
-        </Popconfirm>
+        <PopDeleteConfirm onConfirm={() => handleFilterRemove(displayNum)}>
+          <Icon className={`cursor-pointer ${cx('deleteIcon')}`} type="delete" />
+        </PopDeleteConfirm>
       </Col>
     </Row>
   );

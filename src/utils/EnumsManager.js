@@ -17,7 +17,7 @@ const BaseEnums = Object.freeze({
     Leads: 'leads',
     Accounts: 'accounts',
     Opportunities: 'opportunities',
-    Report: 'report',
+    Reports: 'reports',
     Email: 'email',
   }),
 

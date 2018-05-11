@@ -101,6 +101,7 @@ class ObjectShare extends Component {
     const { showModal, showTreeSection } = this.state;
     const {
       intl,
+      loginUserId,
       objectType,
       sharedTeams,
       sharedUsers,
@@ -121,7 +122,7 @@ class ObjectShare extends Component {
       >
         <SelectionPool
           theme={theme}
-          users={sharedUsers}
+          users={sharedUsers.filter(user => user.id !== loginUserId)}
           teams={sharedTeams}
           onTagClose={this.handleTagClose}
           closable
@@ -133,7 +134,7 @@ class ObjectShare extends Component {
           </Button>
           <SelectionModal
             theme={theme}
-            data={users}
+            data={users.filter(user => user.id !== loginUserId)}
             selectedData={sharedUsers}
             title={formatMessage({ id: `${i18n}.buttons.addUserToShare` })}
             visible={showModal}
@@ -170,14 +171,14 @@ class ObjectShare extends Component {
             className={`${theme}-theme-btn`}
             onClick={this.handleSaveClick}
           >
-            <Icon size="small" type="save" />
+            <Icon className="font-sm" size="small" type="save" />
             {formatMessage({ id: 'global.ui.button.save' })}
           </Button>
           <Button
             className="ml-sm"
             onClick={this.handleCancelClick}
           >
-            <Icon size="small" type="close" />
+            <Icon className="font-sm" size="small" type="close" />
             {formatMessage({ id: 'global.ui.button.cancel' })}
           </Button>
         </Row>
@@ -189,8 +190,9 @@ class ObjectShare extends Component {
 
 ObjectShare.defaultProps = defaultProps;
 ObjectShare.propTypes = propTypes;
-const mapStateToProps = ({ global, objectShare }) => ({
+const mapStateToProps = ({ global, loginUser, objectShare }) => ({
   language: global.language,
+  loginUserId: loginUser.id,
   users: global.settings.users,
   flatTeams: global.settings.flatTeams,
   teams: global.settings.teams,

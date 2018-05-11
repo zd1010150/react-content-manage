@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 const loadScript = require('load-script');
-
+import {Icon} from 'antd';
 const defaultScriptUrl = "https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js";
 let editorId = 0;
 let editorInstances;
@@ -29,7 +29,6 @@ class CKEditor extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('?????')
         if (this.props.content !== nextProps.content) {
             // window.CKEDITOR.replaceAll();
             // loadScript(nextProps, ()=>this.onLoad(nextProps));
@@ -77,7 +76,12 @@ class CKEditor extends React.Component {
     }
 
     render() {
-        return <div className={this.props.activeClass}/>;
+        if(this.state.isScriptLoaded){
+            return <div className={this.props.activeClass}/>;
+        } else {
+            return <Icon style={{fontSize: 30, padding: 20}} type="loading" />;
+        }
+
     }
 }
 

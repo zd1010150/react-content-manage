@@ -27,7 +27,7 @@ const Templates = ({templates, pagination, columns, formatMessage, isSharedByVis
             </div>
         </Permission>
         }
-        <Table dataSource={templates} columns={columns} pagination={pagination} className="mt-lg" rowKey="id"/>
+        <Table dataSource={templates} columns={columns} pagination={pagination} rowKey="id"/>
     </Fragment>
 )
 

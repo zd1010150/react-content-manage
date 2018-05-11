@@ -190,10 +190,9 @@ class FieldEditContainer extends React.Component {
                       }
                     </tbody>
                   </table>
-                  <ReplaceDialog {...replaceDialog} setReplaceDialog={setReplaceDialog} submitReplace={() => this.submitReplace()} />
                 </Panel> : ''
           }
-
+          <ReplaceDialog {...replaceDialog} setReplaceDialog={setReplaceDialog} submitReplace={() => this.submitReplace()} />
         </Permission>
       </Fragment>
     );

@@ -48,7 +48,7 @@ export default class ImportTemplateButton extends Component {
         };
         return (
             <Upload style={{display: 'inline-block'}} isShowMaxSizeTip={false} uploadConfig={uploadProps} onAllDone={(response, error) => this.onAllDone(response, error)} key={Math.random()}>
-                <Button size="small" className={`mr-md ${cx('new-template-link-button')}`}>
+                <Button size="small" className={`mr-md email-theme-btn ${cx('new-template-link-button')}`}>
                     <Icon className={cx('new-template-import-icon')} type="download" /> Import HTML Template
                 </Button>
             </Upload>

@@ -1,14 +1,15 @@
 /* eslint arrow-parens: ["error", "as-needed"] */
 /* eslint-disable no-fallthrough */
-import { Button, Icon, Popconfirm, Table } from 'antd';
+import { Button, Icon, Table } from 'antd';
 import classNames from 'classnames/bind';
-import { Panel } from 'components/ui/index';
+import { Panel, PopDeleteConfirm } from 'components/ui/index';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
+import { toTimezone } from 'utils/dateTimeUtils';
 import styles from './index.less';
 import { tryDeleteAttachment, tryDeleteTask, tryFetchModuleData } from '../../flow/actions';
 
@@ -196,6 +197,7 @@ class Subpanel extends Component {
           {
             dataIndex: 'updated_at',
             title: formatMessage({ id: `${i18n}.lastModifiedAt` }),
+            render: text => toTimezone(text, true),
           },
         ];
         break;
@@ -208,8 +210,9 @@ class Subpanel extends Component {
             title: formatMessage({ id: `${i18n}.subject` }),
           },
           {
-            dataIndex: 'sent_date',
+            dataIndex: 'created_at',
             title: formatMessage({ id: `${i18n}.sentDate` }),
+            render: text => toTimezone(text, true),
           },
           {
             dataIndex: 'open_date',
@@ -220,8 +223,9 @@ class Subpanel extends Component {
             title: formatMessage({ id: `${i18n}.openTimes` }),
           },
           {
-            dataIndex: 'last_open',
-            title: formatMessage({ id: `${i18n}.lastOpenAt` }),
+            dataIndex: 'updated_at',
+            title: formatMessage({ id: `${i18n}.lastModifiedAt` }),
+            render: text => toTimezone(text, true),
           },
         ];
         break;
@@ -240,8 +244,9 @@ class Subpanel extends Component {
             title: formatMessage({ id: `${i18n}.type` }),
           },
           {
-            dataIndex: 'uploaded_at',
+            dataIndex: 'created_at',
             title: formatMessage({ id: `${i18n}.uploadAt` }),
+            render: text => toTimezone(text, true),
           },
           {
             dataIndex: 'created_by',
@@ -281,15 +286,12 @@ class Subpanel extends Component {
               <Link to={`/${editLink}/${id}`}>
                 <Icon className="cursor-pointer" size="small" type="edit" />
               </Link>
-              <Popconfirm
+              <PopDeleteConfirm
                 placement="right"
-                title={formatMessage({ id: 'global.ui.dialog.deleteTitle' })}
-                okText={formatMessage({ id: 'global.ui.button.ok' })}
-                cancelText={formatMessage({ id: 'global.ui.button.cancel' })}
                 onConfirm={() => this.handleDeleteByModule(code, id)}
               >
-                <Icon className="ml-sm cursor-pointer" size="small" type="delete" />
-              </Popconfirm>
+                <Icon className="ml-sm cursor-pointer" type="delete" />
+              </PopDeleteConfirm>
             </Fragment>
           );
         },
@@ -306,15 +308,12 @@ class Subpanel extends Component {
               <Link target="_blank" to={record.url}>
                 <Icon style={{fontWeight: 400 }} className="cursor-pointer" size="small" type="eye" />
               </Link>
-              <Popconfirm
+              <PopDeleteConfirm
                 placement="right"
-                title={formatMessage({ id: 'global.ui.dialog.deleteTitle' })}
-                okText={formatMessage({ id: 'global.ui.button.ok' })}
-                cancelText={formatMessage({ id: 'global.ui.button.cancel' })}
                 onConfirm={() => this.handleDeleteByModule(code, id)}
               >
-                <Icon className="ml-sm cursor-pointer" size="small" type="delete" />
-              </Popconfirm>
+                <Icon className="ml-sm cursor-pointer" type="delete" />
+              </PopDeleteConfirm>
             </Fragment>
           );
         },

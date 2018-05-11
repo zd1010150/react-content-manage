@@ -48,6 +48,8 @@ class MainLayout extends React.Component {
     render() {
       // TODO: Skip the login if in dev mode
       // const isDevMode = process.env.NODE_ENV === 'development' ? true : false;
+      const { location } = this.props;
+
       return (
         <div>
           { !this.hasLoggedIn() ? (
@@ -55,7 +57,7 @@ class MainLayout extends React.Component {
                 ) : (
                   <div className={cx('body-wrapper')}>
                     <div className={cx('header-wrapper')}>
-                      <TopPanel />
+                      <TopPanel nextPath={location.pathname} />
                     </div>
                     <Switch>
                       <Route path="/setup" component={SetupLayout} />

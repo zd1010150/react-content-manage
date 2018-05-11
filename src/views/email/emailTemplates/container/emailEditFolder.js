@@ -1,16 +1,18 @@
 /* eslint-disable react/prop-types,no-shadow */
 import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
+import { notification } from 'antd';
 import {intlShape, injectIntl} from 'react-intl';
 import {Panel} from 'components/ui/index';
 import {
     setEditFolderViewVisible,
     setEditFolderData,
-    deleteUserFolderData,
+    deleteEditFolderData,
     sortValues,
     updateFolderName,
-    createUserFolder,
-    uploadFolders
+    createEditFolder,
+    uploadFolders,
+    setUserFolderData
 } from '../../flow/action';
 import {EditFolder} from '../component';
 
@@ -21,23 +23,28 @@ class EmailTemplateEditFolder extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            cards: props.userFolders,
+            cards: [...props.editFolders],
             selectIndex: -1,
             isOtherDragging: false,
             tempId: -1
         };
     }
 
+    componentDidMount(){
+        const {setEditFolderData, userFolders} = this.props;
+        setEditFolderData(userFolders)
+    }
+
     componentWillReceiveProps(nextProps) {
         const {cards} = this.state;
-        if (nextProps.userFolders.length === this.props.userFolders.length + 1) {
-            const last = nextProps.userFolders[nextProps.userFolders.length - 1];
+        if (nextProps.editFolders.length === this.props.editFolders.length + 1) {
+            const last = nextProps.editFolders[nextProps.editFolders.length - 1];
             return this.setState({
                 cards: [...cards, last],
             });
         }
         return this.setState({
-            cards: [...nextProps.userFolders],
+            cards: [...nextProps.editFolders],
         });
     }
 
@@ -123,15 +130,22 @@ class EmailTemplateEditFolder extends React.Component {
     }
 
     saveEditFolder = () => {
-        const {setEditFolderViewVisible, userFolders, uploadFolders} = this.props;
+        const {setEditFolderViewVisible, editFolders, uploadFolders} = this.props;
+        const {formatMessage} = this.props.intl;
         let canSave = true;
-        if(_.uniqBy(userFolders, 'name').length !== userFolders.length){
-            alert('same file name')
+        if(_.uniqBy(editFolders, 'name').length !== editFolders.length){
+            notification.error({
+                duration: 3,
+                message: formatMessage({id: "page.emailTemplates.duplicatedFolderName"}),
+            });
             return false
         }
-        userFolders.map((item, key) => {
+        editFolders.map((item, key) => {
             if(item.name === ''){
-                alert('empty file name exist')
+                notification.error({
+                    duration: 3,
+                    message: formatMessage({id: "page.emailTemplates.emptyFolderName"}),
+                });
                 canSave = false;
                 return true
             }
@@ -141,18 +155,23 @@ class EmailTemplateEditFolder extends React.Component {
         }
     }
 
+    cancel = () => {
+        const {setEditFolderViewVisible} = this.props;
+        setEditFolderViewVisible(false);
+    }
+
     render() {
         const {formatMessage} = this.props.intl;
         const {isOtherDragging} = this.state;
 
-        const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteUserFolderData, createUserFolder, ...others} = this.props;
+        const {userFolders, editFolders, setEditFolderViewVisible, setEditFolderData, deleteEditFolderData, createEditFolder, ...others} = this.props;
         return (
             <EditFolder userFolders={userFolders}
                         editFolders={editFolders}
                         setEditFolderViewVisible={setEditFolderViewVisible}
                         setEditFolderData={setEditFolderData}
-                        deleteUserFolderData={deleteUserFolderData}
-                        createUserFolder={createUserFolder}
+                        deleteEditFolderData={deleteEditFolderData}
+                        createEditFolder={createEditFolder}
                         isOtherDragging={isOtherDragging}
                         formatMessage={formatMessage}
                         editFolderName={this.editFolderName}
@@ -161,6 +180,7 @@ class EmailTemplateEditFolder extends React.Component {
                         setDragging={this.setDragging}
                         handleItemSelection={this.handleItemSelection}
                         saveEditFolder={this.saveEditFolder}
+                        cancel={this.cancel}
                         tempId={this.state.tempId}
                         setTempId={this.setTempId}
                         {...others}/>
@@ -186,11 +206,12 @@ const mapStateToProps = ({global, setup}) => {
 const mapDispatchToProps = {
     setEditFolderViewVisible,
     setEditFolderData,
-    deleteUserFolderData,
+    deleteEditFolderData,
     sortValues,
     updateFolderName,
-    createUserFolder,
-    uploadFolders
+    createEditFolder,
+    uploadFolders,
+    setUserFolderData
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmailTemplateEditFolder);

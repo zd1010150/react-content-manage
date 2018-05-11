@@ -77,12 +77,12 @@ class NewEmailContent extends React.Component {
         }
     }
     render() {
-        const {showModal, content, onFileUpload, tryLogout} = this.props;
+        const {showModal, content, onFileUpload, tryLogout, attachments} = this.props;
         const { formatMessage } = this.props.intl;
         const selectTemplate = <Button className="email-theme-btn" size="small" onClick={showModal}><Icon type="download" />{ formatMessage({ id: 'page.emailTemplates.selectTemplate' }) }</Button>;
         // const cloudAttachment = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {}}><Icon type="file" />{ formatMessage({ id: 'page.emailTemplates.cloudAttachment' }) }</Button>
         // const localAttachment = <Button className="email-theme-btn ml-sm" size="small" onClick={() => {}}><Icon type="link" />{ formatMessage({ id: 'page.emailTemplates.localAttachment' }) }</Button>
-        const localAttachment = <FileUpload label={formatMessage({ id: 'page.emailTemplates.localAttachment'})} tryLogout={tryLogout} onFileUpload={onFileUpload}/>
+        const localAttachment = <FileUpload attachments={attachments} label={formatMessage({ id: 'page.emailTemplates.localAttachment'})} tryLogout={tryLogout} onFileUpload={onFileUpload}/>
         const additionalCtrl = <div className="pl-lg pt-md pb-sm" style={{background: '#f8f8f8'}}>{selectTemplate}{localAttachment}</div>
         return (
             <Fragment>

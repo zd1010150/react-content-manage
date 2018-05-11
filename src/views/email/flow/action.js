@@ -3,10 +3,10 @@ import {
   setSharedFolderData,
   setSelectedFolder,
   setEditFolderData,
-  deleteUserFolderData,
+  deleteEditFolderData,
   setNewOrder,
   updateFolderName,
-  createUserFolder,
+  createEditFolder,
   setSelectedPermissionTeam,
   addPermissionTeam,
   setPermissionTeams,
@@ -45,10 +45,11 @@ import {
 } from "../newEmail/flow/action";
 
 export {
+  setUserFolderData,
   setEditFolderData,
-  deleteUserFolderData,
+  deleteEditFolderData,
   updateFolderName,
-  createUserFolder,
+  createEditFolder,
   setSelectedPermissionTeam,
   addPermissionTeam,
   addPermissionUser,

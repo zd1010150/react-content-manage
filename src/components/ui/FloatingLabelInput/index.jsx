@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable jsx-a11y/label-has-for */
 import { Input } from 'antd';
 import classNames from 'classnames/bind';
+import { ErrorText } from 'components/ui/index';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -10,9 +12,10 @@ const defaultProps = {
   labelText: 'Default Label',
   withSearch: false,
   enterButton: true,
+  useOldValidation: true,
 };
 const propTypes = {
-  labelText: PropTypes.string.isRequired,
+  labelText: PropTypes.string,
   labelColor: PropTypes.string,
   placeholder: PropTypes.string,
   addonAfter: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
@@ -21,6 +24,7 @@ const propTypes = {
   handleSearch: PropTypes.func,
   handleFocus: PropTypes.func,
   enterButton: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
+  useOldValidation: PropTypes.bool,
 };
 
 class FloatingLabelInput extends Component {
@@ -67,6 +71,33 @@ class FloatingLabelInput extends Component {
     }
   }
 
+  getHrCls = (hasError) => {
+    const { isFocused } = this.state;
+    let hrCls = cx('default');
+    if (isFocused) {
+      hrCls += ` ${cx('highlighted')}`;
+    }
+    if (hasError) {
+      hrCls += ` ${cx('hasError')}`;
+    }
+    return hrCls;
+  }
+
+  getLabelCls = () => {
+    let labelCls = '';
+    const { isEmpty, isFocused } = this.state;
+    const shouldLabelRise = !(!isFocused && isEmpty);
+    if (shouldLabelRise) {
+      labelCls += ` ${cx('toTop')}`;
+    }
+
+    if (this.props.required) {
+      labelCls += ` ${cx('required')}`;
+    }
+
+    return labelCls;
+  }
+
   render() {
     const { isEmpty, isFocused } = this.state;
     const {
@@ -82,15 +113,18 @@ class FloatingLabelInput extends Component {
       required,
       noLabel,
       enterButton,
+      useOldValidation,
+      validationMsgId,
     } = this.props;
-    const shouldLabelUp = !(!isFocused && isEmpty);
+
     const shouldShowPlaceholder = isFocused && isEmpty;
 
     const hasError = required && value === '';
+
     return (
       <div className={classNames(cx('floatingInputWrapper'), 'floatingInputWrapper') + (hasError ? ' has-error' : '')}>
         <label
-          className={shouldLabelUp ? cx('toTop') : ''}
+          className={this.getLabelCls()}
           style={{ color: labelColor, display: noLabel ? 'none' : '' }}
         >
           {labelText}
@@ -105,7 +139,7 @@ class FloatingLabelInput extends Component {
             onChange={this.onChange}
             onFocus={this.onFocus}
             onPressEnter={this.onPressEnter}
-            onSearch={value => handleSearch(value)}
+            onSearch={searchText => handleSearch(searchText)}
             enterButton={enterButton}
           />
         ) : (
@@ -118,10 +152,10 @@ class FloatingLabelInput extends Component {
           />
         )}
         <div>
-          <hr />
-          <hr className={cx('default') + (isFocused ? ` ${cx('highlighted')}` : '')} />
+          <hr className={hasError ? cx('hasError') : ''} />
+          <hr className={this.getHrCls(hasError)} />
         </div>
-        {hasError && <div className="ant-form-explain">{message}</div>}
+        {hasError && <div className="ant-form-explain inheritedFromAntd">{message}</div>}
       </div>
     );
   }

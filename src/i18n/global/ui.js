@@ -46,13 +46,13 @@ export default {
       preview: '预览',
       selectFile: '选择文件',
       uploading: '正在上传',
-      mergeLead: '合并选中的潜在客户',
+      mergeLead: '合并选中的Leads',
       convert: '进行转化',
       merge: '进行合并',
-      convertToAccount: '升级为客户',
+      convertToAccount: '升级为Account',
       [TaskOpen]: '新任务',
       [Attachments]: '新附件',
-      [Opportunities]: 'New Opportunities',
+      [Opportunities]: '新Opportunity',
       [EmailSent]: '新邮件',
       selectFileAndUpload: '选择文件并上传',
       addUserToShare: '分享给其他用户',
@@ -60,6 +60,8 @@ export default {
       newOpport: '新Opportunity',
       viewAll: '查看全部',
       new: '新',
+      saveChange: '保存修改',
+      redoAll: '撤销所有修改',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -110,8 +112,10 @@ export default {
     dialog: {
       info: '提示',
       warning: '警告',
-      deleteTitle: '确定删除这条记录？',
+      deleteTitle: '此记录将被删除，您确定吗？',
       revertTitle: '所有修改后的值将会被重置，您确定吗？',
+      massDelete: '所有选中的记录将会被删除，您确定吗？',
+      multipleDnd: '按住Shift键并点击记录，可同时选择多条数据进行拖拽。',
     },
     tree: {
       default: '默认部门',
@@ -120,7 +124,7 @@ export default {
       viewName: '视图名称',
     },
     errors: {
-      inputRequired: '必填项',
+      inputRequired: '必填项!',
     },
     criteria: {
       field: '字段',
@@ -181,7 +185,7 @@ export default {
       convert: 'Continue to Convert',
       merge: 'Merge',
       convertToAccount: 'Convert to Account',
-      [Opportunities]: 'New Opportunities',
+      [Opportunities]: 'New Opportunity',
       [TaskOpen]: 'New Task',
       [Attachments]: 'New Attachment',
       [EmailSent]: 'New Email',
@@ -191,6 +195,8 @@ export default {
       newOpport: 'New Opportunity',
       viewAll: 'View All',
       new: 'New ',
+      saveChange: 'Save Changes',
+      redoAll: 'Redo',
     },
     input: {
       searchStore: 'Search entire store here...',
@@ -241,8 +247,10 @@ export default {
     dialog: {
       info: 'Info',
       warning: 'Warning',
-      deleteTitle: 'Are you sure to delete this record ?',
-      revertTitle: 'Are you sure to revert all values ?',
+      deleteTitle: 'Are you sure to delete this record?',
+      revertTitle: 'Are you sure to revert all values?',
+      massDelete: 'Are you sure to delete all selected records?',
+      multipleDnd: 'Drag and drop is enabled. Press shift and click on an item can select multiple items.',
     },
     tree: {
       default: 'No Department',
@@ -251,7 +259,7 @@ export default {
       viewName: 'View Name',
     },
     errors: {
-      inputRequired: 'The input is required.',
+      inputRequired: 'The input is required!',
     },
     criteria: {
       field: 'Field',

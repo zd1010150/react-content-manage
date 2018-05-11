@@ -50,6 +50,7 @@ export default class FileUpload extends Component {
         }), {
             isAllDone, allResponse, allError,
         });
+        console.log('result', result)
 
         if (result.isAllDone) {
             onFileUpload(result.allResponse, result.allError);
@@ -63,7 +64,17 @@ export default class FileUpload extends Component {
         }
     }
     render() {
-        const {label} = this.props;
+        const {label, attachments} = this.props;
+        console.log('attachments', attachments)
+        const defaultFileList = attachments ? attachments.map((data)=>{
+            return {
+                uid: data.id,
+                name: data.file_name,
+                status: 'done',
+                url: data.url,
+
+            }
+        }) : [];
 
         const uploadProps = {
             name: 'document',
@@ -72,6 +83,7 @@ export default class FileUpload extends Component {
             onChange: this.handleChange,
             multiple: true,
             withCredentials: true,
+            defaultFileList: defaultFileList
         };
         return (
             <Upload {...uploadProps}>
