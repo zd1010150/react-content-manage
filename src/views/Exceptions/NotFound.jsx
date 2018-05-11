@@ -11,7 +11,7 @@ const NotFound = ({ intl }) => {
   return (
     <Fragment>
       <h2>
-        {formatMessage({ id: 'global.errors.notFound' })}  
+        {formatMessage({ id: 'global.errors.notFound' })}
       </h2>
       <Link to="/dashboard">
         {formatMessage({ id: 'global.errors.returnDashboard' })}
