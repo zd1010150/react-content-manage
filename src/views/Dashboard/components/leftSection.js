@@ -6,9 +6,10 @@ import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { objTypeAndClassTypeMap } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
-import { Row, Col, Button, Icon } from 'antd';
+import { Row, Col, Button, Icon, Tooltip } from 'antd';
 import { Panel } from 'components/ui/index';
 import styles from '../index.less';
+import { toTimezone } from 'utils/dateTimeUtils';
 
 
 const cx = classNames.bind(styles);
@@ -76,16 +77,17 @@ class LeftSection extends React.Component {
                       </div>
                       <div className="clearfix">
                         <span className={`${objTypeAndClassTypeMap[a.taskable_type]}-theme-text pull-left`}>
-                            {a.relate_user && a.relate_user.name}
-                            </span>
+                          {a.relate_user && a.relate_user.name}
+                        </span>
                         <span className="pull-right text2">
-                          <Icon type="clock-circle-o" className="mr-sm" />
-                            { a.due_date }
-                            {/* DANDAN-TODO */}
+                          <Tooltip title="Due date">
+                            <Icon type="clock-circle-o" className="mr-sm" />
+                          </Tooltip>
+                          {toTimezone(a.due_date)}
                         </span>
                       </div>
                     </td>
-                                        </tr>))}
+                  </tr>))}
                 </tbody>
               </table>
             </Panel>

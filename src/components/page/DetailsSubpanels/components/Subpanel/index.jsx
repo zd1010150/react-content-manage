@@ -244,8 +244,9 @@ class Subpanel extends Component {
             title: formatMessage({ id: `${i18n}.type` }),
           },
           {
-            dataIndex: 'uploaded_at',
+            dataIndex: 'created_at',
             title: formatMessage({ id: `${i18n}.uploadAt` }),
+            render: text => toTimezone(text, true),
           },
           {
             dataIndex: 'created_by',
