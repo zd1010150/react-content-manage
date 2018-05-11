@@ -3,6 +3,8 @@ import { combineReducers } from 'redux';
 import { flattenTree } from 'utils/common';
 import { moments, years } from 'utils/dateTimeUtils';
 import { navLanguage } from 'utils/navigationUtil';
+import Enums from 'utils/EnumsManager';
+import { getStore, setStore } from 'utils/localStorage';
 import { SET_ACCOUNTINFO,
   SET_GLOBAL_SETTING,
   SET_LOGO,
@@ -13,8 +15,6 @@ import { SET_ACCOUNTINFO,
   TOGGLE_LANGUAGE,
   SET_APP_ROUTER_HASH,
 } from './actionType';
-import Enums from 'utils/EnumsManager';
-import { getStore, setStore } from 'utils/localStorage';
 
 const { LocalStorageKeys } = Enums;
 const { User, Timezone, LanguaegOfApp } = LocalStorageKeys;
@@ -23,12 +23,9 @@ const { User, Timezone, LanguaegOfApp } = LocalStorageKeys;
 const setTimezoneInStorage = (timezones = [], countries = []) => {
   const user = getStore(User);
   const parsedUser = JSON.parse(user);
-  const companySettings = parsedUser.company ? parsedUser.company : {};
+  const companySettings = parsedUser && parsedUser.company ? parsedUser.company : {};
   const timezone = timezones.find(tz => tz.id === companySettings.time_zone);
-  console.log('-----==================');
-  console.log(timezone);
   const country = countries.find(cty => cty.id === companySettings.country_code);
-  console.log(country);
   return setStore(Timezone, {
     dateFormat: country && country.date_format ? country.date_format : 'YYYY-MM-DD',
     timeFormat: country && country.time_format ? country.time_format : 'YYYY-MM-DD HH:mm:ss',
