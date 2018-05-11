@@ -82,16 +82,16 @@ const MainContent = () => (
       }}
     />
     <Route
-      path="/accounts/:accountId/opportunities/0000-0000"
+      path="/accounts/:accountId/opportunities/:objectId"
       render={(props) => {
         const { match } = props;
-        const { accountId } = match.params;
+        const { accountId, objectId } = match.params;
         return (
           <ClientDetails
             {...props}
-            key={`${Opportunities}_${PhantomId}`}
+            key={`${Opportunities}_${objectId}`}
             accountId={accountId}
-            objectId={PhantomId}
+            objectId={objectId}
             objectType={Opportunities}
           />
         );

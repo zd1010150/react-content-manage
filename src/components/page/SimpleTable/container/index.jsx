@@ -1,6 +1,6 @@
 /* eslint arrow-parens: ["error", "as-needed"] */
-import { Button, Icon, Popconfirm, Table } from 'antd';
-import { Panel } from 'components/ui/index';
+import { Button, Icon, Table } from 'antd';
+import { Panel, PopDeleteConfirm } from 'components/ui/index';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
@@ -69,6 +69,7 @@ class SimpleTable extends Component {
   }
 
   renderColumnByType = (type, column) => {
+    const { objectId } = this.props;
     const configs = {
       title: column.field_label,
       dataIndex: column.field_name,
@@ -78,7 +79,7 @@ class SimpleTable extends Component {
     switch (type) {
       case DateOnly:
       case DateTime:
-        extraConfigs.render = text => toTimezone(text, '+1100', 'YYYY-MM-DD');
+        extraConfigs.render = text => toTimezone(text, type === DateTime);
         break;
       case Lookup:
         extraConfigs.dataIndex = `${column.field_name}.${column.lookup_own_field_name}`;
@@ -95,7 +96,7 @@ class SimpleTable extends Component {
           extraConfigs.render = (text, record) => (
             <Link
               className={`${theme}-theme-text`}
-              to={`/${Opportunities}/${record.id}`}
+              to={`/${Accounts}/${objectId}/${Opportunities}/${record.id}`}
             >
               {text}
             </Link>
@@ -113,7 +114,7 @@ class SimpleTable extends Component {
   }
 
   renderColumns = data => {
-    const { intl } = this.props;
+    const { intl, objectId } = this.props;
     const { formatMessage } = intl;
     const me = this;
     const columns = data.map(column => me.renderColumnByType(column.crm_data_type, column));
@@ -123,16 +124,15 @@ class SimpleTable extends Component {
       width: 80,
       render: (text, record) => (
         <Fragment>
-          <Link to={`/${Opportunities}/${record.id}`}>
-            <Icon className="cursor-pointer" size="small" type="edit" />
+          <Link to={`/${Accounts}/${objectId}/${Opportunities}/${record.id}`}>
+            <Icon className="cursor-pointer" type="edit" />
           </Link>
-          <Popconfirm
-            title={formatMessage({ id: 'global.ui.dialog.deleteTitle' })}
+          <PopDeleteConfirm
             onConfirm={() => me.handleDeleteClick(record.id)}
             placement="right"
           >
-            <Icon className="cursor-pointer ml-sm" size="small" type="delete" />
-          </Popconfirm>
+            <Icon className="cursor-pointer ml-sm" type="delete" />
+          </PopDeleteConfirm>
         </Fragment>
       ),
     });
@@ -159,7 +159,8 @@ class SimpleTable extends Component {
           <Link to={`/${Accounts}/${objectId}/${Opportunities}/${PhantomId}`}>
             <Button size="small">
               <Icon type="plus" />
-              {formatMessage({ id: 'global.ui.button.newOpport' })}
+              {formatMessage({ id: 'global.ui.button.new' })}
+              {formatMessage({ id: 'global.properNouns.opport' })}
             </Button>
           </Link>
         }
