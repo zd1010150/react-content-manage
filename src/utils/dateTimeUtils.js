@@ -12,37 +12,33 @@ const getTimeSetting = (isTime) => {
 
   const formatKey = isTime ? 'timeFormat' : 'dateFormat';
   const format = parsedTimezone[formatKey] ? parsedTimezone[formatKey] : 'YYYY-MM-DD';
-  const offset = parsedTimezone.tz_offset ? parsedTimezone.tz_offset : '+0000';
+  const offset = parsedTimezone.offset ? parsedTimezone.offset : '+0000';
   return {
     format,
-    offset: offset.indexOf('-') === -1 ? `+${offset}` : offset,
+    offset: offset.indexOf('-') < 0 ? `+${offset}` : offset,
   };
 };
 /**
  *
  * @param {string} str: could be a date string or datetime string, e.g. '2018-03-06 20:00:00'
- * @param {boolean} isConvertingTime: whether the str is a date or datetime string
+ * @param {boolean} isConvertingTime: whether the result should be converted to a date or datetime string
  *
  * Convert UTC time to specific timezone time
  */
 export const toTimezone = (str, isConvertingTime = false) => {
   const timeSetting = getTimeSetting(isConvertingTime);
-  console.log(timeSetting.offset, timeSetting.format);
   return moment.utc(str).utcOffset(timeSetting.offset).format(timeSetting.format);
 };
 
 /**
  *
- * @param {string} timeStr normal time string, e.g. '2018-03-06 20:00:00'
- * @param {string} offset compared to UTC, e.g. AUS will be '+1100'
- * @param {string} format datetime format based on user company setting
- * offset and formats should be found in global settings
+ * @param {string} str: could be a date string or datetime string, e.g. '2018-03-06 20:00:00'
+ * @param {boolean} isConvertingTime: whether the result should be converted to a date or datetime string
  *
  * Convert specific timezone time to UTC time
  */
 export const toUtc = (str, isConvertingTime = false) => {
   const timeSetting = getTimeSetting(isConvertingTime);
-  console.log(timeSetting.offset, timeSetting.format);
   if (isConvertingTime) {
     return moment.utc(`${str}${timeSetting.offset}`).format(timeSetting.format);
   }

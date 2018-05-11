@@ -12,7 +12,7 @@ import { intlShape, injectIntl } from 'react-intl';
 import { setPeriod, queryByPaging, queryByPeriod } from '../flow/action';
 import { ALL_STATUS } from '../flow/config';
 import { getTreeItemByKey } from 'utils/treeUtil';
-
+import { toTimezone } from 'utils/dateTimeUtils';
 
 const Option = Select.Option;
 
@@ -97,6 +97,7 @@ class TaskListView extends React.Component {
         title: formatMessage({ id: 'page.taskDetails.labels.dueDate' }),
         dataIndex: 'due_date',
         key: 'due_date',
+        render: text => toTimezone(text),
       }, {
         title: formatMessage({ id: 'global.ui.table.user' }),
         render: record => (
@@ -113,10 +114,12 @@ class TaskListView extends React.Component {
       {
         title: formatMessage({ id: 'global.ui.table.createDate' }),
         dataIndex: 'created_at',
+        render: text => toTimezone(text, true),
       },
       {
         title: formatMessage({ id: 'global.ui.table.uploadAt' }),
         dataIndex: 'updated_at',
+        render: text => toTimezone(text, true),
       },
     ];
 

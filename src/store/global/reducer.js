@@ -3,6 +3,8 @@ import { combineReducers } from 'redux';
 import { flattenTree } from 'utils/common';
 import { moments, years } from 'utils/dateTimeUtils';
 import { navLanguage } from 'utils/navigationUtil';
+import Enums from 'utils/EnumsManager';
+import { getStore, setStore } from 'utils/localStorage';
 import { SET_ACCOUNTINFO,
   SET_GLOBAL_SETTING,
   SET_LOGO,
@@ -13,8 +15,6 @@ import { SET_ACCOUNTINFO,
   TOGGLE_LANGUAGE,
   SET_APP_ROUTER_HASH,
 } from './actionType';
-import Enums from 'utils/EnumsManager';
-import { getStore, setStore } from 'utils/localStorage';
 
 const { LocalStorageKeys } = Enums;
 const { User, Timezone, LanguaegOfApp } = LocalStorageKeys;
@@ -23,13 +23,13 @@ const { User, Timezone, LanguaegOfApp } = LocalStorageKeys;
 const setTimezoneInStorage = (timezones = [], countries = []) => {
   const user = getStore(User);
   const parsedUser = JSON.parse(user);
-  const timezone = timezones.find(tz => tz.id === parsedUser.time_zone);
-  // TODO: when backend finishes, the time format should be get from country by loginuser country
-  const country = countries.find(cty => cty.id === parsedUser.country);
+  const companySettings = parsedUser && parsedUser.company ? parsedUser.company : {};
+  const timezone = timezones.find(tz => tz.id === companySettings.time_zone);
+  const country = countries.find(cty => cty.id === companySettings.country_code);
   return setStore(Timezone, {
-    dateFormat: 'YYYY-MM-DD',
-    timeFormat: 'YYYY-MM-DD HH:mm:ss',
-    ...timezone,
+    dateFormat: country && country.date_format ? country.date_format : 'YYYY-MM-DD',
+    timeFormat: country && country.time_format ? country.time_format : 'YYYY-MM-DD HH:mm:ss',
+    offset: timezone && timezone.tz_offset ? timezone.tz_offset : '+1100',
   });
 };
 
@@ -108,7 +108,7 @@ const settings = (state = {
 }, action) => {
   switch (action.type) {
     case SET_GLOBAL_SETTING:
-      setTimezoneInStorage(action.settings.timezones);
+      setTimezoneInStorage(action.settings.timezones, action.settings.countries);
       return mapSettingData(state, action.settings);
 
 

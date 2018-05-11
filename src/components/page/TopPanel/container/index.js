@@ -37,14 +37,19 @@ class topPanel extends React.Component {
   }
   render() {
     const {
-      language, account, name, logo, accountPermissions
+      language,
+      account,
+      name,
+      logo,
+      accountPermissions,
+      nextPath,
     } = this.props;
     return (
       <div
         className={cx('header')}
       >
         <div className={cx('siteTitle')}> <img src={logo} className={cx('crm-logo')} alt="company logo" /></div>
-        <TopNav />
+        <TopNav nextPath={nextPath} />
         <UserSettings accountPermissions={accountPermissions} name={name} logoutHandler={() => this.onLogoutClick()} />
         <Language language={language} onChange={language => this.changeLanguage(language)} />
         <Permission permission={PERMISSIONS.SETUP}>
