@@ -13,6 +13,8 @@ export default {
     dateRequired: '请选择一个日期！',
     statusRequired: '请选择一个状态！',
     priorityRequired: '请选择一个优先级！',
+    returnDashboard: '返回Dashboard',
+    notFound: '404未找到此页面！',
   },
   en: {
     NO_AUTHENTICATION: 'No authentication to access this page!',
@@ -28,5 +30,7 @@ export default {
     dueDateRequired: 'Please choose a date!',
     statusRequired: 'Please choose a status!',
     priorityRequired: 'Please choose a priority!',
+    returnDashboard: 'Return to Dashboard',
+    notFound: '404 Page Not Found!',
   },
 };

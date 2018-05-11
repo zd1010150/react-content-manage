@@ -30,7 +30,9 @@ import {
   ObjectShare,
   Task,
   ClientDetails,
+  Exceptions,
 } from 'views/index';
+const { NotFound } = Exceptions;
 import Enums from 'utils/EnumsManager';
 
 const { ObjectTypes, PhantomId } = Enums;
@@ -55,7 +57,6 @@ const MainContent = () => (
       path="/setup/email/templates-creation"
       component={EmailTemplatesCreation}
     />
-    <Route path="/:objectType/:objectId/email/new" component={NewEmail} />
     <Route path="/setup/email/campaign" component={EmailCampaign} exact />
     <Route path="/setup/email/campaign/edit/:campaignId" component={EditCampaign} />
     <Route path="/setup/email/campaign/new" component={NewCampaign} />
@@ -64,8 +65,8 @@ const MainContent = () => (
     <Route path="/:objectType/:objectId/email/new" component={NewEmail} />
     <Route path="/user/email-setting" component={EmailTemplates} />
     <Route path="/dashboard" component={Dashboard} exact />
-    <Route path="/globalSearch" component={GlobalSearch} exat />
-    <Route path="/Task" component={Task} />
+    <Route path="/globalSearch" component={GlobalSearch} exact />
+    <Route path="/Task" component={Task} exact />
     <Route path="/leads/merge/" component={MergeLeads} />
 
     <Route
@@ -169,7 +170,7 @@ const MainContent = () => (
           );
         }
         // TOOD: return 404 page
-        return null;
+        return <NotFound />;
       }}
     />
     <Route
@@ -186,8 +187,7 @@ const MainContent = () => (
             </Permission>
           );
         }
-        // TOOD: return 404 page
-        return null;
+        return <NotFound />;
       }}
     />
   </Switch>

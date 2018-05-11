@@ -27,6 +27,7 @@ import ObjectView from './ObjectView/index';
 import ObjectShare from './ObjectShare/index';
 import ClientDetails from './ClientDetails/index';
 import Task from './Task/index';
+import Exceptions from './Exceptions/index';
 
 export {
   Dashboard,
@@ -56,4 +57,5 @@ export {
   ObjectShare,
   ClientDetails,
   Task,
+  Exceptions,
 };
