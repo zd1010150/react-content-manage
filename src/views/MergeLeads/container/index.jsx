@@ -55,7 +55,7 @@ class MergeLeads extends Component {
 }
 
 
-const mapStateToProps = ({ language, mergence, duplicates }) => ({
+const mapStateToProps = ({ global, mergence, duplicates }) => ({
   language: global.language,
   selectedLeadIds: duplicates.selectedRowKeys,
   data: mergence.data,

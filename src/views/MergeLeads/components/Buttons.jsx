@@ -46,10 +46,12 @@ class Buttons extends Component {
       });
     }
 
+    const masterRecordId = mergedData[MasterKey];
+    delete mergedData[MasterKey];
     return tryMergeLeads({
       merged_ids: data.map(record => record.id),
       lead: mergedData,
-      [MasterKey]: mergedData[MasterKey],
+      [MasterKey]: masterRecordId,
     });
   }
 

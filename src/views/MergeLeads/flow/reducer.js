@@ -8,13 +8,21 @@ const { FieldTypes, MasterKey } = Enums;
 const {
   DateOnly,
   DateTime,
+  Display,
   Lookup,
 } = FieldTypes;
 
-
 const parseKeys = keys => {
-  const masterKey = keys.find(key => key.field_name === MasterKey);
+  // const masterKey = keys.find(key => key.field_name === MasterKey);
+  const masterKey = {
+    is_merge_master: false,
+    field_name: MasterKey, // this is the field we use as a key to sync with backend for changes
+    field_label: '',
+    crm_data_type: Display,
+    lookupKey: '',
+  };
   const restKeys = keys.filter(key => key.field_name !== MasterKey);
+  // return [...restKeys].map(key => ({
   return [masterKey, ...restKeys].map(key => ({
     isFollowMaster: !!key.is_merge_master,
     key: key.field_name, // this is the field we use as a key to sync with backend for changes
@@ -23,12 +31,12 @@ const parseKeys = keys => {
     lookupKey: key.lookup_own_field_name,
   }));
 };
+
 const convertToTimeZone = (data, keys) => {
   data.forEach(record => {
     keys.forEach(key => {
       if (key.type === DateOnly || key.type === DateTime) {
-        const format = key.type === DateOnly ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss';
-        record[key.key] = toTimezone(record[key.key], '+1100', format);
+        record[key.key] = record[key.key] === null ? null : toTimezone(record[key.key], key.type === DateTime);
       }
     });
   });
