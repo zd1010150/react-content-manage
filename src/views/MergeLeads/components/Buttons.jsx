@@ -28,11 +28,13 @@ class Buttons extends Component {
 
   onMergeClick = $ => {
     const {
+      intl,
       data,
       keys,
       mergedData,
       tryMergeLeads,
     } = this.props;
+    const { formatMessage } = intl;
     // check if some fields miss selection
     let hasFieldMissing = false;
     keys.forEach(key => {
@@ -41,8 +43,8 @@ class Buttons extends Component {
       }
     });
     if (hasFieldMissing) {
-      return notification.warning({
-        message: 'Missing some fields',
+      return notification.error({
+        message: formatMessage({ id: 'global.errors.oneFieldRequired' }),
       });
     }
 
