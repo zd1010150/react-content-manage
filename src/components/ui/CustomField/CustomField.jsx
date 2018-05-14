@@ -21,6 +21,7 @@ const {
   PickList,
   TextInput,
   Display,
+  ApiError,
 } = Enums.FieldTypes;
 
 
@@ -129,6 +130,8 @@ const CustomField = ({
 
   let field = null;
   switch (type) {
+    case ApiError:
+      return null;
     case DateOnly:
     case DateTime:
       field = (
