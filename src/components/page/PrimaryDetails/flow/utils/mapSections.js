@@ -1,5 +1,9 @@
 /* eslint-disable no-param-reassign */
-import { getValueByType, getOptionsByType } from './formatDataUtils';
+import Enums from 'utils/EnumsManager';
+import { getOptionsByType, getValueByType } from './formatDataUtils';
+
+const { FieldTypes } = Enums;
+const { ApiError } = FieldTypes;
 
 const FieldKeys = {
   Active: 'active',
@@ -33,6 +37,33 @@ const formatFields = (fields, mappedValues) =>
       precision,
       scale,
     } = meta;
+
+    /**
+     * This is just a temp fix for error api response. The issue is because that in some scenario, all references of a deleted field are not cleaned in database.
+     * The backend may fix this issue in the future. For now, as a solution, we just hide this field and not pass value to backend when create or update.
+     * More info about the issue: http://c7git.acy.svr/LogixCRM/fe_logix_crm/issues/55
+     */
+    if (value && value.error) {
+      return {
+        active: false,
+        helpText: helper_text,
+        id,
+        initialValue: null,
+        key: id,
+        label: field_label,
+        lookupDisplayKey: lookup_own_field_name,
+        name: field_name,
+        options: [],
+        optionsFetched: false,
+        position,
+        precision,
+        readOnly: page_readonly,
+        required: page_required,
+        scale,
+        type: ApiError,
+        value: null,
+      };
+    }
 
     const hasMappingValue = Object.prototype.hasOwnProperty.call(mappedValues, field_name);
     if (hasMappingValue) {
