@@ -11,6 +11,8 @@ const BaseEnums = Object.freeze({
     TextInput: 'text',
     // for display only field
     Display: 'display',
+    // temp fix, should be removed if backend fix the problem, see more for Issue#55
+    ApiError: 'apiError',
   }),
 
   ObjectTypes: Object.freeze({

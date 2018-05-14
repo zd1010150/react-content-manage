@@ -1,14 +1,14 @@
-import React from 'react';
+import { Button, Table } from 'antd';
+import classNames from 'classnames/bind';
+import { Panel } from 'components/ui/index';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { Table, Button } from 'antd';
-import classNames from 'classnames/bind';
-import styles from './index.less';
-const cx = classNames.bind(styles);
-
-import { Panel } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
+import styles from './index.less';
+
+const cx = classNames.bind(styles);
 const { MaxDisplayResults, ThemeTypes } = Enums;
 const { Leads, Accounts } = ThemeTypes;
 
@@ -71,12 +71,12 @@ const propTypes = {
   maxSelection: PropTypes.number.isRequired,
   onRowSelectionChange: PropTypes.func,
   selectedRowKeys: PropTypes.array.isRequired,
-  theme: PropTypes.oneOf([ Leads, Accounts ]).isRequired,
+  theme: PropTypes.oneOf([Leads, Accounts]).isRequired,
 };
 
 
 const FilterResultsTable = ({
-  intl,  
+  intl,
   canSelect,
   data,
   maxSelection,
@@ -84,7 +84,6 @@ const FilterResultsTable = ({
   selectedRowKeys,
   theme,
 }) => {
-
   const { formatMessage } = intl;
   const columns = renderColumnsByTheme(theme, formatMessage);
   const mergeBtn = theme === Leads ? (
@@ -105,9 +104,9 @@ const FilterResultsTable = ({
     getCheckboxProps: record => ({
       disabled: maxSelection && selectedRowKeys.length >= maxSelection && selectedRowKeys.indexOf(record.id) === -1,
     }),
-    onChange: (selectedRowKeys, selectedRows) => {
+    onChange: (selectedKeys, selectedRows) => {
       if (_.isFunction(onRowSelectionChange)) {
-        onRowSelectionChange(selectedRowKeys, selectedRows);
+        onRowSelectionChange(selectedKeys, selectedRows);
       }
     },
   } : null;
@@ -118,13 +117,18 @@ const FilterResultsTable = ({
       panelClasses={`${theme}-theme-panel`}
       actionsRight={mergeBtn}
     >
-      {theme === Leads && <p className={cx('rule')}>
-        {formatMessage({ id: 'page.filterResultsTable.selectionRule' })}
-      </p>}
-      {data.length >= MaxDisplayResults && <p className={cx('rule')}>
-        {formatMessage({ id: 'page.filterResultsTable.displayRule' })}
-      </p>}
+      {theme === Leads && (
+        <p className={cx('rule')}>
+          {formatMessage({ id: 'page.filterResultsTable.selectionRule' })}
+        </p>
+      )}
+      {data.length >= MaxDisplayResults && (
+        <p className={cx('rule')}>
+          {formatMessage({ id: 'page.filterResultsTable.displayRule' })}
+        </p>
+      )}
       <Table
+        className="selectAllDisabled"
         columns={columns}
         dataSource={data.length >= MaxDisplayResults
                       ? data.slice(0, -1)
