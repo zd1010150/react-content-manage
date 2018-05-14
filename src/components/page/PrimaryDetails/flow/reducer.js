@@ -10,6 +10,7 @@ import {
   RESET_ID,
   RESET,
   SET_FIELD_OPTIONS,
+  SET_ACCOUNT_NAME,
 } from './actionTypes';
 import {
   setActiveById,
@@ -102,6 +103,27 @@ const details = (state = initialState, action) => {
         ),
       };
 
+
+    case SET_ACCOUNT_NAME:
+      const { relatedAccount } = action.payload;
+      const targetAccountNameKey = 'target_account_id';
+      state.sections.forEach((section) => {
+        section.fields.forEach((field) => {
+          if (field.name === targetAccountNameKey) {
+            const values = {
+              id: relatedAccount.id,
+              name: relatedAccount.name,
+            };
+            field.initialValue = relatedAccount.id;
+            field.value = relatedAccount.id;
+            field.options = [values];
+          }
+        });
+      });
+      return {
+        ...state,
+        sections: _.cloneDeep(state.sections),
+      };
 
     // Resets
     case RESET_ID:

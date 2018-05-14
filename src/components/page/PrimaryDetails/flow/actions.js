@@ -16,29 +16,48 @@ import {
   RESET_ID,
   RESET,
   SET_FIELD_OPTIONS,
+  SET_ACCOUNT_NAME,
 } from './actionTypes';
 
-const { PhantomId } = Enums;
+const { PhantomId, ObjectTypes } = Enums;
+const { Accounts, Opportunities } = ObjectTypes;
 
 
 /**
- *  Fetch A Client Structure Data
+ *  Fetch A Client Structural Data
  */
 const setSections = (mappedValues = [], sections) => ({
   type: SET_SECTIONS,
   payload: { mappedValues, sections },
 });
 
-export const tryFetchObjectDetails = (objectId, objectType, accountId) => dispatch =>
+const setAccountNameField = relatedAccount => ({
+  type: SET_ACCOUNT_NAME,
+  payload: { relatedAccount },
+});
+export const tryFetchAccountInfo = accountId => dispatch =>
+  get(`/admin/${Accounts}/${accountId}`, {}, dispatch).then(data => {
+    if (data && !_.isEmpty(data.data) && data.data.name) {
+      console.log('creating new opp from acct2');
+      dispatch(setAccountNameField(data.data));
+    }
+  });
+
+export const tryFetchObjectDetails = (objectId, objectType, accountId) => (dispatch, getState) =>
   get(getFetchUrl(objectId, objectType, accountId), {}, dispatch).then(data => {
     if (data
         && !_.isEmpty(data.data)
         && !_.isEmpty(data.data.structure)) {
-      const { tools, sections, modules } = data.data.structure;
+      const { tools, sections, modules } = data.data.structure;      
       if (tools && sections && modules) {
         dispatch(setSections(data.mapped_values, sections));
         dispatch(setTools(tools));
         dispatch(setModules(modules));
+      }
+      // special case for 'Account Name' field when create new opportunity from account
+      if (accountId && objectType === Opportunities) {
+        console.log('creating new opp from acct');
+        dispatch(tryFetchAccountInfo(accountId));
       }
     }
   });
