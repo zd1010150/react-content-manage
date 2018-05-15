@@ -47,7 +47,11 @@ class Topbar extends Component {
     } = this.props;
     setActiveView(value);
     // change view will reset table params
-    tryFetchDataByView(objectType, value, { per_page: PageSize });
+    tryFetchDataByView(
+      objectType,
+      value,
+      { page: 1, per_page: PageSize },
+    );
   }
 
   render() {
