@@ -13,6 +13,7 @@ const defaultProps = {
   accountId: '',
 };
 const propTypes = {
+  intl: intlShape.isRequired,
   accountId: PropTypes.string,
   objectId: PropTypes.string.isRequired,
   objectType: isValidClientTypes,
