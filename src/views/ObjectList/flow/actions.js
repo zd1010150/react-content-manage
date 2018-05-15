@@ -71,15 +71,19 @@ export const setRowSelection = selectedRowKeys => ({
 
 
 //
-export const tryDeleteClientByType = (objectType, id, params, meta) => dispatch =>
-    httpDelete(`/admin/${objectType}/${id}`, {}, dispatch).then((data) => {
-      if (data && data.deleted) {
-        dispatch(tryFetchData(objectType, {
-          ...params,
-          page: getFetchPage(params, meta, 1),
-        }));
-      }
-    });
+export const tryDeleteClientByType = (objectType, id, params, meta, activeViewId) => dispatch =>
+  httpDelete(`/admin/${objectType}/${id}`, {}, dispatch).then((data) => {
+    if (data && data.deleted) {
+      // dispatch(tryFetchData(objectType, {
+      //   ...params,
+      //   page: getFetchPage(params, meta, 1),
+      // }));
+      dispatch(tryFetchDataByView(objectType, activeViewId, {
+        ...params,
+        page: getFetchPage(params, meta, 1),
+      }));
+    }
+  });
 
 
 //

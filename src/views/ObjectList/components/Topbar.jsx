@@ -39,8 +39,12 @@ class Topbar extends Component {
     tryFetchViewsByType(objectType);
   }
 
-  handleViewChange = value => {
-    const { objectType, setActiveView, tryFetchDataByView } = this.props;
+  handleViewChange = (value) => {
+    const {
+      objectType,
+      setActiveView,
+      tryFetchDataByView,
+    } = this.props;
     setActiveView(value);
     // change view will reset table params
     tryFetchDataByView(objectType, value, { per_page: PageSize });

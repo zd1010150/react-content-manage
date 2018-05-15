@@ -58,7 +58,7 @@ const objectList = (state = initialState, action) => {
       return {
         ...state,
         activeViewId: PhantomId,
-        views: [ viewAll, ...views ],
+        views: [viewAll, ...views],
       };
 
 
