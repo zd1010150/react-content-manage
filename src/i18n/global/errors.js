@@ -15,6 +15,7 @@ export default {
     priorityRequired: '请选择一个优先级！',
     returnDashboard: '返回Dashboard',
     notFound: '404未找到此页面！',
+    exceedMaximumLength: '至少一个字段超出长度要求！',
   },
   en: {
     NO_AUTHENTICATION: 'No authentication to access this page!',
@@ -32,5 +33,6 @@ export default {
     priorityRequired: 'Please choose a priority!',
     returnDashboard: 'Return to Dashboard',
     notFound: '404 Page Not Found!',
+    exceedMaximumLength: 'At least one field has exceeded maximum length!',
   },
 };
