@@ -58,15 +58,17 @@ class MassUpdateModal extends Component {
   _onOk = () => {
     const { onOk, selectedFieldOptions } = this.props;
     if (_.isFunction(onOk)) {
-      let { fieldName, type, value } = this.state;
+      const { fieldName, type } = this.state;
+      let { value } = this.state;
       if (type === Lookup) {
-        const { lookupDisplayKey } = this.setState;
-        const option = selectedFieldOptions.find(option => option[lookupDisplayKey] === value);
+        const { lookupDisplayKey } = this.state;
+        const option = selectedFieldOptions.find(opt => opt.id === value) || {};
         value = option.id;
       }
       if (type === DateOnly || type === DateTime) {
         value = toUtc(value, type === DateTime);
       }
+      // TODO: add validation by field type
       onOk(fieldName, value);
     }
   }
@@ -81,7 +83,7 @@ class MassUpdateModal extends Component {
         this.setState({ lookupDisplayKey: column.lookup_own_field_name });
       } else if (column.crm_data_type === PickList) {
         // set options
-        setOptions(column.picklists);
+        setOptions(column.picklists.data);
       }
     }
     const isDateField = column.crm_data_type === DateOnly || column.crm_data_type === DateTime;
@@ -131,7 +133,7 @@ class MassUpdateModal extends Component {
               className="full-width"
               placeholder="Please select a field"
               size="small"
-              onChange={this.handleFieldChange}
+              onChange={newFieldId => this.handleFieldChange(newFieldId)}
             >
               {availabelColumns.map(col => (
                 <Option key={col.id} value={col.id}>
