@@ -39,17 +39,29 @@ const setData = (columns, data, meta, tableParams) => ({
     });
 // TODO: replace this with tryFetchDataByView
 export const tryFetchData = (objectType, params) => dispatch =>
-    get(`/admin/${objectType}${concatParams(params)}`, {}, dispatch).then((data) => {
-      if (data
-          && !_.isEmpty(data.index)
-          && data.index.data
-          && data.index.meta
-          && !_.isEmpty(data.selector_meta)
-          && data.selector_meta.data) {
-        dispatch(setData(data.selector_meta.data, data.index.data, data.index.meta, params));
-      }
-    });
-    
+  get(`/admin/${objectType}${concatParams(params)}`, {}, dispatch).then((data) => {
+    if (data
+        && !_.isEmpty(data.index)
+        && data.index.data
+        && data.index.meta
+        && !_.isEmpty(data.selector_meta)
+        && data.selector_meta.data) {
+      dispatch(setData(data.selector_meta.data, data.index.data, data.index.meta, params));
+    }
+  });
+
+
+export const tryFetchDataByView = (objectType, viewId, params) => dispatch =>
+  get(getFetchUrlByView(objectType, viewId, params), {}, dispatch).then((data) => {
+    if (data
+        && !_.isEmpty(data.index)
+        && data.index.data
+        && data.index.meta
+        && !_.isEmpty(data.selector_meta)
+        && data.selector_meta.data) {
+      dispatch(setData(data.selector_meta.data, data.index.data, data.index.meta, params));
+    }
+  });
 
 //
 export const setRowSelection = selectedRowKeys => ({
@@ -97,12 +109,13 @@ export const tryFetchOptionsById = id => dispatch =>
 
 
 //
-export const tryUpdateClients = (params, objectType, tableParams) => dispatch =>
-    post(`/admin/${objectType}/mass-update`, params, dispatch).then((data) => {      
-      if (data && !_.isEmpty(data.updated_ids)) {
-        dispatch(tryFetchData(objectType, tableParams));
-      }
-    });
+export const tryUpdateClients = (params, objectType, tableParams, viewId) => dispatch =>
+  post(`/admin/${objectType}/mass-update`, params, dispatch).then((data) => {
+    if (data && !_.isEmpty(data.updated_ids)) {
+      // dispatch(tryFetchData(objectType, tableParams));
+      dispatch(tryFetchDataByView(objectType, viewId, tableParams));
+    }
+  });
 
 
 //
@@ -121,18 +134,6 @@ export const tryFetchViewsByType = objectType => dispatch =>
 
 //
 export const setActiveView = activeViewId => ({
-      type: SET_ACTIVE_VIEW,
-      payload: { activeViewId },
-    });
-
-export const tryFetchDataByView = (objectType, viewId, params) => dispatch =>
-    get(getFetchUrlByView(objectType, viewId, params), {}, dispatch).then((data) => {
-      if (data
-          && !_.isEmpty(data.index)
-          && data.index.data
-          && data.index.meta
-          && !_.isEmpty(data.selector_meta)
-          && data.selector_meta.data) {
-        dispatch(setData(data.selector_meta.data, data.index.data, data.index.meta, params));
-      }
-    });
+  type: SET_ACTIVE_VIEW,
+  payload: { activeViewId },
+});
