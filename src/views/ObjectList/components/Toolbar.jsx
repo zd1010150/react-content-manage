@@ -36,18 +36,31 @@ class Toolbar extends Component {
   }
 
   handleMassDelete = () => {
-    const { objectType, selectedRowKeys, meta, tableParams, tryDeleteClientsByType } = this.props;
-    tryDeleteClientsByType(objectType, selectedRowKeys, tableParams, meta);
+    const {
+      objectType,
+      selectedRowKeys,
+      meta,
+      tableParams,
+      tryDeleteClientsByType,
+      activeViewId,
+    } = this.props;
+    tryDeleteClientsByType(objectType, selectedRowKeys, tableParams, meta, activeViewId);
   }
 
   handleMassUpdate = (fieldName, value) => {
-    const { selectedRowKeys, objectType, tableParams, tryUpdateClients } = this.props;
+    const {
+      selectedRowKeys,
+      objectType,
+      tableParams,
+      tryUpdateClients,
+      activeViewId,
+    } = this.props;
     const params = {
       ids: selectedRowKeys,
       field_name: fieldName,
       value,
     };
-    tryUpdateClients(params, objectType, tableParams);
+    tryUpdateClients(params, objectType, tableParams, activeViewId);
     this.setState({ visible: false });
   }
 
@@ -134,6 +147,7 @@ const mapStateToProps = ({ global, objectList }) => ({
   selectedRowKeys: objectList.selectedRowKeys,
   meta: objectList.meta,
   tableParams: objectList.tableParams,
+  activeViewId: objectList.activeViewId,
 });
 const mapDispatchToProps = {
   tryDeleteClientsByType,
