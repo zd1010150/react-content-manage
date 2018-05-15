@@ -36,6 +36,7 @@ const formatFields = (fields, mappedValues) =>
       lookup_own_field_name,
       precision,
       scale,
+      length,
     } = meta;
 
     /**
@@ -81,6 +82,7 @@ const formatFields = (fields, mappedValues) =>
       initialValue,
       key: id,
       label: field_label,
+      length,
       // The 'lookup_own_field_name' is required because it will be used to display value and it varies
       lookupDisplayKey: lookup_own_field_name,
       name: field_name,
