@@ -96,19 +96,19 @@ const fetchTemplates = ({
   category,
   dispatch
 }) => {
-  let url;
+  let urlParams;
   //folderId undefined means the folder is just created and has not been saved yet!!!
   if (!folderId) {
     return dispatch(newEmailSetTemplatesData([]));
   }
   if (category) {
-    url = `/admin/email_templates/email_folders/${folderId}?category=${category}`;
+      urlParams = {category};
   } else {
-    url = `/admin/email_templates/email_folders/${folderId}`;
+      urlParams = {};
   }
   get(
-    url,
-    { per_page: perPage, page: currentPage, search },
+      `/admin/email_templates/email_folders/${folderId}`,
+    { ...urlParams, per_page: perPage, page: currentPage, search },
     dispatch
   ).then(data => {
     console.log("11111", data);
