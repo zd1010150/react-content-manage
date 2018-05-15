@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
 import React from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 import { Permission } from 'components/page/index';
@@ -8,13 +9,37 @@ import classNames from 'classnames/bind';
 import { intlShape, injectIntl } from 'react-intl';
 import { Panel, EditBox } from 'components/ui/index';
 import styles from '../companyInfo.less';
-
+import { setStore, getStore } from 'utils/localStorage';
+import Enums from 'utils/EnumsManager';
+import { DEFAULT_DATE_SETTING } from 'config/app.config';
 
 const cx = classNames.bind(styles);
 
 class companyInfoPanel extends React.Component {
   onBlur(fieldName, value) {
-    this.props.updateCompanyInfo({ [fieldName]: value });
+    const { countries, timeZones, updateCompanyInfo } = this.props;
+    updateCompanyInfo({ [fieldName]: value }, () => {
+      let newDateFormat = {};
+      let newOffset = {};
+      if (fieldName === 'country_code') {
+        const countryArr = countries.filter(c => c.id === value);
+        const country = _.isEmpty(countryArr) ? { date_format: DEFAULT_DATE_SETTING.DATE_FORMAT } : countryArr[0];
+        newDateFormat = {
+          dateFormat: country.date_format || DEFAULT_DATE_SETTING.DATE_FORMAT,
+        };
+        newDateFormat = Object.assign({}, newDateFormat, { timeFormat: `${newDateFormat.dateFormat} HH:mm:ss` });
+      }
+      if (fieldName === 'time_zone') {
+        const timeZoneArr = timeZones.filter(t => t.id === value);
+        const timeZone = _.isEmpty(timeZoneArr) ? { tz_offset: DEFAULT_DATE_SETTING.OFFSET } : timeZoneArr[0];
+        newOffset = {
+          offset: timeZone.tz_offset,
+        };
+      }
+
+      const originTimeformat = JSON.parse(getStore(Enums.LocalStorageKeys.Timezone));
+      setStore(Enums.LocalStorageKeys.Timezone, JSON.stringify(Object.assign({}, originTimeformat, { ...newDateFormat }, { ...newOffset })));
+    });
   }
   render() {
     const {
@@ -145,10 +170,12 @@ class companyInfoPanel extends React.Component {
                       isShowStatuLabel={false}
                       spanClasses={cx('edit-box-span')}
                       inputClasses={cx('edit-box-input')}
-                      type="select"
-                      options={yearsOptions}
+                      type="datePicker"
                       value={company.fiscal_year_starts}
-                      onBlur={value => this.onBlur('fiscal_year_starts', value)}
+                      onChange={(value) => {
+                        this.onBlur('fiscal_year_starts', value);
+                      }
+                      }
                     />
                   </Permission>
                 </Col>

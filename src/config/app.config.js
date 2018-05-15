@@ -21,6 +21,11 @@ export const CURRENCY_SYMBOL = {
   [CHINA_RMB_CODE]: '￥',
   [AUS_DOLLER_CODE]: '$',
 };
+export const DEFAULT_DATE_SETTING = {
+  OFFSET: '+1100',
+  DATE_FORMAT: 'DD/MM/YYYY',
+  TIME_FORMAT: 'DD/MM/YYYY HH:mm:ss',
+};
 export const PAGE_ACTION = {
   ADD: 'add',
   EDIT: 'edit',

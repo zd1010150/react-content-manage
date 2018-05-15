@@ -44,13 +44,15 @@ export const setLogo = logo => ({
   type: SET_LOGO,
   logo,
 });
-const setGlobalSetting = settings => ({
+const setGlobalSetting = (settings, loginUser) => ({
   type: SET_GLOBAL_SETTING,
   settings,
+  loginUser,
 });
-export const fetchGlobalSetting = () => dispatch => get('/admin/global-settings', {}, dispatch).then((data) => {
+export const fetchGlobalSetting = () => (dispatch, getState) => get('/admin/global-settings', {}, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
-    dispatch(setGlobalSetting(data));
+    const { loginUser } = getState();
+    dispatch(setGlobalSetting(data, loginUser));
   }
 });
 

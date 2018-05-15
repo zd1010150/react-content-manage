@@ -6,9 +6,10 @@ import {
 } from './actionTypes';
 
 
-export const loginSuccess = userData => ({
+export const loginSuccess = (userData, globalSetting) => ({
   type: LOGIN_SUCCESS,
-  payload: { userData },
+   : { userData },
+  globalSetting,
 });
 
 
@@ -17,10 +18,10 @@ const logoutSuccess = json => ({
   payload: { json },
 });
 
-export const tryLogin = (values, successMessage) => dispatch => post('/admin/login', values, dispatch, { successMessage })
+export const tryLogin = (values, successMessage) => (dispatch, getState) => post('/admin/login', values, dispatch, { successMessage })
   .then((json) => {
     if (json && (!_.isEmpty(json.data))) {
-      dispatch(loginSuccess(json.data, json.data.time_zone));
+      dispatch(loginSuccess(json.data, getState().global.settings));
     }
   });
 

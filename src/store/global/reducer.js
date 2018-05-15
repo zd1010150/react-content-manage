@@ -1,10 +1,13 @@
 /* eslint-disable max-len, no-case-declarations */
+import _ from 'lodash';
 import { combineReducers } from 'redux';
 import { flattenTree } from 'utils/common';
 import { moments, years } from 'utils/dateTimeUtils';
 import { navLanguage } from 'utils/navigationUtil';
 import Enums from 'utils/EnumsManager';
 import { getStore, setStore } from 'utils/localStorage';
+import { DEFAULT_DATE_SETTING } from 'config/app.config';
+import { LOGIN_SUCCESS } from 'views/LoginForm/flow/actionTypes';
 import { SET_ACCOUNTINFO,
   SET_GLOBAL_SETTING,
   SET_LOGO,
@@ -149,6 +152,40 @@ const appRoutHash = (state = Math.random(), action) => {
   }
 };
 
+const intiTimeZone = (state, globalSetting, loginUser) => {
+  const { countries, timeZones } = globalSetting;
+  const { country_code, time_zone } = loginUser.company;
+  let newDateFormat = {};
+  let newOffset = {};
+
+  const countryArr = countries.filter(c => c.id === country_code);
+  const country = _.isEmpty(countryArr) ? { date_format: DEFAULT_DATE_SETTING.DATE_FORMAT } : countryArr[0];
+  newDateFormat = {
+    dateFormat: country.date_format || DEFAULT_DATE_SETTING.DATE_FORMAT,
+  };
+  newDateFormat = Object.assign({}, newDateFormat, { timeFormat: `${newDateFormat.dateFormat} HH:mm:ss` });
+
+  const timeZoneArr = timeZones.filter(t => t.id === time_zone);
+  const timeZone = _.isEmpty(timeZoneArr) ? { tz_offset: DEFAULT_DATE_SETTING.OFFSET } : timeZoneArr[0];
+  newOffset = {
+    offset: timeZone.tz_offset,
+  };
+
+  return Object.assign({}, state, { ...newDateFormat }, { ...newOffset });
+};
+
+const timeZoneSetting = (state = { dateFormat: DEFAULT_DATE_SETTING.DATE_FORMAT, timeFormat: DEFAULT_DATE_SETTING.TIME_FORMAT, offset: DEFAULT_DATE_SETTING.OFFSET }, action) => {
+  const { type, ...payload } = action;
+  switch (type) {
+    case LOGIN_SUCCESS:
+      return intiTimeZone(state, payload.globalSetting, payload.payload);
+    case SET_GLOBAL_SETTING:
+      return intiTimeZone(state, { timeZones: payload.settings.timezones, countries: payload.settings.countries }, payload.loginUser);
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   language,
   permissions,
@@ -157,5 +194,6 @@ const rootReducer = combineReducers({
   settings,
   companyLogo,
   appRoutHash,
+  timeZoneSetting,
 });
 export default rootReducer;
