@@ -17,6 +17,7 @@ import { SET_ACCOUNTINFO,
   SET_USERS_GLOBAL,
   TOGGLE_LANGUAGE,
   SET_APP_ROUTER_HASH,
+  SET_TIME_ZONE,
 } from './actionType';
 
 const { LocalStorageKeys } = Enums;
@@ -152,7 +153,7 @@ const appRoutHash = (state = Math.random(), action) => {
   }
 };
 
-const intiTimeZone = (state, globalSetting, loginUser) => {
+const getTimeZone = (state, globalSetting, loginUser) => {
   const { countries, timeZones } = globalSetting;
   const { country_code, time_zone } = loginUser.company;
   let newDateFormat = {};
@@ -170,17 +171,20 @@ const intiTimeZone = (state, globalSetting, loginUser) => {
   newOffset = {
     offset: timeZone.tz_offset,
   };
-
-  return Object.assign({}, state, { ...newDateFormat }, { ...newOffset });
+  const newState = Object.assign({}, state, { ...newDateFormat }, { ...newOffset });
+  setStore(Enums.LocalStorageKeys.Timezone, JSON.stringify(newState));
+  return newState;
 };
 
 const timeZoneSetting = (state = { dateFormat: DEFAULT_DATE_SETTING.DATE_FORMAT, timeFormat: DEFAULT_DATE_SETTING.TIME_FORMAT, offset: DEFAULT_DATE_SETTING.OFFSET }, action) => {
   const { type, ...payload } = action;
   switch (type) {
+    case SET_TIME_ZONE:
+      return getTimeZone(state, payload.globalSetting, payload.loginUser);
     case LOGIN_SUCCESS:
-      return intiTimeZone(state, payload.globalSetting, payload.payload);
+      return getTimeZone(state, payload.globalSetting, payload.payload.data);
     case SET_GLOBAL_SETTING:
-      return intiTimeZone(state, { timeZones: payload.settings.timezones, countries: payload.settings.countries }, payload.loginUser);
+      return getTimeZone(state, { timeZones: payload.settings.timezones, countries: payload.settings.countries }, payload.loginUser);
     default:
       return state;
   }

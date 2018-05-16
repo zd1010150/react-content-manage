@@ -25,6 +25,8 @@ export const DEFAULT_DATE_SETTING = {
   OFFSET: '+1100',
   DATE_FORMAT: 'DD/MM/YYYY',
   TIME_FORMAT: 'DD/MM/YYYY HH:mm:ss',
+  END_DATE_FORMAT: 'YYYY-MM-DD', // 后端需要的日期格式
+  END_TIME_FORMAT: 'YYYY-MM-DD, HH:mm:ss', // 后端需要的时间格式
 };
 export const PAGE_ACTION = {
   ADD: 'add',

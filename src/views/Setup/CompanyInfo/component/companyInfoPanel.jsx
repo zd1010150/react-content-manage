@@ -1,44 +1,30 @@
 /* eslint-disable no-shadow */
 import React from 'react';
-import _ from 'lodash';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { Row, Col } from 'antd';
 import { Permission } from 'components/page/index';
 import PERMISSIONS from 'config/app-permission.config';
 import classNames from 'classnames/bind';
 import { intlShape, injectIntl } from 'react-intl';
-import { Panel, EditBox } from 'components/ui/index';
-import styles from '../companyInfo.less';
-import { setStore, getStore } from 'utils/localStorage';
-import Enums from 'utils/EnumsManager';
+import { Panel, EditBox, FormatedTime } from 'components/ui/index';
 import { DEFAULT_DATE_SETTING } from 'config/app.config';
+import styles from '../companyInfo.less';
+
 
 const cx = classNames.bind(styles);
-
+const { END_DATE_FORMAT } = DEFAULT_DATE_SETTING;
 class companyInfoPanel extends React.Component {
   onBlur(fieldName, value) {
-    const { countries, timeZones, updateCompanyInfo } = this.props;
+    const {
+      countries, timeZones, updateCompanyInfo, setTimeZone, getCompanyInfo,
+    } = this.props;
     updateCompanyInfo({ [fieldName]: value }, () => {
-      let newDateFormat = {};
-      let newOffset = {};
-      if (fieldName === 'country_code') {
-        const countryArr = countries.filter(c => c.id === value);
-        const country = _.isEmpty(countryArr) ? { date_format: DEFAULT_DATE_SETTING.DATE_FORMAT } : countryArr[0];
-        newDateFormat = {
-          dateFormat: country.date_format || DEFAULT_DATE_SETTING.DATE_FORMAT,
-        };
-        newDateFormat = Object.assign({}, newDateFormat, { timeFormat: `${newDateFormat.dateFormat} HH:mm:ss` });
-      }
-      if (fieldName === 'time_zone') {
-        const timeZoneArr = timeZones.filter(t => t.id === value);
-        const timeZone = _.isEmpty(timeZoneArr) ? { tz_offset: DEFAULT_DATE_SETTING.OFFSET } : timeZoneArr[0];
-        newOffset = {
-          offset: timeZone.tz_offset,
-        };
-      }
-
-      const originTimeformat = JSON.parse(getStore(Enums.LocalStorageKeys.Timezone));
-      setStore(Enums.LocalStorageKeys.Timezone, JSON.stringify(Object.assign({}, originTimeformat, { ...newDateFormat }, { ...newOffset })));
+      getCompanyInfo((data) => {
+        if (fieldName === 'country_code' || fieldName === 'time_zone') {
+          setTimeZone({ countries, timeZones }, { company: data.company });
+        }
+      });
     });
   }
   render() {
@@ -97,6 +83,18 @@ class companyInfoPanel extends React.Component {
             </Col>
             <Col className="gutter-row" span={12}>
               <Row>
+                <Col className=" field-label" span={12}> <span className="form-label">{ formatMessage({ id: 'page.comInfo.tradingName' }) }:</span></Col>
+                <Col className=" field-value" span={12}>
+                  <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_COMPANYINFORMATION_UPDATE} errorComponent={<span>{company.trading_name}</span>}>
+                    <EditBox isShowStatuLabel={false} spanClasses={cx('edit-box-span')} inputClasses={cx('edit-box-input')} type="input" value={company.trading_name} onBlur={value => this.onBlur('trading_name', value)} />
+                  </Permission>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Row className="info-display-table-row">
+            <Col className="gutter-row" span={12}>
+              <Row>
                 <Col className=" field-label" span={12}> <span className="form-label">{ formatMessage({ id: 'page.comInfo.phone' }) }:</span></Col>
                 <Col className=" field-value" span={12}>
                   <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_COMPANYINFORMATION_UPDATE} errorComponent={<span>{company.phone}</span>}>
@@ -105,8 +103,7 @@ class companyInfoPanel extends React.Component {
                 </Col>
               </Row>
             </Col>
-          </Row>
-          <Row className="info-display-table-row">
+
             <Col className="gutter-row" span={12}>
               <Row>
                 <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.fax' }) }:</span></Col>
@@ -124,6 +121,9 @@ class companyInfoPanel extends React.Component {
                 </Col>
               </Row>
             </Col>
+
+          </Row>
+          <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
                 <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.address' }) }:</span></Col>
@@ -141,8 +141,6 @@ class companyInfoPanel extends React.Component {
                 </Col>
               </Row>
             </Col>
-          </Row>
-          <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
                 <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.country' }) }:</span></Col>
@@ -161,28 +159,29 @@ class companyInfoPanel extends React.Component {
                 </Col>
               </Row>
             </Col>
+
+          </Row>
+          <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
                 <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.fiscalYearStarts' }) }:</span></Col>
                 <Col className=" field-value" span={12}>
-                  <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_COMPANYINFORMATION_UPDATE} errorComponent={<span>{yearName}</span>}>
+                  <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_COMPANYINFORMATION_UPDATE} errorComponent={<FormatedTime value={company.fiscal_year_starts} />}>
                     <EditBox
                       isShowStatuLabel={false}
                       spanClasses={cx('edit-box-span')}
                       inputClasses={cx('edit-box-input')}
                       type="datePicker"
                       value={company.fiscal_year_starts}
-                      onChange={(value) => {
-                        this.onBlur('fiscal_year_starts', value);
-                      }
-                      }
+                      onChange={(value, momentDate) => {
+                            this.onBlur('fiscal_year_starts', momentDate.format(END_DATE_FORMAT));
+                        }
+                        }
                     />
                   </Permission>
                 </Col>
               </Row>
             </Col>
-          </Row>
-          <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
                 <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.timeZone' }) }:</span></Col>
@@ -201,6 +200,9 @@ class companyInfoPanel extends React.Component {
                 </Col>
               </Row>
             </Col>
+
+          </Row>
+          <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
                 <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.usedDataSpace' }) }:</span></Col>
@@ -218,8 +220,6 @@ class companyInfoPanel extends React.Component {
                 </Col>
               </Row>
             </Col>
-          </Row>
-          <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
                 <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.fileStorage' }) }:</span></Col>
@@ -237,25 +237,24 @@ class companyInfoPanel extends React.Component {
                 </Col>
               </Row>
             </Col>
+
+          </Row>
+          <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
                 <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.lastModify' }) }:</span></Col>
                 <Col className=" field-value" span={12}>
-                  <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_COMPANYINFORMATION_UPDATE} errorComponent={<span>{`${company.user && company.user.name} ${company.updated_at}`}</span>}>
-                    <EditBox
-                      isShowStatuLabel={false}
-                      spanClasses={cx('edit-box-span')}
-                      inputClasses={cx('edit-box-input')}
-                      type="input"
-                      isDisabled
-                      value={`${company.user && company.user.name} ${company.updated_at}`}
-                    />
+                  <Permission
+                    permission={PERMISSIONS.SETUP_COMPANYPROFILE_COMPANYINFORMATION_UPDATE}
+                    errorComponent={<span>{`${company.user && company.user.name}`} <FormatedTime value={company.updated_at} isTime />
+                                    </span>}
+                  >
+                    <span>{`${company.user && company.user.name}`} </span>
+                    <FormatedTime value={company.updated_at} isTime />
                   </Permission>
                 </Col>
               </Row>
             </Col>
-          </Row>
-          <Row className="info-display-table-row">
             <Col className="gutter-row" span={12}>
               <Row>
                 <Col className=" field-label" span={12}><span className="form-label">{ formatMessage({ id: 'page.comInfo.language' }) }:</span></Col>
@@ -282,6 +281,7 @@ class companyInfoPanel extends React.Component {
 }
 companyInfoPanel.propTypes = {
   intl: intlShape.isRequired,
+  getCompanyInfo: PropTypes.func.isRequired,
   updateCompanyInfo: PropTypes.func.isRequired,
   timeZones: PropTypes.array.isRequired,
   languages: PropTypes.array.isRequired,
@@ -289,7 +289,7 @@ companyInfoPanel.propTypes = {
   moments: PropTypes.array.isRequired,
   years: PropTypes.array.isRequired,
   company: PropTypes.object.isRequired,
-
+  setTimeZone: PropTypes.func.isRequired,
 };
 
 export default injectIntl(companyInfoPanel);

@@ -8,6 +8,7 @@ import { intlShape, injectIntl } from 'react-intl';
 import classNames from 'classnames/bind';
 import styles from '../TopPanel.less';
 import PERMISSIONS from 'config/app-permission.config';
+
 const { Item } = Menu;
 const propTypes = {
   logoutHandler: PropTypes.func.isRequired,
@@ -15,27 +16,29 @@ const propTypes = {
 };
 const cx = classNames.bind(styles);
 
-const UserSettings = ({ intl, logoutHandler, name, accountPermissions }) => {
+const UserSettings = ({
+  intl, logoutHandler, name, accountPermissions,
+}) => {
   const { formatMessage } = intl;
-    const settingOptions = [
-        {
-            key: 'mySetting',
-            path: '/my-setting',
-            isDisabled: false,
+  const settingOptions = [
+    {
+      key: 'mySetting',
+      path: '/my-setting',
+      isDisabled: false,
 
-        },
-        {
-            key: 'logOut',
-            path: '',
-            isDisabled: false,
-        },
-    ];
-  if(accountPermissions.indexOf(PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES) > -1){
-      settingOptions.splice(0, 0, {
-          key: 'emailSetting',
-          path: '/user/email-setting',
-          isDisabled: false,
-      })
+    },
+    {
+      key: 'logOut',
+      path: '',
+      isDisabled: false,
+    },
+  ];
+  if (accountPermissions.indexOf(PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES) > -1) {
+    settingOptions.splice(0, 0, {
+      key: 'emailSetting',
+      path: '/user/email-setting',
+      isDisabled: false,
+    });
   }
 
   const menuItems = settingOptions.map((option) => {

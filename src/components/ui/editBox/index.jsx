@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Input, Select, Icon, DatePicker } from 'antd';
 import _ from 'lodash';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import classNames from 'classnames/bind';
 import styles from './index.less';
-import { getStore } from 'utils/localStorage';
-import Enums from 'utils/EnumsManager';
+import FormatedTime from '../FormatedTime/index';
 
 const cx = classNames.bind(styles);
 
@@ -25,9 +25,9 @@ class EditBox extends React.Component {
         });
       }
     }
-    onChange(value) {
+    onChange(value, momentDate) {
       this.setState({ value });
-      this.props.onChange(value);
+      this.props.onChange(value, momentDate);
     }
     onEditing() {
       if (!this.props.isDisabled) {
@@ -75,8 +75,8 @@ class EditBox extends React.Component {
             format={dateFormat}
             className={classNames(inputClasses, cx('editbox-element'))}
             ref={datePicker => this.datePicker = datePicker}
-            onChange={(date, dateStr) => {
-              this.onChange(dateStr);
+            onChange={(momentDate, dateStr) => {
+              this.onChange(dateStr, momentDate);
               this.datePicker.blur();
               this.onBlur();
           }}
@@ -103,6 +103,8 @@ class EditBox extends React.Component {
       let iconEl;
       if (type === 'select') {
         valueEl = this.filterSelectText(this.state.value);
+      } else if (type === 'datePicker') {
+        valueEl = <FormatedTime value={this.state.value} />;
       } else {
         valueEl = this.state.value;
       }
@@ -115,11 +117,16 @@ class EditBox extends React.Component {
         }
       }
 
-      return <div className={cx('editbox-value-wrapper')}><span className={classNames(inputClasses, cx('editbox-value'))}> {valueEl}</span>{iconEl}</div>;
+      return (
+        <div className={cx('editbox-value-wrapper')}>
+          <span className={classNames(inputClasses, cx('editbox-value'))}> {valueEl}</span>
+          {iconEl}
+        </div>
+      );
     }
 
     render() {
-      const { spanClasses, type, onClick } = this.props;
+      const { spanClasses, onClick } = this.props;
       return (
         <div
           onDoubleClick={(e) => {
@@ -138,13 +145,12 @@ EditBox.defaultProps = {
   isDisabled: false,
   isShowStatuLabel: true,
   isShowEditIcon: false,
-  onChange: (val) => { console.log('change', val); },
-  onBlur: (val) => { console.log('blur', val); },
-  onEditing: (val) => { console.log('editing', val); },
+  onChange: () => { },
+  onBlur: () => { },
+  onEditing: () => { },
   onClick: () => {},
   value: '',
   options: [],
-  dateFormat: JSON.parse(getStore(Enums.LocalStorageKeys.Timezone)).dateFormat,
 };
 
 EditBox.propTypes = {
@@ -159,9 +165,12 @@ EditBox.propTypes = {
   options: PropTypes.array,
   inputClasses: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   spanClasses: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  dateFormat: PropTypes.string, // moment format string
+  dateFormat: PropTypes.string.isRequired, // moment format string
 };
+const mapStateToProps = ({ global }) => ({
+  dateFormat: global.timeZoneSetting.dateFormat,
+});
 
 
-export default EditBox;
+export default connect(mapStateToProps)(EditBox);
 

@@ -2,6 +2,7 @@ export default {
   zh: {
     organizationDetail: '组织详情',
     name: '公司名',
+      tradingName: '经营名称',
     phone: '电话',
     fax: '传真',
     address: '地址',
@@ -24,6 +25,7 @@ export default {
   en: {
     organizationDetail: 'Organisation Details',
     name: 'Organisation Name',
+      tradingName: 'Trading Name',
     phone: 'Phone',
     fax: 'Fax',
     address: 'Address',
