@@ -42,7 +42,6 @@ const { Leads, Accounts, Opportunities } = ObjectTypes;
 class MainContent extends React.Component {
   componentDidMount() {
     const { history, location } = this.props;
-    debugger;
     if (location.pathname === '/') {
       history.push('/dashboard');
     }

@@ -17,7 +17,6 @@ const logoutSuccess = json => ({
 
 export const tryLogin = (values, successMessage, cb) => dispatch => post('/admin/login', values, dispatch, { successMessage })
   .then((json) => {
-    debugger;
     if (_.isFunction(cb)) {
       cb();
     }
