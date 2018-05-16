@@ -39,21 +39,9 @@ class FilterCriteriaWrapper extends Component {
 
   onFilterValueChange = (displayNum, value) => this.props.changeFilterByColumn(displayNum, 'value', value)
 
-  onRemoveFilter = (displayNum) => {
-    const { filters, removeFilter, setConditionLogic } = this.props;
-    removeFilter(displayNum);
-    if (filters.length === 1) {
-      setConditionLogic('');
-    }
-  }
+  onRemoveFilter = displayNum => this.props.removeFilter(displayNum)
 
-  onAddFilter = () => {
-    const { filters, addFilter, setConditionLogic } = this.props;
-    addFilter();
-    if (filters.length < 1) {
-      setConditionLogic('1');
-    }
-  }
+  onAddFilter = () => this.props.addFilter()
 
   onLogicChange = value => this.props.setConditionLogic(value)
 
