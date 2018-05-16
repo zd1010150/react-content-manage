@@ -27,6 +27,7 @@ export default {
     cancelEditing: '你还未保存你所做的更改，确定放弃？',
     createNewPageLayout: '创建新布局',
     saveAndNext: '保存并进行下一步',
+      noMoudle: '还没有modules，拖动右面module 至此处',
   },
   en: {
     layoutDetail: '{type} Detail',
@@ -56,5 +57,6 @@ export default {
     cancelEditing: 'You haven\'t save your modification ,are you sure exit？',
     createNewPageLayout: 'Create New Page Layout',
     saveAndNext: 'Save and Next',
+      noMoudle: 'There is no module，dragging module in the left to here',
   },
 };

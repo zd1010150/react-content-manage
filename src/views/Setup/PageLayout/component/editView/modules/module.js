@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 
 const spec = {
   beginDrag(props) {
-    console.log("module beging drap", props.code);
+    console.log('module beging drap', props.code);
     return {
       code: props.code,
       sourceCode: props.code,
@@ -35,13 +35,26 @@ class Module extends React.Component {
   }
   render() {
     const {
-      connectDragSource, isDragging, intl, code, theme
+      connectDragSource, isDragging, intl, code, theme, cols,
     } = this.props;
     const { formatMessage } = intl;
     return connectDragSource(<div className="module-panel">
-      <Panel panelClasses={classNames(`${theme}-theme-panel`, isDragging ? cx('field-btn-dragging') : '')}
-              panelTitle={formatMessage({ id: `global.ui.detailModules.${code}` })}/>
-      </div>);
+      <Panel
+        panelClasses={classNames(`${theme}-theme-panel`, isDragging ? cx('field-btn-dragging') : '')}
+        contentClasses="pb-md"
+        panelTitle={formatMessage({ id: `global.ui.detailModules.${code}` })}
+      >
+        <table style={{ width: '100%' }}>
+          <thead className="ant-table-thead">
+            <tr>
+              { cols.map(c => <th key={c.dataIndex}>{ formatMessage({ id: c.titleId })}</th>) }
+
+            </tr>
+          </thead>
+
+        </table>
+      </Panel>
+                             </div>);
   }
 }
 
@@ -53,6 +66,7 @@ Module.propTypes = {
   connectDragSource: PropTypes.func.isRequired,
   connectDragPreview: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,
+  cols: PropTypes.array.isRequired,
 };
 
 

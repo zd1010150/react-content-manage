@@ -38,7 +38,7 @@ import {
 import { OPERATES, MODULES, TOOLS, PREVIEW, SECTIONS } from '../flow/edit/operateType';
 
 const cx = classNames.bind(styles);
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 class EditContainer extends React.Component {
     state={
