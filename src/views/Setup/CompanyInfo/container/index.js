@@ -4,11 +4,12 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { Permission, Unauthentication } from 'components/page/index';
 import PERMISSIONS from 'config/app-permission.config';
+import { setLogo, setTimeZone } from 'store/global/action';
 import ComponanyInfoPanel from '../component/companyInfoPanel';
 import CompaneyUserStatic from '../component/companyUserStatic';
 import Logo from '../component/logo';
 import { getCompanyInfo, updateCompanyInfo } from '../flow/action';
-import { setLogo } from 'store/global/action';
+
 
 class companyInfo extends Component {
   componentDidMount() {
@@ -16,7 +17,10 @@ class companyInfo extends Component {
   }
   render() {
     const {
-      userInfo, companyLogo, setLogo, history
+      userInfo,
+      companyLogo,
+      setLogo,
+      history,
     } = this.props;
 
     return (
@@ -51,5 +55,6 @@ const mapDispatchToProps = {
   getCompanyInfo,
   updateCompanyInfo,
   setLogo,
+  setTimeZone,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(companyInfo));

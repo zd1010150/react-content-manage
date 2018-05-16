@@ -43,21 +43,32 @@ class LeftSection extends React.Component {
           <Col className="gutter-row mr-md" span={7} >
             <Panel panelTitle={formatMessage({ id: 'page.dashboard.newLeads' })}>
               <ul className={cx('links')}>
-                { leads.map(l => <li key={l.id} className={cx('single-link')}><Link className={`${objTypeAndClassTypeMap.leads}-theme-text`} to={`leads/${l.id}`}>{l.name}</Link></li>) }
+                { leads.map(l =>
+                  (<li key={l.id} className={cx('single-link')}>
+                    <Link title={l.name} className={`${objTypeAndClassTypeMap.leads}-theme-text`} to={`leads/${l.id}`}>{l.name}</Link>
+                   </li>))
+
+                }
               </ul>
             </Panel>
           </Col>
           <Col className="gutter-row mr-md" span={7}>
             <Panel panelTitle={formatMessage({ id: 'page.dashboard.newAccounts' })} >
               <ul className={cx('links')}>
-                { accounts.map(l => <li key={l.id} className={cx('single-link')}> <Link className={`${objTypeAndClassTypeMap.accounts}-theme-text`} to={`accounts/${l.id}`}>{l.name}</Link></li>) }
+                { accounts.map(l =>
+                  (<li key={l.id} className={cx('single-link')}>
+                    <Link title={l.name} className={`${objTypeAndClassTypeMap.accounts}-theme-text`} to={`accounts/${l.id}`}>{l.name}</Link>
+                  </li>)) }
               </ul>
             </Panel>
           </Col>
           <Col className="gutter-row" span={7}>
             <Panel panelTitle={formatMessage({ id: 'page.dashboard.newObjects' })} >
               <ul className={cx('links')}>
-                { objects.map(l => <li key={l.id} className={cx('single-link')}><Link className={`${objTypeAndClassTypeMap[l.object_type]}-theme-text`} to={`${l.object_type}/${l.id}`}>{l.name}</Link></li>) }
+                { objects.map(l =>
+                  (<li key={l.id} className={cx('single-link')}>
+                    <Link title={l.name} className={`${objTypeAndClassTypeMap[l.object_type]}-theme-text`} to={`${l.object_type}/${l.id}`}>{l.name}</Link>
+                   </li>)) }
               </ul>
             </Panel>
           </Col>

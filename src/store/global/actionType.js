@@ -9,3 +9,4 @@ export const SET_LOGO = 'SET_LOGO';
 export const RESET_VIEW_GLOBAL = 'RESET_VIEW';
 export const SET_USERS_GLOBAL = 'SET_USERS_GLOBAL';
 export const SET_APP_ROUTER_HASH = 'SET_APP_ROUTER_HASH';
+export const SET_TIME_ZONE = 'SET_TIME_ZONE';

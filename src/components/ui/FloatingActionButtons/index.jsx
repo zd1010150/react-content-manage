@@ -134,7 +134,6 @@ const FloatActionButtons = ({
     _onGoBackClick,
   };
 
-  console.log(intl);
   return (
     <div className={cx('btnsContainer')}>
       {buttons.map(btn => renderButton(btn, theme, intl.formatMessage, privateMethods))}

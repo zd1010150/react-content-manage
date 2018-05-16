@@ -44,7 +44,7 @@ class singleOption extends React.Component {
 
 
 singleOption.propTypes = {
-  intl: intlShape.isruleset,
+  intl: intlShape.isRequired,
   code: PropTypes.string.isRequired,
   isSelected: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,

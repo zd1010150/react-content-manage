@@ -2,17 +2,22 @@ import { notification } from 'antd';
 import { FloatingActionButtons } from 'components/ui/index';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { intlShape, injectIntl } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import Enums from 'utils/EnumsManager';
 import { isValidClientTypes } from 'utils/propChecks';
 import { resetAllFieldsValue, tryUpdateClient, tryUpdateAndAddClient } from '../flow/actions';
+
+const { FieldTypes } = Enums;
+const { TextInput, NumberInput } = FieldTypes;
 
 
 const defaultProps = {
   accountId: '',
 };
 const propTypes = {
+  intl: intlShape.isRequired,
   accountId: PropTypes.string,
   objectId: PropTypes.string.isRequired,
   objectType: isValidClientTypes,
@@ -30,13 +35,21 @@ class ActionButtons extends Component {
       sections,
     } = this.props;
     const { formatMessage } = intl;
-    if (this.isDetailsValid(sections)) {
-      tryUpdateClient(objectId, objectType, accountId);
-    } else {
+
+    // Check kinds of validations before save/update
+    if (this.isAnyRequiredFieldInvalid(sections)) {
       notification.error({
         duration: 3,
         message: formatMessage({ id: 'global.errors.oneFieldRequired' }),
       });
+    } else if (this.isAnyTextFieldInvalid(sections)
+              || this.isAnyNumberFieldInvalid(sections)) {
+      notification.error({
+        duration: 3,
+        message: formatMessage({ id: 'global.errors.exceedMaximumLength' }),
+      });
+    } else {
+      tryUpdateClient(objectId, objectType, accountId);
     }
   }
 
@@ -66,17 +79,9 @@ class ActionButtons extends Component {
     return history.push(`/${objectType}`);
   }
 
-  isDetailsValid = (data) => {
-    let isValid = true;
-    data.forEach((section) => {
-      section.fields.forEach((field) => {
-        if (field.required && field.value === '') {
-          isValid = false;
-        }
-      });
-    });
-    return isValid;
-  }
+  isAnyNumberFieldInvalid = data => _.some(data, section => _.some(section.fields, field => field.type === NumberInput && field.value && String(field.value).length > field.precision))
+  isAnyTextFieldInvalid = data => _.some(data, section => _.some(section.fields, field => field.type === TextInput && field.value && field.value.length > field.length))
+  isAnyRequiredFieldInvalid = data => _.some(data, section => _.some(section.fields, field => field.required && field.value === ''))
 
   render() {
     const { objectType, theme } = this.props;

@@ -2,7 +2,7 @@ import http from 'utils/http';
 import _ from 'lodash';
 import { notification } from 'antd';
 import { UNAUTHENTICATION, SUCCESS_HTTP_CODE } from 'config/app.config.js';
-import { tryLogout } from 'views/LoginForm/flow/actions';
+import { deRegisterLoginUser } from 'views/LoginForm/flow/actions';
 import {
   HTTP_ACTION_DONE,
   HTTP_ACTION_DOING,
@@ -41,8 +41,8 @@ const dispatch = (method, url, request, dispatcher = () => {}, callbackConfig) =
   return request.then(({ data, statusCode }) => {
     dispatcher({ type: HTTP_ACTION_DONE });
     defaultCallback(callbackConfig, method, { data, statusCode });
-    if (statusCode === UNAUTHENTICATION.CODE) { // 如果是401为授权，就跳转到登录界面
-      dispatcher(tryLogout());
+    if (statusCode === UNAUTHENTICATION.CODE) { // 如果是401为授权
+      dispatcher(deRegisterLoginUser());
       return Promise.reject();
     }
     if (SUCCESS_HTTP_CODE.indexOf(statusCode) > -1) {

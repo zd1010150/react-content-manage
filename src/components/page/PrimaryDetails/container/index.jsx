@@ -9,7 +9,8 @@ import { isValidClientTypes } from 'utils/propChecks';
 import { ActionButtons, FieldsSection } from '../components/index';
 import { resetId, tryFetchObjectDetails } from '../flow/actions';
 
-const { PhantomId } = Enums;
+const { ObjectTypes, PhantomId } = Enums;
+const { Accounts } = ObjectTypes;
 
 const propTypes = {
   intl: intlShape.isRequired,
@@ -28,17 +29,23 @@ class PrimaryDetails extends Component {
       tryFetchObjectDetails,
     } = this.props;
     tryFetchObjectDetails(objectId, objectType, accountId);
+    console.log('fetching new mounted');
   }
 
   componentDidUpdate() {
     const {
+      accountId,
       history,
       objectType,
       newId,
       resetId,
     } = this.props;
     if (newId !== '') {
-      history.push(`/${objectType}/${newId}`);
+      if (accountId) {
+        history.push(`/${Accounts}/${accountId}`);
+      } else {
+        history.push(`/${objectType}/${newId}`);
+      }
       resetId();
     }
   }

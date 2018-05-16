@@ -11,6 +11,7 @@ class LoginForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const me = this;
+    const { history } = this.props;
     const { formatMessage } = this.props.intl;
     this.props.form.validateFields((err, values) => {
       if (!err) {

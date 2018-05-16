@@ -6,9 +6,8 @@ import _ from 'lodash';
 import classNames from 'classnames/bind';
 import EnumsManager from 'utils/EnumsManager';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { loginSuccess } from 'views/LoginForm/flow/actions.js';
 import styles from './layout.less';
-import { fetchGlobalSetting, fetchAccountPermission } from 'store/global/action';
+import { fetchGlobalSetting, fetchAccountPermission, fetchLoginUserDetail } from 'store/global/action';
 
 import { TopPanel, CopyRight } from '../page/index';
 
@@ -20,29 +19,27 @@ const cx = classNames.bind(styles);
 class MainLayout extends React.Component {
   componentDidMount() {
     const {
-      fetchGlobalSetting, fetchAccountPermission,
+      fetchGlobalSetting,
+      fetchAccountPermission,
+      fetchLoginUserDetail,
     } = this.props;
     const localLoginUser = getStore(EnumsManager.LocalStorageKey);
     if (!_.isEmpty(localLoginUser)) {
       fetchGlobalSetting();
       fetchAccountPermission();
+      fetchLoginUserDetail();
     }
   }
     hasLoggedIn = () => {
-      const {
-        loginUser, loginSuccess,
-      } = this.props;
       // we'll check the login status in localstorage instead of redux/session storage
       // because it will help us to sync the status across application instances
+       const { loginUser } = this.props;
       const localLoginUser = getStore(EnumsManager.LocalStorageKey);
       if (_.isEmpty(localLoginUser)) {
         return false;
       }
-      if (_.isEmpty(loginUser)) {
-        loginSuccess(localLoginUser);
-      }
 
-      return true;
+      return !_.isEmpty(loginUser);
     }
 
     render() {
@@ -72,16 +69,13 @@ class MainLayout extends React.Component {
     }
 }
 
-MainLayout.propTypes = {
-  loginSuccess: PropTypes.func.isRequired,
-  loginUser: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-};
-const mapStateToProps = ({ loginUser }) => ({
-  loginUser, // 将全局的user 信息注入到此组件
-});
+
 const mapDispatchToProp = {
-  loginSuccess,
   fetchGlobalSetting,
   fetchAccountPermission,
+  fetchLoginUserDetail,
 };
+const mapStateToProps = ({ loginUser }) => ({
+    loginUser, // 将全局的user 信息注入到此组件
+});
 export default connect(mapStateToProps, mapDispatchToProp)(MainLayout);

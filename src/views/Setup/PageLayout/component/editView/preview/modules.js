@@ -3,7 +3,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Panel } from 'components/ui/index';
 import { intlShape, injectIntl } from 'react-intl';
+import Enum from 'utils/EnumsManager';
 
+const { ColumnsByModule } = Enum;
 class Modules extends React.Component {
   render() {
     const {
@@ -16,7 +18,16 @@ class Modules extends React.Component {
       <div>
         {
                     modules.map(m =>
-                      <Panel key={m} panelClasses={`${theme}-theme-panel`} panelTitle={formatMessage({ id: `global.ui.detailModules.${m}` })} />)
+                      (<Panel contentClasses="pb-md" key={m} panelClasses={`${theme}-theme-panel`} panelTitle={formatMessage({ id: `global.ui.detailModules.${m}` })} >
+                        <table style={{ width: '100%' }}>
+                          <thead className="ant-table-thead">
+                            <tr>
+                              { ColumnsByModule[m].map(c => <th key={c.dataIndex}>{ formatMessage({ id: c.titleId })}</th>) }
+
+                            </tr>
+                          </thead>
+                        </table>
+                      </Panel>))
                 }
 
       </div>);

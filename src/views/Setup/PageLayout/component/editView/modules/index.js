@@ -1,21 +1,17 @@
 /* eslint-disable no-shadow */
 import React from 'react';
-import _ from 'lodash';
-import classNames from 'classnames/bind';
+import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Card } from 'antd';
 import { connect } from 'react-redux';
 import { objTypeAndClassTypeMap } from 'config/app.config';
+import Enum from 'utils/EnumsManager';
 import { addModule, sortModules } from '../../../flow/edit/action';
 import ModuleWrapper from './module-wrapper';
 import Module from './module';
 import ModulesWrapper from './modules-wrapper';
-import styles from '../../../index.less';
 
-
-const cx = classNames.bind(styles);
-
-
+const { ColumnsByModule } = Enum;
 class ModuleContainer extends React.Component {
   render() {
     const {
@@ -23,20 +19,23 @@ class ModuleContainer extends React.Component {
       modules,
       addModule,
       sortModules,
+      intl,
     } = this.props;
     const theme = objTypeAndClassTypeMap[objectType];
+    const { formatMessage } = intl;
     return (<ModulesWrapper addModule={addModule} selectedModules={modules}>
       {
             modules.length < 1 ?
               <Card bodyStyle={{
                  minHeight: '100px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}
-              > 你还没有modules，拖动右面module 至此处
+              >
+                {formatMessage({ id: 'page.layouts.noMoudle' })}
               </Card>
                 :
                 modules.map((m, index) => (
                   <ModuleWrapper sequence={index} sortModules={sortModules} addModule={addModule} key={m} theme={theme}>
-                    <Module code={m} theme={theme} />
+                    <Module code={m} theme={theme} cols={ColumnsByModule[m]} />
                   </ModuleWrapper>
             ))
           }
@@ -63,4 +62,4 @@ const mapDispatchToProps = {
   sortModules,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModuleContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ModuleContainer));

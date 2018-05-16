@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Input, Select, Icon, DatePicker } from 'antd';
 import _ from 'lodash';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import classNames from 'classnames/bind';
 import styles from './index.less';
-
+import FormatedTime from '../FormatedTime/index';
 
 const cx = classNames.bind(styles);
 
@@ -24,9 +25,9 @@ class EditBox extends React.Component {
         });
       }
     }
-    onChange(value) {
+    onChange(value, momentDate) {
       this.setState({ value });
-      this.props.onChange(value);
+      this.props.onChange(value, momentDate);
     }
     onEditing() {
       if (!this.props.isDisabled) {
@@ -38,7 +39,11 @@ class EditBox extends React.Component {
       this.setState({ isEdting: false });
       this.props.onBlur(this.state.value);
     }
-
+    moveCaretAtEnd(e) {
+      const tempValue = e.target.value;
+      e.target.value = '';
+      e.target.value = tempValue;
+    }
     reset() {
       this.setState({ value: this.state.originValue });
     }
@@ -51,33 +56,55 @@ class EditBox extends React.Component {
       const {
         type, options, inputClasses, dateFormat,
       } = this.props;
-
       switch (type) {
         case 'select':
-          return <Select className={classNames(inputClasses, cx('editbox-element'))} value={this.state.value} size="small" onChange={val => this.onChange(val)} onBlur={() => this.onBlur()}>{ options.map((op, index) => <Option value={op.value} key={op.value}>{ op.text }</Option>) }</Select>;
+          return (<Select
+            className={classNames(inputClasses, cx('editbox-element'))}
+            value={this.state.value}
+            size="small"
+            onChange={val => this.onChange(val)}
+            onBlur={() => this.onBlur()}
+          >
+            { options.map(op => <Option value={op.value} key={op.value}>{ op.text }</Option>) }
+          </Select>);
         case 'datePicker':
           return (<DatePicker
-            value={moment(this.state.value, dateFormat)}
+            autoFocus
+            value={moment(this.state.value || new Date())}
             size="small"
+            format={dateFormat}
             className={classNames(inputClasses, cx('editbox-element'))}
-            onChange={(moment, date) => {
-              this.onChange(date);
+            ref={datePicker => this.datePicker = datePicker}
+            onChange={(momentDate, dateStr) => {
+              this.onChange(dateStr, momentDate);
+              this.datePicker.blur();
               this.onBlur();
           }}
           />);
         case 'input':
         default:
-          return <Input className={classNames(inputClasses, cx('editbox-element'))} size="small" value={this.state.value} onBlur={() => this.onBlur()} onPressEnter={e => this.onBlur(e.target.value)} onChange={(e) => { this.onChange(e.target.value); }} />;
+          return (<Input
+            autoFocus
+            className={classNames(inputClasses, cx('editbox-element'))}
+            size="small"
+            value={this.state.value}
+            onFocus={this.moveCaretAtEnd}
+            onBlur={() => this.onBlur()}
+            onPressEnter={e => this.onBlur(e.target.value)}
+            onChange={(e) => { this.onChange(e.target.value); }}
+          />);
       }
     }
     buildValue() {
       const {
-        type, isShowStatuLabel, isDisabled, inputClasses,isShowEditIcon
+        type, isShowStatuLabel, isDisabled, inputClasses,
       } = this.props;
       let valueEl;
       let iconEl;
       if (type === 'select') {
         valueEl = this.filterSelectText(this.state.value);
+      } else if (type === 'datePicker') {
+        valueEl = <FormatedTime value={this.state.value} />;
       } else {
         valueEl = this.state.value;
       }
@@ -90,11 +117,16 @@ class EditBox extends React.Component {
         }
       }
 
-      return <div className={cx('editbox-value-wrapper')}><span className={classNames(inputClasses, cx('editbox-value'))}> {valueEl}</span>{iconEl}</div>;
+      return (
+        <div className={cx('editbox-value-wrapper')}>
+          <span className={classNames(inputClasses, cx('editbox-value'))}> {valueEl}</span>
+          {iconEl}
+        </div>
+      );
     }
 
     render() {
-      const { spanClasses, type, onClick } = this.props;
+      const { spanClasses, onClick } = this.props;
       return (
         <div
           onDoubleClick={(e) => {
@@ -112,14 +144,13 @@ class EditBox extends React.Component {
 EditBox.defaultProps = {
   isDisabled: false,
   isShowStatuLabel: true,
-    isShowEditIcon: false,
-  onChange: (val) => { console.log('change', val); },
-  onBlur: (val) => { console.log('blur', val); },
-  onEditing: (val) => { console.log('editing', val); },
+  isShowEditIcon: false,
+  onChange: () => { },
+  onBlur: () => { },
+  onEditing: () => { },
   onClick: () => {},
   value: '',
   options: [],
-  dateFormat: 'YYYY/MM/DD',
 };
 
 EditBox.propTypes = {
@@ -134,9 +165,12 @@ EditBox.propTypes = {
   options: PropTypes.array,
   inputClasses: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   spanClasses: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  dateFormat: PropTypes.string, // moment format string
+  dateFormat: PropTypes.string.isRequired, // moment format string
 };
+const mapStateToProps = ({ global }) => ({
+  dateFormat: global.timeZoneSetting.dateFormat,
+});
 
 
-export default EditBox;
+export default connect(mapStateToProps)(EditBox);
 

@@ -30,6 +30,7 @@ class addEditView extends React.Component {
           selectedDepartmentText={selectedDepartmentText}
           onCancel={() => history.push('/setup/company-info/users')}
           teamIds={teamIds}
+          onSubmit={() => history.push('/setup/company-info/users')}
         />
         <DepartmentDialog isDisplayDepartmentDialog={isDisplayDepartmentDialog} toggleDepartmentDialog={toggleDepartmentDialog} setDepartment={setDepartment} teams={teams} />
       </Panel>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { getStore } from 'utils/localStorage';
@@ -8,8 +9,6 @@ import LoginForm from './container/index';
 import EnumsManager from 'utils/EnumsManager';
 
 class LoginFormWrapper extends Component {
-
-
   hasLoggedIn = () => {
     const localLoginUser = getStore(EnumsManager.LocalStorageKey);
     if (!_.isEmpty(localLoginUser)) {
