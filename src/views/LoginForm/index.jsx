@@ -9,8 +9,6 @@ import LoginForm from './container/index';
 import EnumsManager from 'utils/EnumsManager';
 
 class LoginFormWrapper extends Component {
-
-
   hasLoggedIn = () => {
     const localLoginUser = getStore(EnumsManager.LocalStorageKey);
     if (!_.isEmpty(localLoginUser)) {

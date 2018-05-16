@@ -17,7 +17,7 @@ const { PageSize } = DefaultPageConfigs;
 
 const defaultProps = {
   activeViewId: PhantomId,
-  objectType: Leads,  
+  objectType: Leads,
   views: [],
 };
 const propTypes = {

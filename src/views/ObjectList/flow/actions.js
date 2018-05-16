@@ -57,9 +57,9 @@ export const tryFetchDataByView = (objectType, viewId, params) => dispatch =>
 
 //
 export const setRowSelection = selectedRowKeys => ({
-      type: SET_ROW_SELECTION,
-      payload: { selectedRowKeys },
-    });
+  type: SET_ROW_SELECTION,
+  payload: { selectedRowKeys },
+});
 
 
 //

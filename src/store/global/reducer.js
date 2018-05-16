@@ -33,7 +33,7 @@ const setTimezoneInStorage = (timezones = [], countries = []) => {
   return setStore(Timezone, {
     dateFormat: country && country.date_format ? country.date_format : 'YYYY-MM-DD',
     timeFormat: country && country.time_format ? country.time_format : 'YYYY-MM-DD HH:mm:ss',
-    offset: timezone && timezone.tz_offset ? timezone.tz_offset : '+1100',
+    offset: timezone && timezone.tz_offset ? timezone.tz_offset : '1100',
   });
 };
 
