@@ -4,18 +4,18 @@ import moment from 'moment';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import { Table, Button, Icon, Select } from 'antd';
-import { PAGE_ACTION, objTypeAndClassTypeMap } from 'config/app.config';
+import { Table, Icon, Select } from 'antd';
+import { objTypeAndClassTypeMap, DEFAULT_DATE_SETTING } from 'config/app.config';
 import { connect } from 'react-redux';
 import { Panel } from 'components/ui/index';
-import { intlShape, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
+import { toTimezone } from 'utils/dateTimeUtils';
 import { setPeriod, queryByPaging, queryByPeriod } from '../flow/action';
 import { ALL_STATUS } from '../flow/config';
-import { getTreeItemByKey } from 'utils/treeUtil';
-import { toTimezone } from 'utils/dateTimeUtils';
 
-const Option = Select.Option;
 
+const { Option } = Select;
+const { END_DATE_FORMAT } = DEFAULT_DATE_SETTING;
 class TaskListView extends React.Component {
   componentDidMount() {
     const { queryByPaging, taskDataTablePagination } = this.props;
@@ -29,7 +29,7 @@ class TaskListView extends React.Component {
       overDue;
     switch (period) {
       case ALL_STATUS.OVERDUE_TODAY:
-        start = moment().format('YYYY-MM-DD');
+        start = moment().format(END_DATE_FORMAT);
         end = start;
         overDue = true;
         break;
@@ -39,17 +39,27 @@ class TaskListView extends React.Component {
         overDue = true;
         break;
       case ALL_STATUS.TOMORROW:
-        start = moment().add(1, 'days').format('YYYY-MM-DD');
+        start = moment().add(1, 'days').format(END_DATE_FORMAT);
         end = start;
         overDue = false;
         break;
+      case ALL_STATUS.THIS_WEEK:
+        start = moment().startOf('isoweek').format(END_DATE_FORMAT);
+        end = moment().endOf('isoweek').format(END_DATE_FORMAT);
+        overDue = false;
+        break;
+      case ALL_STATUS.ALL:
+        start = '';
+        end = '';
+        overDue = false;
+        break;
       case ALL_STATUS.THIS_MONTH:
-        start = moment().startOf('months').format('YYYY-MM-DD');
-        end = moment().endOf('months').format('YYYY-MM-DD');
+        start = moment().startOf('months').format(END_DATE_FORMAT);
+        end = moment().endOf('months').format(END_DATE_FORMAT);
         overDue = false;
         break;
       case ALL_STATUS.TODAY:
-        start = moment().format('YYYY-MM-DD');
+        start = moment().format(END_DATE_FORMAT);
         end = start;
         overDue = false;
         break;

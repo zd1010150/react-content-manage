@@ -11,12 +11,11 @@ import { mapToAPIOrderStr } from 'utils/common';
 import { toTimezone } from 'utils/dateTimeUtils';
 import {
   setRowSelection,
-  tryFetchData,
   tryFetchDataByView,
   tryDeleteClientByType,
 } from '../flow/actions';
 
-const { FieldTypes, DefaultPageConfigs } = Enums;
+const { FieldTypes, DefaultPageConfigs, PhantomId } = Enums;
 const {
   DateOnly,
   DateTime,
@@ -41,7 +40,6 @@ const propTypes = {
   selectedRowKeys: PropTypes.array.isRequired,
   tableParams: PropTypes.object.isRequired,
   setRowSelection: PropTypes.func.isRequired,
-  tryFetchData: PropTypes.func.isRequired,
   tryFetchDataByView: PropTypes.func.isRequired,
   tryDeleteClientByType: PropTypes.func.isRequired,
 };
@@ -49,14 +47,22 @@ const propTypes = {
 
 class TableWrapper extends Component {
   componentDidMount() {
-    // initial fetch
-    const { objectType, tryFetchData } = this.props;
-    tryFetchData(objectType, { per_page: PageSize });
+    this.props.tryFetchDataByView(
+      this.props.objectType,
+      PhantomId,
+      { page: 1, per_page: PageSize },
+    );
   }
 
   handleDeleteClick = (id) => {
-    const { objectType, tryDeleteClientByType, tableParams, meta } = this.props;
-    tryDeleteClientByType(objectType, id, tableParams, meta);
+    const {
+      activeViewId,
+      objectType,
+      tryDeleteClientByType,
+      tableParams,
+      meta,
+    } = this.props;
+    tryDeleteClientByType(objectType, id, tableParams, meta, activeViewId);
   }
 
   handleSelectionChange = selectedKeys => this.props.setRowSelection(selectedKeys)
@@ -86,6 +92,7 @@ class TableWrapper extends Component {
     let extraParams = {};
     if (!_.isEmpty(pagination)) {
       extraParams = {
+        current: pagination.current_page,
         pageSize: pagination.per_page,
         total: pagination.total,
       };
@@ -207,7 +214,6 @@ const mapStateToProps = ({ global, objectList }) => ({
 });
 const mapDispatchToProps = {
   setRowSelection,
-  tryFetchData,
   tryFetchDataByView,
   tryDeleteClientByType,
 };

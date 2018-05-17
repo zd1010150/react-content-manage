@@ -13,7 +13,7 @@ const { Search } = Input;
 class userForm extends React.Component {
   onSubmit() {
     const {
-      editObject, addUsers, updateUsers, form, selectedDepartmentId,
+      editObject, addUsers, updateUsers, form, selectedDepartmentId, onSubmit
     } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       const submitFormData = Object.assign({}, values, { team_id: selectedDepartmentId });
@@ -21,6 +21,7 @@ class userForm extends React.Component {
         if (_.isEmpty(editObject)) {
           addUsers(submitFormData, () => {
             form.resetFields();
+            onSubmit();
           });
         } else {
           updateUsers(submitFormData);
@@ -167,6 +168,7 @@ userForm.propTypes = {
   selectedDepartmentText: PropTypes.string,
   selectedDepartmentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onCancel: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 const UserFormWrapper = Form.create()(injectIntl(userForm));
 export default UserFormWrapper;

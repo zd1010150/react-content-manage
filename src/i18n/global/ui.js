@@ -104,6 +104,7 @@ export default {
       selectedItems: '条记录被选中',
       priority: '优先级',
       category: '所属类别',
+      acctName: 'Account姓名',
     },
     select: {
       label: '视图',
@@ -239,6 +240,7 @@ export default {
       selectedItems: 'items selected',
       priority: 'Priority',
       category: 'Category',
+      acctName: 'Account Name',
     },
     select: {
       label: 'View',

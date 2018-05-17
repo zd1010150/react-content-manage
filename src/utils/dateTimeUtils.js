@@ -12,7 +12,7 @@ const getTimeSetting = (isTime) => {
 
   const formatKey = isTime ? 'timeFormat' : 'dateFormat';
   const format = parsedTimezone[formatKey] ? parsedTimezone[formatKey] : 'YYYY-MM-DD';
-  const offset = parsedTimezone.offset ? parsedTimezone.offset : '+0000';
+  const offset = parsedTimezone.offset ? parsedTimezone.offset : '0000';
   return {
     format,
     offset: offset.indexOf('-') < 0 ? `+${offset}` : offset,

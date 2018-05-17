@@ -11,6 +11,8 @@ const BaseEnums = Object.freeze({
     TextInput: 'text',
     // for display only field
     Display: 'display',
+    // temp fix, should be removed if backend fix the problem, see more for Issue#55
+    ApiError: 'apiError',
   }),
 
   ObjectTypes: Object.freeze({
@@ -45,11 +47,12 @@ const BaseEnums = Object.freeze({
     Logs: 'Logs',
   }),
 
-
 });
 
-const EnumsManager = Object.freeze({
+const tableIntl = 'global.ui.table';
 
+const EnumsManager = Object.freeze({
+  // deprecated, update in LocalStorageKeys pls
   LocalStorageKey: 'crmLoginUser',
   LocalStorageEmails: 'crmEmails',
 
@@ -192,6 +195,137 @@ const EnumsManager = Object.freeze({
   },
 
   DetailModulesInArray: Object.freeze(_.values(BaseEnums.DetailModules)),
+
+  ColumnsByModule: {
+    [BaseEnums.DetailModules.Opportunities]: [
+      {
+        dataIndex: 'action',
+        titleId: `${tableIntl}.action`,
+      },
+      {
+        dataIndex: 'target_account_id.id',
+        titleId: `${tableIntl}.acctName`,
+      },
+      {
+        dataIndex: 'created_at',
+        titleId: `${tableIntl}.createDate`,
+      },
+      {
+        dataIndex: 'created_by_user_id',
+        titleId: `${tableIntl}.createBy`,
+      },
+      {
+        dataIndex: 'name',
+        titleId: `${tableIntl}.fullName`,
+      },
+    ],
+    [BaseEnums.DetailModules.TaskOpen]: [
+      {
+        dataIndex: 'action',
+        titleId: `${tableIntl}.action`,
+      },
+      {
+        dataIndex: 'subject',
+        titleId: `${tableIntl}.subject`,
+      },
+      {
+        dataIndex: 'status_code',
+        titleId: `${tableIntl}.status`,
+      },
+      {
+        dataIndex: 'priority_code',
+        titleId: `${tableIntl}.priority`,
+      },
+      {
+        dataIndex: 'due_date',
+        titleId: `${tableIntl}.dueOn`,
+      },
+      {
+        dataIndex: 'updated_at',
+        titleId: `${tableIntl}.lastModifiedAt`,
+      },
+    ],
+    [BaseEnums.DetailModules.TaskHistory]: [
+      {
+        dataIndex: 'subject',
+        titleId: `${tableIntl}.subject`,
+      },
+      {
+        dataIndex: 'status_code',
+        titleId: `${tableIntl}.status`,
+      },
+      {
+        dataIndex: 'priority_code',
+        titleId: `${tableIntl}.priority`,
+      },
+      {
+        dataIndex: 'due_date',
+        titleId: `${tableIntl}.dueOn`,
+      },
+      {
+        dataIndex: 'updated_at',
+        titleId: `${tableIntl}.lastModifiedAt`,
+      },
+    ],
+    [BaseEnums.DetailModules.EmailSent]: [
+      {
+        dataIndex: 'subject',
+        titleId: `${tableIntl}.subject`,
+      },
+      {
+        dataIndex: 'created_at',
+        titleId: `${tableIntl}.sentDate`,
+      },
+      {
+        dataIndex: 'open_date',
+        titleId: `${tableIntl}.openDate`,
+      },
+      {
+        dataIndex: 'open_times',
+        titleId: `${tableIntl}.openTimes`,
+      },
+      {
+        dataIndex: 'updated_at',
+        titleId: `${tableIntl}.lastModifiedAt`,
+      },
+    ],
+    [BaseEnums.DetailModules.Attachments]: [
+      {
+        dataIndex: 'action',
+        titleId: `${tableIntl}.action`,
+      },
+      {
+        dataIndex: 'category',
+        titleId: `${tableIntl}.category`,
+      },
+      {
+        dataIndex: 'type',
+        titleId: `${tableIntl}.type`,
+      },
+      {
+        dataIndex: 'created_at',
+        titleId: `${tableIntl}.uploadAt`,
+      },
+      {
+        dataIndex: 'created_by',
+        titleId: `${tableIntl}.createBy`,
+      },
+    ],
+    [BaseEnums.DetailModules.Logs]: [
+      {
+        dataIndex: 'updated_at',
+        titleId: `${tableIntl}.date`,
+      },
+      {
+        dataIndex: 'causer.name',
+        titleId: `${tableIntl}.user`,
+      },
+      {
+        dataIndex: 'description',
+        titleId: `${tableIntl}.action`,
+      },
+    ],
+  },
 
   MaxDisplayResults: 20,
 
