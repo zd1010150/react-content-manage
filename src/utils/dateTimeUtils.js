@@ -48,12 +48,13 @@ export const toTimezone = (str, isConvertingTime = false) => {
  */
 export const toUtc = (str, isConvertingTime = false) => {
   const sourceSettings = getTimeSetting(isConvertingTime);
+  const targetFormat = isConvertingTime ? DefaultApiTimeFormat : DefaultApiDateFormat;
 
   if (!moment(str, sourceSettings.format).isValid()) return null;
   if (isConvertingTime) {
-    return moment.utc(`${str}${sourceSettings.offset}`).format(sourceSettings.format);
+    return moment.utc(`${str}${sourceSettings.offset}`).format(targetFormat);
   }
-  return moment(str, sourceSettings.format).format(DefaultApiDateFormat);
+  return moment(str, sourceSettings.format).format(targetFormat);
 };
 
 // !!!deprecated, please use toUtc or toTimezone to convert date/datetime
