@@ -37,7 +37,7 @@
     "ci:deploy:test": [
       "git fetch --all --tags",
       "git pull origin master",
-      "composer install --no-dev",
+      "composer install",
       "@assets:rebuild"
     ]
   },
