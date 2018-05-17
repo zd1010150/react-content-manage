@@ -77,15 +77,16 @@ const convertFieldToMap = (data) => {
 
 const FieldInfo = ({selectedField, selectField, selectedLabel, selectedValue, template, fieldOption, formatMessage, selectLabel, selectValue}) => {
     console.log('selectedField', selectedField)
-    console.log('fieldOption', fieldOption)
+    console.log('template', template)
     let fieldLabels, fieldValues = [];
     let fieldObj = {};
     let convertObj;
+
     if (!_.isEmpty(template) && !_.isEmpty(fieldOption)) {
         convertObj  = convertFieldToMap(fieldOption[template.category]);
     }
 
-    if(!!selectedField.label){
+    if(convertObj && convertObj[selectedField.key] && !!selectedField.label){
         fieldValues = [convertObj[selectedField.key]["value"]]
     }
 
