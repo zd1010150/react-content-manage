@@ -1,3 +1,6 @@
+// Just for make jest happy!
+import _ from 'lodash';
+
 const BaseEnums = Object.freeze({
 
   FieldTypes: Object.freeze({
@@ -52,7 +55,7 @@ const BaseEnums = Object.freeze({
 const tableIntl = 'global.ui.table';
 
 const EnumsManager = Object.freeze({
-  // deprecated, update in LocalStorageKeys pls
+  // !!!deprecated, update in LocalStorageKeys pls
   LocalStorageKey: 'crmLoginUser',
   LocalStorageEmails: 'crmEmails',
 
@@ -71,6 +74,7 @@ const EnumsManager = Object.freeze({
     Options: ['10', '25', '50', '100', '200', '300'],
   }),
 
+  // !!!deprecated, update in FieldTypes pls
   DataType: Object.freeze([
     'datepicker',
     'timepicker',
@@ -341,6 +345,18 @@ const EnumsManager = Object.freeze({
   }),
 
   MasterKey: 'master_record_id',
+
+  DateTimeConfigs: Object.freeze({
+    // Both belows shoud be consist with format stored in database
+    DefaultApiDateFormat: 'YYYY-MM-DD',
+    DefaultApiTimeFormat: 'YYYY-MM-DD HH:mm:ss',
+    // Following settings are requested in Issue#103 refer to -> http://c7git.acy.svr/LogixCRM/fe_logix_crm/issues/103
+    // Both belows are used as default for display
+    DefaultDateFormat: 'DD-MM-YYYY',
+    DefaultTimeFormat: 'DD-MM-YYYY HH:mm:ss',
+    // Used sydney timezone as default for display
+    DefaultOffset: '1100',
+  }),
 
 });
 
