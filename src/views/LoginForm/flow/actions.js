@@ -1,26 +1,27 @@
 
 import { post } from 'store/http/httpAction';
 import _ from 'lodash';
+import { fetchLoginUserDetail } from 'store/global/action';
 import {
-  LOGIN_SUCCESS, LOGOUT_SUCCESS,
+  LOGOUT_SUCCESS,
+  DEREGISTER_LOGIN_USER,
 } from './actionTypes';
 
-
-export const loginSuccess = userData => ({
-  type: LOGIN_SUCCESS,
-  payload: { userData },
+export const deRegisterLoginUser = () => ({
+  type: DEREGISTER_LOGIN_USER,
 });
-
-
 const logoutSuccess = json => ({
   type: LOGOUT_SUCCESS,
   payload: { json },
 });
 
-export const tryLogin = (values, successMessage) => dispatch => post('/admin/login', values, dispatch, { successMessage })
+export const tryLogin = (values, successMessage, cb) => dispatch => post('/admin/login', values, dispatch, { successMessage })
   .then((json) => {
-    if (json && (!_.isEmpty(json.data))) {
-      dispatch(loginSuccess(json.data, json.data.time_zone));
+    if (_.isFunction(cb)) {
+      cb();
+    }
+    if (json) {
+      dispatch(fetchLoginUserDetail());
     }
   });
 

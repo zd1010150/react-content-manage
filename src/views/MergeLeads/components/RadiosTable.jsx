@@ -83,7 +83,7 @@ class RadiosTable extends Component {
           {/* label col */}
           <Col key={MasterKey} {...labelColLayout}>
             {keys.map(key => (
-              <div className={cx('labelCol')} key={key.key}>
+              <div className={`required ${cx('labelCol')}`} key={key.key}>
                 {key.key === MasterKey ? masterLabel : key.label}
               </div>
             ))}

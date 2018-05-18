@@ -32,7 +32,6 @@
     "generate-password": "^1.4.0",
     "html-webpack-plugin": "2.29.0",
     "isomorphic-fetch": "^2.2.1",
-    "jest": "20.0.4",
     "less": "2.7.3",
     "less-loader": "^4.0.5",
     "less-vars-to-js": "^1.2.1",
@@ -76,7 +75,8 @@
       "src/**/*.{js,jsx,mjs}"
     ],
     "setupFiles": [
-      "<rootDir>/config/polyfills.js"
+      "<rootDir>/config/polyfills.js",
+      "jest-localstorage-mock"
     ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,mjs}",
@@ -116,6 +116,8 @@
   "devDependencies": {
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "eslint-config-airbnb": "^16.1.0",
+    "jest": "^20.0.4",
+    "jest-localstorage-mock": "^2.2.0",
     "webpack-visualizer-plugin": "^0.1.11"
   }
 }

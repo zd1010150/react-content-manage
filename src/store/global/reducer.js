@@ -1,10 +1,13 @@
 /* eslint-disable max-len, no-case-declarations */
+import _ from 'lodash';
 import { combineReducers } from 'redux';
 import { flattenTree } from 'utils/common';
 import { moments, years } from 'utils/dateTimeUtils';
 import { navLanguage } from 'utils/navigationUtil';
 import Enums from 'utils/EnumsManager';
 import { getStore, setStore } from 'utils/localStorage';
+import { DEFAULT_DATE_SETTING } from 'config/app.config';
+import { LOGIN_SUCCESS } from 'views/LoginForm/flow/actionTypes';
 import { SET_ACCOUNTINFO,
   SET_GLOBAL_SETTING,
   SET_LOGO,
@@ -14,10 +17,18 @@ import { SET_ACCOUNTINFO,
   SET_USERS_GLOBAL,
   TOGGLE_LANGUAGE,
   SET_APP_ROUTER_HASH,
+  SET_TIME_ZONE,
 } from './actionType';
 
-const { LocalStorageKeys } = Enums;
+const { LocalStorageKeys, DateTimeConfigs } = Enums;
 const { User, Timezone, LanguaegOfApp } = LocalStorageKeys;
+const {
+  DefaultDateFormat,
+  DefaultTimeFormat,
+  DefaultOffset,
+  DateFormatKey,
+  TimeFormatKey,
+} = DateTimeConfigs;
 
 
 const setTimezoneInStorage = (timezones = [], countries = []) => {
@@ -27,9 +38,9 @@ const setTimezoneInStorage = (timezones = [], countries = []) => {
   const timezone = timezones.find(tz => tz.id === companySettings.time_zone);
   const country = countries.find(cty => cty.id === companySettings.country_code);
   return setStore(Timezone, {
-    dateFormat: country && country.date_format ? country.date_format : 'YYYY-MM-DD',
-    timeFormat: country && country.time_format ? country.time_format : 'YYYY-MM-DD HH:mm:ss',
-    offset: timezone && timezone.tz_offset ? timezone.tz_offset : '+1100',
+    [DateFormatKey]: country && country.date_format ? country.date_format : DefaultDateFormat,
+    [TimeFormatKey]: country && country.time_format ? country.time_format : DefaultTimeFormat,
+    offset: timezone && timezone.tz_offset ? timezone.tz_offset : DefaultOffset,
   });
 };
 
@@ -149,6 +160,43 @@ const appRoutHash = (state = Math.random(), action) => {
   }
 };
 
+const getTimeZone = (state, globalSetting, loginUser) => {
+  const { countries, timeZones } = globalSetting;
+  const { country_code, time_zone } = loginUser.company;
+  let newDateFormat = {};
+  let newOffset = {};
+
+  const countryArr = countries.filter(c => c.id === country_code);
+  const country = _.isEmpty(countryArr) ? { date_format: DEFAULT_DATE_SETTING.DATE_FORMAT } : countryArr[0];
+  newDateFormat = {
+    dateFormat: country.date_format || DEFAULT_DATE_SETTING.DATE_FORMAT,
+  };
+  newDateFormat = Object.assign({}, newDateFormat, { timeFormat: `${newDateFormat.dateFormat} HH:mm:ss` });
+
+  const timeZoneArr = timeZones.filter(t => t.id === time_zone);
+  const timeZone = _.isEmpty(timeZoneArr) ? { tz_offset: DEFAULT_DATE_SETTING.OFFSET } : timeZoneArr[0];
+  newOffset = {
+    offset: timeZone.tz_offset,
+  };
+  const newState = Object.assign({}, state, { ...newDateFormat }, { ...newOffset });
+  setStore(Enums.LocalStorageKeys.Timezone, JSON.stringify(newState));
+  return newState;
+};
+
+const timeZoneSetting = (state = { dateFormat: DEFAULT_DATE_SETTING.DATE_FORMAT, timeFormat: DEFAULT_DATE_SETTING.TIME_FORMAT, offset: DEFAULT_DATE_SETTING.OFFSET }, action) => {
+  const { type, ...payload } = action;
+  switch (type) {
+    case SET_TIME_ZONE:
+      return getTimeZone(state, payload.globalSetting, payload.loginUser);
+    case LOGIN_SUCCESS:
+      return getTimeZone(state, payload.globalSetting, payload.payload.data);
+    case SET_GLOBAL_SETTING:
+      return getTimeZone(state, { timeZones: payload.settings.timezones, countries: payload.settings.countries }, payload.loginUser);
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   language,
   permissions,
@@ -157,5 +205,6 @@ const rootReducer = combineReducers({
   settings,
   companyLogo,
   appRoutHash,
+  timeZoneSetting,
 });
 export default rootReducer;

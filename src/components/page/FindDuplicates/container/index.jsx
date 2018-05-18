@@ -7,10 +7,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { FindPanel } from '../components/index';
+import { setRowSelection, reset } from '../flow/actions';
+
 const { FindDupConfigs, PhantomId, ThemeTypes, ThemeTypesInArray } = Enums;
 const { MaxSelection } = FindDupConfigs;
 const { Leads, Accounts } = ThemeTypes;
-import { setRowSelection, reset } from '../flow/actions';
 
 
 const defaultProps = {
@@ -21,7 +22,7 @@ const defaultProps = {
   withConvert: false,
 };
 const propTypes = {
-  intl: intlShape.isRequired,  
+  intl: intlShape.isRequired,
   accounts: PropTypes.array.isRequired,
   leads: PropTypes.array.isRequired,
   objectId: PropTypes.oneOfType([
@@ -36,7 +37,7 @@ const propTypes = {
 class FindDuplicates extends Component {
   componentWillUnmount() {
     this.props.reset();
-  }  
+  }
 
   handleRowSelectionChange = keys => this.props.setRowSelection(keys)
 
@@ -53,7 +54,7 @@ class FindDuplicates extends Component {
       withConvert,
     } = this.props;
     const { formatMessage } = intl;
-    
+
     return (
       <Fragment>
         <FindPanel
@@ -64,7 +65,7 @@ class FindDuplicates extends Component {
         {withConvert && (
           <Link to={`/leads/convert/convert/${objectId}`}>
             <Button className={`${theme}-theme-btn mb-md full-width`}>
-              {formatMessage({ id: `global.ui.button.convert` })}
+              {formatMessage({ id: 'global.ui.button.convert' })}
             </Button>
           </Link>
         )}

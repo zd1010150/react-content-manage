@@ -84,11 +84,9 @@ class teamTree extends React.Component {
       });
     }
     onDragOver({ event, node }) {
-    // console.log(event, node, 'over');
       this.props.onDragOver({ event, node });
     }
     onDragEnd({ event, node }) {
-    // console.log(event, node, 'end');
       this.props.onDragEnd({ event, node });
     }
     onDragLeave({ event, node }) {

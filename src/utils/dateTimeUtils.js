@@ -1,52 +1,81 @@
 import moment from 'moment';
-import Enums from 'utils/EnumsManager';
+import Enums from './EnumsManager';
 import { getStore } from './localStorage';
 
-const { LocalStorageKeys } = Enums;
+const { DateTimeConfigs, LocalStorageKeys } = Enums;
+const {
+  DefaultApiDateFormat,
+  DefaultApiTimeFormat,
+  DefaultOffset,
+  DateFormatKey,
+  TimeFormatKey,
+} = DateTimeConfigs;
 const { Timezone } = LocalStorageKeys;
-// possible utc offset list pls refer to https://en.wikipedia.org/wiki/List_of_UTC_time_offsets
+
+// All possible utc offset list pls refer to https://en.wikipedia.org/wiki/List_of_UTC_time_offsets
+
 
 const getTimeSetting = (isTime) => {
   const timezone = getStore(Timezone);
   const parsedTimezone = JSON.parse(timezone);
 
-  const formatKey = isTime ? 'timeFormat' : 'dateFormat';
-  const format = parsedTimezone[formatKey] ? parsedTimezone[formatKey] : 'YYYY-MM-DD';
-  const offset = parsedTimezone.offset ? parsedTimezone.offset : '+0000';
+  if (!parsedTimezone) {
+    return {
+      format: 'N/A',
+    };
+  }
+
+  const key = isTime ? TimeFormatKey : DateFormatKey;
+  let format;
+  if (parsedTimezone[key]) {
+    format = parsedTimezone[key];
+  } else {
+    format = isTime ? DefaultApiTimeFormat : DefaultApiDateFormat;
+  }
+  const offset = parsedTimezone.offset ? parsedTimezone.offset : DefaultOffset;
   return {
     format,
-    offset: offset.indexOf('-') < 0 ? `+${offset}` : offset,
+    offset,
   };
 };
+
+
 /**
+ * Convert UTC date/time to specific timezone date/time, or null if value is invalid
  *
  * @param {string} str: could be a date string or datetime string, e.g. '2018-03-06 20:00:00'
  * @param {boolean} isConvertingTime: whether the result should be converted to a date or datetime string
  *
- * Convert UTC time to specific timezone time
  */
 export const toTimezone = (str, isConvertingTime = false) => {
-  const timeSetting = getTimeSetting(isConvertingTime);
-  return moment.utc(str).utcOffset(timeSetting.offset).format(timeSetting.format);
+  const targetSettings = getTimeSetting(isConvertingTime);
+  const sourceFormat = isConvertingTime ? DefaultApiTimeFormat : DefaultApiDateFormat;
+
+  if (!moment(str, sourceFormat).isValid()) {
+    return null;
+  }
+  return moment.utc(str, sourceFormat).utcOffset(targetSettings.offset).format(targetSettings.format);
 };
 
 /**
+ * Convert specific timezone date/time to UTC date/time, or null if value is invalid
  *
  * @param {string} str: could be a date string or datetime string, e.g. '2018-03-06 20:00:00'
  * @param {boolean} isConvertingTime: whether the result should be converted to a date or datetime string
  *
- * Convert specific timezone time to UTC time
  */
 export const toUtc = (str, isConvertingTime = false) => {
-  const timeSetting = getTimeSetting(isConvertingTime);
-  if (isConvertingTime) {
-    return moment.utc(`${str}${timeSetting.offset}`).format(timeSetting.format);
-  }
-  return str;
-};
-// TODO:
-// add format and offset to localstorage to avoid extra params to function after confirm the json format of global setting response
+  const sourceSettings = getTimeSetting(isConvertingTime);
+  const targetFormat = isConvertingTime ? DefaultApiTimeFormat : DefaultApiDateFormat;
 
+  if (!moment(str, sourceSettings.format).isValid()) return null;
+  if (isConvertingTime) {
+    return moment.parseZone(`${str} ${sourceSettings.offset}`, `${sourceSettings.format} ZZ`).utc().format(targetFormat);
+  }
+  return moment(str, sourceSettings.format).format(targetFormat);
+};
+
+// !!!deprecated, please use toUtc or toTimezone to convert date/datetime
 export const moments = (() => {
   const startTime = Date.UTC(1970, 0, 2, 0, 0);
   const endTime = Date.UTC(1970, 0, 3, 0, 0);
@@ -70,4 +99,3 @@ export const years = (() => {
   }
   return result;
 })();
-

@@ -9,15 +9,17 @@ export const setCompanyInfo = args => ({
 });
 
 
-export const getCompanyInfo = () => dispatch => get('/admin/companies/me', {}, dispatch).then((data) => {
+export const getCompanyInfo = callback => dispatch => get('/admin/companies/me', {}, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
     dispatch(setCompanyInfo(data));
+  }
+  if (_.isFunction(callback)) {
+    callback(data);
   }
 });
 
 export const updateCompanyInfo = (form, callback) => dispatch => patch('/admin/companies/me', { ...form }, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
-    dispatch(getCompanyInfo({ company: data }));
     if (_.isFunction(callback)) {
       callback();
     }

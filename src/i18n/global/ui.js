@@ -67,12 +67,11 @@ export default {
       searchStore: '在此搜索全站商品...',
       searchUser: '输入用户名搜索...',
       inputIdNumber: '请输入合法的身份证号',
-      datepicker: {
-        placeholder: '请选择日期',
-      },
-      datetimepicker: {
-        placeholder: '请选择日期和时间',
-      },
+    },
+    placeholders: {
+      datepicker: '请选择日期',
+      datetimepicker: '请选择时间',
+      subject: '请从列表中选择或添加新的主题',
     },
     table: {
       action: '操作',
@@ -104,6 +103,7 @@ export default {
       selectedItems: '条记录被选中',
       priority: '优先级',
       category: '所属类别',
+      acctName: 'Account姓名',
     },
     select: {
       label: '视图',
@@ -202,12 +202,11 @@ export default {
       searchStore: 'Search entire store here...',
       searchUser: 'Search user name here...',
       inputIdNumber: 'Please input correct id number',
-      datepicker: {
-        placeholder: 'Please select a date',
-      },
-      datetimepicker: {
-        placeholder: 'Please select date and time',
-      },
+    },
+    placeholders: {
+      datepicker: 'Please select a date',
+      datetimepicker: 'Please select a time',
+      subject: 'Please select or add a new value from the list',
     },
     table: {
       action: 'Actions',
@@ -239,6 +238,7 @@ export default {
       selectedItems: 'items selected',
       priority: 'Priority',
       category: 'Category',
+      acctName: 'Account Name',
     },
     select: {
       label: 'View',

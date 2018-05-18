@@ -134,21 +134,7 @@ class FieldForm extends React.Component {
                     })(<Input type="hidden" />)
                 }
         </FormItem>
-
-        {
-              editObject.type === 'long_text' ?
-                <FormItem
-                  {...FORM_LAYOUT_CONFIG}
-                  label={formatMessage({ id: 'page.fields.length' })}
-                >
-                  {
-                          getFieldDecorator('length', {
-                              initialValue: editObject.length || '',
-                          })(<InputNumber disabled={isEdit} min={0} />)
-                      }
-                </FormItem> : ''
-          }
-        {
+          {
                 editObject.type === 'text' ?
                   <FormItem
                     {...FORM_LAYOUT_CONFIG}

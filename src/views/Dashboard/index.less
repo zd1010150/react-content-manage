@@ -14,7 +14,16 @@
   padding:0px;
 }
 .single-link{
-  padding: 3px 15px;
+  a{
+    padding: 3px 15px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    display: block;
+    white-space: nowrap;
+  }
+
   &:hover{
     background-color: @crm-hover-color;
   }

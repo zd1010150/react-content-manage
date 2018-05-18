@@ -16,20 +16,34 @@ import {
   RESET_ID,
   RESET,
   SET_FIELD_OPTIONS,
+  SET_ACCOUNT_NAME,
 } from './actionTypes';
 
-const { PhantomId } = Enums;
+const { PhantomId, ObjectTypes } = Enums;
+const { Accounts, Opportunities } = ObjectTypes;
 
 
 /**
- *  Fetch A Client Structure Data
+ *  Fetch A Client Structural Data
  */
 const setSections = (mappedValues = [], sections) => ({
   type: SET_SECTIONS,
   payload: { mappedValues, sections },
 });
 
-export const tryFetchObjectDetails = (objectId, objectType, accountId) => dispatch =>
+const setAccountNameField = relatedAccount => ({
+  type: SET_ACCOUNT_NAME,
+  payload: { relatedAccount },
+});
+export const tryFetchAccountInfo = accountId => dispatch =>
+  get(`/admin/${Accounts}/${accountId}`, {}, dispatch).then(data => {
+    if (data && !_.isEmpty(data.data) && data.data.name) {
+      console.log('creating new opp from acct2');
+      dispatch(setAccountNameField(data.data));
+    }
+  });
+
+export const tryFetchObjectDetails = (objectId, objectType, accountId) => (dispatch, getState) =>
   get(getFetchUrl(objectId, objectType, accountId), {}, dispatch).then(data => {
     if (data
         && !_.isEmpty(data.data)
@@ -39,6 +53,11 @@ export const tryFetchObjectDetails = (objectId, objectType, accountId) => dispat
         dispatch(setSections(data.mapped_values, sections));
         dispatch(setTools(tools));
         dispatch(setModules(modules));
+      }
+      // special case for 'Account Name' field when create new opportunity from account
+      if (accountId && objectType === Opportunities) {
+        console.log('creating new opp from acct');
+        dispatch(tryFetchAccountInfo(accountId));
       }
     }
   });
@@ -51,9 +70,16 @@ const setNewId = newId => ({
   payload: { newId },
 });
 
+// Save new client or update exist client
 export const tryUpdateClient = (objectId, objectType, accountId) => (dispatch, getState) => {
   getRequestMethod(objectId)(getUpdateUrl(objectId, objectType, accountId), mapToRequestBody(getState()), dispatch).then(data => {
     if (data && !_.isEmpty(data.data)) {
+      // Special Case: Handle redirect after successfully save opportunity based on an account.
+      // The user should be redirected to the target account's detail page
+      if (accountId) {
+        return dispatch(setNewId(data.data.id));
+      }
+
       if (objectId === PhantomId) {
         // set success and push new history to be exist one
         dispatch(setNewId(data.data.id));

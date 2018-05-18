@@ -1,17 +1,8 @@
-import {
-  SET_FILTERS,
-  ADD_FILTER,
-  SET_CONDITION_LOGIC,
-  RESET_VIEW,
-  REMOVE_FILTER,
-  CHANGE_FILTER,
-  SET_SIDER_OPTIONS,
-  SET_SIDER_SELECTION,
-  SYNC_SIDER_SELECTION,
-  INSERT_SIDER_SELECTION,
-} from './actionTypes';
-import { toTimezone } from 'utils/dateTimeUtils';
+/* eslint-disable max-len */
 import Enums from 'utils/EnumsManager';
+import { toTimezone } from 'utils/dateTimeUtils';
+import { ADD_FILTER, CHANGE_FILTER, INSERT_SIDER_SELECTION, REMOVE_FILTER, RESET_VIEW, SET_CONDITION_LOGIC, SET_FILTERS, SET_SIDER_OPTIONS, SET_SIDER_SELECTION, SYNC_SIDER_SELECTION } from './actionTypes';
+import { getConditionLogic } from './utils';
 
 const {
   DateOnly,
@@ -75,7 +66,7 @@ const initialState = {
 const filterCriteria = (state = initialState, action) => {
   switch (action.type) {
     case SET_FILTERS:
-      const { data } = action.payload;      
+      const { data } = action.payload;
       return {
         ...state,
         filters: formatData(data),
@@ -94,29 +85,31 @@ const filterCriteria = (state = initialState, action) => {
       const { filters } = state;
       const lastItem = filters[filters.length - 1];
       const newDisplayNum = lastItem && lastItem.displayNum ? (lastItem.displayNum + 1) : 1;
-      
-      // TODO: when add a new filter, the default should be null, but before submit to backend, this id should be any available field id, NOT a phantom id
-      const newFilter = {      
+
+      const newFilter = {
         displayNum: newDisplayNum,
         fieldId: Enums.PhantomId,
         conditionId: Enums.PhantomId,
         value: '',
         type: '',
       };
+      const filtersAfterAdd = [...filters, newFilter];
       return {
         ...state,
-        filters: [...filters, newFilter]
+        filters: filtersAfterAdd,
+        condition_logic: getConditionLogic(state, filtersAfterAdd, true),
       };
 
-      
+
     case REMOVE_FILTER:
       const removedItemNum = action.payload.displayNum;
-      const arrayAfterRemove = state.filters.filter(filter => filter.displayNum != removedItemNum);
+      const filtersAfterRemove = state.filters.filter(filter => filter.displayNum != removedItemNum);
       return {
         ...state,
-        filters: arrayAfterRemove,
+        filters: filtersAfterRemove,
+        condition_logic: getConditionLogic(state, filtersAfterRemove),
       };
-    
+
 
     case CHANGE_FILTER:
       const { key, value, fieldId, displayNum } = action.payload;

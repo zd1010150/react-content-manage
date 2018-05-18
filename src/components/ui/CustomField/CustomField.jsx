@@ -21,6 +21,7 @@ const {
   PickList,
   TextInput,
   Display,
+  ApiError,
 } = Enums.FieldTypes;
 
 
@@ -129,6 +130,8 @@ const CustomField = ({
 
   let field = null;
   switch (type) {
+    case ApiError:
+      return null;
     case DateOnly:
     case DateTime:
       field = (
@@ -136,10 +139,12 @@ const CustomField = ({
           {...others}
           format={format}
           showTime={type === DateTime}
+          // Invalid cases whose value will convert to 'invalid date' include empty string, null and non-digit string and so on.
+          // More cases and info pls refer to => https://momentjs.com/docs/#/parsing/is-valid/
+          value={moment(value).isValid() ? moment(value) : undefined}
           // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
           // In this way we can use string outside, and only convert to certain time format in reducer.
-          value={moment(value)}
-          onChange={(date, dateString) => onChange(id, dateString, date)}
+          onChange={(date, dateString) => _onChange(id, dateString, date)}
           // Overrides the default onBlur becasue when the calendar opens the input field lost focus
           onBlur={null}
           onOpenChange={(state) => {

@@ -40,57 +40,82 @@ const valueCol = {
 };
 
 class MassUpdateModal extends Component {
-  state = {
-    fieldId: PhantomId,
-    fieldName: '',
-    lookupDisplayKey: '',
-    type: '',
-    value: '',
+  constructor(props) {
+    super(props);
+    this.defaultState = {
+      fieldId: PhantomId,
+      fieldName: '',
+      lookupDisplayKey: '',
+      type: '',
+      value: '',
+    };
+    this.state = this.defaultState;
   }
+
+  resetState = () => this.setState({ ...this.defaultState })
 
   _onCancel = () => {
     const { onCancel } = this.props;
     if (_.isFunction(onCancel)) {
       onCancel();
     }
+    this.resetState();
   }
 
   _onOk = () => {
     const { onOk, selectedFieldOptions } = this.props;
     if (_.isFunction(onOk)) {
-      let { fieldName, type, value } = this.state;
+      const { fieldName, type } = this.state;
+      let { value } = this.state;
       if (type === Lookup) {
-        const { lookupDisplayKey } = this.setState;
-        const option = selectedFieldOptions.find(option => option[lookupDisplayKey] === value);
+        const { lookupDisplayKey } = this.state;
+        const option = selectedFieldOptions.find(opt => opt.id === value) || {};
         value = option.id;
       }
       if (type === DateOnly || type === DateTime) {
         value = toUtc(value, type === DateTime);
       }
+      // TODO: add validation by field type
       onOk(fieldName, value);
     }
+    this.resetState();
   }
 
+  /**
+   * Switch target column and reset initial target value
+   */
   handleFieldChange = (fieldId) => {
-    const { columns, setOptions, tryFetchOptionsById } = this.props;
+    const {
+      columns,
+      setOptions,
+      tryFetchOptionsById,
+    } = this.props;
+    // Try find column from all non system auto generated columns
     const column = columns.find(col => col.id === fieldId);
-    if (this.state.fieldId !== fieldId) {
-      if (column.crm_data_type === Lookup) {
-        // fetch options and set
-        tryFetchOptionsById(fieldId);
-        this.setState({ lookupDisplayKey: column.lookup_own_field_name });
-      } else if (column.crm_data_type === PickList) {
-        // set options
-        setOptions(column.picklists);
-      }
+    if (!column) return;
+
+    const {
+      id,
+      field_name,
+      crm_data_type,      
+      lookup_own_field_name,
+    } = column;
+
+    // Update options if selected is a Lookup or Picklist field
+    if (crm_data_type === Lookup) {
+      tryFetchOptionsById(fieldId);
+      this.setState({ lookupDisplayKey: lookup_own_field_name });
+    } else if (crm_data_type === PickList) {
+      setOptions(column.picklists.data);
     }
-    const isDateField = column.crm_data_type === DateOnly || column.crm_data_type === DateTime;
-    const value = isDateField ? undefined : '';
-    return this.setState({
-      fieldId: column.id,
-      fieldName: column.field_name,
-      type: column.crm_data_type,
-      value,
+
+    this.setState({
+      fieldId: id,
+      fieldName: field_name,
+      type: crm_data_type,
+      // CustomField component has added validation for date/datetime,
+      // if the value is not valid moment string, will be converted to a valid value, so we can pass '' here
+      value: '',
     });
   }
 
@@ -111,6 +136,7 @@ class MassUpdateModal extends Component {
         onCancel={this._onCancel}
         okDisabled={fieldId === PhantomId}
         theme={theme}
+        destroyOnClose
       >
         <Row className="mb-md">
           <Col
@@ -131,7 +157,7 @@ class MassUpdateModal extends Component {
               className="full-width"
               placeholder="Please select a field"
               size="small"
-              onChange={this.handleFieldChange}
+              onChange={newFieldId => this.handleFieldChange(newFieldId)}
             >
               {availabelColumns.map(col => (
                 <Option key={col.id} value={col.id}>

@@ -31,7 +31,7 @@ import RadioField from "./RadioField/index";
 import CKEditor from "./RichEditor/ckEditor";
 import PopDeleteConfirm from './PopDeleteConfirm/index';
 import ErrorText from './ErrorText/index';
-
+import FormatedTime from './FormatedTime/index';
 
 export {
   Upload,
@@ -69,4 +69,5 @@ export {
   CKEditor,
   PopDeleteConfirm,
   ErrorText,
+  FormatedTime,
 };
