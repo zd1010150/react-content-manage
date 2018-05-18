@@ -27,6 +27,3 @@ yarn-error.log*
 /.vscode
 /yarn.lock
 /statistics.html
-
-# local dev ignores
-/package.json
