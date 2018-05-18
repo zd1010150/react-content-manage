@@ -3,18 +3,36 @@ import Enums from './EnumsManager';
 import { getStore } from './localStorage';
 
 const { DateTimeConfigs, LocalStorageKeys } = Enums;
-const { DefaultApiDateFormat, DefaultApiTimeFormat, DefaultOffset } = DateTimeConfigs;
+const {
+  DefaultApiDateFormat,
+  DefaultApiTimeFormat,
+  DefaultOffset,
+  DateFormatKey,
+  TimeFormatKey,
+} = DateTimeConfigs;
 const { Timezone } = LocalStorageKeys;
+
+// All possible utc offset list pls refer to https://en.wikipedia.org/wiki/List_of_UTC_time_offsets
 
 
 const getTimeSetting = (isTime) => {
   const timezone = getStore(Timezone);
   const parsedTimezone = JSON.parse(timezone);
 
-  const formatKey = isTime ? 'timeFormat' : 'dateFormat';
-  const format = parsedTimezone[formatKey] ? parsedTimezone[formatKey] : 'YYYY-MM-DD';
-  // All possible utc offset list pls refer to https://en.wikipedia.org/wiki/List_of_UTC_time_offsets
-  const offset = parsedTimezone.offset ? parsedTimezone.offset : '0000';
+  if (!parsedTimezone) {
+    return {
+      format: 'N/A',
+    };
+  }
+
+  const key = isTime ? TimeFormatKey : DateFormatKey;
+  let format;
+  if (parsedTimezone[key]) {
+    format = parsedTimezone[key];
+  } else {
+    format = isTime ? DefaultApiTimeFormat : DefaultApiDateFormat;
+  }
+  const offset = parsedTimezone.offset ? parsedTimezone.offset : DefaultOffset;
   return {
     format,
     offset: offset.indexOf('-') < 0 ? `+${offset}` : offset,
@@ -52,7 +70,7 @@ export const toUtc = (str, isConvertingTime = false) => {
 
   if (!moment(str, sourceSettings.format).isValid()) return null;
   if (isConvertingTime) {
-    return moment.utc(`${str}${sourceSettings.offset}`).format(targetFormat);
+    return moment.parseZone(`${str} ${sourceSettings.offset}`, `${sourceSettings.format} ZZ`).utc().format(targetFormat);
   }
   return moment(str, sourceSettings.format).format(targetFormat);
 };

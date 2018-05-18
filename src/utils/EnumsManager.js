@@ -356,6 +356,8 @@ const EnumsManager = Object.freeze({
     DefaultTimeFormat: 'DD-MM-YYYY HH:mm:ss',
     // Used sydney timezone as default for display
     DefaultOffset: '1100',
+    DateFormatKey: 'dateFormat',
+    TimeFormatKey: 'timeFormat',
   }),
 
 });

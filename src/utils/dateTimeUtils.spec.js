@@ -43,17 +43,17 @@ describe('---===CONVERT TO TIMEZONE===---', () => {
   describe('Convert Date time without Offset', () => {
     test('Format -> YYYY-MM-DD HH:mm:ss', () => {
       setTimezone('', 'YYYY-MM-DD HH:mm:ss', '');
-      expect(toTimezone(targetTime, true)).toBe(targetTime);
+      expect(toTimezone(targetTime, true)).toBe('2018-04-18 23:50:40');
     });
   
     test('Format -> MM-DD-YYYY HH:mm:ss', () => {
       setTimezone('', 'MM-DD-YYYY HH:mm:ss', '');
-      expect(toTimezone(targetTime, true)).toBe('04-18-2018 12:50:40');
+      expect(toTimezone(targetTime, true)).toBe('04-18-2018 23:50:40');
     });
   
     test('Format -> DD-MM-YYYY HH:mm:ss', () => {
       setTimezone('', 'DD-MM-YYYY HH:mm:ss', '');
-      expect(toTimezone(targetTime, true)).toBe('18-04-2018 12:50:40');
+      expect(toTimezone(targetTime, true)).toBe('18-04-2018 23:50:40');
     });
   });
 
@@ -99,7 +99,6 @@ describe('---===CONVERT TO TIMEZONE===---', () => {
       expect(toTimezone(null, true)).toBeNull();
     });
   });
-
 });
 
 
@@ -109,12 +108,12 @@ describe('---===CONVERT TO UTC===---', () => {
       setTimezone('YYYY-MM-DD', '', '');
       expect(toUtc(targetDate)).toBe(targetDate);
     });
-  
+
     test('Format -> MM-DD-YYYY', () => {
       setTimezone('MM-DD-YYYY', '', '');
       expect(toUtc('04-18-2018')).toBe(targetDate);
     });
-  
+
     test('Format -> DD-MM-YYYY', () => {
       setTimezone('DD-MM-YYYY', '', '');
       expect(toUtc('18-04-2018')).toBe(targetDate);
@@ -124,27 +123,59 @@ describe('---===CONVERT TO UTC===---', () => {
   describe('Convert Date time without Offset', () => {
     test('Format -> YYYY-MM-DD HH:mm:ss', () => {
       setTimezone('', 'YYYY-MM-DD HH:mm:ss', '');
-      expect(toUtc(targetTime, true)).toBe(targetTime);
+      expect(toUtc('2018-04-18 23:50:40', true)).toBe(targetTime);
     });
-  
+
     test('Format -> MM-DD-YYYY HH:mm:ss', () => {
       setTimezone('', 'MM-DD-YYYY HH:mm:ss', '');
-      expect(toUtc(targetTime, true)).toBe(targetTime);
+      expect(toUtc('04-18-2018 23:50:40', true)).toBe(targetTime);
     });
-  
+
     test('Format -> DD-MM-YYYY HH:mm:ss', () => {
       setTimezone('', 'DD-MM-YYYY HH:mm:ss', '');
-      expect(toUtc(targetTime, true)).toBe(targetTime);
+      expect(toUtc('18-04-2018 23:50:40', true)).toBe(targetTime);
+    });
+  });
+
+  describe('Convert Date time w/Offset', () => {
+    test('Format -> YYYY-MM-DD HH:mm:ss', () => {
+      setTimezone('', 'YYYY-MM-DD HH:mm:ss', '-0200');
+      expect(toUtc('2018-04-18 10:50:40', true)).toBe(targetTime);
+    });
+
+    test('Format -> MM-DD-YYYY HH:mm:ss', () => {
+      setTimezone('', 'MM-DD-YYYY HH:mm:ss', '-0200');
+      expect(toUtc('04-18-2018 10:50:40', true)).toBe(targetTime);
+    });
+
+    test('Format -> DD-MM-YYYY HH:mm:ss', () => {
+      setTimezone('', 'DD-MM-YYYY HH:mm:ss', '-0200');
+      expect(toUtc('18-04-2018 10:50:40', true)).toBe(targetTime);
+    });
+
+    test('Format -> YYYY-MM-DD HH:mm:ss', () => {
+      setTimezone('', 'YYYY-MM-DD HH:mm:ss', '1300');
+      expect(toUtc('2018-04-19 01:50:40', true)).toBe(targetTime);
+    });
+
+    test('Format -> MM-DD-YYYY HH:mm:ss', () => {
+      setTimezone('', 'MM-DD-YYYY HH:mm:ss', '1300');
+      expect(toUtc('04-19-2018 01:50:40', true)).toBe(targetTime);
+    });
+
+    test('Format -> DD-MM-YYYY HH:mm:ss', () => {
+      setTimezone('', 'DD-MM-YYYY HH:mm:ss', '1300');
+      expect(toUtc('19-04-2018 01:50:40', true)).toBe(targetTime);
     });
   });
 
   describe('Invalid Inputs', () => {
     test('Non-date string', () => {
-      setTimezone('DD-MM-YYYY', '', '');
+      setTimezone('', 'DD-MM-YYYY HH:mm:ss', '');
       expect(toTimezone('test')).toBeNull();
     });
     test('Null value', () => {
-      setTimezone('DD-MM-YYYY', '', '');
+      setTimezone('', 'DD-MM-YYYY HH:mm:ss', '');
       expect(toTimezone(null)).toBeNull();
     });
   });
