@@ -5,6 +5,7 @@ import { RightSider } from 'components/page/index';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import Enums from 'utils/EnumsManager';
+import { intlShape, injectIntl } from 'react-intl';
 import { Buttons, ConditionLogic, Filters } from './components/index';
 import styles from './index.less';
 
@@ -28,6 +29,7 @@ const defaultProps = {
   siderOptions: [],
 };
 const propTypes = {
+  intl: intlShape.isRequired,
   theme: PropTypes.oneOf(Enums.ThemeTypesInArray).isRequired,
   logicText: PropTypes.string,
   conditions: PropTypes.array.isRequired,
@@ -129,6 +131,7 @@ class FilterCriteria extends Component {
 
   render() {
     const {
+      intl,
       theme,
       logicText,
       fields,
@@ -142,6 +145,9 @@ class FilterCriteria extends Component {
       siderSelection,
     } = this.props;
     
+    const { formatMessage } = intl;
+    const i18n = 'global.ui.button';
+
     return (
       <Fragment>
         {enableTopSelection && (
@@ -210,11 +216,16 @@ class FilterCriteria extends Component {
               className={`${theme}-theme-btn mr-sm`}
               onClick={this._handleInsertSelection}
             >
-              + Add
+              <Icon className="font-sm" type="plus" />
+              {formatMessage({ id: `${i18n}.add` })}
             </Button>
-            <Button size="small" onClick={this._handleSiderClose}>
-              <Icon size="small" type="close" />
-              Cancel
+            <Button
+              className={`${theme}-theme-btn`}
+              size="small"
+              onClick={this._handleSiderClose}
+            >
+              <Icon className="font-sm" type="check" />
+              {formatMessage({ id: `${i18n}.done` })}
             </Button>
           </div>
         </RightSider>
@@ -225,4 +236,4 @@ class FilterCriteria extends Component {
 
 FilterCriteria.defaultProps = defaultProps;
 FilterCriteria.propTypes = propTypes;
-export default FilterCriteria;
+export default injectIntl(FilterCriteria);
