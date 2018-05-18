@@ -98,6 +98,7 @@ class TaskFields extends Component {
     const { assigneeModalVisible, subjectModalVisible } = this.state;
     const {
       intl,
+      dateFormat,
       assigneeId,
       assignees,
       comments,
@@ -126,13 +127,13 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.assignTo` })}
             </div>
             <Select
-              onChange={value => {
+              className="full-width"
+              onChange={(value) => {
                 if (value === 'moreOptions') {
                   return this.handleAssigneeModalOpen();
                 }
-                return this.handleFieldChange('assigneeId', value)
+                return this.handleFieldChange('assigneeId', value);
               }}
-              style={{ width: '100%' }}
               value={assigneeId}
             >
               <OptGroup label={formatMessage({ id: `${i18nPrefix}.recentOptions` })}>
@@ -155,8 +156,8 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.status` })}
             </div>
             <Select
+              className="full-width"
               onChange={value => this.handleFieldChange('statusCode', value)}
-              style={{ width: '100%' }}
               value={statusCode}
             >
               {statuses.map(status => <Option key={status.id} value={status.id}>{status.display_value}</Option>)}
@@ -189,7 +190,7 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.priority` })}
             </div>
             <Select
-              style={{ width: '100%' }}
+              className="full-width"
               onChange={value => this.handleFieldChange('priorityCode', value)}
               value={priorityCode}
             >
@@ -203,12 +204,11 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.dueDate` })}
             </div>
             <DatePicker
-              allowClear={false}
-              format="YYYY-MM-DD"
+              className="full-width"
+              format={dateFormat}
               onChange={(date, dateString) => this.handleFieldChange('dueTime', dateString)}
               placeholder={formatMessage({ id: 'global.ui.input.datetimepicker.placeholder' })}
-              style={{ width: '100%' }}
-              value={moment(dueTime)}
+              value={dueTime === null || dueTime === '' ? undefined : moment(dueTime, dateFormat)}
             />
           </Col>
         </Row>
@@ -232,9 +232,9 @@ TaskFields.defaultProps = defaultProps;
 TaskFields.propTypes = propTypes;
 const mapStateToProps = ({ global, taskDetails }) => ({
   language: global.language,
+  dateFormat: global.timeZoneSetting.dateFormat,
   priorities: global.settings.priorities,
   statuses: global.settings.statuses,
-
   assigneeId: taskDetails.assigneeId,
   assignees: taskDetails.assignees,
   comments: taskDetails.comments,

@@ -1,18 +1,5 @@
 import { toTimezone } from 'utils/dateTimeUtils';
-import moment from 'moment';
-import {
-  ADD_NEW_SUBJECT,
-  SET_TASK_SUCCESS,
-  REMOVE_MY_SUBJECT,
-  SET_TASK_ASSIGNEE,
-  SET_TASK_ASSIGNEES,
-  SET_TASK_FIELD,
-  SET_TASK_FIELDS,
-  SET_TASK_RECENT_ASSIGNEES,
-  SET_TASK_SUBJECTS,
-  RESET_TASK,
-  SET_DEFAULT_STATE,
-} from './actionTypes';
+import { ADD_NEW_SUBJECT, REMOVE_MY_SUBJECT, RESET_TASK, SET_TASK_ASSIGNEE, SET_TASK_ASSIGNEES, SET_TASK_FIELD, SET_TASK_FIELDS, SET_TASK_RECENT_ASSIGNEES, SET_TASK_SUBJECTS, SET_TASK_SUCCESS } from './actionTypes';
 
 const initialState = {
   globalSubjects: [],
@@ -20,8 +7,7 @@ const initialState = {
   assignees: [],
   assigneeId: '',
   comments: '',
-  // default due date is today
-  dueTime: moment().format('YYYY-MM-DD'),
+  dueTime: null,
   // default priority is 'Normal'
   priorityCode: 1,
   recentAssignees: [],
