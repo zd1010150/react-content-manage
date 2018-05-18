@@ -36,7 +36,6 @@
     "less-loader": "^4.0.5",
     "less-vars-to-js": "^1.2.1",
     "load-script": "^1.0.0",
-    "lodash": "^4.17.10",
     "moment": "^2.21.0",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "^3.2.0",
@@ -103,10 +102,7 @@
       "web.jsx",
       "jsx",
       "node"
-    ],
-    "globals": {
-      "window": true
-    }
+    ]
   },
   "babel": {
     "presets": [
