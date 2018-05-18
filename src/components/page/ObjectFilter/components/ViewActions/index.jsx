@@ -1,10 +1,9 @@
-import { notification } from 'antd';
-import { SubmitButtons } from 'components/ui/index';
+import { notification, Row, Icon, Button } from 'antd';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { trySave, trySaveNew } from './flow/actions';
 
@@ -17,6 +16,7 @@ const defaultProps = {
 };
 const propTypes = {
   intl: intlShape.isRequired,
+  viewId: PropTypes.string.isRequired,
   objectView: PropTypes.shape({
     name: PropTypes.object.isRequired,
     filterCriteria: PropTypes.object.isRequired,
@@ -100,9 +100,38 @@ class ViewActions extends Component {
   }
 
   render() {
-    const { objectType, theme } = this.props;
+    const {
+      intl,
+      viewId,
+      objectType,
+      theme,
+    } = this.props;
+    const { formatMessage } = intl;
+    const i18n = 'global.ui.button';
 
-    return <SubmitButtons theme={theme} objectType={objectType} onSaveClick={this.handleSaveClick} />;
+    return (
+      <Row className="mt-xlg mb-xlg mr-lg ml-lg">
+        <Button
+          className={`${theme}-theme-btn ml-sm`}
+          onClick={this.handleSaveClick}
+        >
+          <Icon className="font-sm" type="save" />
+          {formatMessage({ id: `${i18n}.save` })}
+        </Button>
+        <Link to={`/${objectType}`}>
+          <Button className="ml-sm">
+            <Icon className="font-sm" type="close" />
+            {formatMessage({ id: `${i18n}.cancel` })}
+          </Button>
+        </Link>
+        {viewId !== PhantomId && (
+          <Button className="ml-sm">
+            <Icon className="font-sm" type="delete" />
+            {formatMessage({ id: `${i18n}.delete` })}
+          </Button>
+        )}
+      </Row>
+    );
   }
 }
 
