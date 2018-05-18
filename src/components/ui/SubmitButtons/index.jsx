@@ -18,8 +18,8 @@ const SubmitButtons = ({
   theme,
 }) => {
   const { formatMessage } = intl;
-  const i18nPrefix = 'global.ui.button';
-  
+  const i18n = 'global.ui.button';
+
   return (
     <Row style={{ margin: '30px 15px 20px' }}>
       <Button
@@ -27,14 +27,14 @@ const SubmitButtons = ({
         onClick={onSaveClick}
       >
         <Icon className="font-sm" type="save" size="small" />
-        {formatMessage({ id: `${i18nPrefix}.save` })}
+        {formatMessage({ id: `${i18n}.save` })}
       </Button>
       <Button
         className="ml-sm"
       >
         <Link to={`/${objectType}`}>
           <Icon className="font-sm" type="close" size="small" />
-          {formatMessage({ id: `${i18nPrefix}.cancel` })}
+          {formatMessage({ id: `${i18n}.cancel` })}
         </Link>
       </Button>
     </Row>

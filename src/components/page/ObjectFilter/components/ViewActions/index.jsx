@@ -2,11 +2,11 @@ import { notification } from 'antd';
 import { SubmitButtons } from 'components/ui/index';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { trySave, trySaveNew } from './flow/actions';
-import { injectIntl, intlShape } from 'react-intl';
 
 const { PhantomId } = Enums;
 
@@ -101,7 +101,7 @@ class ViewActions extends Component {
 
   render() {
     const { objectType, theme } = this.props;
-    
+
     return <SubmitButtons theme={theme} objectType={objectType} onSaveClick={this.handleSaveClick} />;
   }
 }
