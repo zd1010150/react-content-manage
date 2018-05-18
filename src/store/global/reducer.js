@@ -20,8 +20,15 @@ import { SET_ACCOUNTINFO,
   SET_TIME_ZONE,
 } from './actionType';
 
-const { LocalStorageKeys } = Enums;
+const { LocalStorageKeys, DateTimeConfigs } = Enums;
 const { User, Timezone, LanguaegOfApp } = LocalStorageKeys;
+const {
+  DefaultDateFormat,
+  DefaultTimeFormat,
+  DefaultOffset,
+  DateFormatKey,
+  TimeFormatKey,
+} = DateTimeConfigs;
 
 
 const setTimezoneInStorage = (timezones = [], countries = []) => {
@@ -31,9 +38,9 @@ const setTimezoneInStorage = (timezones = [], countries = []) => {
   const timezone = timezones.find(tz => tz.id === companySettings.time_zone);
   const country = countries.find(cty => cty.id === companySettings.country_code);
   return setStore(Timezone, {
-    dateFormat: country && country.date_format ? country.date_format : 'YYYY-MM-DD',
-    timeFormat: country && country.time_format ? country.time_format : 'YYYY-MM-DD HH:mm:ss',
-    offset: timezone && timezone.tz_offset ? timezone.tz_offset : '1100',
+    [DateFormatKey]: country && country.date_format ? country.date_format : DefaultDateFormat,
+    [TimeFormatKey]: country && country.time_format ? country.time_format : DefaultTimeFormat,
+    offset: timezone && timezone.tz_offset ? timezone.tz_offset : DefaultOffset,
   });
 };
 
