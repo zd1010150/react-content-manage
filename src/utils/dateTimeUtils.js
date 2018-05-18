@@ -35,7 +35,7 @@ const getTimeSetting = (isTime) => {
   const offset = parsedTimezone.offset ? parsedTimezone.offset : DefaultOffset;
   return {
     format,
-    offset: offset.indexOf('-') < 0 ? `+${offset}` : offset,
+    offset,
   };
 };
 
