@@ -24,12 +24,26 @@ class EmailTemplatesCreation extends React.Component {
         this.hooksFn.getHTMLContent = fn;
     };
 
-    isNewTemplateRouter = () => {
+    isSetupTemplatesCreation(){
         return this.props.location.pathname === '/setup/email/templates-creation'
     }
 
+    isUserSettingTemplatesCreation(){
+        console.log('??????', this.props.location.pathname.pathname)
+        const patt = new RegExp("/user/email-setting/templates-creation");
+        return patt.test(this.props.location.pathname);
+    }
+
+    isUserSetting(){
+        const patt = new RegExp("/user/email-setting");
+        return patt.test(this.props.location.pathname);
+    }
+
+    isNewTemplateRouter = () => {
+        return this.isSetupTemplatesCreation() || this.isUserSettingTemplatesCreation();
+    }
+
     onFileUpload = (response, error) => {
-        console.log('111', response, error)
         if (_.isEmpty(error)) {
             const files = response.map((r)=>{
                 return r.data.id
@@ -58,7 +72,8 @@ class EmailTemplatesCreation extends React.Component {
                 description: newTemplate.description,
                 category: newTemplate.category,
                 attachments: this.state.attachments,
-                cb: ()=> history.push('/setup/email/templates')
+                cb: ()=> !this.isUserSetting() ? history.push('/setup/email/templates') : history.push('/user/email-setting')
+
             })
         }else{
             updateTemplateData({
@@ -70,14 +85,16 @@ class EmailTemplatesCreation extends React.Component {
                 description: editTemplate.description,
                 category: editTemplate.category,
                 attachments: this.state.attachments,
-                cb: ()=> history.push('/setup/email/templates')
+                cb: ()=> !this.isUserSetting() ? history.push('/setup/email/templates') : history.push('/user/email-setting')
 
             })
         }
     }
 
     cancel = () => {
-        this.props.history.push('/setup/email/templates')
+        const {history} = this.props;
+        console.log('this.isUserSetting()', this.isUserSetting())
+        this.isUserSetting() ? history.push('/user/email-setting') : history.push('/setup/email/templates')
     }
 
     render() {

@@ -63,7 +63,7 @@ class EmailTemplateDetail extends React.Component {
             setEditFolderViewVisible, setPermissionSettingVisible, isPermissionSettingVisible,
             isSharedByVisible, templates, templatesDataTablePagination, queryByPaging, setSharedByVisible,
             setSelectedFolderData, selectedFolder, userFolders, sharedFolders, selectedUser, loginUser, deleteTemplate, fetchTemplateData, fetchNewTemplateData, history,
-            editTemplate
+            editTemplate, isUserEmailSettingRoute
         } = this.props;
         return (
             <TemplateDetail setEditFolderViewVisible={setEditFolderViewVisible}
@@ -90,7 +90,8 @@ class EmailTemplateDetail extends React.Component {
                             visible={this.state.visible}
                             handleOk={this.handleOk}
                             handleCancel={this.handleCancel}
-                            EmailTemplatePermission={EmailTemplatePermission}/>
+                            EmailTemplatePermission={EmailTemplatePermission}
+                            isUserEmailSettingRoute={isUserEmailSettingRoute}/>
         );
     }
 }

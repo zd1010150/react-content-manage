@@ -63,7 +63,16 @@ const MainContent = () => (
 
     <Route path="/my-setting" component={MySetting} />
     <Route path="/:objectType/:objectId/email/new" component={NewEmail} />
-    <Route path="/user/email-setting" component={EmailTemplates} />
+    <Route path="/user/email-setting" component={EmailTemplates} exact/>
+    <Route
+          path="/user/email-setting/template-edit/:templateId"
+          component={EmailTemplatesCreation}
+    />
+    <Route
+      path="/user/email-setting/templates-creation"
+      component={EmailTemplatesCreation}
+    />
+
     <Route path="/dashboard" component={Dashboard} exact />
     <Route path="/globalSearch" component={GlobalSearch} exact />
     <Route path="/Task" component={Task} exact />
