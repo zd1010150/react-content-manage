@@ -87,9 +87,11 @@ class NewEmail extends React.Component {
             bcc: [],
             subject: '',
             visible: false,
+            authModalVisible: false,
             selectedFolderId: '',
             showFolders: [],
-            attachments: []
+            attachments: [],
+            authLink: ''
         }
     }
 
@@ -251,10 +253,13 @@ class NewEmail extends React.Component {
                 setStore(EnumsManager.LocalStorageEmails, pendingSavedEmails);
                 history.push(`/${match.params.objectType}/${match.params.objectId}`);
             }else{
-                window.open(
-                    authLink,
-                    '_blank' // <- This is what makes it open in a new window.
-                );
+                this.setState({authLink}, ()=>{
+                    this.setState({authModalVisible: true})
+                })
+                // window.open(
+                //     authLink,
+                //     '_blank' // <- This is what makes it open in a new window.
+                // );
             }
         });
 
@@ -332,6 +337,15 @@ class NewEmail extends React.Component {
             <Panel panelTitle={formatMessage({id: 'page.emailTemplates.newEmail'})}
                    contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('new-email-panel-content')}`}
                    actionsRight={actionsRight}>
+                <Modal
+                    visible={this.state.authModalVisible}
+                    footer={null}
+                    closable={null}
+                >
+                    <p>{formatMessage({id: 'page.emailTemplates.needAuthMessage'})}</p>
+                    <a href={this.state.authLink} target='_blank'>{this.state.authLink}</a>
+                    {/*<iframe src={this.state.authLink} />*/}
+                </Modal>
                 <Modal
                     title={modalHeader}
                     visible={this.state.visible}
