@@ -57,10 +57,11 @@ const BasicInfo = ({
                        sendTo,
                        cc,
                        bcc,
-                       subject
+                       subject,
+                       isSpecificEntry
                    }) => {
     return <Fragment>
-        <InputComponent value={sendTo} handleChange={handleSendTo}
+        <InputComponent isNormal={isSpecificEntry} value={sendTo} handleChange={handleSendTo}
                         label={formatMessage({id: 'page.emailTemplates.to'})}/>
         <InputComponent value={cc} handleChange={handleCc} label={formatMessage({id: 'page.emailTemplates.cc'})}/>
         <InputComponent value={bcc} handleChange={handleBcc} label={formatMessage({id: 'page.emailTemplates.bcc'})}/>
@@ -91,17 +92,20 @@ class NewEmail extends React.Component {
             selectedFolderId: '',
             showFolders: [],
             attachments: [],
-            authLink: ''
+            authLink: '',
+            isSpecificEntry: false
         }
     }
 
     componentDidMount() {
-        const {getUserFolderData, loginUser, setSelectedUser} = this.props;
+        const {getUserFolderData, loginUser, setSelectedUser, match} = this.props;
         //show default option: userFolders
         getUserFolderData(loginUser.id, (data) => {
             this.setState({showFolders: data.own.data})
         });
         setSelectedUser(loginUser);
+        this.checkSpecificEntry();
+        console.log('1111111', match.params)
 
     }
 
@@ -123,6 +127,12 @@ class NewEmail extends React.Component {
         console.log(e);
         this.setState({
             visible: false,
+        });
+    }
+
+    handleCancelAuthModal = () => {
+        this.setState({
+            authModalVisible: false,
         });
     }
 
@@ -291,6 +301,15 @@ class NewEmail extends React.Component {
             })
         });
     }
+    checkSpecificEntry = () => {
+        const {match} = this.props;
+        if(match.params.objectType && match.params.objectId){
+            //todo fetch the current lead/account/opportunity to get their info (will only include email currently)
+            this.setState({
+                isSpecificEntry: !!match.params.objectType && !!match.params.objectId
+            })
+        }
+    }
 
     render() {
         const {templates, userFolders, sharedFolders, templatesDataTablePagination, selectedEmailTemplate} = this.props;
@@ -340,10 +359,11 @@ class NewEmail extends React.Component {
                 <Modal
                     visible={this.state.authModalVisible}
                     footer={null}
-                    closable={null}
+                    closable={true}
+                    onCancel={this.handleCancelAuthModal}
                 >
-                    <p>{formatMessage({id: 'page.emailTemplates.needAuthMessage'})}</p>
-                    <a href={this.state.authLink} target='_blank'>{this.state.authLink}</a>
+                    <p style={{color: 'red'}}>{formatMessage({id: 'page.emailTemplates.needAuthMessage'})}</p>
+                    <a href={this.state.authLink} target='_blank' style={{textDecoration: 'underline'}}>{this.state.authLink}</a>
                     {/*<iframe src={this.state.authLink} />*/}
                 </Modal>
                 <Modal
@@ -389,7 +409,8 @@ class NewEmail extends React.Component {
                            cc={this.state.cc}
                            bcc={this.state.bcc}
                            subject={this.state.subject}
-                           formatMessage={formatMessage}/>
+                           formatMessage={formatMessage}
+                           isSpecificEntry={this.state.isSpecificEntry}/>
                 <NewEmailContent onFileUpload={this.onFileUpload}
                                  content={selectedEmailTemplate.content}
                                  attachments={selectedEmailTemplate.attachments}
