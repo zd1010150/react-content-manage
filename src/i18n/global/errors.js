@@ -28,7 +28,7 @@ export default {
     oneFieldRequired: 'At least one required field is missing value!',
     assigneeRequired: 'Please choose an assignee!',
     subjectRequired: 'Please choose a subject!',
-    dueDateRequired: 'Please choose a date!',
+    dateRequired: 'Please choose a date!',
     statusRequired: 'Please choose a status!',
     priorityRequired: 'Please choose a priority!',
     returnDashboard: 'Return to Dashboard',
