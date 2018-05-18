@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
+import { PopDeleteConfirm } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
 import { trySave, trySaveNew } from './flow/actions';
 
@@ -99,6 +100,8 @@ class ViewActions extends Component {
     this.props[funcKey](model[objectType], objectView, viewId);
   }
 
+  handleDeleteClick = () => this.props.tryDeleteView(this.props.viewId)
+
   render() {
     const {
       intl,
@@ -111,10 +114,7 @@ class ViewActions extends Component {
 
     return (
       <Row className="mt-xlg mb-xlg mr-lg ml-lg">
-        <Button
-          className={`${theme}-theme-btn ml-sm`}
-          onClick={this.handleSaveClick}
-        >
+        <Button className={`${theme}-theme-btn`} onClick={this.handleSaveClick}>
           <Icon className="font-sm" type="save" />
           {formatMessage({ id: `${i18n}.save` })}
         </Button>
@@ -125,10 +125,12 @@ class ViewActions extends Component {
           </Button>
         </Link>
         {viewId !== PhantomId && (
-          <Button className="ml-sm">
-            <Icon className="font-sm" type="delete" />
-            {formatMessage({ id: `${i18n}.delete` })}
-          </Button>
+          <PopDeleteConfirm onConfirm={this.handleDeleteClick}>
+            <Button className="ml-sm">
+              <Icon className="font-sm" type="delete" />
+              {formatMessage({ id: `${i18n}.delete` })}
+            </Button>
+          </PopDeleteConfirm>
         )}
       </Row>
     );
