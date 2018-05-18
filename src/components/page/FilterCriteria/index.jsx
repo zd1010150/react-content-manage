@@ -219,7 +219,11 @@ class FilterCriteria extends Component {
               <Icon className="font-sm" type="plus" />
               {formatMessage({ id: `${i18n}.add` })}
             </Button>
-            <Button size="small" onClick={this._handleSiderClose}>
+            <Button
+              className={`${theme}-theme-btn`}
+              size="small"
+              onClick={this._handleSiderClose}
+            >
               <Icon className="font-sm" type="check" />
               {formatMessage({ id: `${i18n}.done` })}
             </Button>
