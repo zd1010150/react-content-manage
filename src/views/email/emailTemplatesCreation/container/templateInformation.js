@@ -64,41 +64,53 @@ const BasicInfo = ({
     </Fragment>
 }
 
-const convertFieldToMap = (data) => {
-    return data.reduce((newObj, current)=>{
-        let obj = {};
-        obj[current.id] = {label: current.field_label, value: current.field_value};
-        return {
-            ...newObj,
-            ...obj
-        }
-    }, {})
-}
+// const convertFieldToMap = (data) => {
+//     return data.reduce((newObj, current)=>{
+//         let obj = {};
+//         obj[current.id] = {label: current.field_label, value: current.field_value};
+//         return {
+//             ...newObj,
+//             ...obj
+//         }
+//     }, {})
+// }
 
-const FieldInfo = ({selectedField, selectField, selectedLabel, selectedValue, template, fieldOption, formatMessage, selectLabel, selectValue}) => {
-    console.log('selectedField', selectedField)
-    console.log('template', template)
-    let fieldLabels, fieldValues = [];
-    let fieldObj = {};
-    let convertObj;
-
-    if (!_.isEmpty(template) && !_.isEmpty(fieldOption)) {
-        convertObj  = convertFieldToMap(fieldOption[template.category]);
-    }
-
-    if(convertObj && convertObj[selectedField.key] && !!selectedField.label){
-        fieldValues = [convertObj[selectedField.key]["value"]]
-    }
+const FieldInfo = ({selectedField, selectField, selectedLabel, selectedValue, template, fieldOption, formatMessage}) => {
+    // console.log('selectedField', selectedField)
+    // console.log('template', template)
+    // let fieldLabels = [];
+    // let fieldValue;
+    // let fieldObj = {};
+    // let convertObj;
+    // console.log('fieldOption', fieldOption[template.category])
+    // if (!_.isEmpty(template) && !_.isEmpty(fieldOption)) {
+    //     convertObj  = convertFieldToMap(fieldOption[template.category]);
+    // }
+    //
+    // if(convertObj && convertObj[selectedField.key] && !!selectedField.label){
+    //     fieldValue = convertObj[selectedField.key]["value"]
+    // }
 
     return <Row className={`pt-lg ${cx(['new-template-input-row', 'new-template-folder-information'])}`}>
         <Col className="gutter-row field-value" span={10}>
-            <SelectComponentVertical labelInValue={true} items={fieldOption[template.category]} value={v => v.field_label} label={formatMessage({id: 'page.emailTemplates.selectField'})}
-                                     onChange={selectField}/>
+            <div>
+                {formatMessage({id: 'page.emailTemplates.selectField'})}
+            </div>
+            <Select onChange={selectField} className="full-width">
+                { fieldOption[template.category] && fieldOption[template.category].map((item, index) =>
+                    <Select.Option key={item.id ? item.id : index} value={item}>{item.field_label}</Select.Option>
+                )}
+            </Select>
         </Col>
+
         <Col className="gutter-row field-value" offset={2} span={10}>
-            <SelectComponentVertical labelInValue={false} defaultValue={selectedValue} items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}
-                                     onChange={selectValue}/>
+            <div>{formatMessage({id: 'page.emailTemplates.fieldValue'})}</div>
+            <div>{selectedField.field_value}</div>
         </Col>
+        {/*<Col className="gutter-row field-value" offset={2} span={10}>*/}
+            {/*<SelectComponentVertical labelInValue={false} defaultValue={selectedValue} items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}*/}
+                                     {/*onChange={selectValue}/>*/}
+        {/*</Col>*/}
     </Row>
 }
 
@@ -128,18 +140,11 @@ class TemplateInformation extends React.Component {
         }
     }
 
+
     selectField = (value) => {
         this.setState({selectedField: value}, ()=>{
-            this.setState({selectedValue: ''})
+            this.setState({selectedValue: value.field_value})
         })
-    }
-
-    selectLabel = (value) => {
-        this.setState({selectedLabel: value})
-    }
-
-    selectValue = (value) => {
-        this.setState({selectedValue: value})
     }
 
     render() {
@@ -189,8 +194,6 @@ class TemplateInformation extends React.Component {
                     <FieldInfo selectedLabel={this.state.selectedLabel}
                                selectedValue={this.state.selectedValue}
                                selectedField={this.state.selectedField}
-                               selectLabel={this.selectLabel}
-                               selectValue={this.selectValue}
                                selectField={this.selectField}
                                template={newTemplate}
                                fieldOption={fieldOption}
@@ -223,8 +226,6 @@ class TemplateInformation extends React.Component {
                     <FieldInfo selectedLabel={this.state.selectedLabel}
                                selectedValue={this.state.selectedValue}
                                selectedField={this.state.selectedField}
-                               selectLabel={this.selectLabel}
-                               selectValue={this.selectValue}
                                selectField={this.selectField}
                                template={editTemplate}
                                fieldOption={fieldOption}
