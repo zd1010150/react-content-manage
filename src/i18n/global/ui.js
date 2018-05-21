@@ -62,17 +62,18 @@ export default {
       new: '新',
       saveChange: '保存修改',
       redoAll: '撤销所有修改',
+      done: '完成',
+      add: '添加',
     },
     input: {
       searchStore: '在此搜索全站商品...',
       searchUser: '输入用户名搜索...',
       inputIdNumber: '请输入合法的身份证号',
-      datepicker: {
-        placeholder: '请选择日期',
-      },
-      datetimepicker: {
-        placeholder: '请选择日期和时间',
-      },
+    },
+    placeholders: {
+      datepicker: '请选择日期',
+      datetimepicker: '请选择时间',
+      subject: '请从列表中选择或添加新的主题',
     },
     table: {
       action: '操作',
@@ -198,17 +199,18 @@ export default {
       new: 'New ',
       saveChange: 'Save Changes',
       redoAll: 'Redo',
+      done: 'Done',
+      add: 'Add',
     },
     input: {
       searchStore: 'Search entire store here...',
       searchUser: 'Search user name here...',
       inputIdNumber: 'Please input correct id number',
-      datepicker: {
-        placeholder: 'Please select a date',
-      },
-      datetimepicker: {
-        placeholder: 'Please select date and time',
-      },
+    },
+    placeholders: {
+      datepicker: 'Please select a date',
+      datetimepicker: 'Please select a time',
+      subject: 'Please select or add a new value from the list',
     },
     table: {
       action: 'Actions',
