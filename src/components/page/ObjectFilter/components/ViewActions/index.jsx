@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { PopDeleteConfirm } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
-import { trySave, trySaveNew } from './flow/actions';
+import { trySave, trySaveNew, tryDeleteView } from './flow/actions';
 
 const { PhantomId } = Enums;
 
@@ -14,6 +14,7 @@ const { PhantomId } = Enums;
 const defaultProps = {
   trySave: null,
   trySaveNew: null,
+  tryDeleteView: null,
 };
 const propTypes = {
   intl: intlShape.isRequired,
@@ -23,16 +24,17 @@ const propTypes = {
     filterCriteria: PropTypes.object.isRequired,
     fields: PropTypes.object.isRequired,
     visibilities: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
+    actions: PropTypes.bool.isRequired,
   }).isRequired,
   trySave: PropTypes.func,
   trySaveNew: PropTypes.func,
+  tryDeleteView: PropTypes.func,
 };
 
 class ViewActions extends Component {
   componentDidUpdate() {
-    const { hasSuccessfullySaved, history, objectType } = this.props;
-    if (hasSuccessfullySaved) {
+    const { done, history, objectType } = this.props;
+    if (done) {
       history.push(`/${objectType}`);
     }
   }
@@ -91,8 +93,7 @@ class ViewActions extends Component {
       objectView,
       viewId,
     } = this.props;
-    // TODO: Add notification when view_name field is empty
-    // Add validation check
+
     const isValid = this.checkValidation(objectView);
     if (!isValid) return;
 
@@ -142,10 +143,11 @@ ViewActions.defaultProps = defaultProps;
 ViewActions.propTypes = propTypes;
 const mapStateToProps = ({ global, objectView }) => ({
   model: global.settings.model,
-  hasSuccessfullySaved: objectView.actions.hasSuccessfullySaved,
+  done: objectView.actions,
   objectView,
 });
 const mapDispatchToProps = {
+  tryDeleteView,
   trySave,
   trySaveNew,
 };
