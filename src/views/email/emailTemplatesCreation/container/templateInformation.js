@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import {intlShape, injectIntl} from 'react-intl';
-import {Row, Col, Input, Select, Button, Icon, Radio, Table} from 'antd';
+import {Row, Col, Input, Select, Button, Icon, Modal, Radio, Table, Popconfirm} from 'antd';
 import {
     getUserFolderData
 } from '../../flow/action';
@@ -147,6 +147,30 @@ class TemplateInformation extends React.Component {
         })
     }
 
+    setTemplateCategory = (value) => {
+        const {setNewTemplateCategory, setEditTemplateCategory, isNewTemplateRouter, setNewTemplateContent, setEditTemplateContent} = this.props;
+        if(isNewTemplateRouter()){
+            setNewTemplateCategory(value);
+        }else{
+            setEditTemplateCategory(value);
+        }
+
+        // Modal.confirm({
+        //     title: 'Do you want to delete these items?',
+        //     content: 'When clicked the OK button, this dialog will be closed after 1 second',
+        //     onOk() {
+        //         if(isNewTemplateRouter()){
+        //             setNewTemplateContent('');
+        //             setNewTemplateCategory(value);
+        //         }else{
+        //             setEditTemplateContent('');
+        //             setEditTemplateCategory(value);
+        //         }
+        //     },
+        //     onCancel() {},
+        // });
+    }
+
     render() {
         const {formatMessage} = this.props.intl;
         const {
@@ -186,7 +210,7 @@ class TemplateInformation extends React.Component {
                         setTemplateName={setNewTemplateName}
                         setTemplateApiName={setNewTemplateApiName}
                         setTemplateDescription={setNewTemplateDescription}
-                        setTemplateCategory={setNewTemplateCategory}
+                        setTemplateCategory={this.setTemplateCategory}
                         editTemplate={{}}
                         userFolders={userFolders}
                         selectedFolder={selectedFolder}
@@ -218,7 +242,7 @@ class TemplateInformation extends React.Component {
                         setTemplateName={setEditTemplateName}
                         setTemplateApiName={setEditTemplateApiName}
                         setTemplateDescription={setEditTemplateDescription}
-                        setTemplateCategory={setEditTemplateCategory}
+                        setTemplateCategory={this.setTemplateCategory}
                         editTemplate={editTemplate}
                         userFolders={userFolders}
                         selectedFolder={selectedFolder}
