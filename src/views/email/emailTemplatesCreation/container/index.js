@@ -29,7 +29,6 @@ class EmailTemplatesCreation extends React.Component {
     }
 
     isUserSettingTemplatesCreation(){
-        console.log('??????', this.props.location.pathname.pathname)
         const patt = new RegExp("/user/email-setting/templates-creation");
         return patt.test(this.props.location.pathname);
     }

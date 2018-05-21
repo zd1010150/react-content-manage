@@ -14,6 +14,30 @@ const updateTemplate = payload => ({
   payload
 });
 
+export const fetchUserEmail = ({ objectType, objectId }, cb, cbErr) => (
+    dispatch,
+    getState
+) => {
+    get(
+        `/admin/${objectType}/${objectId}`,
+        dispatch
+    ).then(data => {
+        if (!_.isEmpty(data)) {
+            if (_.isFunction(cb)) {
+                cb(data);
+            }
+        } else {
+            if (_.isFunction(cbErr)) {
+                cbErr();
+            }
+        }
+    }).catch((e)=>{
+        if (_.isFunction(cbErr)) {
+            cbErr();
+        }
+    });
+};
+
 export const fetchSelectedTemplateData = ({ templateId, objectType, objectId, cb, cbErr }) => (
   dispatch,
   getState

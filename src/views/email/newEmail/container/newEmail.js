@@ -8,7 +8,8 @@ import {
     newEmailQueryByPaging,
     fetchSelectedTemplateData,
     newEmailSetTemplatesData,
-    sendEmail
+    sendEmail,
+    fetchUserEmail
 } from '../../flow/action';
 import {connect} from 'react-redux';
 import {Panel} from 'components/ui/index';
@@ -30,7 +31,7 @@ const children = [];
 for (let i = 0; i < savedEmails.length; i++) {
     !!savedEmails[i] && children.push(<Option key={savedEmails[i]}>{savedEmails[i]}</Option>);
 }
-const InputComponent = ({isNormal, label, handleChange, value}) => {
+const InputComponent = ({isDisabled, isNormal, label, handleChange, value}) => {
 
     return <Row className={`pt-lg ${cx('new-email-input-row')}`}>
         <Col className="gutter-row field-label mt-sm" span={2}>
@@ -45,7 +46,8 @@ const InputComponent = ({isNormal, label, handleChange, value}) => {
             >
                 {children}
             </Select>}
-            {!!isNormal && <Input value={value} onChange={handleChange}/>}
+            {!!isNormal && !!isDisabled && <Input defaultValue={value[0]} disabled={isDisabled}/>}
+            {!!isNormal && !isDisabled && <Input value={value} onChange={handleChange}/>}
 
         </Col>
     </Row>
@@ -61,7 +63,7 @@ const BasicInfo = ({
                        isSpecificEntry
                    }) => {
     return <Fragment>
-        <InputComponent isNormal={isSpecificEntry} value={sendTo} handleChange={handleSendTo}
+        <InputComponent isDisabled={isSpecificEntry} isNormal={isSpecificEntry} value={sendTo} handleChange={handleSendTo}
                         label={formatMessage({id: 'page.emailTemplates.to'})}/>
         <InputComponent value={cc} handleChange={handleCc} label={formatMessage({id: 'page.emailTemplates.cc'})}/>
         <InputComponent value={bcc} handleChange={handleBcc} label={formatMessage({id: 'page.emailTemplates.bcc'})}/>
@@ -302,11 +304,15 @@ class NewEmail extends React.Component {
         });
     }
     checkSpecificEntry = () => {
-        const {match} = this.props;
-        if(match.params.objectType && match.params.objectId){
-            //todo fetch the current lead/account/opportunity to get their info (will only include email currently)
-            this.setState({
-                isSpecificEntry: !!match.params.objectType && !!match.params.objectId
+        const {match, fetchUserEmail} = this.props;
+        const objectType = match.params.objectType;
+        const objectId = match.params.objectId;
+        if(objectType && objectId){
+            fetchUserEmail({objectType, objectId}, (data)=>{
+                this.setState({
+                    isSpecificEntry: !!match.params.objectType && !!match.params.objectId,
+                    sendTo: [data.data.email]
+                })
             })
         }
     }
@@ -439,7 +445,8 @@ const mapDispatchToProps = {
     newEmailQueryByPaging,
     fetchSelectedTemplateData,
     newEmailSetTemplatesData,
-    sendEmail
+    sendEmail,
+    fetchUserEmail
 };
 
 
