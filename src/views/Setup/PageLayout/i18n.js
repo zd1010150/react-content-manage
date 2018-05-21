@@ -19,6 +19,11 @@ export default {
       sections: '内容块',
       modules: '功能模块',
     },
+    pageLayoutOptionTips: {
+      tools: '添加工具栏，新功能会添加到{type}视图页面',
+      sections: '添加需要显示的字段到布局页面',
+      modules: '添加功能模块会添加该功能模块的所有功能到布局页面',
+    },
     pageLayoutAssignment: '分配布局到部门',
     selectPageLayout: '请选择一个布局',
     addSectionDialogTitle: '新增内容块',
@@ -27,7 +32,7 @@ export default {
     cancelEditing: '你还未保存你所做的更改，确定放弃？',
     createNewPageLayout: '创建新布局',
     saveAndNext: '保存并进行下一步',
-      noMoudle: '还没有modules，拖动右面module 至此处',
+    noMoudle: '还没有modules，拖动右面module 至此处',
   },
   en: {
     layoutDetail: '{type} Detail',
@@ -49,6 +54,11 @@ export default {
       sections: 'Fields/Sections',
       modules: 'Modules',
     },
+    pageLayoutOptionTips: {
+      tools: 'By adding Tools, new function will be added into View {type}',
+      sections: ' Adding new Fields/Sections into your Page Layout',
+      modules: 'Adding new Modules will have all Module Functions',
+    },
     pageLayoutAssignment: 'Page Layout assignment',
     selectPageLayout: 'Please select a page layout',
     addSectionDialogTitle: 'Add Section',
@@ -57,6 +67,6 @@ export default {
     cancelEditing: 'You haven\'t save your modification ,are you sure exit？',
     createNewPageLayout: 'Create New Page Layout',
     saveAndNext: 'Save and Next',
-      noMoudle: 'There is no module，dragging module in the left to here',
+    noMoudle: 'There is no module，dragging module in the left to here',
   },
 };

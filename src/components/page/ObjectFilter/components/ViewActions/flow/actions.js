@@ -1,7 +1,7 @@
-import { patch, post } from 'store/http/httpAction';
+import { httpDelete, patch, post } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
 import { toUtc } from 'utils/dateTimeUtils';
-import { SAVE_SUCCESS } from './actionTypes';
+import { DONE } from './actionTypes';
 
 const {
   DateOnly,
@@ -61,20 +61,30 @@ const mapDataToAPI = (objectType, data) => {
   };
 };
 
-export const saveSuccess = () => ({
-  type: SAVE_SUCCESS,
+export const done = () => ({
+  type: DONE,
 });
+
 
 export const trySaveNew = (objectType, viewData) => dispatch =>
   post('/admin/list_views', mapDataToAPI(objectType, viewData), dispatch).then((data) => {
     if (data && !_.isEmpty(data.data)) {
-      dispatch(saveSuccess());
+      dispatch(done());
     }
   });
+
 
 export const trySave = (objectType, viewData, id) => dispatch =>
   patch(`/admin/list_views/${id}`, mapDataToAPI(objectType, viewData), dispatch).then((data) => {
     if (data && !_.isEmpty(data.data)) {
-      dispatch(saveSuccess());
+      dispatch(done());
+    }
+  });
+
+
+export const tryDeleteView = viewId => dispatch =>
+  httpDelete(`/admin/list_views/${viewId}`, {}, dispatch).then((data) => {
+    if (data && data.deleted) {
+      dispatch(done());
     }
   });
