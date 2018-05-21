@@ -17,7 +17,6 @@ import DefaultDepartment from "./DefaultDepartment/index";
 import { Wrapper, CardContainer } from "./MultiSelectDnD/index";
 import RichEditor from "./RichEditor/index";
 import SelectionModal from "./SelectionModal/index";
-import SubmitButtons from "./SubmitButtons/index";
 import { SelectionPool, SearchPool } from "./SelectionPool/index";
 import DetailTopButtons from "./DetailTopButtons/index";
 import FloatingActionButtons from "./FloatingActionButtons/index";
@@ -54,7 +53,6 @@ export {
   CardContainer,
   RichEditor,
   SelectionModal,
-  SubmitButtons,
   SelectionPool,
   SearchPool,
   DetailTopButtons,
