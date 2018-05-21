@@ -1,19 +1,15 @@
-import { SAVE_FAILED, SAVE_SUCCESS, RESET_VIEW } from './actionTypes';
+import { DONE, RESET_VIEW } from './actionTypes';
 
-const initialState = {
-  hasSuccessfullySaved: false,
-};
-
-const actions = (state = initialState, action) => {
+const actions = (state = false, action) => {
   switch (action.type) {
-    case SAVE_SUCCESS:
-      return {
-        hasSuccessfullySaved: true,
-      };
-    
+    case DONE:
+      return true;
+
+
     case RESET_VIEW:
-      return initialState;
-      
+      return false;
+
+
     default:
       return state;
   }
