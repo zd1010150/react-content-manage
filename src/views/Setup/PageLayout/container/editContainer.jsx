@@ -4,7 +4,7 @@ import _ from 'lodash';
 import classNames from 'classnames/bind';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
-import { Button, Radio, Row, Col, Divider, Layout } from 'antd';
+import { Button, Radio, Row, Col, Divider, Layout, Tooltip, Icon } from 'antd';
 import { connect } from 'react-redux';
 import { EditBox, DeleteConfirmDialog } from 'components/ui/index';
 import { RightSider, Permission, Unauthentication } from 'components/page/index';
@@ -194,7 +194,13 @@ class EditContainer extends React.Component {
                     { OPERATES.map(o => (
                       <Col span={24} key={o}>
                         <Radio className={`${theme}-theme-radio mt-sm`} value={o} checked={o === currentTab} onChange={(e) => { this.changeTab(e); }}>
-                          { formatMessage({ id: `page.layouts.operates.${o}` })}
+                            { formatMessage({ id: `page.layouts.operates.${o}` })}
+                          <Tooltip
+                            placement="top"
+                            title={formatMessage({ id: `page.layouts.pageLayoutOptionTips.${o}` }, { type: formatMessage({ id: `global.properNouns.${objectType}` }) })}
+                          >
+                            <Icon type="question-circle-o" className="pl-sm" />
+                          </Tooltip>
                         </Radio>
                       </Col>
                   )) }

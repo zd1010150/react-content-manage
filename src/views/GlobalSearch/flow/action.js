@@ -39,7 +39,6 @@ const setData = (objType, data, dispatch) => {
 };
 
 export const fetchResultFromRemote = search => dispatch => get('/admin/objects/search', { search }, dispatch).then((data) => {
-  console.log("===", data)
   if (!_.isEmpty(data)) {
     setData(leads, data[leads], dispatch);
     setData(accounts, data[accounts], dispatch);
@@ -48,6 +47,6 @@ export const fetchResultFromRemote = search => dispatch => get('/admin/objects/s
 });
 
 
-export const fetchResultByObjtype = (objType, search, per_page, page) => dispatch => get(`/admin/${objType}`, { search, per_page, page }, dispatch).then((data) => {
+export const fetchResultByObjtype = (objType, search, per_page, page) => dispatch => get(`/admin/objects/search/object_type/${objType}`, { search, per_page, page }, dispatch).then((data) => {
   setData(objType, data, dispatch);
 });
