@@ -31,6 +31,7 @@ import {
   Task,
   ClientDetails,
   Exceptions,
+  Conversion,
 } from 'views/index';
 
 const { NotFound } = Exceptions;
@@ -82,7 +83,11 @@ class MainContent extends React.Component {
                     const { match } = props;
                     const { objectId } = match.params;
                     return (
-                      <ConvertLeads
+                      // <ConvertLeads
+                      //   {...props}
+                      //   objectId={objectId}
+                      // />
+                      <Conversion
                         {...props}
                         objectId={objectId}
                       />

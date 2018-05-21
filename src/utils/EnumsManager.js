@@ -123,6 +123,7 @@ const EnumsManager = Object.freeze({
     OBJECTLIST: 'OBJECTLIST_',
     OBJECTSHARE: 'OBJECTSHARE',
     OBJECTDETAILS: 'OBJECTDETAILS',
+    CONVERSION: 'CONVERSION',
   }),
 
   ViewVisibilityIds: Object.freeze({

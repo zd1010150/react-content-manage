@@ -28,6 +28,7 @@ import ObjectShare from './ObjectShare/index';
 import ClientDetails from './ClientDetails/index';
 import Task from './Task/index';
 import Exceptions from './Exceptions/index';
+import Conversion from './Conversion/index';
 
 export {
   Dashboard,
@@ -58,4 +59,5 @@ export {
   ClientDetails,
   Task,
   Exceptions,
+  Conversion,
 };
