@@ -111,9 +111,11 @@ class TaskListView extends React.Component {
       }, {
         title: formatMessage({ id: 'global.ui.table.user' }),
         render: record => (
-          <span className={`${objTypeAndClassTypeMap[record.taskable_type]}-theme-text`}>
-            {record.relate_user && record.relate_user.name}
-          </span>),
+          <Link to={`${record.taskable_type}/${record.relate_user && record.relate_user.id}`}>
+            <span className={`${objTypeAndClassTypeMap[record.taskable_type]}-theme-text`}>
+                {record.relate_user && record.relate_user.name}
+            </span>
+          </Link>),
       }, {
         title: formatMessage({ id: 'global.ui.table.status' }),
         render: record => <span>{ this.getStatus(record.status_code)}</span>,

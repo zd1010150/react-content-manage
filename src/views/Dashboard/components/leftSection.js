@@ -87,9 +87,11 @@ class LeftSection extends React.Component {
                         </span>
                       </div>
                       <div className="clearfix">
-                        <span className={`${objTypeAndClassTypeMap[a.taskable_type]}-theme-text pull-left`}>
-                          {a.relate_user && a.relate_user.name}
-                        </span>
+                        <Link to={`${a.taskable_type}/${a.relate_user.id}`}>
+                          <span className={`${objTypeAndClassTypeMap[a.taskable_type]}-theme-text pull-left`}>
+                            {a.relate_user && a.relate_user.name}
+                          </span>
+                        </Link>
                         <span className="pull-right text2">
                           <Tooltip title="Due date">
                             <Icon type="clock-circle-o" className="mr-sm" />
