@@ -7,7 +7,8 @@ const initialState = {
   opportunityName: '',
   withoutNewOpportunity: false,
   accountStatusId: '',
-  createAccountName: {},
+  createAccountName: '',
+  createAccountNameId: 0,
   similarAccounts: [],
 };
 
@@ -39,7 +40,14 @@ const convertDetails = (state = initialState, action) => {
 
 
     case SET_FIELD_VALUE:
-      const { name, value } = action.payload;
+      const { name, value, extraValue } = action.payload;
+      if (name === 'createAccountNameId') {
+        return {
+          ...state,
+          createAccountNameId: value,
+          createAccountName: extraValue,
+        };
+      }
       return {
         ...state,
         [name]: value,

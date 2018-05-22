@@ -52,7 +52,7 @@ export const tryFetchOwner = objectId => dispatch =>
   });
 
 
-export const setFieldValue = (name, value) => ({
+export const setFieldValue = (name, value, extraValue) => ({
   type: SET_FIELD_VALUE,
-  payload: { name, value },
+  payload: { name, value, extraValue },
 });

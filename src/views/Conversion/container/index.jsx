@@ -1,17 +1,23 @@
+import { ConvertDetails, TaskDetails } from 'components/page/index';
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { ConvertDetails } from 'components/page/index';
+import Enums from 'utils/EnumsManager';
+import { Actions } from '../components/index';
 
-const propTypes = {};
+const { PhantomId, ObjectTypes, ThemeTypes } = Enums;
+const { Leads } = ObjectTypes;
 
-
-const Conversion = ({ objectId }) => {
-  return (
-    <Fragment>
-      <ConvertDetails objectId={objectId} />
-    </Fragment>
-  );
-};
-
+const Conversion = ({ objectId }) => (
+  <Fragment>
+    <ConvertDetails objectId={objectId} />
+    <TaskDetails
+      taskId={PhantomId}
+      objectId={objectId}
+      objectType={Leads}
+      theme={ThemeTypes.Leads}
+      disableActions
+    />
+    <Actions objectId={objectId} />
+  </Fragment>
+);
 
 export default Conversion;

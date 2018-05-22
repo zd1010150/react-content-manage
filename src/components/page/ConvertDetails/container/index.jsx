@@ -24,7 +24,7 @@ class ConvertDetails extends Component {
     tryFetchOwner(objectId);
   }
 
-  handleFieldsChange = (name, value) => this.props.setFieldValue(name, value)
+  handleFieldsChange = (name, value, extraValue) => this.props.setFieldValue(name, value, extraValue)
 
   render() {
     const {
@@ -33,6 +33,7 @@ class ConvertDetails extends Component {
       opportunityName,
       withoutNewOpportunity,
       createAccountName,
+      createAccountNameId,
       accountStatusId,
       accountStatuses,
       similarAccounts,
@@ -45,7 +46,8 @@ class ConvertDetails extends Component {
         withoutNewOpportunity={{ value: withoutNewOpportunity }}
         accountStatus={{ value: accountStatusId }}
         accountStatuses={accountStatuses}
-        createAccountName={{ value: createAccountName.name }}
+        createAccountName={{ value: createAccountName }}
+        createAccountNameId={createAccountNameId}
         similarAccounts={similarAccounts}
         handleFieldsChange={this.handleFieldsChange}
       />
@@ -61,6 +63,7 @@ const mapStateToProps = ({ global, convertDetails }) => ({
   opportunityName: convertDetails.opportunityName,
   withoutNewOpportunity: convertDetails.withoutNewOpportunity,
   createAccountName: convertDetails.createAccountName,
+  createAccountNameId: convertDetails.createAccountNameId,
   accountStatusId: convertDetails.accountStatusId,
   accountStatuses: [],
   similarAccounts: convertDetails.similarAccounts,

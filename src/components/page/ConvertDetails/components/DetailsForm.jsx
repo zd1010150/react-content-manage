@@ -35,7 +35,7 @@ class DetailsForm extends Component {
     const { similarAccounts, handleFieldsChange } = this.props;
     const account = similarAccounts.find(ac => ac.id == e.target.dataset.id);
     if (account) {
-      handleFieldsChange('createAccountName', account);
+      handleFieldsChange('createAccountNameId', account.id, account.name);
     }
     // close modal
     this.handleCancel();
@@ -51,6 +51,7 @@ class DetailsForm extends Component {
       accountStatuses,
       similarAccounts,
       createAccountName,
+      createAccountNameId,
     } = this.props;
     const { formatMessage } = intl;
     const i18n = 'page.convertDetails.labels';
@@ -118,7 +119,7 @@ class DetailsForm extends Component {
               {getFieldDecorator('createAccountName', {
                 rules: [requiredRule],
               })(
-                <Input addonBefore={createAccountName.id === 0 ? 'New' : 'Duplicate To'} readOnly />
+                <Input addonBefore={createAccountNameId === 0 ? 'New' : 'Duplicate To'} readOnly />
               )}
             </FormItem>
             <div className="pl-md">
@@ -187,6 +188,10 @@ const mapPropsToFields = (props) => ({
   createAccountName: createFormField({
     ...props.createAccountName,
     value: props.createAccountName.value,
+  }),
+  createAccountNameId: createFormField({
+    ...props.createAccountNameId,
+    value: props.createAccountNameId.value,
   }),
 });
 const onFieldsChange = (props, fields) => {

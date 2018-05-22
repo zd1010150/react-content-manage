@@ -1,10 +1,7 @@
 export const mapToStore = data => ({
   ownerId: data.ownership_id.id,
   opportunityName: data.name,
-  createAccountName: {
-    id: 0,
-    name: data.name,
-  },
+  createAccountName: data.name,
 });
 
 // TODO
@@ -25,7 +22,7 @@ export const mapToStore = data => ({
 export const mapToApi = data => ({
   account: {
     ownership_id: data.ownerId,
-    duplicate_id: data.createAccountName.id, // default 0
+    duplicate_id: data.createAccountNameId,
     account_status: data.accountStatusId,
   },
   new_opportunity: data.withoutNewOpportunity ? 'NO' : 'YES',

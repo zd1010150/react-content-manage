@@ -14,6 +14,7 @@ import dashboard from 'views/Dashboard/flow/reducer';
 import conversion from 'views/ConvertLeads/flow/reducer';
 import task from 'views/Task/flow/reducer';
 import convertDetails from 'components/page/ConvertDetails/flow/reducer';
+import convertStatus from 'views/Conversion/flow/reducer';
 // test
 import multiDndFields from 'components/ui/MultiSelectDnD/flow/reducer';
 // test ends
@@ -35,4 +36,5 @@ export default {
   conversion,
   task,
   convertDetails,
+  convertStatus,
 };
