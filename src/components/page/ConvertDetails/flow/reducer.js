@@ -1,4 +1,4 @@
-import { RESET, SET_DETAILS, SET_SIMILAR_DATA, SET_OWNERS, SET_FIELD_VALUE } from './actionTypes';
+import { RESET, SET_DETAILS, SET_SIMILAR_DATA, SET_OWNERS, SET_FIELD_VALUE, SET_STATUSES } from './actionTypes';
 import { mapToStore } from './utils';
 
 const initialState = {
@@ -7,6 +7,7 @@ const initialState = {
   opportunityName: '',
   withoutNewOpportunity: false,
   accountStatusId: '',
+  accountStatuses: [],
   createAccountName: '',
   createAccountNameId: 0,
   similarAccounts: [],
@@ -51,6 +52,14 @@ const convertDetails = (state = initialState, action) => {
       return {
         ...state,
         [name]: value,
+      };
+
+
+    case SET_STATUSES:
+      const { accountStatuses } = action.payload;
+      return {
+        ...state,
+        accountStatuses,
       };
 
 

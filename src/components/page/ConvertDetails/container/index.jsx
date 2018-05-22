@@ -65,7 +65,7 @@ const mapStateToProps = ({ global, convertDetails }) => ({
   createAccountName: convertDetails.createAccountName,
   createAccountNameId: convertDetails.createAccountNameId,
   accountStatusId: convertDetails.accountStatusId,
-  accountStatuses: [],
+  accountStatuses: convertDetails.accountStatuses,
   similarAccounts: convertDetails.similarAccounts,
 });
 const mapDispatchToProps = {

@@ -106,7 +106,7 @@ class DetailsForm extends Component {
                 rules: [requiredRule],
               })(
                 <Select>
-                  {accountStatuses.map(st => <Option key={st.id} value={st.id}>{st.value}</Option>)}
+                  {accountStatuses.map(st => <Option key={st.id} value={st.id}>{st.option_value}</Option>)}
                 </Select>
               )}
             </FormItem>

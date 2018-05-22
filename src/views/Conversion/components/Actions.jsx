@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { tryConvertLead } from '../flow/actions';
+import { tryConvertLead, reset } from '../flow/actions';
 
 const propTypes = {
   intl: intlShape.isRequired,
@@ -56,6 +56,7 @@ const mapStateToProps = ({ convertStatus }) => ({
 });
 const mapDispatchToProps = {
   tryConvertLead,
+  reset,
 };
 export default connect(
   mapStateToProps,

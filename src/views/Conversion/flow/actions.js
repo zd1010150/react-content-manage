@@ -1,7 +1,7 @@
 import { post } from 'store/http/httpAction';
 import { mapToApi as detailsMapToApi } from 'components/page/ConvertDetails/flow/utils';
 import { mapToApi as taskMapToApi } from 'components/page/TaskDetails/flow/utils';
-import { SET_ACCOUNT_ID } from './actionTypes';
+import { SET_ACCOUNT_ID, RESET } from './actionTypes';
 
 const getPayload = (store) => {
   const convertDetails = detailsMapToApi(store.convertDetails);
@@ -23,3 +23,8 @@ export const tryConvertLead = objectId => (dispatch, getState) =>
       dispatch(setAccountId(data.account.id));
     }
   });
+
+
+export const reset = () => ({
+  type: RESET,
+});
