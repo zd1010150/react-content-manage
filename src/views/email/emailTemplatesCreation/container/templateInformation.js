@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import {intlShape, injectIntl} from 'react-intl';
-import {Row, Col, Input, Select, Button, Icon, Radio, Table} from 'antd';
+import {Row, Col, Input, Select, Button, Icon, Modal, Radio, Table, Popconfirm} from 'antd';
 import {
     getUserFolderData
 } from '../../flow/action';
@@ -64,40 +64,53 @@ const BasicInfo = ({
     </Fragment>
 }
 
-const convertFieldToMap = (data) => {
-    return data.reduce((newObj, current)=>{
-        let obj = {};
-        obj[current.id] = {label: current.field_label, value: current.field_value};
-        return {
-            ...newObj,
-            ...obj
-        }
-    }, {})
-}
+// const convertFieldToMap = (data) => {
+//     return data.reduce((newObj, current)=>{
+//         let obj = {};
+//         obj[current.id] = {label: current.field_label, value: current.field_value};
+//         return {
+//             ...newObj,
+//             ...obj
+//         }
+//     }, {})
+// }
 
-const FieldInfo = ({selectedField, selectField, selectedLabel, selectedValue, template, fieldOption, formatMessage, selectLabel, selectValue}) => {
-    console.log('selectedField', selectedField)
-    console.log('fieldOption', fieldOption)
-    let fieldLabels, fieldValues = [];
-    let fieldObj = {};
-    let convertObj;
-    if (!_.isEmpty(template) && !_.isEmpty(fieldOption)) {
-        convertObj  = convertFieldToMap(fieldOption[template.category]);
-    }
-
-    if(!!selectedField.label){
-        fieldValues = [convertObj[selectedField.key]["value"]]
-    }
+const FieldInfo = ({selectedField, selectField, selectedLabel, selectedValue, template, fieldOption, formatMessage}) => {
+    // console.log('selectedField', selectedField)
+    // console.log('template', template)
+    // let fieldLabels = [];
+    // let fieldValue;
+    // let fieldObj = {};
+    // let convertObj;
+    // console.log('fieldOption', fieldOption[template.category])
+    // if (!_.isEmpty(template) && !_.isEmpty(fieldOption)) {
+    //     convertObj  = convertFieldToMap(fieldOption[template.category]);
+    // }
+    //
+    // if(convertObj && convertObj[selectedField.key] && !!selectedField.label){
+    //     fieldValue = convertObj[selectedField.key]["value"]
+    // }
 
     return <Row className={`pt-lg ${cx(['new-template-input-row', 'new-template-folder-information'])}`}>
         <Col className="gutter-row field-value" span={10}>
-            <SelectComponentVertical labelInValue={true} items={fieldOption[template.category]} value={v => v.field_label} label={formatMessage({id: 'page.emailTemplates.selectField'})}
-                                     onChange={selectField}/>
+            <div>
+                {formatMessage({id: 'page.emailTemplates.selectField'})}
+            </div>
+            <Select onChange={selectField} className="full-width">
+                { fieldOption[template.category] && fieldOption[template.category].map((item, index) =>
+                    <Select.Option key={item.id ? item.id : index} value={item}>{item.field_label}</Select.Option>
+                )}
+            </Select>
         </Col>
+
         <Col className="gutter-row field-value" offset={2} span={10}>
-            <SelectComponentVertical labelInValue={false} defaultValue={selectedValue} items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}
-                                     onChange={selectValue}/>
+            <div>{formatMessage({id: 'page.emailTemplates.fieldValue'})}</div>
+            <div>{selectedField.field_value}</div>
         </Col>
+        {/*<Col className="gutter-row field-value" offset={2} span={10}>*/}
+            {/*<SelectComponentVertical labelInValue={false} defaultValue={selectedValue} items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}*/}
+                                     {/*onChange={selectValue}/>*/}
+        {/*</Col>*/}
     </Row>
 }
 
@@ -127,18 +140,35 @@ class TemplateInformation extends React.Component {
         }
     }
 
+
     selectField = (value) => {
         this.setState({selectedField: value}, ()=>{
-            this.setState({selectedValue: ''})
+            this.setState({selectedValue: value.field_value})
         })
     }
 
-    selectLabel = (value) => {
-        this.setState({selectedLabel: value})
-    }
+    setTemplateCategory = (value) => {
+        const {setNewTemplateCategory, setEditTemplateCategory, isNewTemplateRouter, setNewTemplateContent, setEditTemplateContent} = this.props;
+        if(isNewTemplateRouter()){
+            setNewTemplateCategory(value);
+        }else{
+            setEditTemplateCategory(value);
+        }
 
-    selectValue = (value) => {
-        this.setState({selectedValue: value})
+        // Modal.confirm({
+        //     title: 'Do you want to delete these items?',
+        //     content: 'When clicked the OK button, this dialog will be closed after 1 second',
+        //     onOk() {
+        //         if(isNewTemplateRouter()){
+        //             setNewTemplateContent('');
+        //             setNewTemplateCategory(value);
+        //         }else{
+        //             setEditTemplateContent('');
+        //             setEditTemplateCategory(value);
+        //         }
+        //     },
+        //     onCancel() {},
+        // });
     }
 
     render() {
@@ -180,7 +210,7 @@ class TemplateInformation extends React.Component {
                         setTemplateName={setNewTemplateName}
                         setTemplateApiName={setNewTemplateApiName}
                         setTemplateDescription={setNewTemplateDescription}
-                        setTemplateCategory={setNewTemplateCategory}
+                        setTemplateCategory={this.setTemplateCategory}
                         editTemplate={{}}
                         userFolders={userFolders}
                         selectedFolder={selectedFolder}
@@ -188,8 +218,6 @@ class TemplateInformation extends React.Component {
                     <FieldInfo selectedLabel={this.state.selectedLabel}
                                selectedValue={this.state.selectedValue}
                                selectedField={this.state.selectedField}
-                               selectLabel={this.selectLabel}
-                               selectValue={this.selectValue}
                                selectField={this.selectField}
                                template={newTemplate}
                                fieldOption={fieldOption}
@@ -214,7 +242,7 @@ class TemplateInformation extends React.Component {
                         setTemplateName={setEditTemplateName}
                         setTemplateApiName={setEditTemplateApiName}
                         setTemplateDescription={setEditTemplateDescription}
-                        setTemplateCategory={setEditTemplateCategory}
+                        setTemplateCategory={this.setTemplateCategory}
                         editTemplate={editTemplate}
                         userFolders={userFolders}
                         selectedFolder={selectedFolder}
@@ -222,8 +250,6 @@ class TemplateInformation extends React.Component {
                     <FieldInfo selectedLabel={this.state.selectedLabel}
                                selectedValue={this.state.selectedValue}
                                selectedField={this.state.selectedField}
-                               selectLabel={this.selectLabel}
-                               selectValue={this.selectValue}
                                selectField={this.selectField}
                                template={editTemplate}
                                fieldOption={fieldOption}

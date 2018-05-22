@@ -9,12 +9,13 @@ import classNames from 'classnames/bind';
 import styles from '../emailTemplates.less';
 const cx = classNames.bind(styles);
 
-const Templates = ({templates, pagination, columns, formatMessage, isSharedByVisible, isCurrentUser, selectedUser, setPermissionSettingVisible, fetchNewTemplateData}) => (
+const Templates = ({templates, pagination, columns, formatMessage, isSharedByVisible, isCurrentUser, selectedUser, setPermissionSettingVisible, fetchNewTemplateData, isUserEmailSettingRoute}) => (
     <Fragment>
+        {console.log('isUserEmailSettingRoute', isUserEmailSettingRoute())}
         {!isSharedByVisible && isCurrentUser() &&
         <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_ADD}>
             <div style={{textAlign: 'right', height: 30, margin: '10px 15px'}}>
-                <NavLink to='/setup/email/templates-creation'>
+                <NavLink to={isUserEmailSettingRoute() ? '/user/email-setting/templates-creation' : '/setup/email/templates-creation'}>
                     <Button className="btn-ellipse email-theme-btn" size="small" onClick={() => {
                         fetchNewTemplateData(()=>{
                             setPermissionSettingVisible(false)

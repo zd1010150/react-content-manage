@@ -60,6 +60,7 @@ export default {
     doubleClickHint: "双击以选择模板",
     duplicatedFolderName: "文件夹名称不能重复",
     emptyFolderName: "文件夹名称不能为空",
+    needAuthMessage: "请点击下面的链接去授权您的邮箱",
     emailCampaignsSeparator:
       "............................................................................................",
     emailCampaign: "活动邮件",
@@ -152,6 +153,7 @@ export default {
     doubleClickHint: "Double click to select template",
     duplicatedFolderName: "Folder name cannot be duplicated",
     emptyFolderName: "Folder name cannot be empty",
+    needAuthMessage: "Please go to the link below to authenticate your email",
     emailCampaignsSeparator:
       "............................................................................................",
     emailCampaign: "Email Campaigns",
