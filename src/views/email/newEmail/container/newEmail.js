@@ -261,7 +261,7 @@ class NewEmail extends React.Component {
         const emailSendMessage = formatMessage({ id: 'page.emailTemplates.emailSendMessage' });
         const pendingSavedEmails = _.uniqBy(this.state.sendTo.concat(this.state.cc).concat(this.state.bcc).concat(savedEmails));
         sendEmail({userEmail, dataObj, noAuthMessage, emailSendMessage}, (status, authLink) => {
-            if(status === 'success'){
+            if(status !== 'error'){
                 setStore(EnumsManager.LocalStorageEmails, pendingSavedEmails);
                 history.push(`/${match.params.objectType}/${match.params.objectId}`);
             }else{

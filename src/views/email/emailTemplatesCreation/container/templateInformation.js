@@ -57,7 +57,7 @@ const BasicInfo = ({
                         label={formatMessage({id: 'page.emailTemplates.emailTemplateApiName'})}/>
         <InputComponent optional={true} value={editTemplate.description} onChange={setTemplateDescription}
                         label={formatMessage({id: 'page.emailTemplates.newTemplateDescription'})}/>
-        <SelectComponent defaultValue={editTemplate.category ? editTemplate.category : 'leads'}
+        <SelectComponent hint={formatMessage({id: 'page.emailTemplates.selectCategoryHint'})} defaultValue={editTemplate.category ? editTemplate.category : 'leads'}
                          onChange={setTemplateCategory} items={categories}
                          label={formatMessage({id: 'page.emailTemplates.category'})}
                          value={v => v.name}/>
@@ -150,11 +150,14 @@ class TemplateInformation extends React.Component {
     setTemplateCategory = (value) => {
         const {setNewTemplateCategory, setEditTemplateCategory, isNewTemplateRouter, setNewTemplateContent, setEditTemplateContent} = this.props;
         if(isNewTemplateRouter()){
+            setEditTemplateContent('');
+            this.setState({selectedValue: 'removeAll'});
             setNewTemplateCategory(value);
         }else{
+            setEditTemplateContent('');
+            this.setState({selectedValue: 'removeAll'});
             setEditTemplateCategory(value);
         }
-
         // Modal.confirm({
         //     title: 'Do you want to delete these items?',
         //     content: 'When clicked the OK button, this dialog will be closed after 1 second',

@@ -85,13 +85,12 @@ export const sendEmail = ({ userEmail, dataObj, noAuthMessage, emailSendMessage 
                     { successMessage: emailSendMessage }
                 )
             }else{
-                cb(data.status, data.auth_link);
+                throw cb(data.status, data.auth_link);
             }
         }
     }).then((data)=>{
         if (!_.isEmpty(data)) {
             if (_.isFunction(cb)) {
-                cb(data.status);
             }
         }
     }).catch((e)=>{

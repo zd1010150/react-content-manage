@@ -32,15 +32,17 @@ class CKEditor extends React.Component {
         if (this.props.content !== nextProps.content) {
             // window.CKEDITOR.replaceAll();
             // loadScript(nextProps, ()=>this.onLoad(nextProps));
-
-
             if (editorInstances) {
                 editorInstances.destroy(true);
             }
             this.onLoad(nextProps);
         }
-        if(this.props.insertValue !== nextProps.insertValue){
+        if(this.props.insertValue !== nextProps.insertValue && nextProps.insertValue !== 'removeAll'){
             editorInstances.insertText(nextProps.insertValue);
+        }
+        if(editorInstances && this.props.insertValue !== nextProps.insertValue && nextProps.insertValue === 'removeAll'){
+            editorInstances.destroy(true);
+            this.onLoad(nextProps);
         }
     }
 

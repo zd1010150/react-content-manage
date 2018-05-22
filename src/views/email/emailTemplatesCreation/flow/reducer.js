@@ -32,7 +32,6 @@ export const newTemplate = (state = {}, action) => {
     case NEW_TEMPLATE_CONTENT:
       return Object.assign({}, state, { content: payload });
     case NEW_TEMPLATE_CATEGORY:
-        console.log('??????', payload)
       return Object.assign({}, state, { category: payload });
     default:
       return state;
