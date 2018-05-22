@@ -1,15 +1,14 @@
-import { RESET, SET_DETAILS, SET_SIMILAR_DATA } from './actionTypes';
+import { RESET, SET_DETAILS, SET_SIMILAR_DATA, SET_OWNERS, SET_FIELD_VALUE } from './actionTypes';
 import { mapToStore } from './utils';
 
 const initialState = {
   ownerId: '',
   owners: [],
   opportunityName: '',
-  withNewOpportunity: false,
-  accountStatus: '',
+  withoutNewOpportunity: false,
+  accountStatusId: '',
   createAccountName: '',
   similarAccounts: [],
-  similarNum: 0,
 };
 
 const convertDetails = (state = initialState, action) => {
@@ -23,11 +22,27 @@ const convertDetails = (state = initialState, action) => {
       };
 
 
-    case SET_SIMILAR_DATA:
-      const { similarData } = action.payload;
+    case SET_OWNERS:
+      const { owners } = action.payload;
       return {
         ...state,
-        similarNum: similarData.length,
+        owners,
+      };
+
+
+    case SET_SIMILAR_DATA:
+      const { similarAccounts } = action.payload;
+      return {
+        ...state,
+        similarAccounts,
+      };
+
+
+    case SET_FIELD_VALUE:
+      const { name, value } = action.payload;
+      return {
+        ...state,
+        [name]: value,
       };
 
 

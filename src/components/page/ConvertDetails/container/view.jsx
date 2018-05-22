@@ -1,6 +1,5 @@
 import React from 'react';
-import { Form, Select, Row, Col } from 'antd';
-import { Panel, StyledModal } from 'components/ui/index';
+import { Panel } from 'components/ui/index';
 import { intlShape, injectIntl } from 'react-intl';
 import { DetailsForm } from '../components/index';
 
@@ -13,6 +12,7 @@ const propTypes = {
 const ConvertDetailsView = ({
   intl,
   theme,
+  ...others
 }) => {
   const { formatMessage } = intl;
 
@@ -22,9 +22,7 @@ const ConvertDetailsView = ({
       panelClasses={`${theme}-theme-panel`}
       panelTitle={formatMessage({ id: 'page.convertDetails.title' })}
     >
-      <DetailsForm
-        accountStatuses={[]}
-      />
+      <DetailsForm {...others} />
     </Panel>
   );
 };

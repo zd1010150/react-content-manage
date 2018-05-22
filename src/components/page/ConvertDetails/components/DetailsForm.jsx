@@ -1,8 +1,9 @@
 /* eslint-disable */
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Form, Input, Select, Row, Col, Checkbox } from 'antd';
 import { intlShape, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
+import { StyledModal } from 'components/ui/index';
 
 const { Option } = Select;
 const { createFormField } = Form;
@@ -15,13 +16,34 @@ const colLayout = {
 
 const propTypes = {
   intl: intlShape.isRequired,
+  owners: PropTypes.array.isRequired,
   accountStatuses: PropTypes.array.isRequired,
 };
 
 
 class DetailsForm extends Component {
+  state = {
+    modalVisible: false,
+  }
+
+  handleOk = () => this.setState({ modalVisible: false })
+  handleCancel = () => this.setState({ modalVisible: false })
+  openModal = () => this.setState({ modalVisible: true })
+
+  handleAccountClick = (e) => {
+    console.log(e.target.dataset.id);
+  }
+
   render() {
-    const { intl, form, accountStatuses } = this.props;
+    const { modalVisible } = this.state;
+    const {
+      intl,
+      form,
+      owners,
+      withoutNewOpportunity,
+      accountStatuses,
+      similarAccounts,
+    } = this.props;
     const { formatMessage } = intl;
     const i18n = 'page.convertDetails.labels';
     const i18nPh = 'global.ui.placeholders';
@@ -40,14 +62,10 @@ class DetailsForm extends Component {
               label={formatMessage({ id: `${i18n}.owner` })}
             >
               {getFieldDecorator('owner', {
-                rules: [
-                  { required: true, message: 'Please select your favourite colors!', type: 'array' },
-                ],
+                rules: [requiredRule],
               })(
-                <Select mode="multiple" placeholder="Please select favourite colors">
-                  <Option value="red">Red</Option>
-                  <Option value="green">Green</Option>
-                  <Option value="blue">Blue</Option>
+                <Select>
+                  {owners.map(o => <Option key={o.id} value={o.id}>{o.name}</Option>)}
                 </Select>
               )}
             </FormItem>
@@ -58,14 +76,14 @@ class DetailsForm extends Component {
               {getFieldDecorator('opportunityName', {
                 rules: [requiredRule],
               })(
-                <Input placeholder={formatMessage({ id: 'test' })} />
+                <Input disabled={withoutNewOpportunity.value} />
               )}
             </FormItem>
             <FormItem
               label=""
               colon={false}
             >              
-              {getFieldDecorator('withNewOpportunity', {})(
+              {getFieldDecorator('withoutNewOpportunity', {})(
                 <Checkbox style={{ fontSize: 11 }}>
                   {formatMessage({ id: `${i18n}.noNewOpport` })}
                 </Checkbox>
@@ -78,18 +96,60 @@ class DetailsForm extends Component {
               {getFieldDecorator('accountStatus', {
                 rules: [requiredRule],
               })(
-                <Select
-                  placeholder=""
-                >
+                <Select>
                   {accountStatuses.map(st => <Option key={st.id} value={st.id}>{st.value}</Option>)}
                 </Select>
               )}
             </FormItem>
           </Col>
           <Col {...colLayout}>
-            <FormItem label="Field A" colon={false} required>
-              <Input placeholder="input placeholder" />
+            <FormItem
+              label={formatMessage({ id: `${i18n}.createAcctName` })}
+              colon={false}
+            >
+              {getFieldDecorator('createAccountName', {
+                rules: [requiredRule],
+              })(
+                <Input addonBefore='New' readOnly />
+              )}
             </FormItem>
+            <div className="pl-md">
+              {formatMessage({ id: `${i18n}.exist` })}
+              {similarAccounts.length}
+              {formatMessage({ id: `${i18n}.similar` })}
+              {similarAccounts.length !== 0 && (
+                <Fragment>
+                  <a
+                    className="ml-lg lead-theme-text"
+                    onClick={this.openModal}
+                  >
+                    {formatMessage({ id: `${i18n}.viewMore` })}
+                  </a>
+                  <StyledModal
+                    title={formatMessage({ id: 'page.convertDetails.modalTitle' })}
+                    visible={modalVisible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                  >
+                    <ul style={{ listStyle: 'none', padding: 0 }} onClick={this.handleAccountClick}>
+                    {similarAccounts.map(sa => (
+                      <li
+                        key={sa.id}
+                        data-id={sa.id}
+                        className="account-theme-text"
+                        style={{
+                          lineHeight: '24px',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {sa.name}
+                      </li>
+                    ))}
+                    </ul>
+                  </StyledModal>
+                </Fragment>
+              )}
+            </div>
           </Col>
         </Row>
       </Form>
@@ -98,25 +158,47 @@ class DetailsForm extends Component {
 }
 
 
+// TODO: fix the issue of missing form validation status because of the same object is overrided by props
 const mapPropsToFields = (props) => ({
+  owner: createFormField({
+    ...props.owner,
+    value: props.owner.value,
+  }),
   opportunityName: createFormField({
     ...props.opportunityName,
     value: props.opportunityName.value,
   }),
-  withNewOpportunity: createFormField({
-    ...props.withNewOpportunity,
-    value: props.withNewOpportunity.value,
+  withoutNewOpportunity: createFormField({
+    ...props.withoutNewOpportunity,
+    value: props.withoutNewOpportunity.value,
   }),
   accountStatus: createFormField({
     ...props.accountStatus,
     value: props.accountStatus.value,
   }),
+  createAccountName: createFormField({
+    ...props.createAccountName,
+    value: props.createAccountName.value,
+  }),
 });
 const onFieldsChange = (props, fields) => {
   console.dir(fields);
+  const { handleFieldsChange } = props;
+  if (_.isFunction(handleFieldsChange)) {
+    const key = Object.keys(fields)[0];
+    if (!key) return;
+    let { name, value } = fields[key];
+    // map field name to store key
+    if (name === 'owner') {
+      name = 'ownerId';
+    } else if (name === 'accountStatus') {
+      name = 'accountStatusId'
+    }
+    handleFieldsChange(name, value);
+  }
 };
 const DetailsFormWrapper = Form.create({
-  // mapPropsToFields,
+  mapPropsToFields,
   onFieldsChange,
 })(injectIntl(DetailsForm));
 export default DetailsFormWrapper;
