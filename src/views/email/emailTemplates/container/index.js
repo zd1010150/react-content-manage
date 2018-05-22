@@ -19,8 +19,8 @@ import PERMISSIONS from 'config/app-permission.config';
 
 class EmailTemplates extends React.Component {
     componentDidMount() {
-        const {getUserFolderData, loginUser, setSelectedUser} = this.props;
-        if(location.pathname !== '/user/email-setting'){
+        const {getUserFolderData, loginUser, setSelectedUser, location} = this.props;
+        if(!this.isUserEmailSettingRoute()){
             this.props.fetchTeams();
         }
         // get current user's folders as default
@@ -29,13 +29,19 @@ class EmailTemplates extends React.Component {
         setSelectedUser(loginUser);
     }
 
+    isUserEmailSettingRoute = () => {
+        const {location} = this.props;
+        const patt = new RegExp("/user/email-setting");
+        return patt.test(location.pathname);
+    }
+
     render() {
         const {isEditFolderViewVisible, location, intl} = this.props;
         return (
             <Fragment>
                 <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES} errorComponent={<Unauthentication />}>
-                    {location.pathname !== '/user/email-setting' && <EditView intl={intl}/>}
-                    {!isEditFolderViewVisible ? <EmailTemplateDetail intl={intl}/> : <EmailEditFolder intl={intl}/>}
+                    {!this.isUserEmailSettingRoute() && <EditView intl={intl}/>}
+                    {!isEditFolderViewVisible ? <EmailTemplateDetail isUserEmailSettingRoute={this.isUserEmailSettingRoute} intl={intl}/> : <EmailEditFolder intl={intl}/>}
                 </Permission>
             </Fragment>
 

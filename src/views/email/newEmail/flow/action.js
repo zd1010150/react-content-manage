@@ -14,6 +14,30 @@ const updateTemplate = payload => ({
   payload
 });
 
+export const fetchUserEmail = ({ objectType, objectId }, cb, cbErr) => (
+    dispatch,
+    getState
+) => {
+    get(
+        `/admin/${objectType}/${objectId}`,
+        dispatch
+    ).then(data => {
+        if (!_.isEmpty(data)) {
+            if (_.isFunction(cb)) {
+                cb(data);
+            }
+        } else {
+            if (_.isFunction(cbErr)) {
+                cbErr();
+            }
+        }
+    }).catch((e)=>{
+        if (_.isFunction(cbErr)) {
+            cbErr();
+        }
+    });
+};
+
 export const fetchSelectedTemplateData = ({ templateId, objectType, objectId, cb, cbErr }) => (
   dispatch,
   getState
@@ -96,19 +120,19 @@ const fetchTemplates = ({
   category,
   dispatch
 }) => {
-  let url;
+  let urlParams;
   //folderId undefined means the folder is just created and has not been saved yet!!!
   if (!folderId) {
     return dispatch(newEmailSetTemplatesData([]));
   }
   if (category) {
-    url = `/admin/email_templates/email_folders/${folderId}?category=${category}`;
+      urlParams = {category};
   } else {
-    url = `/admin/email_templates/email_folders/${folderId}`;
+      urlParams = {};
   }
   get(
-    url,
-    { per_page: perPage, page: currentPage, search },
+      `/admin/email_templates/email_folders/${folderId}`,
+    { ...urlParams, per_page: perPage, page: currentPage, search },
     dispatch
   ).then(data => {
     console.log("11111", data);
