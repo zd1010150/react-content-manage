@@ -30,14 +30,9 @@ import {
   ObjectShare,
   Task,
   ClientDetails,
-<<<<<<< HEAD
   Exceptions,
   Conversion,
 } from 'views/index';
-=======
-  Exceptions
-} from "views/index";
->>>>>>> 5c351e89b7583611193cf220d54371c81cffc459
 
 const { NotFound } = Exceptions;
 import Enums from "utils/EnumsManager";
