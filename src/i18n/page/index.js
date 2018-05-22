@@ -22,7 +22,7 @@ import primaryDetails from 'components/page/PrimaryDetails/i18n';
 import dashboard from 'views/Dashboard/i18n';
 import task from 'views/Task/i18n';
 import objectList from 'views/ObjectList/i18n';
-
+import convertDetails from 'components/page/ConvertDetails/i18n';
 
 export default {
   comInfo,
@@ -49,4 +49,5 @@ export default {
   dashboard,
   task,
   objectList,
+  convertDetails,
 };

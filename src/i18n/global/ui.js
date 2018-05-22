@@ -242,7 +242,7 @@ export default {
       selectedItems: 'items selected',
       priority: 'Priority',
       category: 'Category',
-      acctName: 'Account Name',
+      acctName: 'Account Name',      
     },
     select: {
       label: 'View',

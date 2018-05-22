@@ -30,8 +30,9 @@ import {
   ObjectShare,
   Task,
   ClientDetails,
-  Exceptions
-} from "views/index";
+  Exceptions,
+  Conversion,
+} from 'views/index';
 
 const { NotFound } = Exceptions;
 import Enums from "utils/EnumsManager";
@@ -95,10 +96,15 @@ class MainContent extends React.Component {
 
         <Route
           path="/leads/convert/convert/:objectId"
-          render={props => {
+          render={(props) => {
             const { match } = props;
             const { objectId } = match.params;
-            return <ConvertLeads {...props} objectId={objectId} />;
+            return (
+              <Conversion
+                {...props}
+                objectId={objectId}
+              />
+            );
           }}
         />
         <Route
