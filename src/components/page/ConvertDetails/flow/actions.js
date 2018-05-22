@@ -45,7 +45,7 @@ export const tryFetchOwner = objectId => dispatch =>
       // fetch similar data
       // dispatch(tryFetchSimilarData(data.data.name));
       // test
-      dispatch(tryFetchSimilarData('account-47'));
+      dispatch(tryFetchSimilarData('account-44'));
       // fetch owners
       dispatch(tryFetchOwners(data.data.ownership_id.meta_id));
     }

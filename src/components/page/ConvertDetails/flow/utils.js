@@ -1,15 +1,11 @@
-export const mapToStore = (data) => {
-  // TODO: replace following data with parsed real data
-  return {
-    // owner: {
-    //   id: 1,
-    //   name: 'u1-t1',
-    // },
-    ownerId: data.ownership_id.id,
-    opportunityName: data.name,
-    createAccountName: data.name,
-  };
-};
+export const mapToStore = data => ({
+  ownerId: data.ownership_id.id,
+  opportunityName: data.name,
+  createAccountName: {
+    id: 0,
+    name: data.name,
+  },
+});
 
 // TODO
 /** requested format by api
@@ -29,7 +25,7 @@ export const mapToStore = (data) => {
 export const mapToApi = data => ({
   account: {
     ownership_id: data.ownerId,
-    duplicate_id: data.duplicateTo, // default 0
+    duplicate_id: data.createAccountName.id, // default 0
     account_status: data.accountStatusId,
   },
   new_opportunity: data.withoutNewOpportunity ? 'NO' : 'YES',

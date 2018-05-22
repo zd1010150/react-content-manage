@@ -45,7 +45,7 @@ class ConvertDetails extends Component {
         withoutNewOpportunity={{ value: withoutNewOpportunity }}
         accountStatus={{ value: accountStatusId }}
         accountStatuses={accountStatuses}
-        createAccountName={{ value: createAccountName }}
+        createAccountName={{ value: createAccountName.name }}
         similarAccounts={similarAccounts}
         handleFieldsChange={this.handleFieldsChange}
       />

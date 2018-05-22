@@ -26,12 +26,19 @@ class DetailsForm extends Component {
     modalVisible: false,
   }
 
-  handleOk = () => this.setState({ modalVisible: false })
+  openModal = () => this.setState({ modalVisible: true })  
   handleCancel = () => this.setState({ modalVisible: false })
-  openModal = () => this.setState({ modalVisible: true })
+  handleOk = () => this.setState({ modalVisible: false })
 
   handleAccountClick = (e) => {
     console.log(e.target.dataset.id);
+    const { similarAccounts, handleFieldsChange } = this.props;
+    const account = similarAccounts.find(ac => ac.id == e.target.dataset.id);
+    if (account) {
+      handleFieldsChange('createAccountName', account);
+    }
+    // close modal
+    this.handleCancel();
   }
 
   render() {
@@ -43,6 +50,7 @@ class DetailsForm extends Component {
       withoutNewOpportunity,
       accountStatuses,
       similarAccounts,
+      createAccountName,
     } = this.props;
     const { formatMessage } = intl;
     const i18n = 'page.convertDetails.labels';
@@ -110,7 +118,7 @@ class DetailsForm extends Component {
               {getFieldDecorator('createAccountName', {
                 rules: [requiredRule],
               })(
-                <Input addonBefore='New' readOnly />
+                <Input addonBefore={createAccountName.id === 0 ? 'New' : 'Duplicate To'} readOnly />
               )}
             </FormItem>
             <div className="pl-md">

@@ -7,7 +7,7 @@ const initialState = {
   opportunityName: '',
   withoutNewOpportunity: false,
   accountStatusId: '',
-  createAccountName: '',
+  createAccountName: {},
   similarAccounts: [],
 };
 

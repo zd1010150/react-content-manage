@@ -19,7 +19,7 @@ const ConvertDetailsView = ({
   return (
     <Panel
       contentClasses="pl-lg pr-lg pt-md pb-md"
-      panelClasses={`${theme}-theme-panel`}
+      panelClasses="lead-theme-panel"
       panelTitle={formatMessage({ id: 'page.convertDetails.title' })}
     >
       <DetailsForm {...others} />
