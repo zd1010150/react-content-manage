@@ -85,7 +85,25 @@ deploy_production:
   only:
     - /^production$/
   when: on_success
-  
+
+deploy_production2:
+  stage: deploy
+  # environment: production
+  script:
+    - ssh -T ci_deployer@$PRODUCTION_SERVER "export CI_BUILD_REF=\"production\"; cd $PRODUCTION_PROJECT_ROOT2; composer ci:deploy"
+  only:
+    - /^production$/
+  when: on_success
+
+deploy_production3:
+  stage: deploy
+  # environment: production
+  script:
+    - ssh -T ci_deployer@$PRODUCTION_SERVER "export CI_BUILD_REF=\"production\"; cd $PRODUCTION_PROJECT_ROOT3; composer ci:deploy"
+  only:
+    - /^production$/
+  when: on_success
+
 cleanup_stage:
   stage: cleanup
   script:
