@@ -19,7 +19,7 @@ import Unauthentication from './Unauthentication/index';
 import PrimaryDetails from './PrimaryDetails/index';
 import DetailsToolbar from './DetailsToolbar/index';
 import DetailsSubpanels from './DetailsSubpanels/index';
-
+import ConvertDetails from './ConvertDetails/index';
 
 export {
   TopPanel,
@@ -43,4 +43,5 @@ export {
   PrimaryDetails,
   DetailsToolbar,
   DetailsSubpanels,
+  ConvertDetails,
 };

@@ -43,7 +43,8 @@ const TemplateDetail = ({
                             visible,
                             handleOk,
                             handleCancel,
-                            EmailTemplatePermission
+                            EmailTemplatePermission,
+                            isUserEmailSettingRoute
                         }) => {
     const actionsLeft = (
         <Radios
@@ -88,7 +89,7 @@ const TemplateDetail = ({
             key: "id",
             render: record =>
                 <span>
-          {isCurrentUser() && !isSharedByVisible &&
+          {isCurrentUser() && !isSharedByVisible && !isUserEmailSettingRoute() &&
           <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_UPDATE}>
               <EmailTemplateIcon
                   type="edit"
@@ -100,6 +101,18 @@ const TemplateDetail = ({
                   }}
               />
           </Permission>}
+            {isCurrentUser() && !isSharedByVisible && isUserEmailSettingRoute() &&
+            <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_UPDATE}>
+                <EmailTemplateIcon
+                    type="edit"
+                    onClick={() => {
+                        fetchTemplateData({
+                            templateId: record.id,
+                            cb: history.push("email-setting/template-edit/" + record.id)
+                        });
+                    }}
+                />
+            </Permission>}
                 {(isCurrentUser() && isSharedByVisible) &&
                 <Permission permission={PERMISSIONS.SETUP_EMAILCOMMUNICATIONS_EMAILTEMPLATES_VIEW}>
                     <EmailTemplateIcon
@@ -179,6 +192,7 @@ const TemplateDetail = ({
             isSharedByVisible={isSharedByVisible}
             isCurrentUser={isCurrentUser}
             selectedUser={selectedUser}
+            isUserEmailSettingRoute={isUserEmailSettingRoute}
         />
     }else{
         TemplatesInFolder = <EmailTemplatePermission

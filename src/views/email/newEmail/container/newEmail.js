@@ -8,7 +8,8 @@ import {
     newEmailQueryByPaging,
     fetchSelectedTemplateData,
     newEmailSetTemplatesData,
-    sendEmail
+    sendEmail,
+    fetchUserEmail
 } from '../../flow/action';
 import {connect} from 'react-redux';
 import {Panel} from 'components/ui/index';
@@ -30,7 +31,7 @@ const children = [];
 for (let i = 0; i < savedEmails.length; i++) {
     !!savedEmails[i] && children.push(<Option key={savedEmails[i]}>{savedEmails[i]}</Option>);
 }
-const InputComponent = ({isNormal, label, handleChange, value}) => {
+const InputComponent = ({isDisabled, isNormal, label, handleChange, value}) => {
 
     return <Row className={`pt-lg ${cx('new-email-input-row')}`}>
         <Col className="gutter-row field-label mt-sm" span={2}>
@@ -45,7 +46,8 @@ const InputComponent = ({isNormal, label, handleChange, value}) => {
             >
                 {children}
             </Select>}
-            {!!isNormal && <Input value={value} onChange={handleChange}/>}
+            {!!isNormal && !!isDisabled && <Input defaultValue={value[0]} disabled={isDisabled}/>}
+            {!!isNormal && !isDisabled && <Input value={value} onChange={handleChange}/>}
 
         </Col>
     </Row>
@@ -57,10 +59,11 @@ const BasicInfo = ({
                        sendTo,
                        cc,
                        bcc,
-                       subject
+                       subject,
+                       isSpecificEntry
                    }) => {
     return <Fragment>
-        <InputComponent value={sendTo} handleChange={handleSendTo}
+        <InputComponent isDisabled={isSpecificEntry} isNormal={isSpecificEntry} value={sendTo} handleChange={handleSendTo}
                         label={formatMessage({id: 'page.emailTemplates.to'})}/>
         <InputComponent value={cc} handleChange={handleCc} label={formatMessage({id: 'page.emailTemplates.cc'})}/>
         <InputComponent value={bcc} handleChange={handleBcc} label={formatMessage({id: 'page.emailTemplates.bcc'})}/>
@@ -87,19 +90,24 @@ class NewEmail extends React.Component {
             bcc: [],
             subject: '',
             visible: false,
+            authModalVisible: false,
             selectedFolderId: '',
             showFolders: [],
-            attachments: []
+            attachments: [],
+            authLink: '',
+            isSpecificEntry: false
         }
     }
 
     componentDidMount() {
-        const {getUserFolderData, loginUser, setSelectedUser} = this.props;
+        const {getUserFolderData, loginUser, setSelectedUser, match} = this.props;
         //show default option: userFolders
         getUserFolderData(loginUser.id, (data) => {
             this.setState({showFolders: data.own.data})
         });
         setSelectedUser(loginUser);
+        this.checkSpecificEntry();
+        console.log('1111111', match.params)
 
     }
 
@@ -121,6 +129,12 @@ class NewEmail extends React.Component {
         console.log(e);
         this.setState({
             visible: false,
+        });
+    }
+
+    handleCancelAuthModal = () => {
+        this.setState({
+            authModalVisible: false,
         });
     }
 
@@ -247,14 +261,17 @@ class NewEmail extends React.Component {
         const emailSendMessage = formatMessage({ id: 'page.emailTemplates.emailSendMessage' });
         const pendingSavedEmails = _.uniqBy(this.state.sendTo.concat(this.state.cc).concat(this.state.bcc).concat(savedEmails));
         sendEmail({userEmail, dataObj, noAuthMessage, emailSendMessage}, (status, authLink) => {
-            if(status === 'success'){
+            if(status !== 'error'){
                 setStore(EnumsManager.LocalStorageEmails, pendingSavedEmails);
                 history.push(`/${match.params.objectType}/${match.params.objectId}`);
             }else{
-                window.open(
-                    authLink,
-                    '_blank' // <- This is what makes it open in a new window.
-                );
+                this.setState({authLink}, ()=>{
+                    this.setState({authModalVisible: true})
+                })
+                // window.open(
+                //     authLink,
+                //     '_blank' // <- This is what makes it open in a new window.
+                // );
             }
         });
 
@@ -285,6 +302,19 @@ class NewEmail extends React.Component {
                 message: 'object category may not exist, please check the url'
             })
         });
+    }
+    checkSpecificEntry = () => {
+        const {match, fetchUserEmail} = this.props;
+        const objectType = match.params.objectType;
+        const objectId = match.params.objectId;
+        if(objectType && objectId){
+            fetchUserEmail({objectType, objectId}, (data)=>{
+                this.setState({
+                    isSpecificEntry: !!match.params.objectType && !!match.params.objectId,
+                    sendTo: [data.data.email]
+                })
+            })
+        }
     }
 
     render() {
@@ -333,6 +363,16 @@ class NewEmail extends React.Component {
                    contentClasses={`pl-lg pr-lg pt-lg pb-lg ${cx('new-email-panel-content')}`}
                    actionsRight={actionsRight}>
                 <Modal
+                    visible={this.state.authModalVisible}
+                    footer={null}
+                    closable={true}
+                    onCancel={this.handleCancelAuthModal}
+                >
+                    <p style={{color: 'red'}}>{formatMessage({id: 'page.emailTemplates.needAuthMessage'})}</p>
+                    <a href={this.state.authLink} target='_blank' style={{textDecoration: 'underline'}}>{this.state.authLink}</a>
+                    {/*<iframe src={this.state.authLink} />*/}
+                </Modal>
+                <Modal
                     title={modalHeader}
                     visible={this.state.visible}
                     footer={null}
@@ -375,7 +415,8 @@ class NewEmail extends React.Component {
                            cc={this.state.cc}
                            bcc={this.state.bcc}
                            subject={this.state.subject}
-                           formatMessage={formatMessage}/>
+                           formatMessage={formatMessage}
+                           isSpecificEntry={this.state.isSpecificEntry}/>
                 <NewEmailContent onFileUpload={this.onFileUpload}
                                  content={selectedEmailTemplate.content}
                                  attachments={selectedEmailTemplate.attachments}
@@ -404,7 +445,8 @@ const mapDispatchToProps = {
     newEmailQueryByPaging,
     fetchSelectedTemplateData,
     newEmailSetTemplatesData,
-    sendEmail
+    sendEmail,
+    fetchUserEmail
 };
 
 

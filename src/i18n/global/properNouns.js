@@ -1,12 +1,12 @@
 /* 专有名词翻译 */
 export default {
   zh: {
-    lead: 'Lead',
-    leads: 'Leads',
-    account: 'Account',
-    accounts: 'Accounts',
-    opport: 'Opportunity',
-    opportunities: 'Opportunities',
+    lead: '潜在客户',
+    leads: '潜在客户',
+    account: '客户',
+    accounts: '客户',
+    opport: '机会',
+    opportunities: '机会',
     users: '用户',
     joinDate: '入职日期',
     department: '部门',

@@ -53,7 +53,7 @@ const objectList = (state = initialState, action) => {
       const { views } = action.payload;
       const viewAll = {
         id: PhantomId,
-        view_name: 'All',
+        view_name: 'My View',
       };
       return {
         ...state,

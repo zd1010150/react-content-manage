@@ -1,12 +1,12 @@
-import { notification } from 'antd';
-import { SubmitButtons } from 'components/ui/index';
+import { notification, Row, Icon, Button } from 'antd';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import Enums from 'utils/EnumsManager';
-import { trySave, trySaveNew } from './flow/actions';
 import { injectIntl, intlShape } from 'react-intl';
+import { connect } from 'react-redux';
+import { withRouter, Link } from 'react-router-dom';
+import { PopDeleteConfirm } from 'components/ui/index';
+import Enums from 'utils/EnumsManager';
+import { trySave, trySaveNew, tryDeleteView } from './flow/actions';
 
 const { PhantomId } = Enums;
 
@@ -14,24 +14,27 @@ const { PhantomId } = Enums;
 const defaultProps = {
   trySave: null,
   trySaveNew: null,
+  tryDeleteView: null,
 };
 const propTypes = {
   intl: intlShape.isRequired,
+  viewId: PropTypes.string.isRequired,
   objectView: PropTypes.shape({
     name: PropTypes.object.isRequired,
     filterCriteria: PropTypes.object.isRequired,
     fields: PropTypes.object.isRequired,
     visibilities: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
+    actions: PropTypes.bool.isRequired,
   }).isRequired,
   trySave: PropTypes.func,
   trySaveNew: PropTypes.func,
+  tryDeleteView: PropTypes.func,
 };
 
 class ViewActions extends Component {
   componentDidUpdate() {
-    const { hasSuccessfullySaved, history, objectType } = this.props;
-    if (hasSuccessfullySaved) {
+    const { done, history, objectType } = this.props;
+    if (done) {
       history.push(`/${objectType}`);
     }
   }
@@ -90,8 +93,7 @@ class ViewActions extends Component {
       objectView,
       viewId,
     } = this.props;
-    // TODO: Add notification when view_name field is empty
-    // Add validation check
+
     const isValid = this.checkValidation(objectView);
     if (!isValid) return;
 
@@ -99,10 +101,40 @@ class ViewActions extends Component {
     this.props[funcKey](model[objectType], objectView, viewId);
   }
 
+  handleDeleteClick = () => this.props.tryDeleteView(this.props.viewId)
+
   render() {
-    const { objectType, theme } = this.props;
-    
-    return <SubmitButtons theme={theme} objectType={objectType} onSaveClick={this.handleSaveClick} />;
+    const {
+      intl,
+      viewId,
+      objectType,
+      theme,
+    } = this.props;
+    const { formatMessage } = intl;
+    const i18n = 'global.ui.button';
+
+    return (
+      <Row className="mt-xlg mb-xlg mr-lg ml-lg">
+        <Button className={`${theme}-theme-btn`} onClick={this.handleSaveClick}>
+          <Icon className="font-sm" type="save" />
+          {formatMessage({ id: `${i18n}.save` })}
+        </Button>
+        <Link to={`/${objectType}`}>
+          <Button className="ml-sm">
+            <Icon className="font-sm" type="close" />
+            {formatMessage({ id: `${i18n}.cancel` })}
+          </Button>
+        </Link>
+        {viewId !== PhantomId && (
+          <PopDeleteConfirm onConfirm={this.handleDeleteClick}>
+            <Button className="ml-sm">
+              <Icon className="font-sm" type="delete" />
+              {formatMessage({ id: `${i18n}.delete` })}
+            </Button>
+          </PopDeleteConfirm>
+        )}
+      </Row>
+    );
   }
 }
 
@@ -111,10 +143,11 @@ ViewActions.defaultProps = defaultProps;
 ViewActions.propTypes = propTypes;
 const mapStateToProps = ({ global, objectView }) => ({
   model: global.settings.model,
-  hasSuccessfullySaved: objectView.actions.hasSuccessfullySaved,
+  done: objectView.actions,
   objectView,
 });
 const mapDispatchToProps = {
+  tryDeleteView,
   trySave,
   trySaveNew,
 };

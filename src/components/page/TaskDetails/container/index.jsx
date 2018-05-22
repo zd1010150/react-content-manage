@@ -125,6 +125,7 @@ class TaskDetails extends Component {
       objectType,
       taskId,
       theme,
+      disableActions,
     } = this.props;
 
     const { formatMessage } = intl;
@@ -144,16 +145,18 @@ class TaskDetails extends Component {
             taskId={taskId}
           />
         </Row>
-        <Row className="mt-md mb-md ml-lg mr-lg">
-          <Actions
-            objectId={objectId}
-            objectType={objectType}
-            onCancel={this.handleCancel}
-            onDelete={this.handleDelete}
-            onSave={this.handleSave}
-            onSaveAndNew={this.handleSaveAndNew}
-          />
-        </Row>
+        {!disableActions && (
+          <Row className="mt-md mb-md ml-lg mr-lg">
+            <Actions
+              objectId={objectId}
+              objectType={objectType}
+              onCancel={this.handleCancel}
+              onDelete={this.handleDelete}
+              onSave={this.handleSave}
+              onSaveAndNew={this.handleSaveAndNew}
+            />
+          </Row>
+        )}
       </Panel>
     );
   }

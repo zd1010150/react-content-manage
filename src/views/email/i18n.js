@@ -50,7 +50,7 @@ export default {
     chooseFolder: "选择文件夹",
     category: "分类",
     myFolders: "我的文件夹",
-    noAuthMessage: "失败！请先授权您的邮箱",
+    noAuthMessage: "检查授权",
     emailSendMessage: "邮件已发送",
     emailToEmptyError: "收件人不能是空的",
     emailToFormatError: "收件人邮箱格式不正确",
@@ -60,6 +60,8 @@ export default {
     doubleClickHint: "双击以选择模板",
     duplicatedFolderName: "文件夹名称不能重复",
     emptyFolderName: "文件夹名称不能为空",
+    needAuthMessage: "请点击下面的链接去授权您的邮箱",
+    selectCategoryHint: "请注意，更换模板类型将会清空模板内容",
     emailCampaignsSeparator:
       "............................................................................................",
     emailCampaign: "活动邮件",
@@ -142,7 +144,7 @@ export default {
     chooseFolder: "Choose Folder",
     category: "Category",
     myFolders: "My Folders",
-    noAuthMessage: "Failed! Please authenticate your email and try again",
+    noAuthMessage: "Check Auth",
     emailSendMessage: "Email sent successfully",
     emailToEmptyError: "email receiver cannot be empty",
     emailToFormatError: "email receiver must be email",
@@ -152,6 +154,9 @@ export default {
     doubleClickHint: "Double click to select template",
     duplicatedFolderName: "Folder name cannot be duplicated",
     emptyFolderName: "Folder name cannot be empty",
+    needAuthMessage: "Please go to the link below to authenticate your email",
+    selectCategoryHint:
+      "Please be aware the content of this template will be empty if the category is changed",
     emailCampaignsSeparator:
       "............................................................................................",
     emailCampaign: "Email Campaigns",

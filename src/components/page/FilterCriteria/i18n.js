@@ -11,7 +11,7 @@ export default {
       newFilter: '新筛选条件',
     },
     inputs: {
-      condition: '筛选的逻辑条件',
+      condition: '筛选条件间的关系',
     },
   },
   en: {     

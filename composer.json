@@ -1,6 +1,6 @@
 {
   "name": "crm",
-  "version": "0.0.1",
+  "version": "1.5.0",
   "description": "",
   "keywords": ["react", "crm"],
   "license": "proprietary",
@@ -37,7 +37,7 @@
     "ci:deploy:test": [
       "git fetch --all --tags",
       "git pull origin master",
-      "composer install --no-dev",
+      "composer install",
       "@assets:rebuild"
     ]
   },
