@@ -57,9 +57,7 @@ export const tryFetchOwner = objectId => dispatch =>
         && !_.isEmpty(data.data.ownership_id)) {
       dispatch(setDetails(data.data));
       // fetch similar data
-      // dispatch(tryFetchSimilarData(data.data.name));
-      // test
-      dispatch(tryFetchSimilarData('account-44'));
+      dispatch(tryFetchSimilarData(data.data.name));
       // fetch owners
       dispatch(tryFetchOwners(data.data.ownership_id.meta_id));
       // fetch account status (hard coded)
