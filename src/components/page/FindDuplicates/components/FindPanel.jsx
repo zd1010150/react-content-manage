@@ -60,7 +60,7 @@ class FindPanel extends Component {
 
   handleCheckChange = (checkedKey, checked) => this.props.toggleCheckbox(checkedKey, checked)
 
-  handleSearchClick = $ => {
+  handleSearchClick = () => {
     const { duplicates, tryFindDuplicates } = this.props;
 
     const reducer = (accumulator, key) => {
@@ -86,7 +86,7 @@ class FindPanel extends Component {
 
     return (
       <Panel
-        panelTitle="Find Duplicates"
+        panelTitle={formatMessage({ id: 'page.findDuplicates.title' })}
         panelClasses={`${theme}-theme-panel pb-lg`}
       >
         <Row {...rowLayout} >

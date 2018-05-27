@@ -99,7 +99,7 @@ export default {
       workHour: '工作时间',
       firstName: '名字',
       lastName: '姓氏',
-      email: '电子邮件',
+      email: '电子邮箱',
       company: '公司',
       phone: '电话号码',
       selectedItems: '条记录被选中',
