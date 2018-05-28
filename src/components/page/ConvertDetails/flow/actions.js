@@ -22,10 +22,11 @@ export const setOwners = owners => ({
     payload: { owners },
   });
 
-export const tryFetchOwners = metaDataId => dispatch =>
-  get(`/admin/objects/lookup-metadata/${metaDataId}`, {}, dispatch).then((data) => {
-    if (data) {
-      dispatch(setOwners(data));
+export const tryFetchOwners = objectId => dispatch =>
+  get(`/admin/tasks/object/leads/${objectId}/managers`, {}, dispatch).then((data) => {
+    if (data && data.data) {
+      debugger;
+      dispatch(setOwners(data.data));
     }
   });
 
@@ -59,7 +60,7 @@ export const tryFetchOwner = objectId => dispatch =>
       // fetch similar data
       dispatch(tryFetchSimilarData(data.data.name));
       // fetch owners
-      dispatch(tryFetchOwners(data.data.ownership_id.meta_id));
+      dispatch(tryFetchOwners(objectId));
       // fetch account status (hard coded)
       dispatch(tryFetchStatuses());
     }
