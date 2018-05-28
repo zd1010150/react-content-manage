@@ -25,7 +25,6 @@ export const setOwners = owners => ({
 export const tryFetchOwners = objectId => dispatch =>
   get(`/admin/tasks/object/leads/${objectId}/managers`, {}, dispatch).then((data) => {
     if (data && data.data) {
-      debugger;
       dispatch(setOwners(data.data));
     }
   });
