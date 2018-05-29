@@ -18,8 +18,8 @@ const i18n = 'global.ui';
 
 const baseColumns = [
   {
-    key: 'firstName',
-    dataIndex: 'first_name',
+    key: 'name',
+    dataIndex: 'name',
   },
   {
     key: 'lastName',
@@ -43,7 +43,7 @@ const renderColumnsByTheme = (objectType, theme, formatMessage) => {
   return baseColumns.map((col) => {
     const { key, dataIndex } = col;
     const configs = {};
-    if (key === 'firstName' || key === 'email') {
+    if (key === 'name' || key === 'email') {
       configs.render = (text, record) => (
         <Link
           className={`${theme}-theme-text`}
