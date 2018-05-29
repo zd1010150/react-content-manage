@@ -27,7 +27,7 @@ const rowLayout = {
   justify: 'center',
 };
 const fieldsMapping = {
-  firstName: 'name',
+  name: 'name',
   lastName: 'last_name',
   email: 'email',
   company: 'company_name',
