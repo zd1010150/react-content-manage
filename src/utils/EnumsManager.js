@@ -336,7 +336,7 @@ const EnumsManager = Object.freeze({
 
   FindDupConfigs: Object.freeze({
     BaseFields: Object.freeze([
-      'firstName',
+      'name',
       'lastName',
       'email',
       'company',

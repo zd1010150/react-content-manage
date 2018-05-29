@@ -12,7 +12,7 @@ const mapToStore = data => {
     phone,
   } = data;
   return {
-    firstName: name,
+    name,
     lastName: last_name,
     email,
     company: company_name,
@@ -31,7 +31,7 @@ const updateCollection = (key, isAdd, collection) => {
 };
 
 const initialState = {
-  firstName: '',
+  name: '',
   lastName: '',
   email: '',
   company: '',

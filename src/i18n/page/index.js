@@ -23,6 +23,7 @@ import dashboard from 'views/Dashboard/i18n';
 import task from 'views/Task/i18n';
 import objectList from 'views/ObjectList/i18n';
 import convertDetails from 'components/page/ConvertDetails/i18n';
+import findDuplicates from 'components/page/FindDuplicates/i18n';
 
 export default {
   comInfo,
@@ -50,4 +51,5 @@ export default {
   task,
   objectList,
   convertDetails,
+  findDuplicates,
 };
