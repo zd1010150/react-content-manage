@@ -1,9 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-<div
-  className="errorText"
+Array [
+  <div
+    className="errorText"
 >
-  请输入值！
-</div>
+    请输入值！
+</div>,
+  <div
+    className="errorText"
+>
+    A value is required!
+</div>,
+]
 `;

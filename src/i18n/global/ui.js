@@ -1,5 +1,4 @@
 import Enums from 'utils/EnumsManager';
-// import Enums from '../../utils/EnumsManager';
 
 const {
   Convert,

@@ -19,7 +19,7 @@ const i18n = 'global.ui';
 const baseColumns = [
   {
     key: 'firstName',
-    dataIndex: 'first_name',
+    dataIndex: 'name',
   },
   {
     key: 'lastName',
