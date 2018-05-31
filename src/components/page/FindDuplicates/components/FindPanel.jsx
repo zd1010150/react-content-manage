@@ -27,7 +27,7 @@ const rowLayout = {
   justify: 'center',
 };
 const fieldsMapping = {
-  firstName: 'name',
+  name: 'name',
   lastName: 'last_name',
   email: 'email',
   company: 'company_name',
@@ -49,18 +49,24 @@ const propTypes = {
     PropTypes.number,
   ]).isRequired,
   theme: PropTypes.oneOf(ThemeTypesInArray).isRequired,
+  withConvert: PropTypes.bool.isRequired,
 };
 class FindPanel extends Component {
   componentDidMount() {
-    const { objectId, objectType, tryFetchClientDetails } = this.props;
-    tryFetchClientDetails(objectId, objectType);
+    const {
+      objectId,
+      objectType,
+      tryFetchClientDetails,
+      withConvert,
+    } = this.props;
+    tryFetchClientDetails(objectId, objectType, withConvert);
   }
 
   handleCancelClick = $ => this.props.history.goBack()
 
   handleCheckChange = (checkedKey, checked) => this.props.toggleCheckbox(checkedKey, checked)
 
-  handleSearchClick = $ => {
+  handleSearchClick = () => {
     const { duplicates, tryFindDuplicates } = this.props;
 
     const reducer = (accumulator, key) => {
@@ -86,7 +92,7 @@ class FindPanel extends Component {
 
     return (
       <Panel
-        panelTitle="Find Duplicates"
+        panelTitle={formatMessage({ id: 'page.findDuplicates.title' })}
         panelClasses={`${theme}-theme-panel pb-lg`}
       >
         <Row {...rowLayout} >

@@ -106,7 +106,7 @@ class DetailsForm extends Component {
                 rules: [requiredRule],
               })(
                 <Select>
-                  {accountStatuses.map(st => <Option key={st.id} value={st.id}>{st.option_value}</Option>)}
+                  {accountStatuses.map(st => <Option key={st.id} value={st.option_value}>{st.option_value}</Option>)}
                 </Select>
               )}
             </FormItem>
@@ -202,6 +202,7 @@ const onFieldsChange = (props, fields) => {
     if (!key) return;
     let { name, value } = fields[key];
     // map field name to store key
+    // Attention: if field type is picklist, value should be passed into backend
     if (name === 'owner') {
       name = 'ownerId';
     } else if (name === 'accountStatus') {

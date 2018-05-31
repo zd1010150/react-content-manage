@@ -1,4 +1,4 @@
-import { get, httpDelete, post } from 'store/http/httpAction';
+import { get, httpDelete, patch } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
 import { SET_ACTIVE_VIEW, SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS } from './actionTypes';
 
@@ -110,7 +110,7 @@ export const tryFetchOptionsById = id => dispatch =>
 
 //
 export const tryUpdateClients = (params, objectType, tableParams, viewId) => dispatch =>
-  post(`/admin/${objectType}/mass-update`, params, dispatch).then((data) => {
+  patch(`/admin/${objectType}/mass-update`, params, dispatch).then((data) => {
     if (data && !_.isEmpty(data.updated_ids)) {
       dispatch(tryFetchDataByView(objectType, viewId, tableParams));
     }

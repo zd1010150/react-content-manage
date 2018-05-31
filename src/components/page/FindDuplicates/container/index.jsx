@@ -9,7 +9,7 @@ import Enums from 'utils/EnumsManager';
 import { FindPanel } from '../components/index';
 import { setRowSelection, reset } from '../flow/actions';
 
-const { FindDupConfigs, PhantomId, ThemeTypes, ThemeTypesInArray } = Enums;
+const { FindDupConfigs, PhantomId, ThemeTypes, ThemeTypesInArray, ObjectTypes } = Enums;
 const { MaxSelection } = FindDupConfigs;
 const { Leads, Accounts } = ThemeTypes;
 
@@ -61,6 +61,7 @@ class FindDuplicates extends Component {
           objectId={objectId}
           objectType={objectType}
           theme={theme}
+          withConvert={withConvert}
         />
         {withConvert && (
           <Link to={`/leads/convert/convert/${objectId}`}>
@@ -77,11 +78,13 @@ class FindDuplicates extends Component {
               maxSelection={MaxSelection}
               selectedRowKeys={selectedRowKeys}
               onRowSelectionChange={this.handleRowSelectionChange}
+              objectType={ObjectTypes.Leads}
               canSelect
             />
             <FilterResultsTable
               data={accounts}
               theme={Accounts}
+              objectType={ObjectTypes.Accounts}
             />
           </Fragment>
         )}
