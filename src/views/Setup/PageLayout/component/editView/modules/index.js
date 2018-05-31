@@ -46,7 +46,7 @@ class ModuleContainer extends React.Component {
 ModuleContainer.propTypes = {
   objectType: PropTypes.string.isRequired,
 };
-const mapStateToProps = ({ setup }) => {
+const mapStateToProps = ({ setup, global }) => {
   const {
     editView,
     currentObjectType,
@@ -55,6 +55,7 @@ const mapStateToProps = ({ setup }) => {
   return {
     objectType: currentObjectType,
     modules,
+    language: global.language,
   };
 };
 const mapDispatchToProps = {

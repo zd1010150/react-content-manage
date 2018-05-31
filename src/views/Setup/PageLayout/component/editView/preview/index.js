@@ -31,7 +31,7 @@ class PreviewContainer extends React.Component {
 PreviewContainer.propTypes = {
   objectType: PropTypes.string.isRequired,
 };
-const mapStateToProps = ({ setup }) => {
+const mapStateToProps = ({ setup, global }) => {
   const {
     editView,
     currentObjectType,
@@ -42,6 +42,7 @@ const mapStateToProps = ({ setup }) => {
     tools,
     sections,
     modules,
+    language: global.language,
   };
 };
 
