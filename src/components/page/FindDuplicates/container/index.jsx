@@ -61,6 +61,7 @@ class FindDuplicates extends Component {
           objectId={objectId}
           objectType={objectType}
           theme={theme}
+          withConvert={withConvert}
         />
         {withConvert && (
           <Link to={`/leads/convert/convert/${objectId}`}>
