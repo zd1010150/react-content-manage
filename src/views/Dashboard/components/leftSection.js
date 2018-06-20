@@ -1,15 +1,14 @@
-import React from 'react';
-import _ from 'lodash';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { Button, Col, Icon, Row, Tooltip } from 'antd';
 import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
-import { objTypeAndClassTypeMap } from 'config/app.config';
-import { intlShape, injectIntl } from 'react-intl';
-import { Row, Col, Button, Icon, Tooltip } from 'antd';
 import { Panel } from 'components/ui/index';
-import styles from '../index.less';
+import { objTypeAndClassTypeMap } from 'config/app.config';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { injectIntl, intlShape } from 'react-intl';
+import { Link, withRouter } from 'react-router-dom';
 import { toTimezone } from 'utils/dateTimeUtils';
+import styles from '../index.less';
 
 
 const cx = classNames.bind(styles);
@@ -81,17 +80,33 @@ class LeftSection extends React.Component {
                   {activities.map(a => (<tr key={a.id} className={cx('task-tr')}>
                     <td className={cx('task-td')}>
                       <div className="clearfix">
-                        <span className="pull-left text-bolder"><Link to={`/${a.taskable_type}/${a.relate_user && a.relate_user.id}/tasks/${a.id}`} className="text-bolder">{a.subject}</Link></span>
+                        <span className="pull-left text-bolder test123">
+                          {a.relate_user ? (
+                            <Link
+                              className="text-bolder"
+                              to={`/${a.taskable_type}/${a.relate_user.id}/tasks/${a.id}`}
+                            >
+                              {a.subject}
+                            </Link>
+                          ) : a.subject
+                          }
+                        </span>
                         <span className="pull-right text2">
                           { this.getStatus(a.status_code) }
                         </span>
                       </div>
                       <div className="clearfix">
-                        <Link to={`${a.taskable_type}/${a.relate_user.id}`}>
+                        {a.relate_user ? (
+                          <Link to={`${a.taskable_type}/${a.relate_user.id}`}>
+                            <span className={`${objTypeAndClassTypeMap[a.taskable_type]}-theme-text pull-left`}>
+                              {a.relate_user && a.relate_user.name}
+                            </span>
+                          </Link>
+                        ) : (
                           <span className={`${objTypeAndClassTypeMap[a.taskable_type]}-theme-text pull-left`}>
                             {a.relate_user && a.relate_user.name}
                           </span>
-                        </Link>
+                        )}
                         <span className="pull-right text2">
                           <Tooltip title="Due date">
                             <Icon type="clock-circle-o" className="mr-sm" />
