@@ -107,6 +107,7 @@ export default {
       category: '所属类别',
       acctName: 'Account姓名',
       name: '用户名',
+      opportName: 'Opportunity姓名',
     },
     select: {
       label: '视图',
@@ -245,6 +246,7 @@ export default {
       category: 'Category',
       acctName: 'Account Name',
       name: 'Name',
+      opportName: 'Opportunity Name',
     },
     select: {
       label: 'View',
