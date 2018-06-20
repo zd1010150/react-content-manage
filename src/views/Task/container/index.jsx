@@ -93,16 +93,21 @@ class TaskListView extends React.Component {
         title: formatMessage({ id: 'global.ui.table.complete' }),
         key: 'id',
         render: record => (
-          <span>
-            <Link to={`/${record.taskable_type}/${record.relate_user && record.relate_user.id}/tasks/${record.id}/completed`}><Icon type="close" /></Link>
-          </span>
+          record.relate_user ? (
+            <Link to={`/${record.taskable_type}/${record.relate_user.id}/tasks/${record.id}/completed`}>
+              <Icon type="close" />
+            </Link>
+          ) : null
         ),
       }, {
         title: formatMessage({ id: 'page.taskDetails.labels.subject' }),
         render: record => (
-          <Link to={`/${record.taskable_type}/${record.relate_user && record.relate_user.id}/tasks/${record.id}`}>
-            {record.subject}
-          </Link>),
+          record.relate_user ? (
+            <Link to={`/${record.taskable_type}/${record.relate_user.id}/tasks/${record.id}`}>
+              {record.subject}
+            </Link>
+          ) : record.subject
+        ),
       }, {
         title: formatMessage({ id: 'page.taskDetails.labels.dueDate' }),
         dataIndex: 'due_date',
@@ -111,11 +116,14 @@ class TaskListView extends React.Component {
       }, {
         title: formatMessage({ id: 'global.ui.table.user' }),
         render: record => (
-          <Link to={`${record.taskable_type}/${record.relate_user && record.relate_user.id}`}>
-            <span className={`${objTypeAndClassTypeMap[record.taskable_type]}-theme-text`}>
-                {record.relate_user && record.relate_user.name}
-            </span>
-          </Link>),
+          record.relate_user ? (
+            <Link to={`${record.taskable_type}/${record.relate_user && record.relate_user.id}`}>
+              <span className={`${objTypeAndClassTypeMap[record.taskable_type]}-theme-text`}>
+                {record.relate_user.name}
+              </span>
+            </Link>
+          ) : <span className={`${objTypeAndClassTypeMap[record.taskable_type]}-theme-text`}>-</span>
+        ),
       }, {
         title: formatMessage({ id: 'global.ui.table.status' }),
         render: record => <span>{ this.getStatus(record.status_code)}</span>,
