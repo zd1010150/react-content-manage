@@ -58,6 +58,14 @@ class FieldsSection extends Component {
     // TODO: will be replaced shortly by props
     const dateFormat = 'YYYY-MM-DD';
     const timeFormat = 'YYYY-MM-DD HH:mm:ss';
+
+    const labelColLayout = columns === 2
+                            ? { xs: 24, sm: 8 }
+                            : { xs: 24, sm: 4 };
+    const valueColLayout = columns === 2
+                            ? { xs: 24, sm: 16 }
+                            : { xs: 24, sm: 20 };
+
     return (
       <Section
         key={code}
@@ -83,6 +91,8 @@ class FieldsSection extends Component {
                       onDropdownOpen={this.handleDropdownOpen}
                       onRevertClick={this.handleRevertClick}
                       fetched={field.optionsFetched}
+                      labelCol={labelColLayout}
+                      valueCol={valueColLayout}
                     />
                   );
                 }
