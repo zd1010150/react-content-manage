@@ -221,7 +221,7 @@ const EnumsManager = Object.freeze({
       },
       {
         dataIndex: 'name',
-        titleId: `${tableIntl}.fullName`,
+        titleId: `${tableIntl}.opportName`,
       },
     ],
     [BaseEnums.DetailModules.TaskOpen]: [
