@@ -18,8 +18,8 @@ const i18n = 'global.ui';
 
 const baseColumns = [
   {
-    key: 'firstName',
-    dataIndex: 'first_name',
+    key: 'name',
+    dataIndex: 'name',
   },
   {
     key: 'lastName',
@@ -39,14 +39,19 @@ const baseColumns = [
   },
 ];
 
-const renderColumnsByTheme = (theme, formatMessage) => {
-  return baseColumns.map(col => {
+const renderColumnsByTheme = (objectType, theme, formatMessage) => {
+  return baseColumns.map((col) => {
     const { key, dataIndex } = col;
     const configs = {};
-    if (key === 'firstName' || key === 'email') {
-      configs.render = (text, record) => {
-        return <Link className={`${theme}-theme-text`} to={`/leads/${record.id}`}>{text}</Link>
-      };
+    if (key === 'name' || key === 'email') {
+      configs.render = (text, record) => (
+        <Link
+          className={`${theme}-theme-text`}
+          to={`/${objectType}/${record.id}`}
+        >
+          {text}
+        </Link>
+      );
     }
     return {
       dataIndex,
@@ -80,12 +85,13 @@ const FilterResultsTable = ({
   canSelect,
   data,
   maxSelection,
+  objectType,
   onRowSelectionChange,
   selectedRowKeys,
   theme,
 }) => {
   const { formatMessage } = intl;
-  const columns = renderColumnsByTheme(theme, formatMessage);
+  const columns = renderColumnsByTheme(objectType, theme, formatMessage);
   const mergeBtn = theme === Leads ? (
     <Link to={`/leads/merge`}>
       <Button

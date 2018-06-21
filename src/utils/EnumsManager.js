@@ -221,7 +221,7 @@ const EnumsManager = Object.freeze({
       },
       {
         dataIndex: 'name',
-        titleId: `${tableIntl}.fullName`,
+        titleId: `${tableIntl}.opportName`,
       },
     ],
     [BaseEnums.DetailModules.TaskOpen]: [
@@ -336,7 +336,7 @@ const EnumsManager = Object.freeze({
 
   FindDupConfigs: Object.freeze({
     BaseFields: Object.freeze([
-      'firstName',
+      'name',
       'lastName',
       'email',
       'company',
