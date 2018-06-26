@@ -147,7 +147,7 @@ class MainContent extends React.Component {
           }}
         />
         <Route
-          path="/:objectType/:objectId/attachments"
+          path="/:objectType/:objectId/attachments/:attachmentId"
           component={ClientAttachments}
           exact
         />

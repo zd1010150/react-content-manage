@@ -1,6 +1,6 @@
 /* eslint arrow-parens: ["error", "as-needed"] */
 /* eslint-disable no-fallthrough */
-import { Button, Icon, Table } from 'antd';
+import { Button, Icon, Table, Tooltip } from 'antd';
 import classNames from 'classnames/bind';
 import { Panel, PopDeleteConfirm } from 'components/ui/index';
 import PropTypes from 'prop-types';
@@ -84,7 +84,7 @@ class Subpanel extends Component {
         link = `/${objectType}/${objectId}/email/new`;
         break;
       case Attachments:
-        link = `/${objectType}/${objectId}/attachments`;
+        link = `/${objectType}/${objectId}/attachments/${PhantomId}`;
         break;
       case TaskHistory:
       case Logs:
@@ -230,6 +230,7 @@ class Subpanel extends Component {
         ];
         break;
       case Attachments:
+        editLink = `${objectType}/${objectId}/attachments`;
         columns = [
           {
             dataIndex: 'category',
@@ -251,6 +252,17 @@ class Subpanel extends Component {
           {
             dataIndex: 'created_by',
             title: formatMessage({ id: `${i18n}.createBy` }),
+          },
+          {
+            dataIndex: 'comment',
+            className: 'truncate',
+            width: '30%',
+            title: formatMessage({ id: `${i18n}.comment` }),
+            render: text => (
+              <Tooltip placement="topLeft" title={text}>
+                {text}
+              </Tooltip>
+            ),
           },
         ];
         break;
@@ -308,6 +320,9 @@ class Subpanel extends Component {
               <Link target="_blank" to={record.url}>
                 <Icon style={{fontWeight: 400 }} className="cursor-pointer" size="small" type="eye" />
               </Link>
+              <Link to={`/${editLink}/${id}`}>
+                <Icon className="cursor-pointer ml-sm" size="small" type="edit" />
+              </Link>
               <PopDeleteConfirm
                 placement="right"
                 onConfirm={() => this.handleDeleteByModule(code, id)}
@@ -346,6 +361,7 @@ class Subpanel extends Component {
         actionsRight={this.getActionBtnByModule()}
       >
         <Table
+          className="fixedTable"
           columns={this.renderColumnsByModule()}
           dataSource={data}
           onChange={this.handleTableChange}
