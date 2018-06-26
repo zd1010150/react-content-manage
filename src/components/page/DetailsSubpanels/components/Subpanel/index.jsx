@@ -84,7 +84,7 @@ class Subpanel extends Component {
         link = `/${objectType}/${objectId}/email/new`;
         break;
       case Attachments:
-        link = `/${objectType}/${objectId}/attachments`;
+        link = `/${objectType}/${objectId}/attachments/${PhantomId}`;
         break;
       case TaskHistory:
       case Logs:
@@ -230,6 +230,7 @@ class Subpanel extends Component {
         ];
         break;
       case Attachments:
+        editLink = `${objectType}/${objectId}/attachments`;
         columns = [
           {
             dataIndex: 'category',
@@ -318,6 +319,9 @@ class Subpanel extends Component {
             <Fragment>
               <Link target="_blank" to={record.url}>
                 <Icon style={{fontWeight: 400 }} className="cursor-pointer" size="small" type="eye" />
+              </Link>
+              <Link to={`/${editLink}/${id}`}>
+                <Icon className="cursor-pointer ml-sm" size="small" type="edit" />
               </Link>
               <PopDeleteConfirm
                 placement="right"
