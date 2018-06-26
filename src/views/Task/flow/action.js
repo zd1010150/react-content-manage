@@ -1,8 +1,11 @@
 import moment from 'moment';
 import { get } from 'store/http/httpAction';
-import { TASK_LIST_PAGENATIONS, TASK_LIST_DATA, TASK_LIST_PERIOD } from './actionType';
+import { TASK_LIST_PAGENATIONS, TASK_LIST_DATA, TASK_LIST_PERIOD, TASK_STATUS } from './actionType';
 
-
+export const setTaskStatus = status => ({
+  type: TASK_STATUS,
+  status,
+});
 const setPaginations = (perPage, currentPage, total) => ({
   type: TASK_LIST_PAGENATIONS,
   perPage,

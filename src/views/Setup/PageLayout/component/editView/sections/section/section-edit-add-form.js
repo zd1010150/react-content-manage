@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types,no-shadow */
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
 import { Form, Input, Radio } from 'antd';
 import { FORM_LAYOUT_CONFIG } from 'config/app.config';
 import { intlShape, injectIntl } from 'react-intl';
 import { getExistRule } from 'utils/validateMessagesUtil';
+import styles from '../../../../index.less';
 
+const cx = classNames.bind(styles);
 const RadioGroup = Radio.Group;
 class FieldForm extends React.Component {
   render() {
@@ -48,8 +51,8 @@ class FieldForm extends React.Component {
                         getFieldDecorator('cols', {
                             initialValue: cols || 2,
                         })(<RadioGroup>
-                          <Radio value={1}>{formatMessage({ id: 'page.layouts.col1' })}</Radio>
-                          <Radio value={2}>{formatMessage({ id: 'page.layouts.col2' })}</Radio>
+                          <Radio value={1}>{ formatMessage({ id: 'page.layouts.col1' }) } <span className={classNames(cx('column'), cx('one-column'))} /></Radio>
+                          <Radio value={2}>{formatMessage({ id: 'page.layouts.col2' })} <span className={classNames(cx('column'), cx('two-column'))} /></Radio>
                         </RadioGroup>)
                     }
 
