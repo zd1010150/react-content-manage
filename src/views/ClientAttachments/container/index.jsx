@@ -1,4 +1,4 @@
-import { Button, Col, Icon, Row, Select, Upload } from 'antd';
+import { Button, Col, Icon, Input, Row, Select, Upload } from 'antd';
 import { Panel } from 'components/ui/index';
 import { baseUrl } from 'config/env.config';
 import React, { Component } from 'react';
@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getAuthorization, getThemeByType } from 'utils/common';
 
+const { TextArea } = Input;
 const { Option } = Select;
 
 
@@ -25,6 +26,7 @@ class ClientAttachments extends Component {
       categoryId: '',
       objectId,
       objectType,
+      comment: '',
     };
   }
 
@@ -32,11 +34,14 @@ class ClientAttachments extends Component {
 
   handleCategoryChange = value => this.setState({ categoryId: value })
 
+  handleCommentChange = e => this.setState({ comment: e.target.value })
+
   render() {
     const {
       categoryId,
       objectId,
       objectType,
+      comment,
     } = this.state;
     const theme = getThemeByType(objectType);
     const { intl, categories } = this.props;
@@ -47,6 +52,7 @@ class ClientAttachments extends Component {
         document: file,
         ownerId: objectId,
         ownerType: objectType,
+        comment,
       }),
       headers: {
         'Authorization': getAuthorization(),
@@ -96,6 +102,12 @@ class ClientAttachments extends Component {
           </Col>
         </Row>
         <Row className="mt-md mb-md">
+          <Col>{formatMessage({ id: 'global.ui.table.comment' })}</Col>
+          <Col>
+            <TextArea rows={6} onChange={this.handleCommentChange} />
+          </Col>
+        </Row>
+        <Row>
           <Col xs={24} sm={8}>
             <Upload {...uploadProps} showUploadList={false}>
               <Button size="small" disabled={categoryId === ''}>
