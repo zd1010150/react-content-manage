@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { Panel } from 'components/ui/index';
 import { injectIntl } from 'react-intl';
 import { toTimezone } from 'utils/dateTimeUtils';
-import { setPeriod, queryByPaging, queryByPeriod } from '../flow/action';
+import { setPeriod, queryByPaging, queryByPeriod, setTaskStatus } from '../flow/action';
 import { ALL_STATUS } from '../flow/config';
 
 
@@ -23,10 +23,11 @@ class TaskListView extends React.Component {
   }
 
   handlePeriodChange(period) {
-    const { setPeriod, queryByPeriod } = this.props;
+    const { setPeriod, queryByPeriod, setTaskStatus } = this.props;
     let start,
       end,
       overDue;
+    setTaskStatus(period);
     switch (period) {
       case ALL_STATUS.OVERDUE_TODAY:
         start = moment().format(END_DATE_FORMAT);
@@ -82,6 +83,7 @@ class TaskListView extends React.Component {
 
   render() {
     const {
+      selectedStatus,
       taskDataTablePagination,
       tasks,
       queryByPaging,
@@ -156,7 +158,7 @@ class TaskListView extends React.Component {
     };
     return (
       <Panel panelTitle={formatMessage({ id: 'page.task.myOpenActivity' })} contentClasses="pt-lg pb-lg pl-lg pr-lg">
-        <Select defaultValue={ALL_STATUS.OVERDUE_TODAY} style={{ width: 150 }} onChange={val => this.handlePeriodChange(val)}>
+        <Select defaultValue={selectedStatus} style={{ width: 150 }} onChange={val => this.handlePeriodChange(val)}>
           {
               Object.keys(ALL_STATUS).map(key => <Option value={ALL_STATUS[key]} key={key}> { formatMessage({ id: `page.task.${key}` })}</Option>)
             }
@@ -176,6 +178,6 @@ const mapStateToProps = ({ task, global }) => ({
   taskStatus: global.settings.statuses,
 });
 const mapDispatchToProps = {
-  setPeriod, queryByPaging, queryByPeriod,
+  setPeriod, queryByPaging, queryByPeriod, setTaskStatus,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(TaskListView)));

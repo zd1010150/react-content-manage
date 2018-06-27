@@ -33,7 +33,6 @@ const companyinfo = (state = {
     },
     logo: {
       path: '',
-
     },
   },
   userInfo: {

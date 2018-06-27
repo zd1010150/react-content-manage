@@ -8,12 +8,11 @@ import { FORM_LAYOUT_CONFIG, FORM_FOOTER_CONFIG } from 'config/app.config.js';
 import { getExistRule, validator } from 'utils/validateMessagesUtil';
 
 
-
 const { Search } = Input;
 class userForm extends React.Component {
   onSubmit() {
     const {
-      editObject, addUsers, updateUsers, form, selectedDepartmentId, onSubmit
+      editObject, addUsers, updateUsers, form, selectedDepartmentId, onSubmit,
     } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       const submitFormData = Object.assign({}, values, { team_id: selectedDepartmentId });
@@ -24,7 +23,10 @@ class userForm extends React.Component {
             onSubmit();
           });
         } else {
-          updateUsers(submitFormData);
+          updateUsers(submitFormData, () => {
+            form.resetFields();
+            onSubmit();
+          });
         }
       }
     });
