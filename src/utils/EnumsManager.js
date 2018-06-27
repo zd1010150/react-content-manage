@@ -315,6 +315,10 @@ const EnumsManager = Object.freeze({
         dataIndex: 'created_by',
         titleId: `${tableIntl}.createBy`,
       },
+      {
+        dataIndex: 'comment',
+        titleId: `${tableIntl}.comment`,
+      },
     ],
     [BaseEnums.DetailModules.Logs]: [
       {
