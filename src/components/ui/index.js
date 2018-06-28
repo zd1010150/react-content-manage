@@ -31,7 +31,7 @@ import CKEditor from "./RichEditor/ckEditor";
 import PopDeleteConfirm from './PopDeleteConfirm/index';
 import ErrorText from './ErrorText/index';
 import FormatedTime from './FormatedTime/index';
-import { ManualFileUpload } from './FileUploads/index';
+import { ManualFileUpload, CommonManualFileUpload } from './FileUploads/index';
 
 export {
   Upload,
@@ -70,4 +70,5 @@ export {
   ErrorText,
   FormatedTime,
   ManualFileUpload,
+  CommonManualFileUpload,
 };
