@@ -32,6 +32,7 @@ import {
   ClientDetails,
   Exceptions,
   Conversion,
+  Invoice,
 } from 'views/index';
 
 const { NotFound } = Exceptions;
@@ -145,6 +146,11 @@ class MainContent extends React.Component {
             // TOOD: return 404 page
             return null;
           }}
+        />
+        <Route
+          path="/:objectType/:objectId/invoice/:invoiceId"
+          component={Invoice}
+          exact
         />
         <Route
           path="/:objectType/:objectId/attachments/:attachmentId"

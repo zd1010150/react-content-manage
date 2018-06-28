@@ -16,6 +16,8 @@ import task from 'views/Task/flow/reducer';
 import convertDetails from 'components/page/ConvertDetails/flow/reducer';
 import convertStatus from 'views/Conversion/flow/reducer';
 import attachment from 'views/ClientAttachments/flow/reducer';
+import invoice from 'views/Invoice/flow/reducer';
+
 // test
 import multiDndFields from 'components/ui/MultiSelectDnD/flow/reducer';
 // test ends
@@ -39,4 +41,5 @@ export default {
   convertDetails,
   convertStatus,
   attachment,
+  invoice,
 };

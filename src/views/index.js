@@ -29,6 +29,7 @@ import ClientDetails from './ClientDetails/index';
 import Task from './Task/index';
 import Exceptions from './Exceptions/index';
 import Conversion from './Conversion/index';
+import Invoice from './Invoice/index';
 
 export {
   Dashboard,
@@ -60,4 +61,5 @@ export {
   Task,
   Exceptions,
   Conversion,
+  Invoice,
 };
