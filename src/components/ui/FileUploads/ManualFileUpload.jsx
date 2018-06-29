@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 
 
 const defaultProps = {
+  maxFileNumber: 1,
   showUploadBtn: false,
   wrapperCls: '',
   selectFileBtnText: 'Select File',
@@ -19,6 +20,7 @@ const defaultProps = {
   uploading: false,
 };
 const propTypes = {
+  maxFileNumber: PropTypes.number,
   showUploadBtn: PropTypes.bool,
   wrapperCls: PropTypes.string,
   selectFileBtnText: PropTypes.string,
@@ -32,6 +34,7 @@ const propTypes = {
 
 
 const ManualFileUpload = ({
+  maxFileNumber,
   showUploadBtn,
   wrapperCls,
   selectFileBtnText,
@@ -67,7 +70,7 @@ const ManualFileUpload = ({
   return (
     <div className={`fileUploadWrapper ${wrapperCls}`}>
       <Upload {...combinedUploadProps}>
-        <Button>
+        <Button disabled={uploadProps.fileList.length >= maxFileNumber}>
           <Icon type="upload" /> {selectFileBtnText}
         </Button>
       </Upload>
