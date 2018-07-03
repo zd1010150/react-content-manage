@@ -100,6 +100,10 @@ const mapSettingData = (state, data) => Object.assign({}, state, {
   categories: data.file.category,
   statuses: data.task.statuses,
   priorities: data.task.priorities,
+  invoice: {
+    statuses: data.invoice.status,
+    operators: data.invoice.price_operator,
+  },
 });
 const settings = (state = {
   timeZones: [],
@@ -116,6 +120,10 @@ const settings = (state = {
   categories: [],
   statuses: [],
   priorities: [],
+  invoice: {
+    statuses: [],
+    operators: [],
+  },
 }, action) => {
   switch (action.type) {
     case SET_GLOBAL_SETTING:

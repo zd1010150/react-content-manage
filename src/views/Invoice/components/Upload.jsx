@@ -27,11 +27,11 @@ class Upload extends Component {
   }
 
   render() {
-    const { invoice, intl } = this.props;
+    const { attachment, intl } = this.props;
     const { formatMessage } = intl;
     const i18n = 'page.invoice';
 
-    const { fileList } = invoice;
+    const { fileList } = attachment;
 
     return (
       <CommonManualFileUpload
@@ -55,7 +55,7 @@ Upload.defaultProps = defaultProps;
 Upload.propTypes = propTypes;
 const mapStateToProps = ({ global, invoice }) => ({
   language: global.language,
-  invoice,
+  attachment: invoice.attachment,
 });
 const mapDispatchToProps = {
   setAttachment,

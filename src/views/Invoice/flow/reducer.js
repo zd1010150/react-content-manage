@@ -1,10 +1,15 @@
-import { SET_ATTACHMENT, REMOVE_ATTACHMENT } from './actionTypes';
+import { combineReducers } from 'redux';
+import { REMOVE_ATTACHMENT, SET_ATTACHMENT } from './actionTypes';
+import ciForm from './ciReducer';
+import biForm from './biReducer';
+import invoiceInfo from './invoiceInfoReducer';
+import itemDetails from './itemDetailsReducer';
 
 const initialState = {
   fileList: [],
 };
 
-const invoice = (state = initialState, action) => {
+const attachment = (state = initialState, action) => {
   switch (action.type) {
     case SET_ATTACHMENT:
       const { newFile } = action.payload;
@@ -25,4 +30,10 @@ const invoice = (state = initialState, action) => {
   }
 };
 
-export default invoice;
+export default combineReducers({
+  ciForm,
+  biForm,
+  invoiceInfo,
+  itemDetails,
+  attachment,
+});
