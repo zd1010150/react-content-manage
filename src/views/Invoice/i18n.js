@@ -11,6 +11,17 @@ export default {
       bi: '寄送地址',
       id: '货物描述',
     },
+    summaryTableTitle: '发票价格总和',
+    table: {
+      rowTotal: '货品总价',
+      tax: '税',
+      grandTotal: '实际总价',
+    },
+    tips: {
+      rowTotal: '商品总价',
+      tax: '税价',
+      grandTotal: '实际总价',
+    },
   },
   en: {
     attachment: 'Attachment',
@@ -23,6 +34,17 @@ export default {
       ci: 'Company Address',
       bi: 'Bill To',
       id: 'Item Description',
+    },
+    summaryTableTitle: 'Invoice Totals',
+    table: {
+      rowTotal: 'Subtotal',
+      tax: 'Tax',
+      grandTotal: 'Grand Total',
+    },
+    tips: {
+      rowTotal: 'Subtotal',
+      tax: 'Taxable Amount',
+      grandTotal: 'Grand Total',
     },
   },
 };

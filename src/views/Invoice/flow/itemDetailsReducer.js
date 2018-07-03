@@ -3,8 +3,10 @@ import {
   SET_ITEM_INFO_FIELD,
   SET_ACTIVE_RECORD,
   UPDATE_ACTIVE_RECORD,
+  SET_ITEM_DETAILS,
   ADD_NEW_ROW,
 } from './actionTypes';
+import { mapToItemInfoForm, mapToItems, getSubTotal, mapToSummary } from './utils';
 
 const initialState = {
   idStatus: {
@@ -35,10 +37,43 @@ const initialState = {
     quantity: 2,
     unitPrice: 50,
   }],
+  summary: [{
+    id: 1,
+    description: 'rowTotal',
+    additionVal: '10',
+    additionOp: '+',
+    total: '1000',
+  }, {
+    id: 2,
+    description: 'tax',
+    additionVal: '5',
+    additionOp: '+ %',
+    total: '10',
+  }, {
+    id: 3,
+    description: 'grandTotal',
+    additionVal: '',
+    additionOp: '',
+    total: '1010',
+  }],
 };
 
 const itemDetails = (state = initialState, action) => {
   switch (action.type) {
+    case SET_ITEM_DETAILS:
+      const { data } = action.payload;
+      const items = mapToItems(data);
+      const subTotal = getSubTotal(items);
+      console.log(`Sum is ${subTotal}`);
+      const summary = mapToSummary(data, subTotal);
+      const itemInfo = mapToItemInfoForm(data);
+      return {
+        ...state,
+        items,
+        summary,
+        ...itemInfo,
+      };
+
     case SET_ITEM_INFO_FIELD:
       const { field } = action.payload;
       return {

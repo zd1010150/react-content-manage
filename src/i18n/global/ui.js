@@ -119,6 +119,8 @@ export default {
       quantity: '数量',
       unitPrice: '单价',
       total: '总价',
+      description: '描述',
+      addition: '附加费用',
     },
     select: {
       label: '视图',
@@ -269,6 +271,8 @@ export default {
       quantity: 'Quantity',
       unitPrice: 'Unit Price',
       total: 'Total',
+      description: 'Description',
+      addition: 'Addition',
     },
     select: {
       label: 'View',

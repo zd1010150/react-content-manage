@@ -88,7 +88,7 @@ class EditableTable extends Component {
           <div className="text-center">
             {formatMessage({ id: `${i18n}.${code}` })}
             <Tooltip title="Item number or SKU">
-              <Icon type="question-circle" className="ml-sm" />
+              <Icon type="question-circle" style={{ fontWeight: 400 }} className="ml-sm" />
             </Tooltip>
           </div>
         ),
