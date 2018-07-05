@@ -9,7 +9,7 @@ import classNames from 'classnames/bind';
 import { Permission } from 'components/page/index';
 import PERMISSIONS from 'config/app-permission.config';
 import { toggleLanguage, fetchGlobalSetting } from 'store/global/action';
-import { setSearchKey } from 'views/GlobalSearch/flow/action';
+import { setSearchKey, fetchResultFromRemote } from 'views/GlobalSearch/flow/action';
 import { tryLogout } from 'views/LoginForm/flow/actions';
 import UserSettings from '../component/UserSettings';
 
@@ -33,7 +33,11 @@ class topPanel extends React.Component {
   onSearch = (keys) => {
     const { setSearchKey, history } = this.props;
     setSearchKey(keys);
-    history.push('/globalSearch');
+    history.push('/globalSearch'); 
+      const { fetchResultFromRemote } = this.props;
+      fetchResultFromRemote(keys);
+
+
   }
   render() {
     const {
@@ -85,6 +89,7 @@ const mapDispatchToProp = {
   fetchGlobalSetting,
   tryLogout,
   setSearchKey,
+  fetchResultFromRemote
 };
 
 const TopPanel = connect(mapStateToProps, mapDispatchToProp)(withRouter(injectIntl(topPanel)));
