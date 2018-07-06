@@ -123,6 +123,17 @@ class TableWrapper extends Component {
         extraConfigs.render = text => toTimezone(text, type === DateTime);
         break;
       case Lookup:
+      if(column.field_name === 'target_account_id') {
+        const { theme, objectType } = this.props;
+        extraConfigs.render = (lookup, record) => (
+          <Link
+            className={`${theme}-theme-text`}
+            to={`${objectType}/${record.id}`}
+          >
+            {lookup}
+          </Link>
+        );
+      }
         extraConfigs.dataIndex = `${column.field_name}.${column.lookup_own_field_name}`;
         break;
       case PickList:
