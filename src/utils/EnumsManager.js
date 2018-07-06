@@ -167,7 +167,6 @@ const EnumsManager = Object.freeze({
     },
     [BaseEnums.ObjectTypes.Opportunities]: {
       Delete: 'Delete',
-      Sharing: 'Sharing',
     },
   },
 
