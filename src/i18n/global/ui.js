@@ -284,7 +284,7 @@ export default {
     },
     detailModules: {
       [Opportunities]: 'Opportunities',
-      [TaskOpen]: 'Task Open',
+      [TaskOpen]: 'Open Task',
       [TaskHistory]: 'Task History',
       [EmailSent]: 'Email Sent',
       [Attachments]: 'Attachments',
