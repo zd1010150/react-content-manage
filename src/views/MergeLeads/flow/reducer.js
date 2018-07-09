@@ -13,7 +13,6 @@ const {
 } = FieldTypes;
 
 const parseKeys = keys => {
-  // const masterKey = keys.find(key => key.field_name === MasterKey);
   const masterKey = {
     is_merge_master: false,
     field_name: MasterKey, // this is the field we use as a key to sync with backend for changes
@@ -22,7 +21,6 @@ const parseKeys = keys => {
     lookupKey: '',
   };
   const restKeys = keys.filter(key => key.field_name !== MasterKey);
-  // return [...restKeys].map(key => ({
   return [masterKey, ...restKeys].map(key => ({
     isFollowMaster: !!key.is_merge_master,
     key: key.field_name, // this is the field we use as a key to sync with backend for changes
