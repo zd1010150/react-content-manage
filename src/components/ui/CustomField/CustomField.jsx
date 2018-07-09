@@ -134,6 +134,7 @@ const DisplayValue = (fieldID) => {
   if (fieldName === 'target_account_id' ) {
     return (
       <Link 
+      className={`account-theme-text`}
       to={`/accounts/${fieldID}`}
       >
       {getDisplayValue(value, options, lookupDisplayKey)}
