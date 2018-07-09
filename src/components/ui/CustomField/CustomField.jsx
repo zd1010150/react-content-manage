@@ -57,7 +57,7 @@ const propTypes = {
   }).isRequired,
   lookupDisplayKey: PropTypes.string,
   fieldName: PropTypes.string.isRequired,
-  DisplayValue: PropTypes.number.isRequired,
+  fieldID: PropTypes.number.isRequired,
   onChange: PropTypes.func,
   onDoubleClick: PropTypes.func,
   onDropdownOpen: PropTypes.func,
