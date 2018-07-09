@@ -17,6 +17,8 @@ const toApi = (data, keys) => {
       }
     }
   });
+
   return dataCopy;
 };
+
 export default toApi;
