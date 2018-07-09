@@ -119,7 +119,7 @@ class EditBox extends React.Component {
 
       return (
         <div className={cx('editbox-value-wrapper')}>
-          <span className={classNames(inputClasses, cx('editbox-value'))}> {valueEl}</span>
+          <span className={classNames(inputClasses, cx('editbox-value'))} title={valueEl}> {valueEl}</span>
           {iconEl}
         </div>
       );

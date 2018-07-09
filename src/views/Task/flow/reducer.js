@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import moment from 'moment';
 import EnumsManager from 'utils/EnumsManager';
-import { TASK_LIST_PAGENATIONS, TASK_LIST_DATA, TASK_LIST_PERIOD } from './actionType';
+import { TASK_LIST_PAGENATIONS, TASK_LIST_DATA, TASK_LIST_PERIOD, TASK_STATUS } from './actionType';
 import { ALL_STATUS } from './config';
 
 const tasks = (state = [], action) => {
@@ -35,9 +35,21 @@ const period = (state = { start: moment().format('YYYY-MM-DD'), end: moment().fo
   }
 };
 
+const selectedStatus = (state = ALL_STATUS.OVERDUE_TODAY, action) => {
+  const { type, status } = action;
+  switch (type) {
+    case TASK_STATUS:
+      return status;
+    default:
+      return state;
+  }
+};
+
+
 export default combineReducers({
   period,
   taskDataTablePagination,
   tasks,
+  selectedStatus,
 });
 

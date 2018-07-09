@@ -5,6 +5,7 @@ export default {
     select: '选择文件',
     upload: '开始上传',
     uploading: '正在上传',
+    preview: '预览',
   },
   en: {     
     title: 'Attachments',
@@ -12,5 +13,6 @@ export default {
     select: 'Select File',
     upload: 'Start Upload',
     uploading: 'Uploading',
+    preview: 'Preview',
   },
 };

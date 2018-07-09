@@ -108,6 +108,7 @@ export default {
       acctName: 'Account姓名',
       name: '用户名',
       opportName: 'Opportunity姓名',
+      comment: '备注',
     },
     select: {
       label: '视图',
@@ -247,6 +248,7 @@ export default {
       acctName: 'Account Name',
       name: 'Name',
       opportName: 'Opportunity Name',
+      comment: 'Comment',
     },
     select: {
       label: 'View',
