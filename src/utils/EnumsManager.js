@@ -366,6 +366,11 @@ const EnumsManager = Object.freeze({
     TimeFormatKey: 'timeFormat',
   }),
 
+  FileExtensions: Object.freeze({
+    Images: '.jpg, .png, .gif, .jpeg',
+    Pdf: '.pdf',
+  }),
+
 });
 
 export default EnumsManager;
