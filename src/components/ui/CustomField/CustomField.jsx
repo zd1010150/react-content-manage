@@ -56,7 +56,8 @@ const propTypes = {
     sm: PropTypes.number,
   }).isRequired,
   lookupDisplayKey: PropTypes.string,
-  name: PropTypes.string.isRequired,
+  fieldName: PropTypes.string.isRequired,
+  DisplayValue: PropTypes.number.isRequired,
   onChange: PropTypes.func,
   onDoubleClick: PropTypes.func,
   onDropdownOpen: PropTypes.func,
@@ -89,7 +90,6 @@ const CustomField = ({
   label,
   labelCol,
   lookupDisplayKey,
-  name,
   onBlur,
   onChange,
   onDoubleClick,
@@ -105,7 +105,7 @@ const CustomField = ({
   valueCol,
   useDefaultRowCls,
   fieldName,
-  key,
+  fieldID,
 }) => {
   const _onBlur = () => {
     if (_.isFunction(onBlur)) {
@@ -125,7 +125,7 @@ const CustomField = ({
     }
   }
 
-const renderlind = (key) => {
+const DisplayValue = (fieldID) => {
 
   if (fieldType === Lookup && fieldName !== 'target_account_id') {
     return (getDisplayValue(value, options, lookupDisplayKey));
@@ -134,7 +134,7 @@ const renderlind = (key) => {
   if (fieldName === 'target_account_id' ) {
     return (
       <Link 
-      to={`/accounts/${key}`}
+      to={`/accounts/${fieldID}`}
       >
       {getDisplayValue(value, options, lookupDisplayKey)}
       </Link>
@@ -264,7 +264,7 @@ const renderlind = (key) => {
           id={id}
           isValueChanged={value !== initialValue}
           readOnly={readOnly}
-          value={ renderlind(value, options, lookupDisplayKey,key)}
+          value={ DisplayValue(value, options, lookupDisplayKey,fieldID)}
           onRevertClick={onRevertClick}
           onDoubleClick={onDoubleClick}
         />
