@@ -8,7 +8,6 @@ const toApi = (data, keys) => {
   const dataCopy = _.cloneDeep(data);
   // First, need to remove master record id, due to request format, see more on our POSTMAN doc
   delete dataCopy[MasterKey];
-  // TODO: because all data field is just for display, we can keep the original value from backend, and only convert for display
   // Second, convert all data to utc format
   keys.forEach((key) => {
     if (key.type === DateOnly || key.type === DateTime) {
@@ -22,4 +21,28 @@ const toApi = (data, keys) => {
   return dataCopy;
 };
 
-export default toApi;
+const compareFieldValue = (key, data) => {
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][key] !== data[0][key]) {
+      return false;
+    }
+  }
+  return true;
+};
+
+const setDefaultCheckedData = (keys, data) => {
+  const obj = {};
+  keys.forEach((key) => {
+    const property = key.key;
+    const shouldChecked = compareFieldValue(property, data);
+    if (shouldChecked) {
+      obj[property] = data[0][property];
+    }
+  });
+  return obj;
+};
+
+export {
+  toApi,
+  setDefaultCheckedData,
+};
