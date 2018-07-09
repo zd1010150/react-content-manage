@@ -93,6 +93,7 @@ class FieldsSection extends Component {
                       fetched={field.optionsFetched}
                       labelCol={labelColLayout}
                       valueCol={valueColLayout}
+                      fieldName={field.name}
                     />
                   );
                 }

@@ -7,6 +7,7 @@ import Enums from 'utils/EnumsManager';
 import { DisplayField, EmailInput } from './index';
 import styles from './index.less';
 import { getDisplayValue } from './utils';
+import { Link } from 'react-router-dom';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -103,6 +104,8 @@ const CustomField = ({
   value,
   valueCol,
   useDefaultRowCls,
+  fieldName,
+  key,
 }) => {
   const _onBlur = () => {
     if (_.isFunction(onBlur)) {
@@ -121,6 +124,26 @@ const CustomField = ({
       onDropdownOpen(id, fetched);
     }
   }
+
+const renderlind = (key) => {
+
+  if (fieldType === Lookup && fieldName !== 'target_account_id') {
+    return (getDisplayValue(value, options, lookupDisplayKey));
+  }
+
+  if (fieldName === 'target_account_id' ) {
+    return (
+      <Link 
+      to={`/accounts/${key}`}
+      >
+      {getDisplayValue(value, options, lookupDisplayKey)}
+      </Link>
+    );
+  }
+  else{
+    return(value);
+  }
+}
 
   const others = {
     className: cx('customField'),
@@ -241,10 +264,7 @@ const CustomField = ({
           id={id}
           isValueChanged={value !== initialValue}
           readOnly={readOnly}
-          value={fieldType === Lookup ?
-                  getDisplayValue(value, options, lookupDisplayKey) :
-                  value
-          }
+          value={ renderlind(value, options, lookupDisplayKey,key)}
           onRevertClick={onRevertClick}
           onDoubleClick={onDoubleClick}
         />
