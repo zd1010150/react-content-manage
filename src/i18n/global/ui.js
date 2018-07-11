@@ -64,6 +64,7 @@ export default {
       redoAll: '撤销所有修改',
       done: '完成',
       add: '添加',
+      close: '关闭',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -204,6 +205,7 @@ export default {
       redoAll: 'Redo',
       done: 'Done',
       add: 'Add',
+      close: 'Close',
     },
     input: {
       searchStore: 'Search entire store here...',
