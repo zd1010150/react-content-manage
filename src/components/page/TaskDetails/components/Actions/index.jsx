@@ -90,7 +90,7 @@ const Actions = ({
     return (
       <Button onClick={getFuncByKey('cancel')}>
         <Icon className="font-sm" type="close" />
-        {formatMessage({ id: `${i18nPrefix}.cancel` })}
+        {formatMessage({ id: `${i18nPrefix}.close` })}
       </Button>
     );
   }
