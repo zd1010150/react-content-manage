@@ -48,7 +48,7 @@ const ValueCriteriaField = ({
           allowClear={false}
           style={{ width: '100%' }}
           size="small"
-          format={getTimeSetting(DateTime).format}
+          format={getTimeSetting(type).format}
           showTime={type === DateTime}
           onChange={(date, dateString) => handleValueChange(dateString, displayNum)}
           // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
