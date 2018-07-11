@@ -3,7 +3,6 @@ import Enums from 'utils/EnumsManager';
 
 const { FieldTypes, MasterKey } = Enums;
 const { DateOnly, DateTime } = FieldTypes;
-
 const toApi = (data, keys) => {
   const dataCopy = _.cloneDeep(data);
   // First, need to remove master record id, due to request format, see more on our POSTMAN doc
