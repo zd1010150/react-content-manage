@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { tryMergeLeads } from '../flow/actions';
-import toApi from '../flow/utils';
+import { toApi } from '../flow/utils';
 
 const { MasterKey } = Enums;
 
