@@ -45,7 +45,7 @@ const ValueCriteriaField = ({
     case DateTime:
       return (
         <DatePicker
-          //allowClear={false}
+          allowClear={false}
           style={{ width: '100%' }}
           size="small"
           format={getTimeSetting(DateTime).format}
