@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Input, DatePicker, InputNumber, Icon } from 'antd';
-
+import { getTimeSetting } from 'utils/dateTimeUtils';
 import Enums from 'utils/EnumsManager';
 
 
@@ -38,24 +38,22 @@ const ValueCriteriaField = ({
   handleValueChange,
   handleAddonClick,
   value,
-  dateFormat = 'YYYY-MM-DD',
-  datetimeFormat = 'YYYY-MM-DD HH:mm:ss',
 }) => {
-
+  const ValueData = getTimeSetting(DateTime);
   switch (type) {
     case DateOnly:
     case DateTime:
       return (
         <DatePicker
-          allowClear={false}
+          //allowClear={false}
           style={{ width: '100%' }}
           size="small"
-          format={type === DateTime ? datetimeFormat : dateFormat}
+          format={getTimeSetting(DateTime).format}
           showTime={type === DateTime}
-          onChange={(date, dateString) => handleValueChange(displayNum, dateString)}
+          onChange={(date, dateString) => handleValueChange(dateString, displayNum)}
           // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
           // In this way we can use string outside, and only convert to certain time format in reducer.
-          value={moment(value ? value : Date.now())}
+          value={moment(value, ValueData.format).isValid() ? moment(value, ValueData.format) : undefined}
         />
       );
     case NumberInput:
