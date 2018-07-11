@@ -125,11 +125,7 @@ const CustomField = ({
     }
   }
 
-const DisplayValue = (fieldID) => {
-
-  if (fieldType === Lookup && fieldName !== 'target_account_id') {
-    return (getDisplayValue(value, options, lookupDisplayKey));
-  }
+const displayValue = (fieldID) => {
 
   if (fieldName === 'target_account_id' ) {
     return (
@@ -265,7 +261,10 @@ const DisplayValue = (fieldID) => {
           id={id}
           isValueChanged={value !== initialValue}
           readOnly={readOnly}
-          value={ DisplayValue(value, options, lookupDisplayKey,fieldID)}
+          value={fieldType === Lookup ?
+            displayValue(value, options, lookupDisplayKey) :
+            value
+    }
           onRevertClick={onRevertClick}
           onDoubleClick={onDoubleClick}
         />
