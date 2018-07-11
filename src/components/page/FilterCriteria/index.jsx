@@ -90,7 +90,7 @@ class FilterCriteria extends Component {
   _handleValueChange = (value, displayNum) => {
     const { handleValueChange } = this.props;
     if (_.isFunction(handleValueChange)) {
-      return handleValueChange(value, displayNum);
+      return handleValueChange(displayNum, value);
     }
   }
 
