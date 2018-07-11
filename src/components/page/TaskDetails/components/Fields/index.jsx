@@ -111,6 +111,7 @@ class TaskFields extends Component {
       statusCode,
       statuses,
       subject,
+      isHistoryTask,
     } = this.props;
 
     const { formatMessage } = intl;
@@ -128,7 +129,10 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.assignTo` })}
             </div>
             <Select
-              className="full-width"
+              // Notes: In order to make Select Component becomes disabled status, we need disabled prop to be true, also an additional cls readOnlyField to make text clear to see.
+              // Without disabled prop, the Select Component will remain to react users click on dropdown.
+              disabled={isHistoryTask}
+              className={`full-width ${isHistoryTask ? 'readOnlyField' : ''}`}
               onChange={(value) => {
                 if (value === 'moreOptions') {
                   return this.handleAssigneeModalOpen();
@@ -157,7 +161,8 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.status` })}
             </div>
             <Select
-              className="full-width"
+              disabled={isHistoryTask}
+              className={`full-width ${isHistoryTask ? 'readOnlyField' : ''}`}
               onChange={value => this.handleFieldChange('statusCode', value)}
               value={statusCode}
             >
@@ -171,7 +176,9 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.subject` })}
             </div>
             <Input
-              addonAfter={<Icon className="cursor-pointer" onClick={this.handleSubjectModalOpen} size="small" type="bars" />}
+              disabled={isHistoryTask}
+              className={isHistoryTask ? 'readOnlyField' : ''}
+              addonAfter={isHistoryTask ? null : <Icon className="cursor-pointer" onClick={this.handleSubjectModalOpen} size="small" type="bars" />}
               onChange={e => this.handleFieldChange('subject', e.target.value)}
               placeholder={formatMessage({ id: `${i18nPh}.subject` })}
               value={subject}
@@ -191,7 +198,8 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.priority` })}
             </div>
             <Select
-              className="full-width"
+              disabled={isHistoryTask}
+              className={`full-width ${isHistoryTask ? 'readOnlyField' : ''}`}
               onChange={value => this.handleFieldChange('priorityCode', value)}
               value={priorityCode}
             >
@@ -205,7 +213,8 @@ class TaskFields extends Component {
               {formatMessage({ id: `${i18nPrefix}.dueDate` })}
             </div>
             <DatePicker
-              className="full-width"
+              disabled={isHistoryTask}
+              className={`full-width ${isHistoryTask ? 'readOnlyField' : ''}`}
               format={dateFormat}
               onChange={(date, dateString) => this.handleFieldChange('dueTime', dateString)}
               placeholder={formatMessage({ id: `${i18nPh}.datepicker` })}
@@ -218,6 +227,8 @@ class TaskFields extends Component {
             {formatMessage({ id: `${i18nPrefix}.comments` })}
           </div>
           <TextArea
+            disabled={isHistoryTask}
+            className={isHistoryTask ? 'readOnlyField' : ''}
             autosize={{ minRows: 10, maxRows: 30 }}
             onChange={e => this.handleFieldChange('comments', e.target.value)}
             value={comments}
