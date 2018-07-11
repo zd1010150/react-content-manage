@@ -207,6 +207,7 @@ class Subpanel extends Component {
           {
             dataIndex: 'due_date',
             title: formatMessage({ id: `${i18n}.dueOn` }),
+            render: text => toTimezone(text),
           },
           {
             dataIndex: 'updated_at',
@@ -285,6 +286,7 @@ class Subpanel extends Component {
           {
             dataIndex: 'updated_at',
             title: formatMessage({ id: `${i18n}.date` }),
+            render: text => toTimezone(text, true),
           },
           {
             dataIndex: 'causer.name',
