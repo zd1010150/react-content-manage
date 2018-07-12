@@ -2,12 +2,11 @@ import { toUtc } from 'utils/dateTimeUtils';
 import Enums from 'utils/EnumsManager';
 
 const { FieldTypes, MasterKey } = Enums;
-const { DateOnly, DateTime } = FieldTypes;
+const { DateOnly, DateTime, Lookup } = FieldTypes;
 const toApi = (data, keys) => {
   const dataCopy = _.cloneDeep(data);
   // First, need to remove master record id, due to request format, see more on our POSTMAN doc
   delete dataCopy[MasterKey];
-  // TODO: because all data field is just for display, we can keep the original value from backend, and only convert for display
   // Second, convert all data to utc format
   keys.forEach((key) => {
     if (key.type === DateOnly || key.type === DateTime) {
@@ -21,4 +20,31 @@ const toApi = (data, keys) => {
   return dataCopy;
 };
 
-export default toApi;
+const compareFieldValue = (key, data, type) => {
+  for (let i = 1; i < data.length; i++) {
+    // Notes: for Lookup field, we need to compare id instead of raw value itself
+    const target = type === Lookup ? data[0][key].id : data[0][key];
+    const source = type === Lookup ? data[i][key].id : data[i][key];
+    if (target !== source) {
+      return false;
+    }
+  }
+  return true;
+};
+
+const setDefaultCheckedData = (keys, data) => {
+  const obj = {};
+  keys.forEach((key) => {
+    const property = key.key;
+    const shouldChecked = compareFieldValue(property, data, key.type);
+    if (shouldChecked) {
+      obj[property] = key.type === Lookup ? data[0][property].id : data[0][property];
+    }
+  });
+  return obj;
+};
+
+export {
+  toApi,
+  setDefaultCheckedData,
+};
