@@ -73,16 +73,16 @@ export const tryDeleteSubject = id => dispatch =>
 
 //
 export const setRecentAssignees = recentAssignees => ({
-      type: SET_TASK_RECENT_ASSIGNEES,
-      payload: { recentAssignees },
-    });
+  type: SET_TASK_RECENT_ASSIGNEES,
+  payload: { recentAssignees },
+});
 
 export const tryFetchRecentAssignees = objectType => dispatch =>
-    get(`/admin/tasks/object/${objectType}/recent_managers`, {}, dispatch).then((data) => {
-      if (data && !_.isEmpty(data.data)) {
-        dispatch(setRecentAssignees(data.data));
-      }
-    });
+  get(`/admin/tasks/object/${objectType}/recent_managers`, {}, dispatch).then((data) => {
+    if (data && !_.isEmpty(data.data)) {
+      dispatch(setRecentAssignees(data.data));
+    }
+  });
 
 
 //
