@@ -140,10 +140,10 @@ class FieldForm extends React.Component {
                     {...FORM_LAYOUT_CONFIG}
                     label={formatMessage({ id: 'page.fields.length' })}
                   >
-                    {
-                            getFieldDecorator('length', {
-                                initialValue: editObject.length || '',
-                            })(<InputNumber disabled={isEdit} min={0} max={255} />)
+                    {       getFieldDecorator('length', {
+                                initialValue: 255,
+                            })
+                           (<InputNumber disabled />)
                         }
                   </FormItem> : ''
             }
