@@ -23,8 +23,8 @@ const toApi = (data, keys) => {
 const compareFieldValue = (key, data, type) => {
   for (let i = 1; i < data.length; i++) {
     // Notes: for Lookup field, we need to compare id instead of raw value itself
-    const target = type === Lookup ? data[0][key].id : data[0][key];
-    const source = type === Lookup ? data[i][key].id : data[i][key];
+    const target = type === Lookup ? (_.isPlainObject(data[0][key]) ? data[0][key].id : null) : data[0][key];
+    const source = type === Lookup ? (_.isPlainObject(data[i][key]) ? data[i][key].id : null) : data[i][key];
     if (target !== source) {
       return false;
     }
@@ -38,7 +38,7 @@ const setDefaultCheckedData = (keys, data) => {
     const property = key.key;
     const shouldChecked = compareFieldValue(property, data, key.type);
     if (shouldChecked) {
-      obj[property] = key.type === Lookup ? data[0][property].id : data[0][property];
+      obj[property] = key.type === Lookup ? (_.isPlainObject(data[0][property]) ? data[0][property].id : null) : data[0][property];
     }
   });
   return obj;
