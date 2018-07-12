@@ -17,12 +17,12 @@ const getDisplayValue = (selectedId, options, displayKey) => {
   return target[displayKey];
 };
 
-const displayValue = (fieldName, initialValue, objectType, value, options, lookupDisplayKey, fieldType) => {
+const displayValue = (fieldName, objectType, value, options, lookupDisplayKey, fieldType) => {
   if (fieldName === 'target_account_id' && objectType === Opportunities) {
     return (
       <Link
         className="account-theme-text"
-        to={`/accounts/${initialValue}`}
+        to={`/accounts/${value}`}
       >
         {getDisplayValue(value, options, lookupDisplayKey)}
       </Link>

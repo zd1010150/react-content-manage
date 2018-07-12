@@ -242,7 +242,7 @@ const CustomField = ({
           id={id}
           isValueChanged={value !== initialValue}
           readOnly={readOnly}
-          value={displayValue(fieldName, initialValue, objectType, value, options, lookupDisplayKey, fieldType)}
+          value={displayValue(fieldName, objectType, value, options, lookupDisplayKey, fieldType)}
           onRevertClick={onRevertClick}
           onDoubleClick={onDoubleClick}
         />
