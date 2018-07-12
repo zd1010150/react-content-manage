@@ -106,6 +106,7 @@ const CustomField = ({
   useDefaultRowCls,
   fieldName,
   fieldID,
+  objectType
 }) => {
   const _onBlur = () => {
     if (_.isFunction(onBlur)) {
@@ -123,24 +124,21 @@ const CustomField = ({
     if (_.isFunction(onDropdownOpen)) {
       onDropdownOpen(id, fetched);
     }
-  }
+  };
 
-const displayValue = (fieldID) => {
-
-  if (fieldName === 'target_account_id' ) {
-    return (
-      <Link 
+  const displayValue = (fieldID) => {
+  if (fieldType === Lookup && fieldName === 'target_account_id' && objectType === 'opportunities' ) {
+    return (     
+       <Link 
       className={`account-theme-text`}
       to={`/accounts/${fieldID}`}
       >
       {getDisplayValue(value, options, lookupDisplayKey)}
-      </Link>
-    );
+      </Link>);
   }
-  else{
     return(value);
-  }
-}
+  
+};
 
   const others = {
     className: cx('customField'),
