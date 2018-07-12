@@ -79,7 +79,7 @@ export const setRecentAssignees = recentAssignees => ({
 
 export const tryFetchRecentAssignees = objectType => dispatch =>
   get(`/admin/tasks/object/${objectType}/recent_managers`, {}, dispatch).then((data) => {
-    if (data && !_.isEmpty(data.data)) {
+    if (data && data.data) {
       dispatch(setRecentAssignees(data.data));
     }
   });

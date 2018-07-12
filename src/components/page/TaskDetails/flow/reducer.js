@@ -26,6 +26,7 @@ const mapResponseToStore = ({
   due_date,
   comments,
 }) => ({
+  assigner,
   assigneeId: assigner.id,
   comments,
   dueTime: toTimezone(due_date),
@@ -103,9 +104,17 @@ const taskDetails = (state = initialState, action) => {
 
 
     case SET_TASK_RECENT_ASSIGNEES:
+      const { recentAssignees } = action.payload;
+      const currentAssignee = recentAssignees.find(ra => ra.id === state.assigneeId);
+      if (!currentAssignee && !_.isEmpty(state.assigner)) {
+        return {
+          ...state,
+          recentAssignees: [state.assigner, ...state.recentAssignees],
+        };
+      }
       return {
         ...state,
-        recentAssignees: action.payload.recentAssignees,
+        recentAssignees,
       };
 
 
@@ -122,7 +131,6 @@ const taskDetails = (state = initialState, action) => {
         globalSubjects: state.globalSubjects,
         mySubjects: state.mySubjects,
         assignees: state.assignees,
-        recentAssignees: state.recentAssignees,
       };
 
 
