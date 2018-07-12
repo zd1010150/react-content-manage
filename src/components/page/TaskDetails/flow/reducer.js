@@ -26,6 +26,7 @@ const mapResponseToStore = ({
   due_date,
   comments,
 }) => ({
+  assigner,
   assigneeId: assigner.id,
   comments,
   dueTime: toTimezone(due_date),
@@ -71,7 +72,7 @@ const taskDetails = (state = initialState, action) => {
       }
 
     case SET_TASK_ASSIGNEE:
-      const { assigneeId } = action.payload;      
+      const { assigneeId } = action.payload;
       const isInRecent = !!state.recentAssignees.find(assignee => assignee.id == assigneeId);
       if (isInRecent) {
         return {
@@ -83,48 +84,53 @@ const taskDetails = (state = initialState, action) => {
       return {
         ...state,
         assigneeId,
-        recentAssignees: [ targetAssignee, ...state.recentAssignees ],
+        recentAssignees: [targetAssignee, ...state.recentAssignees],
       };
 
 
     case SET_TASK_ASSIGNEES:
-      const { assignees } = action.payload;      
       return {
         ...state,
-        assignees,
+        assignees: action.payload.assignees,
       };
 
 
-    case SET_TASK_FIELD:      
+    case SET_TASK_FIELD:
       const { field, value } = action.payload;
       return {
         ...state,
         [field]: value,
       };
 
-    
+
     case SET_TASK_RECENT_ASSIGNEES:
       const { recentAssignees } = action.payload;
+      const currentAssignee = recentAssignees.find(ra => ra.id === state.assigneeId);
+      if (!currentAssignee && !_.isEmpty(state.assigner)) {
+        return {
+          ...state,
+          recentAssignees: [state.assigner, ...state.recentAssignees],
+        };
+      }
       return {
         ...state,
         recentAssignees,
       };
 
-    
+
     case SET_TASK_SUCCESS:
       return {
         ...state,
         synced: true,
       };
 
-    
+
     case RESET_TASK:
       return {
         ...initialState,
         globalSubjects: state.globalSubjects,
         mySubjects: state.mySubjects,
         assignees: state.assignees,
-        recentAssignees: state.recentAssignees,
       };
 
 
