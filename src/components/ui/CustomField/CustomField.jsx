@@ -6,8 +6,7 @@ import React from 'react';
 import Enums from 'utils/EnumsManager';
 import { DisplayField, EmailInput } from './index';
 import styles from './index.less';
-import { getDisplayValue } from './utils';
-import { Link } from 'react-router-dom';
+import { displayValue } from './utils';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -24,11 +23,6 @@ const {
   Display,
   ApiError,
 } = Enums.FieldTypes;
-
-const {
-  Opportunities,
-} = Enums.ObjectTypes;
-
 
 const defaultProps = {
   options: [],
@@ -61,7 +55,6 @@ const propTypes = {
   }).isRequired,
   lookupDisplayKey: PropTypes.string,
   fieldName: PropTypes.string.isRequired,
-  fieldID: PropTypes.number.isRequired,
   onChange: PropTypes.func,
   onDoubleClick: PropTypes.func,
   onDropdownOpen: PropTypes.func,
@@ -109,7 +102,6 @@ const CustomField = ({
   valueCol,
   useDefaultRowCls,
   fieldName,
-  fieldID,
   objectType,
 }) => {
   const _onBlur = () => {
@@ -128,20 +120,6 @@ const CustomField = ({
     if (_.isFunction(onDropdownOpen)) {
       onDropdownOpen(id, fetched);
     }
-  };
-
-  const displayValue = (fieldID) => {
-    if (fieldName === 'target_account_id' && objectType === Opportunities) {
-      return (
-        <Link
-          className="account-theme-text"
-          to={`/accounts/${fieldID}`}
-        >
-          {getDisplayValue(value, options, lookupDisplayKey)}
-        </Link>
-      );
-    }
-    return fieldType === Lookup ? getDisplayValue(value, options, lookupDisplayKey) : value;
   };
 
   const others = {
@@ -264,7 +242,7 @@ const CustomField = ({
           id={id}
           isValueChanged={value !== initialValue}
           readOnly={readOnly}
-          value={displayValue(value, options, lookupDisplayKey)}
+          value={displayValue(fieldName, initialValue, objectType, value, options, lookupDisplayKey, fieldType)}
           onRevertClick={onRevertClick}
           onDoubleClick={onDoubleClick}
         />
