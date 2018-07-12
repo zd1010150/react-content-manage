@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Enums from 'utils/EnumsManager';
 import styles from './index.less';
+
 const cx = classNames.bind(styles);
 const { FieldTypes, MasterKey } = Enums;
 const { Lookup } = FieldTypes;

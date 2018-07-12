@@ -112,8 +112,13 @@ const filterCriteria = (state = initialState, action) => {
 
 
     case CHANGE_FILTER:
-      const { key, value, fieldId, displayNum } = action.payload;
-      const filtersAfterChange = state.filters.map(filter => {
+      const {
+        key,
+        value,
+        fieldId,
+        displayNum,
+      } = action.payload;
+      const filtersAfterChange = state.filters.map((filter) => {
         if (filter.displayNum === displayNum) {
           if (key === 'type') {
             filter.fieldId = fieldId;

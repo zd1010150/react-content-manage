@@ -42,7 +42,7 @@ const TopNav = ({ intl, location, nextPath }) => {
         return (
           <Menu.Item key={key} className={`${theme}-theme-menu`}>
             <Permission permission={item.permission}>
-              <Link to={item.href}>
+              <Link to={item.href} >
                 {formatMessage({ id: `${i18n}.${key}` })}
               </Link>
             </Permission>
