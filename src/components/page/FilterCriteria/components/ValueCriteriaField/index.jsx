@@ -61,7 +61,7 @@ const ValueCriteriaField = ({
         <InputNumber
           className="full-width"
           size="small"
-          onChange={value => handleValueChange(displayNum, value)}
+          onChange={value => handleValueChange(value, displayNum)}
           value={value}
         />
       );
@@ -71,14 +71,14 @@ const ValueCriteriaField = ({
         <Input
           size="small"
           addonAfter={<Icon type="search" onClick={e => handleAddonClick(displayNum)} />}
-          onChange={e => handleValueChange(displayNum, e.target.value)}
+          onChange={e => handleValueChange(e.target.value, displayNum)}
           value={value}
         />
       );
     case Email:
     case LongText:
     case TextInput:
-      return <Input size="small" onChange={e => handleValueChange(displayNum, e.target.value)} value={value} />;
+      return <Input size="small" onChange={e => handleValueChange(e.target.value, displayNum)} value={value} />;
     default:
       throw Error('No such type in ValueCriteriaField component.');
   }
