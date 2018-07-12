@@ -25,6 +25,10 @@ const {
   ApiError,
 } = Enums.FieldTypes;
 
+const {
+  Opportunities,
+} = Enums.ObjectTypes;
+
 
 const defaultProps = {
   options: [],
@@ -106,7 +110,7 @@ const CustomField = ({
   useDefaultRowCls,
   fieldName,
   fieldID,
-  objectType
+  objectType,
 }) => {
   const _onBlur = () => {
     if (_.isFunction(onBlur)) {
@@ -127,18 +131,18 @@ const CustomField = ({
   };
 
   const displayValue = (fieldID) => {
-  if (fieldType === Lookup && fieldName === 'target_account_id' && objectType === 'opportunities' ) {
-    return (     
-       <Link 
-      className={`account-theme-text`}
-      to={`/accounts/${fieldID}`}
-      >
-      {getDisplayValue(value, options, lookupDisplayKey)}
-      </Link>);
-  }
-    return(value);
-  
-};
+    if (fieldName === 'target_account_id' && objectType === Opportunities) {
+      return (
+        <Link
+          className="account-theme-text"
+          to={`/accounts/${fieldID}`}
+        >
+          {getDisplayValue(value, options, lookupDisplayKey)}
+        </Link>
+      );
+    }
+    return fieldType === Lookup ? getDisplayValue(value, options, lookupDisplayKey) : value;
+  };
 
   const others = {
     className: cx('customField'),
@@ -147,6 +151,7 @@ const CustomField = ({
   };
 
   let field = null;
+
   switch (type) {
     case ApiError:
       return null;
@@ -259,10 +264,7 @@ const CustomField = ({
           id={id}
           isValueChanged={value !== initialValue}
           readOnly={readOnly}
-          value={fieldType === Lookup ?
-            displayValue(value, options, lookupDisplayKey) :
-            value
-    }
+          value={displayValue(value, options, lookupDisplayKey)}
           onRevertClick={onRevertClick}
           onDoubleClick={onDoubleClick}
         />
