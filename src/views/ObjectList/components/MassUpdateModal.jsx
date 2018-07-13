@@ -119,7 +119,7 @@ class MassUpdateModal extends Component {
       type: crm_data_type,
       // CustomField component has added validation for date/datetime,
       // if the value is not valid moment string, will be converted to a valid value, so we can pass '' here
-      value: typeof selectData[field_name] !== 'object' ? selectData[field_name] : '',
+      value: Object.values(FieldTypes).indexOf(crm_data_type) > -1 ? selectData[field_name] : '',
     });
   }
 
