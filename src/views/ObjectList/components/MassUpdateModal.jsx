@@ -113,13 +113,15 @@ class MassUpdateModal extends Component {
 
     const selectData = data.find(findData => findData.id === selectedRowKeys[0]);
 
+    console.log(typeof selectData[field_name]);
+
     this.setState({
       fieldId: id,
       fieldName: field_name,
       type: crm_data_type,
       // CustomField component has added validation for date/datetime,
       // if the value is not valid moment string, will be converted to a valid value, so we can pass '' here
-      value: field_name !== 'created_by_user_id' ? selectData[field_name] : selectData.created_by_user_id.name,
+      value: typeof selectData[field_name] === 'string' ? selectData[field_name] : '',
     });
   }
 
