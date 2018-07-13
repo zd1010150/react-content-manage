@@ -113,8 +113,6 @@ class MassUpdateModal extends Component {
 
     const selectData = data.find(findData => findData.id === selectedRowKeys[0]);
 
-    console.log(typeof selectData[field_name]);
-
     this.setState({
       fieldId: id,
       fieldName: field_name,
