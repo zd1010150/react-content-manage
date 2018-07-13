@@ -46,8 +46,8 @@ class FieldsSection extends Component {
       title,
       fields,
       columns,
+      objectType,
     } = this.props;
-
     const colLayout = {
       sm: Enums.AntdGridMax / columns,
       xs: Enums.AntdGridMax,
@@ -93,6 +93,8 @@ class FieldsSection extends Component {
                       fetched={field.optionsFetched}
                       labelCol={labelColLayout}
                       valueCol={valueColLayout}
+                      fieldName={field.name}
+                      objectType={objectType}
                     />
                   );
                 }
