@@ -4,14 +4,15 @@ import PropTypes from 'prop-types';
 
 import { intlShape, injectIntl } from 'react-intl';
 import classNames from 'classnames/bind';
-import { Modal, Checkbox, Row, Col, Button } from 'antd';
+import { Modal, Radio, Row, Col, Button } from 'antd';
 import styles from '../../../../index.less';
 
 const cx = classNames.bind(styles);
 
 class SectionFieldEditDialog extends React.Component {
-  valueChange(attr, e) {
-    this.props.setEditField({ [`${attr}Value`]: e.target.checked });
+  valueChange(attr, other, e) {
+    this.props.setEditField({ [`${attr}Value`]: true });
+    this.props.setEditField({ [`${other}Value`]: false });
   }
   save() {
     const {
@@ -47,10 +48,10 @@ class SectionFieldEditDialog extends React.Component {
           <Col span={22} offset={2}>
             <span className={classNames(cx('field-edit-dialog-label'), 'pr-lg')}>{fieldLabel}: </span>
             <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-              <Checkbox checked={requiredValue} disabled={requiredDisable} onChange={e => this.valueChange('required', e)}> required </Checkbox>
+              <Radio checked={requiredValue} disabled={requiredDisable} onChange={e => this.valueChange('required', 'readOnly', e)}> required </Radio>
             </span>
             <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-              <Checkbox checked={readOnlyValue} disabled={readOnlyDisable} onChange={e => this.valueChange('readOnly', e)}> read only </Checkbox>
+              <Radio checked={readOnlyValue} disabled={readOnlyDisable} onChange={e => this.valueChange('readOnly', 'required', e)}> read only </Radio>
             </span>
           </Col>
         </Row>
