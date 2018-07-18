@@ -1,11 +1,18 @@
 import Enums from 'utils/EnumsManager';
 
 const {
+  DetailTools,
+  DetailModules,
+  DateTimeConfigs,
+} = Enums;
+
+const {
   Convert,
   Delete,
   Sharing,
   FindDuplicates,
-} = Enums.DetailTools;
+} = DetailTools;
+
 const {
   Opportunities,
   TaskOpen,
@@ -13,7 +20,33 @@ const {
   EmailSent,
   Attachments,
   Logs,
-} = Enums.DetailModules;
+} = DetailModules;
+
+const {
+  SubTypes,
+  Ranges,
+  PeriodPrefixs,
+  PeriodTypes,
+} = DateTimeConfigs;
+const {
+  SpecificDate,
+  Range,
+  CustomRange,
+} = SubTypes;
+const {
+  Today,
+  ThisWeek,
+  ThisMonth,
+} = Ranges;
+const {
+  Days,
+  Weeks,
+  Months,
+} = PeriodTypes;
+const {
+  Next,
+  Last,
+} = PeriodPrefixs;
 
 export default {
   zh: {
@@ -156,6 +189,25 @@ export default {
       errorMax: '你的文件超过了{size}M,请重新选择',
       errorType: '文件类型不对，只允许上传 {type} 类型的文件',
     },
+    DateTimeSubTypes: {
+      [SpecificDate]: '精确日期/时间',
+      [Range]: '时间范围',
+      [CustomRange]: '自定义时间范围',
+    },
+    DateTimeRanges: {
+      [Today]: '本日',
+      [ThisWeek]: '本周',
+      [ThisMonth]: '本月',
+    },
+    DateTimePeriodPrefixs: {
+      [Next]: '未来',
+      [Last]: '过去',
+    },
+    DateTimePeriodTypes: {
+      [Days]: '天',
+      [Weeks]: '周',
+      [Months]: '月',
+    },
   },
   en: {
     button: {
@@ -296,6 +348,25 @@ export default {
       maxSize: 'Maximum file size is {size}M',
       errorMax: 'The file is larger than {size}M, please reselect',
       errorType: 'The type of file is error, the allowed type is {type}',
+    },
+    DateTimeSubTypes: {
+      [SpecificDate]: 'Specific Date',
+      [Range]: 'Range',
+      [CustomRange]: 'Custom Range',
+    },
+    DateTimeRanges: {
+      [Today]: 'Today',
+      [ThisWeek]: 'This Week',
+      [ThisMonth]: 'This Month',
+    },
+    DateTimePeriodPrefixs: {
+      [Next]: 'Next',
+      [Last]: 'Past',
+    },
+    DateTimePeriodTypes: {
+      [Days]: 'Days',
+      [Weeks]: 'Weeks',
+      [Months]: 'Months',
     },
   },
 };

@@ -31,6 +31,7 @@ import CKEditor from "./RichEditor/ckEditor";
 import PopDeleteConfirm from './PopDeleteConfirm/index';
 import ErrorText from './ErrorText/index';
 import FormatedTime from './FormatedTime/index';
+import TimeRangeFilter from './TimeRangeFilter/index';
 
 export {
   Upload,
@@ -68,4 +69,5 @@ export {
   PopDeleteConfirm,
   ErrorText,
   FormatedTime,
+  TimeRangeFilter,
 };

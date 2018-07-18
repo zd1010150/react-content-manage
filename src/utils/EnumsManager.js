@@ -50,6 +50,29 @@ const BaseEnums = Object.freeze({
     Logs: 'Logs',
   }),
 
+  DateTimeSubTypes: Object.freeze({
+    SpecificDate: 'SpecificDate',
+    Range: 'Range',
+    CustomRange: 'CustomRange',
+  }),
+
+  DateTimeRanges: Object.freeze({
+    Today: 'Today',
+    ThisWeek: 'Week',
+    ThisMonth: 'Month',
+  }),
+
+  DateTimePeriodPrefixs: Object.freeze({
+    Next: 'Next',
+    Last: 'Last',
+  }),
+
+  DateTimePeriodTypes: Object.freeze({
+    Days: 'Days',
+    Weeks: 'Weeks',
+    Months: 'Months',
+  }),
+
 });
 
 const tableIntl = 'global.ui.table';
@@ -362,6 +385,21 @@ const EnumsManager = Object.freeze({
     DefaultOffset: '+1100',
     DateFormatKey: 'dateFormat',
     TimeFormatKey: 'timeFormat',
+
+    TimeRangePrefix: 'VAR__',
+
+    SubTypes: BaseEnums.DateTimeSubTypes,
+    SubTypesInArray: Object.freeze(_.values(BaseEnums.DateTimeSubTypes)),
+
+    Ranges: BaseEnums.DateTimeRanges,
+    RangesInArray: Object.freeze(_.values(BaseEnums.DateTimeRanges)),
+
+    PeriodPrefixs: BaseEnums.DateTimePeriodPrefixs,
+    PeriodPrefixsInArray: Object.freeze(_.values(BaseEnums.DateTimePeriodPrefixs)),
+
+    PeriodTypes: BaseEnums.DateTimePeriodTypes,
+    PeriodTypesInArray: Object.freeze(_.values(BaseEnums.DateTimePeriodTypes)),
+
   }),
 
 });
