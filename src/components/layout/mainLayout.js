@@ -33,12 +33,11 @@ class MainLayout extends React.Component {
     hasLoggedIn = () => {
       // we'll check the login status in localstorage instead of redux/session storage
       // because it will help us to sync the status across application instances
-       const { loginUser } = this.props;
+      const { loginUser } = this.props;
       const localLoginUser = getStore(EnumsManager.LocalStorageKey);
       if (_.isEmpty(localLoginUser)) {
         return false;
       }
-
       return !_.isEmpty(loginUser);
     }
 

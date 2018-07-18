@@ -1,8 +1,9 @@
 /**
  * InstantUpload is a component that instant upload selected file to backend.
- * This is changed based on Ant design Upload component. -> https://ant.design/components/upload/
- * The component has following features:
- * * Instant upload/sync file to backend
+ * This is changed based on Ant design Upload component.
+ * @Based on: https://ant.design/components/upload/
+ * @Features:
+ * * Instant upload/sync file to backend (fileId is needed in backend response at least).
  * * Display list of uploaded file
  * * Click file name to show preview on another tab
  * * File extension limitation
@@ -62,7 +63,8 @@ const InstantUpload = ({
   };
 
   return (
-    <div className={`fileUploadWrapper ${wrapperCls}`}>
+    // <div className={`fileUploadWrapper ${wrapperCls}`}>
+    <div className={`${wrapperCls}`}>
       <Upload {...combinedUploadProps}>
         <Button>
           <Icon type="upload" /> {selectFileBtnText}
