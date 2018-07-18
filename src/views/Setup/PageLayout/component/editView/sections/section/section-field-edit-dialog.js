@@ -36,7 +36,6 @@ class SectionFieldEditDialog extends React.Component {
       requiredDisable,
       readOnlyValue,
       readOnlyDisable,
-      showValue,
     } = this.props.fieldEditDialog;
     return (
       <Modal
@@ -51,12 +50,12 @@ class SectionFieldEditDialog extends React.Component {
         <Row>
           <Col span={22} offset={2}>
             <span className={classNames(cx('field-edit-dialog-label'), 'pr-lg')}>{fieldLabel}: </span>
-            <RadioGroup value={showValue ==='readOnly' ? this.state.value = 'readOnly' : this.state.value = 'required'}  onChange={e => this.valueChange(e)}>
+            <RadioGroup value={readOnlyValue ? this.state.value = 'readOnly' : this.state.value = 'required'} disabled={ requiredDisable || readOnlyDisable } onChange={e => this.valueChange(e)}>
               <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-                <Radio disabled={requiredDisable} value='required'> required </Radio>
+                <Radio value='required'> required </Radio>
               </span>
               <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-                <Radio disabled={readOnlyDisable} value='readOnly'> read only </Radio>
+                <Radio value='readOnly'> read only </Radio>
               </span>
             </RadioGroup>
           </Col>
