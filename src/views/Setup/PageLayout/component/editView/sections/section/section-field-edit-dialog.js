@@ -8,11 +8,14 @@ import { Modal, Radio, Row, Col, Button } from 'antd';
 import styles from '../../../../index.less';
 
 const cx = classNames.bind(styles);
+const RadioGroup = Radio.Group;
 
 class SectionFieldEditDialog extends React.Component {
-  valueChange(attr, other, e) {
-    this.props.setEditField({ [`${attr}Value`]: true });
-    this.props.setEditField({ [`${other}Value`]: false });
+  state = {
+    value: '',
+  }
+  valueChange(e) {
+    this.props.setShowValue({ showValue: e.target.value });
   }
   save() {
     const {
@@ -33,6 +36,7 @@ class SectionFieldEditDialog extends React.Component {
       requiredDisable,
       readOnlyValue,
       readOnlyDisable,
+      showValue,
     } = this.props.fieldEditDialog;
     return (
       <Modal
@@ -47,12 +51,14 @@ class SectionFieldEditDialog extends React.Component {
         <Row>
           <Col span={22} offset={2}>
             <span className={classNames(cx('field-edit-dialog-label'), 'pr-lg')}>{fieldLabel}: </span>
-            <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-              <Radio checked={requiredValue} disabled={requiredDisable} onChange={e => this.valueChange('required', 'readOnly', e)}> required </Radio>
-            </span>
-            <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-              <Radio checked={readOnlyValue} disabled={readOnlyDisable} onChange={e => this.valueChange('readOnly', 'required', e)}> read only </Radio>
-            </span>
+            <RadioGroup value={showValue ==='readOnly' ? this.state.value = 'readOnly' : this.state.value = 'required'}  onChange={e => this.valueChange(e)}>
+              <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
+                <Radio disabled={requiredDisable} value='required'> required </Radio>
+              </span>
+              <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
+                <Radio disabled={readOnlyDisable} value='readOnly'> read only </Radio>
+              </span>
+            </RadioGroup>
           </Col>
         </Row>
       </Modal>

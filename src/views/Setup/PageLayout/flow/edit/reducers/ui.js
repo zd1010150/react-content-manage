@@ -26,6 +26,7 @@ const ui = (state = {
     requiredDisable: false,
     readOnlyValue: '',
     readOnlyDisable: false,
+    showValue: '',
   },
   fieldCanDrop: true,
   currentTab: OPERATES[1],
