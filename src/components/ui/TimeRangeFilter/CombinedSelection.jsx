@@ -1,4 +1,6 @@
-import { DatePicker, InputNumber, Select } from 'antd';
+import { InputNumber, Select } from 'antd';
+import { AutoConvertedDatePicker } from 'components/ui/index';
+import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import Enums from 'utils/EnumsManager';
@@ -13,6 +15,10 @@ const { Option } = Select;
 const defaultProps = {};
 const propTypes = {
   intl: intlShape.isRequired,
+  displayNum: PropTypes.number.isRequired,
+  type: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 
@@ -26,31 +32,47 @@ const CombinedSelection = ({
   const { formatMessage } = intl;
   const i18n = 'global.ui';
 
-  switch (type) {    
+  const handleDatePickerChange = (date, dateString) => {
+    if (_.isFunction(onChange)) {
+      onChange(displayNum, 'value', dateString);
+    }
+  };
+
+  switch (type) {
     case SpecificDate:
       return (
-        <DatePicker
-          className="full-width"
-          size="small"
-          // format={timeSetting.format}
-          // showTime={type === DateTime}
-          // onChange={(date, dateString) => handleValueChange(dateString, displayNum)}
-          // // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
-          // // In this way we can use string outside, and only convert to certain time format in reducer.
-          // value={moment(value, timeSetting.format).isValid() ? moment(value, timeSetting.format) : undefined}
+        <AutoConvertedDatePicker
+          type={type}
+          value={value}
+          onChange={handleDatePickerChange}
         />
       );
+      // return (
+      //   <DatePicker
+      //     className="full-width"
+      //     size="small"
+      //     // format={timeSetting.format}
+      //     // showTime={type === DateTime}
+      //     // onChange={(date, dateString) => handleValueChange(dateString, displayNum)}
+      //     // // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
+      //     // // In this way we can use string outside, and only convert to certain time format in reducer.
+      //     // value={moment(value, timeSetting.format).isValid() ? moment(value, timeSetting.format) : undefined}
+      //   />
+      // );
     case Range:
       const rangeI18n = `${i18n}.DateTimeRanges`;
       return (
         <Select
           className="full-width"
           size="small"
-          onChange={range => onChange(displayNum, 'value', range)}
+          onChange={rg => onChange(displayNum, 'value', rg)}
         >
           {RangesInArray.map(rg => <Option key={rg} value={rg}>{formatMessage({ id: `${rangeI18n}.${rg}` })}</Option>)}
         </Select>
       );
+    // NOTES:
+    // The following case is not finished. It's an extended feature for this filter.
+    // The following part only includes UI code.
     case CustomRange:
       const prefixI18n = `${i18n}.DateTimePeriodPrefixs`;
       const typeI18n = `${i18n}.DateTimePeriodTypes`;

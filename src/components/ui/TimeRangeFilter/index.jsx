@@ -41,7 +41,7 @@ class TimeRangeFilter extends Component {
     console.warn(this.props);
     const {
       intl,
-      value,      
+      value,
       type,
       onChange,
       displayNum,
@@ -66,6 +66,7 @@ class TimeRangeFilter extends Component {
             displayNum={displayNum}
             type={type}
             onChange={onChange}
+            value={value}
           />
         </Col>
       </Row>
