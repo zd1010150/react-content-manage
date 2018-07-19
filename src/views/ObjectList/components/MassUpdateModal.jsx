@@ -108,7 +108,7 @@ class MassUpdateModal extends Component {
       tryFetchOptionsById(fieldId);
       this.setState({ lookupDisplayKey: lookup_own_field_name });
     } else if (crm_data_type === PickList) {
-      setOptions(column.picklists.data);
+      setOptions(column.picklists);
     }
 
     const selectData = data.find(findData => findData.id === selectedRowKeys[0]);
