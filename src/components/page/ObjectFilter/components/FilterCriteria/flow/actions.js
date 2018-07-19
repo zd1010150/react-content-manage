@@ -9,7 +9,6 @@ import {
   ADD_FILTER,
   REMOVE_FILTER,
   CHANGE_FILTER,
-
 } from './actionTypes';
 
 export const setFilters = data => ({
@@ -60,4 +59,3 @@ export const syncSiderSelection = checkedIds => ({
 export const insertSiderSelectionToField = $ => ({
   type: INSERT_SIDER_SELECTION,
 });
-

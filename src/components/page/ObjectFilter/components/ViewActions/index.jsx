@@ -9,7 +9,6 @@ import Enums from 'utils/EnumsManager';
 import { trySave, trySaveNew, tryDeleteView } from './flow/actions';
 
 const { PhantomId } = Enums;
-const { Lookup } = Enums.FieldTypes;
 
 
 const defaultProps = {
