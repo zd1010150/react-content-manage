@@ -101,7 +101,10 @@ class ViewActions extends Component {
         filter.value = filter.value.substring(0, filter.value.lastIndexOf(', '));
         return filter;
       }
-      return filter;
+      if (filter.type === Lookup && filter.value.slice(-1) === ',') {
+        filter.value = filter.value.substring(0, filter.value.lastIndexOf(','));
+        return filter;
+      }
     });
     this.props.setLookupValue({ currentFilter: newFilters });
   }
