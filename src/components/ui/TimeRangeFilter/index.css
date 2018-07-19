@@ -1,0 +1,11 @@
+.prefixBox {
+  max-width: 70px;
+  display: inline-block;
+}
+
+.rangeBox {
+  display: inline-block;
+  width: calc(100% - 140px);
+  padding: 0 8px;
+  min-width: 70px;
+}

@@ -53,13 +53,14 @@ const BaseEnums = Object.freeze({
   DateTimeSubTypes: Object.freeze({
     SpecificDate: 'SpecificDate',
     Range: 'Range',
-    CustomRange: 'CustomRange',
+    // TODO: This is comment out right now, but will eventually added as a feature in future.
+    // CustomRange: 'CustomRange',
   }),
 
   DateTimeRanges: Object.freeze({
     Today: 'Today',
-    ThisWeek: 'Week',
-    ThisMonth: 'Month',
+    ThisWeek: 'ThisWeek',
+    ThisMonth: 'ThisMonth',
   }),
 
   DateTimePeriodPrefixs: Object.freeze({

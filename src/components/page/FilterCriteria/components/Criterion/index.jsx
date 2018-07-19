@@ -44,7 +44,7 @@ const propTypes = {
 
 const Criterion = ({
   intl,
-  
+
   displayNum,
   fieldId,
   conditionId,
@@ -58,17 +58,18 @@ const Criterion = ({
   handleValueChange,
   handleAddonClick,
   handleFilterRemove,
+  handleTimeRangeChange,
 }) => {
   const { formatMessage } = intl;
   const valueCriteriaFieldProps = {
     displayNum,
     type,
+    value,
     handleValueChange,
     handleAddonClick,
-    value,
+    handleTimeRangeChange,
   };
 
-  const selectCls = `full-width ${fieldId === Enums.PhantomId}`
   return (
     <Row gutter={16} style={{ marginBottom: 10 }}>
       <Col {...sideColLayout} className={cx('displayNumCol')}>
@@ -99,9 +100,14 @@ const Criterion = ({
           value={conditionId === Enums.PhantomId ? '' : conditionId}
           onChange={conditionId => handleConditionChange(conditionId, displayNum)}
         >
-          {conditions.map(condition =>
-            <Option key={condition.id} value={condition.id}>{condition.display_value}</Option>
-          )}
+          {conditions.map(condition => (
+            <Option
+              key={condition.id}
+              value={condition.id}
+            >
+              {condition.display_value}
+            </Option>
+          ))}
         </Select>
         {conditionId === Enums.PhantomId && <ErrorText intlId="global.errors.inputRequired" />}
       </Col>

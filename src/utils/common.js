@@ -1,6 +1,10 @@
 import Enums from './EnumsManager';
 import { getStore } from 'utils/localStorage';
 
+const { FieldTypes } = Enums;
+const { DateOnly, DateTime } = FieldTypes;
+
+
 export const mapToAPIOrderStr = (order = 'ascend') => {
   return Enums.SortOrders[order];
 };
@@ -94,4 +98,13 @@ export const flattenTree = (tree, key) => {
   const flatTree = [];
   getFlatTree(tree, flatTree, key);
   return flatTree;
+};
+
+/**
+ * Check if field type is a data or date time type
+ * @param {string} type
+ */
+export const isDateRelatedType = (type) => {
+  if (_.isEmpty(type) || !_.isString(type)) return false;
+  return type === DateOnly || type === DateTime;
 };

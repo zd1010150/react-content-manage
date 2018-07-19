@@ -7,7 +7,7 @@
  * * 'Specific Date' allows user to choose a target date/datetime selected from calendar. A default functionality.
  * * 'Range' allows user to choose a quick range from 'TODAY', 'THIS WEEK', 'THIS MONTH' and maybe more in future.
  *   The result will be dynamically computed for users by each range.
- * * 'Custom Range' allows user to choose a customizable range by combining 'NEXT', 'LAST', a numeric value and one value from 'DAY', 'WEEK', 'MONTH'.
+ * * [FUTURE FEATURE] 'Custom Range' allows user to choose a customizable range by combining 'NEXT', 'LAST', a numeric value and one value from 'DAY', 'WEEK', 'MONTH'.
  *   e.g. NEXT 5 WEEKS. The result will be dynamically computed for users by each range.
  */
 
@@ -20,28 +20,32 @@ import Enums from 'utils/EnumsManager';
 import CombinedSelection from './CombinedSelection';
 
 const { DateTimeConfigs } = Enums;
-const { SubTypesInArray, Ranges } = DateTimeConfigs;
+const { SubTypesInArray } = DateTimeConfigs;
 const { Option } = Select;
 
 
 const defaultProps = {
-  activeSubType: SubTypesInArray[0],
 };
 const propTypes = {
   intl: intlShape.isRequired,
-  activeSubType: PropTypes.string,
+  // TODO: custom prop check on subtypesinarray
+  type: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 
 class TimeRangeFilter extends Component {
   componentDidMount() {}
 
-  _onSubTypeChange = (value) => {
-    console.log(value);
-  }
-
   render() {
-    const { intl, activeSubType } = this.props;
+    console.warn(this.props);
+    const {
+      intl,
+      value,      
+      type,
+      onChange,
+      displayNum,
+    } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui.DateTimeSubTypes';
 
@@ -51,17 +55,17 @@ class TimeRangeFilter extends Component {
           <Select
             className="full-width"
             size="small"
-            defaultValue={activeSubType}
-            onChange={this._onSubTypeChange}
+            onChange={subtype => onChange(displayNum, 'subtype', subtype)}
+            value={type}
           >
             {SubTypesInArray.map(st => <Option key={st} value={st}>{formatMessage({ id: `${i18n}.${st}` })}</Option>)}
           </Select>
         </Col>
         <Col lg={24} xl={18}>
           <CombinedSelection
-            // type="SpecificDate"
-            // type="Range"
-            type="CustomRange"
+            displayNum={displayNum}
+            type={type}
+            onChange={onChange}
           />
         </Col>
       </Row>

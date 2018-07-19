@@ -1,7 +1,7 @@
 import { get } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
 import { addToSelection, setAvailableFields } from '../components/FieldsSelection/flow/actions';
-import { setConditionLogic, setFilters } from '../components/FilterCriteria/flow/actions';
+import { setConditionLogic, setFilters, setAllFields } from '../components/FilterCriteria/flow/actions';
 import { setViewName } from '../components/ViewName/flow/actions';
 import { batchAddToSelection, setVisibilityOption } from '../components/ViewVisibility/flow/actions';
 import { RESET_VIEW } from './actionTypes';
@@ -15,7 +15,7 @@ const getFetchUrlById = (id, objectType) => {
 };
 
 
-export const resetView = $ => ({
+export const resetView = () => ({
   type: RESET_VIEW,
 });
 
@@ -47,6 +47,7 @@ export const fetchViewById = (
       // set section 2
       dispatch(setConditionLogic(condition_logic));
       dispatch(setFilters(filters.data));
+      dispatch(setAllFields(allFieldData));
       // set section 3
       dispatch(setAvailableFields(allFieldData));
       dispatch(addToSelection(selectors.data));
@@ -60,5 +61,6 @@ export const fetchViewById = (
     const { all_field } = json;
     const allFieldData = all_field.data;
     dispatch(setAvailableFields(allFieldData));
+    dispatch(setAllFields(allFieldData));
   }
 });

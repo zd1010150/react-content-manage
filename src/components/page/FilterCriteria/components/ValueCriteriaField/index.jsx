@@ -4,9 +4,7 @@ import moment from 'moment';
 import { Input, DatePicker, InputNumber, Icon } from 'antd';
 import { getTimeSetting } from 'utils/dateTimeUtils';
 import Enums from 'utils/EnumsManager';
-// TODO: remove testing code
 import { TimeRangeFilter } from 'components/ui/index';
-// TODO: ends
 
 const {
   DateOnly,
@@ -17,35 +15,44 @@ const {
   NumberInput,
   PickList,
   TextInput,
-  Display,
 } = Enums.FieldTypes;
 
-
+const defaultProps = {
+  handleAddonClick: null,
+  handleTimeRangeChange: null,
+  handleValueChange: null,
+};
 const propTypes = {
   displayNum: PropTypes.number.isRequired,
   type: PropTypes.oneOf(Enums.FieldTypesInArray).isRequired,
-  handleValueChange: PropTypes.func,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
   ]).isRequired,
+  handleAddonClick: PropTypes.func,
+  handleValueChange: PropTypes.func,
+  handleTimeRangeChange: PropTypes.func,
 };
 
-// TODO: replace the hardcoded date and datetime formats with user info
 const ValueCriteriaField = ({
   displayNum,
   type,
   handleValueChange,
   handleAddonClick,
+  handleTimeRangeChange,
   value,
 }) => {
-  
   switch (type) {
     case DateOnly:
     case DateTime:
       const timeSetting = getTimeSetting(type);
       return (
-        <TimeRangeFilter />
+        <TimeRangeFilter
+          displayNum={displayNum}
+          type={value.subtype}
+          value={value.value}
+          onChange={handleTimeRangeChange}
+        />
       );
       // return (
       //   <DatePicker
@@ -66,7 +73,7 @@ const ValueCriteriaField = ({
         <InputNumber
           className="full-width"
           size="small"
-          onChange={value => handleValueChange(value, displayNum)}
+          onChange={num => handleValueChange(num, displayNum)}
           value={value}
         />
       );
@@ -89,5 +96,6 @@ const ValueCriteriaField = ({
   }
 };
 
+ValueCriteriaField.defaultProps = defaultProps;
 ValueCriteriaField.propTypes = propTypes;
 export default ValueCriteriaField;
