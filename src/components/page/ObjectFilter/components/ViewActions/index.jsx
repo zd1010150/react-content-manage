@@ -96,16 +96,16 @@ class ViewActions extends Component {
   handleLookupValue = () => {
     const { objectView } = this.props;
     const currentFilter = objectView.filterCriteria.filters;
-    const newFilters = currentFilter.map(filter => {
-      if(filter.type === Lookup ) {
-        filter.value = filter.value.substring(0, filter.value.lastIndexOf(','));
-         return filter.value;
+    const newFilters = currentFilter.map((filter) => {
+      if (filter.type === Lookup && filter.value.slice(-2) === ', ') {
+        filter.value = filter.value.substring(0, filter.value.lastIndexOf(', '));
+        return filter;
       }
-      return filter.value;
+      return filter;
     });
-    this.props.setLookupValue(currentFilter.value: newFilters);
+    this.props.setLookupValue({ currentFilter: newFilters });
   }
-  
+
   saveClick = () => {
     const {
       model,

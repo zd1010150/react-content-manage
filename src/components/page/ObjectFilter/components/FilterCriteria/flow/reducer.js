@@ -36,9 +36,9 @@ const formatData = data => {
     if (crm_data_type === PickList) {
       extraProperties.options = picklists;
     }
-    if (crm_data_type === Lookup) {
+    if (crm_data_type === Lookup && value !== '') {
       extraProperties.options = [];
-      newValue = value.concat(',');
+      newValue = value.concat(', ');
     }
 
     return {
@@ -200,7 +200,10 @@ const filterCriteria = (state = initialState, action) => {
 
     case SET_LOOKUP_VALUE:
       const { newLookupFilters } = action.payload;
-      return Object.assign({}, state, newLookupFilters);
+      return {
+        ...state,
+        newLookupFilters,
+      };
 
     default:
       return state;

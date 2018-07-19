@@ -61,7 +61,7 @@ export const insertSiderSelectionToField = $ => ({
   type: INSERT_SIDER_SELECTION,
 });
 
-export const setLookupValue = newLookupFilters =>({
+export const setLookupValue = newLookupFilters => ({
   type: SET_LOOKUP_VALUE,
   payload: { newLookupFilters },
 });
