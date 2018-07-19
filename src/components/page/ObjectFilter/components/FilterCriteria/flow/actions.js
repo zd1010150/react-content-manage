@@ -9,7 +9,7 @@ import {
   ADD_FILTER,
   REMOVE_FILTER,
   CHANGE_FILTER,
-  SET_LOOKUP_VALUE,
+
 } from './actionTypes';
 
 export const setFilters = data => ({
@@ -61,7 +61,3 @@ export const insertSiderSelectionToField = $ => ({
   type: INSERT_SIDER_SELECTION,
 });
 
-export const setLookupValue = newLookupFilters => ({
-  type: SET_LOOKUP_VALUE,
-  payload: { newLookupFilters },
-});

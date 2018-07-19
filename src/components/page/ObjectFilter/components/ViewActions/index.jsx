@@ -7,7 +7,6 @@ import { withRouter, Link } from 'react-router-dom';
 import { PopDeleteConfirm } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
 import { trySave, trySaveNew, tryDeleteView } from './flow/actions';
-import { setLookupValue } from '../FilterCriteria/flow/actions';
 
 const { PhantomId } = Enums;
 const { Lookup } = Enums.FieldTypes;
@@ -89,27 +88,6 @@ class ViewActions extends Component {
   isMissingFieldOrConditionValue = data => data.every(record => (record.conditionId === PhantomId || record.fieldId === PhantomId))
 
   handleSaveClick = () => {
-    this.handleLookupValue();
-    this.saveClick();
-  }
-
-  handleLookupValue = () => {
-    const { objectView } = this.props;
-    const currentFilter = objectView.filterCriteria.filters;
-    const newFilters = currentFilter.map((filter) => {
-      if (filter.type === Lookup && filter.value.slice(-2) === ', ') {
-        filter.value = filter.value.substring(0, filter.value.lastIndexOf(', '));
-        return filter;
-      }
-      if (filter.type === Lookup && filter.value.slice(-1) === ',') {
-        filter.value = filter.value.substring(0, filter.value.lastIndexOf(','));
-        return filter;
-      }
-    });
-    this.props.setLookupValue({ currentFilter: newFilters });
-  }
-
-  saveClick = () => {
     const {
       model,
       objectType,
@@ -173,7 +151,6 @@ const mapDispatchToProps = {
   tryDeleteView,
   trySave,
   trySaveNew,
-  setLookupValue,
 };
 export default connect(
   mapStateToProps,

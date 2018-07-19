@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import Enums from 'utils/EnumsManager';
 import { toTimezone } from 'utils/dateTimeUtils';
-import { ADD_FILTER, CHANGE_FILTER, INSERT_SIDER_SELECTION, REMOVE_FILTER, RESET_VIEW, SET_CONDITION_LOGIC, SET_FILTERS, SET_SIDER_OPTIONS, SET_SIDER_SELECTION, SYNC_SIDER_SELECTION, SET_LOOKUP_VALUE } from './actionTypes';
+import { ADD_FILTER, CHANGE_FILTER, INSERT_SIDER_SELECTION, REMOVE_FILTER, RESET_VIEW, SET_CONDITION_LOGIC, SET_FILTERS, SET_SIDER_OPTIONS, SET_SIDER_SELECTION, SYNC_SIDER_SELECTION } from './actionTypes';
 import { getConditionLogic } from './utils';
 
 const {
@@ -36,9 +36,12 @@ const formatData = data => {
     if (crm_data_type === PickList) {
       extraProperties.options = picklists;
     }
-    if (crm_data_type === Lookup && value !== '') {
+    if (crm_data_type === Lookup) {
+      if (value !== '' && value.slice(-1) !== ',') {
+        extraProperties.options = [];
+        newValue = value.concat(', ');
+      }
       extraProperties.options = [];
-      newValue = value.concat(', ');
     }
 
     return {
@@ -197,13 +200,6 @@ const filterCriteria = (state = initialState, action) => {
 
     case RESET_VIEW:
       return initialState;
-
-    case SET_LOOKUP_VALUE:
-      const { newLookupFilters } = action.payload;
-      return {
-        ...state,
-        newLookupFilters,
-      };
 
     default:
       return state;
