@@ -253,12 +253,16 @@ const updateFieldAttr = (fields, fieldId, attr) => {
 };
 
 const changeFieldAttr = (state, {
-  sectionCode, fieldId, requiredValue, readOnlyValue,
+  sectionCode, fieldId, showValue,
 }) => state.map((section) => {
   if (section.code === sectionCode) {
-    return Object.assign({}, section, {
-      fields: updateFieldAttr(section.fields, fieldId, { pageRequired: requiredValue, pageReadonly: readOnlyValue }),
-    });
+    return {
+      ...section,
+      fields: updateFieldAttr(
+        section.fields, fieldId,
+        { pageRequired: showValue === 'required', pageReadonly: showValue === 'readOnly' },
+      ),
+    };
   }
   return section;
 });
