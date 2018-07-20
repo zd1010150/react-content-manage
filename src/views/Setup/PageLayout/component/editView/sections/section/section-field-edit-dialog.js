@@ -12,7 +12,7 @@ const RadioGroup = Radio.Group;
 
 class SectionFieldEditDialog extends React.Component {
   valueChange(e) {
-    this.props.setShowValue({ showValue: e.target.value });
+    this.props.setEditField({ showValue: e.target.value });
   }
   save() {
     const {
@@ -29,9 +29,7 @@ class SectionFieldEditDialog extends React.Component {
     const {
       isShow,
       fieldLabel,
-      requiredValue,
       requiredDisable,
-      readOnlyValue,
       readOnlyDisable,
       showValue,
     } = this.props.fieldEditDialog;

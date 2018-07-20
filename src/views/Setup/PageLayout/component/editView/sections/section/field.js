@@ -72,9 +72,7 @@ class field extends React.Component {
         fieldLabel: label,
         fieldId: id,
         sectionCode,
-        requiredValue: pageRequired,
         requiredDisable,
-        readOnlyValue: pageReadonly,
         readOnlyDisable,
         showValue: optionShowValue,
       });

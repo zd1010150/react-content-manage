@@ -27,7 +27,6 @@ import {
   deleteFromSection,
   setEditField,
   changeFieldAttr,
-  setShowValue,
 } from '../../../../flow/edit/action';
 
 const cx = classNames.bind(styles);
@@ -55,7 +54,6 @@ class ToolContainer extends React.Component {
       setEditField,
       fieldEditDialog,
       changeFieldAttr,
-      setShowValue,
     } = this.props;
     const { formatMessage } = intl;
     const theme = objTypeAndClassTypeMap[objectType];
@@ -109,7 +107,6 @@ class ToolContainer extends React.Component {
           fieldEditDialog={fieldEditDialog}
           setEditField={setEditField}
           changeFieldAttr={changeFieldAttr}
-          setShowValue={setShowValue}
         />
       </Panel>);
   }
@@ -148,7 +145,6 @@ const mapDispatchToProps = {
   deleteFromSection,
   setEditField,
   changeFieldAttr,
-  setShowValue,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ToolContainer));

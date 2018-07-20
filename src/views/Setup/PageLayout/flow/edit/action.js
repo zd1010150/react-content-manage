@@ -155,13 +155,3 @@ export const updateLayoutDetail = (id, name, structure, cb) => dispatch => patch
     cb();
   }
 });
-
-export const setShowValue = (args) => dispatch => {
-  const { showValue } = args;
-  if (showValue === 'readOnly') {
-    dispatch(setEditField({showValue, readOnlyValue: true, requiredValue: false}))
-  } else {
-    dispatch(setEditField({showValue, readOnlyValue: false, requiredValue: true}))
-  }
-};
-
