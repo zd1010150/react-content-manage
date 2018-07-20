@@ -1,5 +1,5 @@
-import FilterCriteria from './FilterCriteria';
+import FilterCriteria__REFACTORED from 'components/page/index';
 
 export {
-  FilterCriteria,
+  FilterCriteria__REFACTORED,
 };

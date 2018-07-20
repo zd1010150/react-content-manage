@@ -1,3 +1,17 @@
+/**
+ * FilterCriteria is a shared component, used in filter criteria section View page and Report page.
+ *
+ * @Date: 20th July 2018
+ * @Author: Ronan
+ * @Test Status: !Not tested.
+ * @Features:
+ * * User can add filter by choosing field, condition rule and related values.
+ * * All custom field types are supported.
+ * * One redux store is shared by all FilterCriteria instances.
+ * * Able to use filter's display num to apply complex rules. (AND/OR)
+ * * Easy to use time range filter with advanced functionalities.
+ *
+ */
 // import FilterCriteria from 'components/ui/index';
 import React, { Component, Fragment } from 'react';
 import { Row, Button, Icon } from 'antd';
