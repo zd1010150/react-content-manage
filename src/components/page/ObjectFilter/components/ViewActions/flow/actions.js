@@ -6,6 +6,7 @@ import { DONE } from './actionTypes';
 const {
   DateOnly,
   DateTime,
+  Lookup,
 } = Enums.FieldTypes;
 
 // Format redux to cater for API data format requirement
@@ -30,6 +31,13 @@ const mapDataToAPI = (objectType, data) => {
     let newValue = filter.value;
     if (type === DateOnly || type === DateTime) {
       newValue = toUtc(value, type === DateTime);
+    }
+    
+    if (type === Lookup) {
+      const moveValueSpace = value.trim();
+      if (moveValueSpace.slice(-1) === ',') {
+        newValue = value.substring(0, moveValueSpace.lastIndexOf(','));
+      }
     }
     return {
       id: fieldId,
