@@ -32,9 +32,14 @@ const mapDataToAPI = (objectType, data) => {
     if (type === DateOnly || type === DateTime) {
       newValue = toUtc(value, type === DateTime);
     }
-    const moveValueSpace = value.trim();
-    if (type === Lookup && moveValueSpace.slice(-1) === ',') {
-      newValue = value.substring(0, moveValueSpace.lastIndexOf(','));
+    
+    if (type === Lookup) {
+      const moveValueSpace = value.trim();
+      if (moveValueSpace.slice(-1) === ',') {
+        newValue = value.substring(0, moveValueSpace.lastIndexOf(','));
+      } else {
+        newValue = value;
+      }
     }
     return {
       id: fieldId,
