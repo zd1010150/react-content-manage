@@ -38,7 +38,6 @@ const formatData = data => {
     }
     if (crm_data_type === Lookup) {
       if (value !== '' && value.slice(-1) !== ',') {
-        extraProperties.options = [];
         newValue = value.concat(', ');
       }
       extraProperties.options = [];
