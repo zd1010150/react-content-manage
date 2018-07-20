@@ -37,8 +37,6 @@ const mapDataToAPI = (objectType, data) => {
       const moveValueSpace = value.trim();
       if (moveValueSpace.slice(-1) === ',') {
         newValue = value.substring(0, moveValueSpace.lastIndexOf(','));
-      } else {
-        newValue = value;
       }
     }
     return {
