@@ -25,6 +25,10 @@ const getFieldCls = (hasError) => {
   return `full-width ${errorCls}`;
 };
 
+
+const defaultProps = {
+  condition: '',
+};
 const propTypes = {
   intl: intlShape.isRequired,
   displayNum: PropTypes.number.isRequired,
@@ -32,7 +36,8 @@ const propTypes = {
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
-  ]),
+    PropTypes.object,
+  ]).isRequired,
   type: PropTypes.oneOf([
     ...Enums.FieldTypesInArray,
     '', // TODO: not best practice
@@ -124,5 +129,7 @@ const Criterion = ({
   );
 };
 
+
+Criterion.defaultProps = defaultProps;
 Criterion.propTypes = propTypes;
 export default injectIntl(Criterion);

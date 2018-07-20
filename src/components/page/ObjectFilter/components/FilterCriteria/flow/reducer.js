@@ -22,13 +22,15 @@ import {
   formatFields,
 } from './utils';
 
+const { FieldTypes, DateTimeConfigs } = Enums;
 const {
   DateOnly,
   DateTime,
   Lookup,
   PickList,
-} = Enums.FieldTypes;
-
+} = FieldTypes;
+const { SubTypes } = DateTimeConfigs;
+const { Range } = SubTypes;
 
 const formatData = (data) => {
   if (!_.isArray(data)) return [];
@@ -139,10 +141,11 @@ const filterCriteria = (state = initialState, action) => {
         fieldId,
         displayNum,
       } = action.payload;
+      // TODO: Refactor needed to cater for new requirements
       const filtersAfterChange = state.filters.map((filter) => {
-        if (filter.displayNum === displayNum) {
-          if (key === 'type') {
-            const meta = getFieldMeta(fieldId, state.fields);
+        if (filter.displayNum === displayNum) {          
+          const meta = getFieldMeta(fieldId, state.fields);
+          if (key === 'type') {            
             if (meta) {
               filter.fieldId = fieldId;
               filter.type = meta.type;
@@ -150,6 +153,12 @@ const filterCriteria = (state = initialState, action) => {
             }
           }
           filter[key] = value;
+          // case to lock condition to be equals when time range subtype is range
+          if (key === 'conditionId') {
+            if (_.isPlainObject(filter.value) && filter.value.subtype === Range) {
+              filter[key] = 'equals';
+            }
+          }
         }
         return filter;
       });

@@ -29,6 +29,8 @@ import ClientDetails from './ClientDetails/index';
 import Task from './Task/index';
 import Exceptions from './Exceptions/index';
 import Conversion from './Conversion/index';
+import ObjectView__REFACTORED from './ObjectView__REFACTORED/index';
+
 
 export {
   Dashboard,
@@ -60,4 +62,5 @@ export {
   Task,
   Exceptions,
   Conversion,
+  ObjectView__REFACTORED,
 };

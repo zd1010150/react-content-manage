@@ -14,7 +14,7 @@
 /* eslint-disable no-underscore-dangle */
 import { Col, Row, Select } from 'antd';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import Enums from 'utils/EnumsManager';
 import CombinedSelection from './CombinedSelection';
@@ -28,51 +28,48 @@ const defaultProps = {
 };
 const propTypes = {
   intl: intlShape.isRequired,
-  // TODO: custom prop check on subtypesinarray
+  // TODO: custom prop check for subtype and type
+  subtype: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
 };
 
 
-class TimeRangeFilter extends Component {
-  componentDidMount() {}
+const TimeRangeFilter = ({
+  intl,
+  value,
+  type,
+  subtype,
+  onChange,
+  displayNum,
+}) => {
+  const { formatMessage } = intl;
+  const i18n = 'global.ui.DateTimeSubTypes';
 
-  render() {
-    console.warn(this.props);
-    const {
-      intl,
-      value,
-      type,
-      onChange,
-      displayNum,
-    } = this.props;
-    const { formatMessage } = intl;
-    const i18n = 'global.ui.DateTimeSubTypes';
-
-    return (
-      <Row gutter={8}>
-        <Col lg={24} xl={6}>
-          <Select
-            className="full-width"
-            size="small"
-            onChange={subtype => onChange(displayNum, 'subtype', subtype)}
-            value={type}
-          >
-            {SubTypesInArray.map(st => <Option key={st} value={st}>{formatMessage({ id: `${i18n}.${st}` })}</Option>)}
-          </Select>
-        </Col>
-        <Col lg={24} xl={18}>
-          <CombinedSelection
-            displayNum={displayNum}
-            type={type}
-            onChange={onChange}
-            value={value}
-          />
-        </Col>
-      </Row>
-    );
-  }
-}
+  return (
+    <Row gutter={8}>
+      <Col lg={24} xl={6}>
+        <Select
+          className="full-width"
+          size="small"
+          onChange={st => onChange(displayNum, 'subtype', st)}
+          value={subtype}
+        >
+          {SubTypesInArray.map(st => <Option key={st} value={st}>{formatMessage({ id: `${i18n}.${st}` })}</Option>)}
+        </Select>
+      </Col>
+      <Col lg={24} xl={18}>
+        <CombinedSelection
+          displayNum={displayNum}
+          type={type}
+          subtype={subtype}
+          onChange={onChange}
+          value={value}
+        />
+      </Col>
+    </Row>
+  );
+};
 
 
 TimeRangeFilter.defaultProps = defaultProps;

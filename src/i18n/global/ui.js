@@ -108,6 +108,7 @@ export default {
       datepicker: '请选择日期',
       datetimepicker: '请选择时间',
       subject: '请从列表中选择或添加新的主题',
+      range: '请选择时间范围',
     },
     table: {
       action: '操作',
@@ -265,9 +266,10 @@ export default {
       inputIdNumber: 'Please input correct id number',
     },
     placeholders: {
-      datepicker: 'Please select a date',
-      datetimepicker: 'Please select a time',
-      subject: 'Please select or add a new value from the list',
+      datepicker: 'Select a date',
+      datetimepicker: 'Select a time',
+      subject: 'Select or add a new value from the list',
+      range: 'Select a range',
     },
     table: {
       action: 'Actions',

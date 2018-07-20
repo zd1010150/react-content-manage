@@ -16,6 +16,7 @@ const defaultProps = {};
 const propTypes = {
   intl: intlShape.isRequired,
   displayNum: PropTypes.number.isRequired,
+  subtype: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
@@ -25,6 +26,7 @@ const propTypes = {
 const CombinedSelection = ({
   intl,
   displayNum,
+  subtype,
   type,
   value,
   onChange,
@@ -38,7 +40,7 @@ const CombinedSelection = ({
     }
   };
 
-  switch (type) {
+  switch (subtype) {
     case SpecificDate:
       return (
         <AutoConvertedDatePicker
@@ -47,23 +49,12 @@ const CombinedSelection = ({
           onChange={handleDatePickerChange}
         />
       );
-      // return (
-      //   <DatePicker
-      //     className="full-width"
-      //     size="small"
-      //     // format={timeSetting.format}
-      //     // showTime={type === DateTime}
-      //     // onChange={(date, dateString) => handleValueChange(dateString, displayNum)}
-      //     // // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
-      //     // // In this way we can use string outside, and only convert to certain time format in reducer.
-      //     // value={moment(value, timeSetting.format).isValid() ? moment(value, timeSetting.format) : undefined}
-      //   />
-      // );
     case Range:
       const rangeI18n = `${i18n}.DateTimeRanges`;
       return (
         <Select
           className="full-width"
+          placeholder={formatMessage({ id: `${i18n}.placeholders.range` })}
           size="small"
           onChange={rg => onChange(displayNum, 'value', rg)}
         >

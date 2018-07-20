@@ -28,6 +28,7 @@ const propTypes = {
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
+    PropTypes.object,
   ]).isRequired,
   handleAddonClick: PropTypes.func,
   handleValueChange: PropTypes.func,
@@ -45,11 +46,11 @@ const ValueCriteriaField = ({
   switch (type) {
     case DateOnly:
     case DateTime:
-      const timeSetting = getTimeSetting(type);
       return (
         <TimeRangeFilter
           displayNum={displayNum}
-          type={value.subtype}
+          type={type}
+          subtype={value.subtype}
           value={value.value}
           onChange={handleTimeRangeChange}
         />
