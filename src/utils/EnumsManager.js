@@ -74,6 +74,22 @@ const BaseEnums = Object.freeze({
     Months: 'Months',
   }),
 
+  Conditions: Object.freeze({
+    StartsWith: 'starts_with',
+    Contains: 'contains',
+    Equals: 'equals',
+    NotEquals: 'not_equals',
+    NotContains: 'not_contains',
+    LessThan: 'less_than',
+    GreaterThan: 'greater_than',
+    LessOrEquals: 'less_or_equals',
+    GreaterOrEquals: 'greater_or_equals',
+    WithIn: 'within',
+    IsNull: 'is_null',
+    IsNotNull: 'is_not_null',
+    HasRelation: 'has_relation',
+  }),
+
 });
 
 const tableIntl = 'global.ui.table';
@@ -403,6 +419,7 @@ const EnumsManager = Object.freeze({
 
   }),
 
+  Conditions: BaseEnums.Conditions,
 });
 
 export default EnumsManager;

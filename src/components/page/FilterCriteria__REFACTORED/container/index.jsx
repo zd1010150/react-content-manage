@@ -1,5 +1,5 @@
 /**
- * FilterCriteria is a shared component, used in filter criteria section View page and Report page.
+ * FilterCriteria is a shared component, used in filter criteria section for both View page and Report page.
  *
  * @Date: 20th July 2018
  * @Author: Ronan
@@ -12,48 +12,49 @@
  * * Easy to use time range filter with advanced functionalities.
  *
  */
-// import FilterCriteria from 'components/ui/index';
 import React, { Component, Fragment } from 'react';
-import { Row, Button, Icon } from 'antd';
+import { Button, Icon } from 'antd';
 import { intlShape, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Criteria from '../components/Criteria';
 
 
 const defaultProps = {};
 const propTypes = {
   intl: intlShape.isRequired,
+  logic: PropTypes.string.isRequired,
 };
 
 class FilterCriteria extends Component {
-  componentDidMount() {}
+  handleAddFilterClick = () => {
+    console.log(`Adding a new filter`);
+    // TODO: dispatch action to add new filter
+    // this.props.addFilter();
+  }
 
-  // handleSiderChange = () => {}
-
-  // // Handle both field and condition changes
-  // handleFilterSelectChange = (displayNum, colName, newValue) => {}
-
-  // handleFilterValueChange = (displayNum) => {}
-
-  handleAddNewFilterClick = () => {}
-
-  handleLogicChange = () => {}
+  handleLogicChange = () => {
+    console.log(`Changing filter logic`);
+    // TODO: dispatch action to change filter logic text
+    // this.props.changeFilterLogic();
+  }
 
   render() {
-    const { intl } = this.props;
+    const { intl, logic } = this.props;
     const { formatMessage } = intl;
     const i18nPrefix = 'page.filterCriteria';
 
     return (
       <Fragment>
-        {/* Criterion component */}
-        <Row className="text-center">
-          <Button size="small" onClick={this.handleAddNewFilterClick}>
+        <Criteria />
+        <div className="text-center">
+          <Button size="small" onClick={this.handleAddFilterClick}>
             <Icon className="font-sm" type="plus" />
             {formatMessage({ id: `${i18nPrefix}.buttons.newFilter` })}
           </Button>
-        </Row>
+        </div>
         {/* Floating input component */}
+        {logic}
       </Fragment>
     );
   }
@@ -61,8 +62,9 @@ class FilterCriteria extends Component {
 
 FilterCriteria.defaultProps = defaultProps;
 FilterCriteria.propTypes = propTypes;
-const mapStateToProps = ({ global }) => ({
+const mapStateToProps = ({ global, FilterCriteria__REFACTORED }) => ({
   language: global.language,
+  logic: FilterCriteria__REFACTORED.conditionLogic,
 });
 const mapDispatchToProps = {
   

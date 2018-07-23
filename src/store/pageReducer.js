@@ -19,7 +19,9 @@ import attachment from 'views/ClientAttachments/flow/reducer';
 // test
 import multiDndFields from 'components/ui/MultiSelectDnD/flow/reducer';
 // test ends
-import objectView__refactored from 'views/ObjectView__REFACTORED/flow/reducer';
+
+import FilterCriteria__REFACTORED from 'components/page/FilterCriteria__REFACTORED/flow/reducer';
+import ObjectView__REFACTORED from 'views/ObjectView__REFACTORED/flow/reducer';
 
 export default {
   loginUser,
@@ -40,5 +42,6 @@ export default {
   convertDetails,
   convertStatus,
   attachment,
-  objectView__refactored,
+  FilterCriteria__REFACTORED,
+  ObjectView__REFACTORED,
 };

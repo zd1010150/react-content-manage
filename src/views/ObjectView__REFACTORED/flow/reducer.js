@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import filterCriteria from './reducers/filterCriteria';
+import name from './reducers/nameReducer';
 
 export default combineReducers({
-  filterCriteria,
+  name,
 });

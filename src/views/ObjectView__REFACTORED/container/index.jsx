@@ -9,7 +9,7 @@ class ObjectView__REFACTORED extends Component {
     const theme = 'lead';
     console.dir(ChildComponents);
     console.dir(Panel);
-    const A = ChildComponents['FilterCriteria'];
+    const A = ChildComponents['FilterCriteria__REFACTORED'];
     return (
       <Panel
         panelClasses={`${theme}-theme-panel`}

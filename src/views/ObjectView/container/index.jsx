@@ -7,12 +7,12 @@ const ObjectView = ({ match }) => {
   const { viewId, objectType } = match.params;
   return (
     <Fragment>
+      <ObjectView__REFACTORED />
       <ObjectFilter
         viewId={viewId}
         objectType={objectType}
       />
-      {/* <ObjectView__REFACTORED /> */}
-      <ObjectView__REFACTORED />
+      {/* <ObjectView__REFACTORED /> */}      
     </Fragment>
   );
 };

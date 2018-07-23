@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 /**
  * Condition Logic Reducer
  */
-const conditionLogic = (state = '', action) => {
+const conditionLogic = (state = 'default logic', action) => {
   switch (action.type) {
     default:
       return state;
@@ -14,9 +14,10 @@ const conditionLogic = (state = '', action) => {
  * Filter Criteria Reducer
  */
 const initialState = {
+  filters: [{ type: 'date' }],
 };
 
-const filterCriteria = (state = initialState, action) => {
+const criteria = (state = initialState, action) => {
   switch (action.type) {
     default:
       return state;
@@ -24,6 +25,6 @@ const filterCriteria = (state = initialState, action) => {
 };
 
 export default combineReducers({
-  filterCriteria,
+  criteria,
   conditionLogic,
 });
