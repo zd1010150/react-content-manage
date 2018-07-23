@@ -7,6 +7,20 @@ import {
   SETUP_LAYOUT_EDIT_FIELD,
 } from '../actionType';
 
+const setupLayoutEditField = (fieldEditDialog, payload) => {
+  if (payload.readOnlyDisable === false || payload.requiredDisable === false) {
+    return {
+      ...fieldEditDialog,
+      ...payload,
+      readOnlyDisable: payload.showValue[0] !== 'readOnly' && payload.showValue.length !== 0,
+      requiredDisable: payload.showValue[0] !== 'required' && payload.showValue.length !== 0,
+    };
+  }
+  return {
+    ...fieldEditDialog,
+    ...payload,
+  };
+};
 
 const ui = (state = {
   sectionAddEditDialog: {
@@ -24,7 +38,7 @@ const ui = (state = {
     sectionCode: '',
     requiredDisable: false,
     readOnlyDisable: false,
-    showValue: '',
+    showValue: [],
   },
   fieldCanDrop: true,
   currentTab: OPERATES[1],
@@ -39,7 +53,11 @@ const ui = (state = {
     case SETUP_LAYOUT_EDIT_SET_CURRENT_TAB:
       return Object.assign({}, state, { currentTab: payload.tab });
     case SETUP_LAYOUT_EDIT_FIELD:
-      return Object.assign({}, state, { fieldEditDialog: Object.assign({}, state.fieldEditDialog, { ...payload }) });
+      return {
+        ...state,
+        fieldEditDialog: setupLayoutEditField(state.fieldEditDialog, payload),
+      };
+      // Object.assign({}, state, { fieldEditDialog: Object.assign({}, state.fieldEditDialog, { ...payload }) });
     default:
       return state;
   }

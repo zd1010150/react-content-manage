@@ -259,8 +259,12 @@ const changeFieldAttr = (state, {
     return {
       ...section,
       fields: updateFieldAttr(
-        section.fields, fieldId,
-        { pageRequired: showValue === 'required', pageReadonly: showValue === 'readOnly' },
+        section.fields,
+        fieldId,
+        {
+          pageRequired: showValue[0] === 'required' && showValue.length !== 0,
+          pageReadonly: showValue[0] === 'readOnly' && showValue.length !== 0,
+        },
       ),
     };
   }

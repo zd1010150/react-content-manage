@@ -4,15 +4,19 @@ import PropTypes from 'prop-types';
 
 import { intlShape, injectIntl } from 'react-intl';
 import classNames from 'classnames/bind';
-import { Modal, Radio, Row, Col, Button } from 'antd';
+import { Modal, Checkbox, Row, Col, Button } from 'antd';
 import styles from '../../../../index.less';
 
 const cx = classNames.bind(styles);
-const RadioGroup = Radio.Group;
+const CheckboxGroup = Checkbox.Group;
 
 class SectionFieldEditDialog extends React.Component {
   valueChange(e) {
-    this.props.setEditField({ showValue: e.target.value });
+    this.props.setEditField({
+      showValue: e,
+      readOnlyDisable: e[0] !== 'readOnly' && e.length !== 0,
+      requiredDisable: e[0] !== 'required' && e.length !== 0,
+    });
   }
   save() {
     const {
@@ -33,6 +37,7 @@ class SectionFieldEditDialog extends React.Component {
       readOnlyDisable,
       showValue,
     } = this.props.fieldEditDialog;
+
     return (
       <Modal
         title={formatMessage({ id: 'page.layouts.editField' })}
@@ -46,14 +51,14 @@ class SectionFieldEditDialog extends React.Component {
         <Row>
           <Col span={22} offset={2}>
             <span className={classNames(cx('field-edit-dialog-label'), 'pr-lg')}>{fieldLabel}: </span>
-            <RadioGroup value={showValue} disabled={requiredDisable || readOnlyDisable} onChange={e => this.valueChange(e)}>
+            <CheckboxGroup value={showValue} onChange={e => this.valueChange(e)}>
               <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-                <Radio value='required'> required </Radio>
+                <Checkbox value="required" disabled={requiredDisable}> required </Checkbox>
               </span>
               <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-                <Radio value='readOnly'> read only </Radio>
+                <Checkbox value="readOnly" disabled={readOnlyDisable}> read only </Checkbox>
               </span>
-            </RadioGroup>
+            </CheckboxGroup>
           </Col>
         </Row>
       </Modal>

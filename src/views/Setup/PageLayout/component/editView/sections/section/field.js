@@ -66,7 +66,12 @@ class field extends React.Component {
       } = this.props;
       const requiredDisable = isSystem || isLayoutRequired;
       const readOnlyDisable = isSystem || isLayoutRequired;
-      const optionShowValue = pageReadonly ? 'readOnly' : 'required';
+      let optionShowValue = [];
+      if (pageReadonly === false && pageRequired === false) {
+        optionShowValue = [];
+      } else {
+        optionShowValue = pageReadonly ? ['readOnly'] : ['required'];
+      }
       setEditField({
         isShow: true,
         fieldLabel: label,
