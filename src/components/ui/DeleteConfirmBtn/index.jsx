@@ -19,14 +19,14 @@ const propTypes = {
 
 const DeleteConfirmButton = ({
   intl,
-  callbackValue,
   onConfirm,
   size,
   type,
+  placement,
 }) => {
   const _onConfirm = ($) => {
     if (_.isFunction(onConfirm)) {
-      onConfirm(callbackValue);
+      onConfirm();
     }
   };
 
@@ -45,11 +45,11 @@ const DeleteConfirmButton = ({
         <Button
           size={size}
         >
-          <Icon className={cx('deleteIcon')} size={size} type="delete" />
+          <Icon className="deleteIcon" size={size} type="delete" />
           {text}
         </Button>
       ) : (
-        <Icon className={cx('deleteIcon')} size={size} type="delete" />
+        <Icon className="deleteIcon" size={size} type="delete" />
       )}
     </Popconfirm>
   );
