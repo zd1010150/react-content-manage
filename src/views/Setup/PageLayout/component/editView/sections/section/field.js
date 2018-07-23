@@ -71,7 +71,7 @@ class field extends React.Component {
       const readOnlyDisable = isSystem || isLayoutRequired;
       let optionShowValue = [];
       if (pageReadonly === false && pageRequired === false) {
-        optionShowValue = [];
+        optionShowValue;
       } else {
         optionShowValue = pageReadonly ? [ReadOnly] : [Required];
       }

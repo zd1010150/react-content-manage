@@ -59,7 +59,6 @@ const ui = (state = {
         ...state,
         fieldEditDialog: setupLayoutEditField(state.fieldEditDialog, payload),
       };
-      // Object.assign({}, state, { fieldEditDialog: Object.assign({}, state.fieldEditDialog, { ...payload }) });
     default:
       return state;
   }

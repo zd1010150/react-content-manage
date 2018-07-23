@@ -13,10 +13,8 @@ const CheckboxGroup = Checkbox.Group;
 const { ReadOnly, Required } = Enums.EditViewType;
 
 class SectionFieldEditDialog extends React.Component {
-  valueChange(e) {
-    this.props.setEditField({
-      showValue: e,
-    });
+  valueChange(checkedValues) {
+    this.props.setEditField({ showValue: checkedValues });
   }
   save() {
     const {
