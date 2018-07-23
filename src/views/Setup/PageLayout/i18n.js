@@ -34,7 +34,7 @@ export default {
     saveAndNext: '保存并进行下一步',
     noMoudle: '还没有modules，拖动右面module 至此处',
     edit: {
-      required: '编辑',
+      required: '必填',
       readOnly: '只读',
     },
   },
