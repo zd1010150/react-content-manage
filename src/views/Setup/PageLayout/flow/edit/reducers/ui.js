@@ -1,3 +1,4 @@
+import Enums from 'utils/EnumsManager';
 import { OPERATES } from '../operateType';
 import {
   SETUP_LAYOUT_EDIT_TOGGLE_SECTION_ADD_EDIT_DIALOG,
@@ -7,6 +8,21 @@ import {
   SETUP_LAYOUT_EDIT_FIELD,
 } from '../actionType';
 
+const { ReadOnly, Required } = Enums.EditViewType;
+const setupLayoutEditField = (fieldEditDialog, payload) => {
+  if ((payload.readOnlyDisable && payload.requiredDisable) || payload.showValue === undefined) {
+    return {
+      ...fieldEditDialog,
+      ...payload,
+    };
+  }
+  return {
+    ...fieldEditDialog,
+    ...payload,
+    readOnlyDisable: payload.showValue.length !== 0 && payload.showValue[0] !== ReadOnly,
+    requiredDisable: payload.showValue.length !== 0 && payload.showValue[0] !== Required,
+  };
+};
 
 const ui = (state = {
   sectionAddEditDialog: {
@@ -24,7 +40,7 @@ const ui = (state = {
     sectionCode: '',
     requiredDisable: false,
     readOnlyDisable: false,
-    showValue: '',
+    showValue: [],
   },
   fieldCanDrop: true,
   currentTab: OPERATES[1],
@@ -39,7 +55,10 @@ const ui = (state = {
     case SETUP_LAYOUT_EDIT_SET_CURRENT_TAB:
       return Object.assign({}, state, { currentTab: payload.tab });
     case SETUP_LAYOUT_EDIT_FIELD:
-      return Object.assign({}, state, { fieldEditDialog: Object.assign({}, state.fieldEditDialog, { ...payload }) });
+      return {
+        ...state,
+        fieldEditDialog: setupLayoutEditField(state.fieldEditDialog, payload),
+      };
     default:
       return state;
   }

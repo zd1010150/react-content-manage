@@ -1,18 +1,20 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 import PropTypes from 'prop-types';
+import Enums from 'utils/EnumsManager';
 
 import { intlShape, injectIntl } from 'react-intl';
 import classNames from 'classnames/bind';
-import { Modal, Radio, Row, Col, Button } from 'antd';
+import { Modal, Checkbox, Row, Col, Button } from 'antd';
 import styles from '../../../../index.less';
 
 const cx = classNames.bind(styles);
-const RadioGroup = Radio.Group;
+const CheckboxGroup = Checkbox.Group;
+const { ReadOnly, Required } = Enums.EditViewType;
 
 class SectionFieldEditDialog extends React.Component {
-  valueChange(e) {
-    this.props.setEditField({ showValue: e.target.value });
+  valueChange(checkedValues) {
+    this.props.setEditField({ showValue: checkedValues });
   }
   save() {
     const {
@@ -33,6 +35,7 @@ class SectionFieldEditDialog extends React.Component {
       readOnlyDisable,
       showValue,
     } = this.props.fieldEditDialog;
+
     return (
       <Modal
         title={formatMessage({ id: 'page.layouts.editField' })}
@@ -46,14 +49,14 @@ class SectionFieldEditDialog extends React.Component {
         <Row>
           <Col span={22} offset={2}>
             <span className={classNames(cx('field-edit-dialog-label'), 'pr-lg')}>{fieldLabel}: </span>
-            <RadioGroup value={showValue} disabled={requiredDisable || readOnlyDisable} onChange={e => this.valueChange(e)}>
+            <CheckboxGroup value={showValue} onChange={checkedValues => this.valueChange(checkedValues)}>
               <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-                <Radio value='required'> required </Radio>
+                <Checkbox value={Required} disabled={requiredDisable}> {formatMessage({ id: 'page.layouts.edit.required' })} </Checkbox>
               </span>
               <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-                <Radio value='readOnly'> read only </Radio>
+                <Checkbox value={ReadOnly} disabled={readOnlyDisable}> {formatMessage({ id: 'page.layouts.edit.readOnly' })} </Checkbox>
               </span>
-            </RadioGroup>
+            </CheckboxGroup>
           </Col>
         </Row>
       </Modal>
