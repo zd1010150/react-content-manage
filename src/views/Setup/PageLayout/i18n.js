@@ -33,6 +33,10 @@ export default {
     createNewPageLayout: '创建新布局',
     saveAndNext: '保存并进行下一步',
     noMoudle: '还没有modules，拖动右面module 至此处',
+    edit: {
+      required: '编辑',
+      readOnly: '只读',
+    },
   },
   en: {
     layoutDetail: '{type} Detail',
@@ -68,5 +72,9 @@ export default {
     createNewPageLayout: 'Create New Page Layout',
     saveAndNext: 'Save and Next',
     noMoudle: 'There is no module，dragging module in the left to here',
+    edit: {
+      required: 'Required',
+      readOnly: 'Read Only',
+    },
   },
 };

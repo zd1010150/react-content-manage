@@ -19,8 +19,8 @@ const setupLayoutEditField = (fieldEditDialog, payload) => {
   return {
     ...fieldEditDialog,
     ...payload,
-    readOnlyDisable: payload.showValue[0] !== ReadOnly && payload.showValue.length !== 0,
-    requiredDisable: payload.showValue[0] !== Required && payload.showValue.length !== 0,
+    readOnlyDisable: payload.showValue.length !== 0 && payload.showValue[0] !== ReadOnly,
+    requiredDisable: payload.showValue.length !== 0 && payload.showValue[0] !== Required,
   };
 };
 

@@ -49,12 +49,12 @@ class SectionFieldEditDialog extends React.Component {
         <Row>
           <Col span={22} offset={2}>
             <span className={classNames(cx('field-edit-dialog-label'), 'pr-lg')}>{fieldLabel}: </span>
-            <CheckboxGroup value={showValue} onChange={e => this.valueChange(e)}>
+            <CheckboxGroup value={showValue} onChange={checkedValues => this.valueChange(checkedValues)}>
               <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-                <Checkbox value={Required} disabled={requiredDisable}> required </Checkbox>
+                <Checkbox value={Required} disabled={requiredDisable}> {formatMessage({ id: 'page.layouts.edit.required' })} </Checkbox>
               </span>
               <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-                <Checkbox value={ReadOnly} disabled={readOnlyDisable}> read only </Checkbox>
+                <Checkbox value={ReadOnly} disabled={readOnlyDisable}> {formatMessage({ id: 'page.layouts.edit.readOnly' })} </Checkbox>
               </span>
             </CheckboxGroup>
           </Col>
