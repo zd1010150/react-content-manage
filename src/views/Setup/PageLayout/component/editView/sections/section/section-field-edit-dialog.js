@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 import PropTypes from 'prop-types';
+import Enums from 'utils/EnumsManager';
 
 import { intlShape, injectIntl } from 'react-intl';
 import classNames from 'classnames/bind';
@@ -9,13 +10,12 @@ import styles from '../../../../index.less';
 
 const cx = classNames.bind(styles);
 const CheckboxGroup = Checkbox.Group;
+const { ReadOnly, Required } = Enums.EditViewType;
 
 class SectionFieldEditDialog extends React.Component {
   valueChange(e) {
     this.props.setEditField({
       showValue: e,
-      readOnlyDisable: e[0] !== 'readOnly' && e.length !== 0,
-      requiredDisable: e[0] !== 'required' && e.length !== 0,
     });
   }
   save() {
@@ -53,10 +53,10 @@ class SectionFieldEditDialog extends React.Component {
             <span className={classNames(cx('field-edit-dialog-label'), 'pr-lg')}>{fieldLabel}: </span>
             <CheckboxGroup value={showValue} onChange={e => this.valueChange(e)}>
               <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-                <Checkbox value="required" disabled={requiredDisable}> required </Checkbox>
+                <Checkbox value={Required} disabled={requiredDisable}> required </Checkbox>
               </span>
               <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-                <Checkbox value="readOnly" disabled={readOnlyDisable}> read only </Checkbox>
+                <Checkbox value={ReadOnly} disabled={readOnlyDisable}> read only </Checkbox>
               </span>
             </CheckboxGroup>
           </Col>

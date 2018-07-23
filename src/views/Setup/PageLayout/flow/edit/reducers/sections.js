@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign,max-len */
 
-
+import Enums from 'utils/EnumsManager';
 import _ from 'lodash';
 import { labelToCode } from 'utils/string';
 import {
@@ -15,6 +15,8 @@ import {
   SETUP_LAYOUT_CHANGE_FIELD_ATTR,
 } from '../actionType';
 import { DEFAULT_SECTION_CODE } from '../config';
+
+const { ReadOnly, Required } = Enums.EditViewType;
 
 const getRowsAndCols = (section) => {
   let rows = 0;
@@ -262,8 +264,8 @@ const changeFieldAttr = (state, {
         section.fields,
         fieldId,
         {
-          pageRequired: showValue[0] === 'required' && showValue.length !== 0,
-          pageReadonly: showValue[0] === 'readOnly' && showValue.length !== 0,
+          pageRequired: showValue[0] === Required,
+          pageReadonly: showValue[0] === ReadOnly,
         },
       ),
     };

@@ -364,6 +364,11 @@ const EnumsManager = Object.freeze({
     TimeFormatKey: 'timeFormat',
   }),
 
+  EditViewType: Object.freeze({
+    ReadOnly: 'readOnly',
+    Required: 'required',
+  }),
+
 });
 
 export default EnumsManager;

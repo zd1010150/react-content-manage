@@ -2,11 +2,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getEmptyImage } from 'react-dnd-html5-backend';
+import Enums from 'utils/EnumsManager';
 import { DragSource } from 'react-dnd';
 import { Icon, Modal, Checkbox } from 'antd';
 import classNames from 'classnames/bind';
 import { ItemTypes } from '../../../../flow/edit/itemType';
 import styles from '../../../../index.less';
+
+const { ReadOnly, Required } = Enums.EditViewType;
 
 const cx = classNames.bind(styles);
 const fieldSource = {
@@ -70,7 +73,7 @@ class field extends React.Component {
       if (pageReadonly === false && pageRequired === false) {
         optionShowValue = [];
       } else {
-        optionShowValue = pageReadonly ? ['readOnly'] : ['required'];
+        optionShowValue = pageReadonly ? [ReadOnly] : [Required];
       }
       setEditField({
         isShow: true,

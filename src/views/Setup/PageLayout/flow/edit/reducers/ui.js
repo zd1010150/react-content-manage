@@ -1,3 +1,4 @@
+import Enums from 'utils/EnumsManager';
 import { OPERATES } from '../operateType';
 import {
   SETUP_LAYOUT_EDIT_TOGGLE_SECTION_ADD_EDIT_DIALOG,
@@ -7,18 +8,19 @@ import {
   SETUP_LAYOUT_EDIT_FIELD,
 } from '../actionType';
 
+const { ReadOnly, Required } = Enums.EditViewType;
 const setupLayoutEditField = (fieldEditDialog, payload) => {
-  if (payload.readOnlyDisable === false || payload.requiredDisable === false) {
+  if ((payload.readOnlyDisable && payload.requiredDisable) || payload.showValue === undefined) {
     return {
       ...fieldEditDialog,
       ...payload,
-      readOnlyDisable: payload.showValue[0] !== 'readOnly' && payload.showValue.length !== 0,
-      requiredDisable: payload.showValue[0] !== 'required' && payload.showValue.length !== 0,
     };
   }
   return {
     ...fieldEditDialog,
     ...payload,
+    readOnlyDisable: payload.showValue[0] !== ReadOnly && payload.showValue.length !== 0,
+    requiredDisable: payload.showValue[0] !== Required && payload.showValue.length !== 0,
   };
 };
 
