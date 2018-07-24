@@ -14,8 +14,9 @@ const mainColLayout = {
 
 
 const defaultProps = {
-  availableFields: [],
-  conditionDisabled: false,
+  fieldId: null,
+  conditionId: null,
+  shouldConditionDisabled: false,
   onFilterFieldChange: null,
   onFilterConditionChange: null,
   onFilterValueChange: null,
@@ -23,13 +24,28 @@ const defaultProps = {
   onSiderChange: null,
 };
 const propTypes = {
-  // TODO: add more check with shape of to availables
-  availableFields: PropTypes.array,
-  availableConditions: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    display_value: PropTypes.string,
+  // TODO: Put the complex prop check into util file and apply more strict rules.
+  displayNum: PropTypes.number.isRequired,
+  fieldId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  conditionId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  availableFields: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    lookupKey: PropTypes.string.isRequired,
   })).isRequired,
-  conditionDisabled: PropTypes.bool,
+  availableConditions: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    display_value: PropTypes.string.isRequired,
+  })).isRequired,
+  shouldConditionDisabled: PropTypes.bool,
   onFilterFieldChange: PropTypes.func,
   onFilterConditionChange: PropTypes.func,
   onFilterValueChange: PropTypes.func,
@@ -39,57 +55,63 @@ const propTypes = {
 
 const Criterion = ({
   displayNum,
+  fieldId,
+  conditionId,
   availableFields,
   availableConditions,
-  conditionDisabled,
+  shouldConditionDisabled,
   // Handlers
   onFilterFieldChange,
   onFilterConditionChange,
   onFilterValueChange,
   onFilterDeleteClick,
   onSiderChange,
-}) => {
-  return (
-    <div className={cx('row')}>
-      {/* Display Num Col */}
-      <div className={cx('numCol')}>{displayNum}</div>
-      <Row className={cx('mainCol')} gutter={16}>
-        {/* Field Col */}
-        <Col {...mainColLayout}>
-          <Select
-            className="full-width"
-            onChange={onFilterFieldChange}
-          >
-            {availableFields.map(f => (
-              <Option key={f} value={f}>{f.label}</Option>
-            ))}
-          </Select>
-        </Col>
-        {/* Condition Col */}
-        <Col {...mainColLayout}>
-          <Select
-            disabled={conditionDisabled}
-            className="full-width"
-            onChange={onFilterConditionChange}
-          >
-            {availableConditions.map(c => (
-              <Option key={c.id} value={c.id}>{c.display_value}</Option>
-            ))}
-          </Select>
-        </Col>
-        {/* Value Col */}
-      </Row>
-      {/* Action Col */}
-      <div className={cx('actionCol')}>
-        <DeleteConfirmButton
+}) => (
+  <div className={`${cx('row')} mb-md`}>
+    {/* Display Num Col */}
+    <div className={`${cx('numCol')} text-center`}>{displayNum}</div>
+    {/* Main Col */}
+    <Row className={cx('mainCol')} gutter={16}>
+      {/* Field Col */}
+      <Col {...mainColLayout}>
+        <Select
           size="small"
-          placement="right"
-          onConfirm={e => onFilterDeleteClick(e)}
-        />
-      </div>
+          className="full-width"
+          value={fieldId}
+          onChange={onFilterFieldChange}
+        >
+          {availableFields.map(af => (
+            <Option key={af.id} value={af.id}>{af.label}</Option>
+          ))}
+        </Select>
+      </Col>
+      {/* Condition Col */}
+      <Col {...mainColLayout}>
+        <Select
+          size="small"
+          disabled={shouldConditionDisabled}
+          className="full-width"
+          value={conditionId}
+          onChange={onFilterConditionChange}
+        >
+          {availableConditions.map(ac => (
+            <Option key={ac.id} value={ac.id}>{ac.display_value}</Option>
+          ))}
+        </Select>
+      </Col>
+      {/* Value Col */}
+      <Col {...mainColLayout} />
+    </Row>
+    {/* Action Col */}
+    <div className={cx('actionCol')}>
+      <DeleteConfirmButton
+        size="small"
+        placement="right"
+        onConfirm={onFilterDeleteClick}
+      />
     </div>
-  );
-};
+  </div>
+);
 
 Criterion.defaultProps = defaultProps;
 Criterion.propTypes = propTypes;

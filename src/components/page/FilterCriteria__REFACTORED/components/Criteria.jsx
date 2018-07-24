@@ -7,43 +7,87 @@ import { Criterion } from 'components/ui/index';
 import { connect } from 'react-redux';
 import CriteriaHeader from './CriteriaHeader';
 import { getConditionsByFieldType, shouldDisableCondition } from '../utils/compUtils';
+import { setCriterionByColumn, removeCriterionByDisplayNum } from '../flow/actions';
 
-const defaultProps = {};
+
+const defaultProps = {
+  setCriterionByColumn: null,
+};
 const propTypes = {
-  // TODO: replace with array of shape of
-  filters: PropTypes.array.isRequired,
+  criteria: PropTypes.arrayOf(PropTypes.shape({
+    displayNum: PropTypes.number.isRequired,
+    fieldId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    conditionId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    value: PropTypes.string,
+    field: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      lookupKey: PropTypes.string.isRequired,
+    }),
+    options: PropTypes.array,
+    subtype: PropTypes.string,
+    rangeValue: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
+  })).isRequired,
+  fields: PropTypes.array.isRequired,
+  setCriterionByColumn: PropTypes.func,
 };
 
 class Criteria extends Component {
-  // TODO: add actuall handlers
-  // Handle both field and condition changes
+  // TODO: clean up
   handleFilterFieldChange = (displayNum, newValue) => {
-    console.log(`${displayNum} -=- ${newValue}`);
+    console.log(`field change ${displayNum} -=- ${newValue}`);
+    this.props.setCriterionByColumn('field', displayNum, newValue);
   }
   handleFilterConditionChange = (displayNum, newValue) => {
-    console.log(`${displayNum} -=- ${newValue}`);
+    console.log(`condition change ${displayNum} -=- ${newValue}`);
+    this.props.setCriterionByColumn('condition', displayNum, newValue);
   }
   handleFilterValueChange = (displayNum) => {}
-  handleFilterDeleteClick = (displayNum) => {}
-  handleSiderChange = () => {}  
+  handleFilterDeleteClick = (displayNum) => {
+    console.log(`deleting -=- ${displayNum}`);
+    this.props.removeCriterionByDisplayNum(displayNum);
+  }
+  handleSiderChange = () => {}
 
   render() {
-    const { filters, conditions } = this.props;
+    const { criteria, conditions, fields } = this.props;
     return (
       <Fragment>
         <CriteriaHeader />
-        {filters.map(c => (
+        {criteria.map(c => (
           <Criterion
-            // TODO: replace with c.displayNum
-            key={c}
-            availableFields={undefined}
-            availableConditions={getConditionsByFieldType(c.type, conditions)}
+            // Basic data
+            key={c.displayNum}
+            displayNum={c.displayNum}
+            fieldId={c.fieldId}
+            conditionId={c.conditionId}
+            shouldConditionDisabled={shouldDisableCondition(c.subtype)}
+            availableFields={fields}
+            availableConditions={getConditionsByFieldType(
+              c.field ? c.field.type : null,
+              conditions,
+            )}
+            // Handlers
             onFilterFieldChange={newValue => this.handleFilterFieldChange(c.displayNum, newValue)}
             onFilterConditionChange={newValue => this.handleFilterConditionChange(c.displayNum, newValue)}
             onFilterValueChange={() => this.handleFilterValueChange()}
-            onFilterDeleteClick={() => this.handleFilterDeleteClick()}
+            onFilterDeleteClick={() => this.handleFilterDeleteClick(c.displayNum)}
             onSiderChange={() => this.handleSiderChange()}
-            conditionDisabled={shouldDisableCondition()}
+            // NOTES:
+            // This prop is used by the value column component, because it contains complex business logic,
+            // so we pass data to it, and let it handle more complex behavior by itself.
+            record={c}
           />
         ))}
       </Fragment>
@@ -56,9 +100,13 @@ Criteria.propTypes = propTypes;
 const mapStateToProps = ({ global, FilterCriteria__REFACTORED }) => ({
   language: global.language,
   conditions: global.settings.conditions,
-  filters: FilterCriteria__REFACTORED.criteria.filters,
+  criteria: FilterCriteria__REFACTORED.criteria.criteria,
+  fields: FilterCriteria__REFACTORED.criteria.fields,
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setCriterionByColumn,
+  removeCriterionByDisplayNum,
+};
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

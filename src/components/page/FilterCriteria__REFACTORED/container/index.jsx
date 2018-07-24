@@ -18,6 +18,7 @@ import { intlShape, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Criteria from '../components/Criteria';
+import { addCriterion } from '../flow/actions';
 
 
 const defaultProps = {};
@@ -27,11 +28,7 @@ const propTypes = {
 };
 
 class FilterCriteria extends Component {
-  handleAddFilterClick = () => {
-    console.log(`Adding a new filter`);
-    // TODO: dispatch action to add new filter
-    // this.props.addFilter();
-  }
+  handleAddFilterClick = () => this.props.addCriterion()
 
   handleLogicChange = () => {
     console.log(`Changing filter logic`);
@@ -67,7 +64,7 @@ const mapStateToProps = ({ global, FilterCriteria__REFACTORED }) => ({
   logic: FilterCriteria__REFACTORED.conditionLogic,
 });
 const mapDispatchToProps = {
-  
+  addCriterion,
 };
 export default connect(
   mapStateToProps,

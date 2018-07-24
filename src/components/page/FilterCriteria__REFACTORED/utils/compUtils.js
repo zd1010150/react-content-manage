@@ -70,8 +70,11 @@ const getConditionIdsByType = (type) => {
 };
 
 export const getConditionsByFieldType = (type, conditions) => {
-  if (_.isEmpty(conditions) || !_.isArray(conditions)) return [];
-  if (_.isEmpty(type)) return conditions;
+  if (_.isEmpty(conditions)
+      || !_.isArray(conditions)
+      || _.isEmpty(type)) {
+    return [];
+  }
 
   const conditionIds = getConditionIdsByType(type);
   return conditions.filter(c => conditionIds.indexOf(c.id) > -1);
