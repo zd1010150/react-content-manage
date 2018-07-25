@@ -21,7 +21,6 @@ import DetailsToolbar from './DetailsToolbar/index';
 import DetailsSubpanels from './DetailsSubpanels/index';
 import ConvertDetails from './ConvertDetails/index';
 import FilterCriteria__REFACTORED from './FilterCriteria__REFACTORED/index';
-import ValueColumn__REFACTORED from './ValueColumn__REFACTORED/index';
 
 export {
   TopPanel,
@@ -47,5 +46,4 @@ export {
   DetailsSubpanels,
   ConvertDetails,
   FilterCriteria__REFACTORED,
-  ValueColumn__REFACTORED,
 };
