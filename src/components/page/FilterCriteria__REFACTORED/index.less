@@ -1,14 +1,12 @@
 .firstCol,
-.mainCol,
 .lastCol {
+  width: 80px;
   display: inline-block;
 }
 
-.firstCol,
-.lastCol {
-  width: 80px;
-}
-
-.mainCol {
-  width: ~'calc(100% - 160px)';
+.row {
+  .mainCol {
+    display: inline-block;
+    width: ~'calc(100% - 160px)';
+  }
 }

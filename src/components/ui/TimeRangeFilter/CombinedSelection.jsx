@@ -12,20 +12,20 @@ const { SpecificDate, Range, CustomRange } = SubTypes;
 const { Option } = Select;
 
 
-const defaultProps = {};
+const defaultProps = {
+  onChange: null,
+};
 const propTypes = {
   intl: intlShape.isRequired,
-  displayNum: PropTypes.number.isRequired,
   subtype: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
 };
 
 
 const CombinedSelection = ({
   intl,
-  displayNum,
   subtype,
   type,
   value,
@@ -34,19 +34,13 @@ const CombinedSelection = ({
   const { formatMessage } = intl;
   const i18n = 'global.ui';
 
-  const handleDatePickerChange = (date, dateString) => {
-    if (_.isFunction(onChange)) {
-      onChange(displayNum, 'value', dateString);
-    }
-  };
-
   switch (subtype) {
     case SpecificDate:
       return (
         <AutoConvertedDatePicker
           type={type}
           value={value}
-          onChange={handleDatePickerChange}
+          onChange={(date, dateString) => onChange(dateString)}
         />
       );
     case Range:
@@ -56,7 +50,7 @@ const CombinedSelection = ({
           className="full-width"
           placeholder={formatMessage({ id: `${i18n}.placeholders.range` })}
           size="small"
-          onChange={rg => onChange(displayNum, 'value', rg)}
+          onChange={onChange}
         >
           {RangesInArray.map(rg => <Option key={rg} value={rg}>{formatMessage({ id: `${rangeI18n}.${rg}` })}</Option>)}
         </Select>

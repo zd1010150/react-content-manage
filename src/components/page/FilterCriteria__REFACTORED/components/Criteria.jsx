@@ -6,8 +6,9 @@ import PropTypes from 'prop-types';
 import { Criterion } from 'components/ui/index';
 import { connect } from 'react-redux';
 import CriteriaHeader from './CriteriaHeader';
-import { getConditionsByFieldType, shouldDisableCondition } from '../utils/compUtils';
+import { getConditionsByFieldType, shouldConditionDisabled } from '../utils/compUtils';
 import { setCriterionByColumn, removeCriterionByDisplayNum } from '../flow/actions';
+import ValueColumn from './ValueColumn';
 
 
 const defaultProps = {
@@ -53,12 +54,17 @@ class Criteria extends Component {
     console.log(`condition change ${displayNum} -=- ${newValue}`);
     this.props.setCriterionByColumn('condition', displayNum, newValue);
   }
-  handleFilterValueChange = (displayNum) => {}
+  handleFilterValueChange = (displayNum, newValue, newSubtype) => {
+    console.log(`value change ${displayNum} -=- ${newValue} -=- ${newSubtype}`);
+    this.props.setCriterionByColumn('value', displayNum, newValue, newSubtype);
+  }
   handleFilterDeleteClick = (displayNum) => {
     console.log(`deleting -=- ${displayNum}`);
     this.props.removeCriterionByDisplayNum(displayNum);
   }
-  handleSiderChange = () => {}
+  handleSearchIconClick = (displayNum) => {
+    console.log(`icon clicked -=- ${displayNum}`);
+  }
 
   render() {
     const { criteria, conditions, fields } = this.props;
@@ -67,28 +73,30 @@ class Criteria extends Component {
         <CriteriaHeader />
         {criteria.map(c => (
           <Criterion
-            // Basic data
             key={c.displayNum}
             displayNum={c.displayNum}
             fieldId={c.fieldId}
             conditionId={c.conditionId}
-            shouldConditionDisabled={shouldDisableCondition(c.subtype)}
+            shouldConditionDisabled={shouldConditionDisabled(c.subtype)}
             availableFields={fields}
             availableConditions={getConditionsByFieldType(
               c.field ? c.field.type : null,
               conditions,
             )}
-            // Handlers
+
             onFilterFieldChange={newValue => this.handleFilterFieldChange(c.displayNum, newValue)}
-            onFilterConditionChange={newValue => this.handleFilterConditionChange(c.displayNum, newValue)}
-            onFilterValueChange={() => this.handleFilterValueChange()}
+            onFilterConditionChange={newValue => this.handleFilterConditionChange(c.displayNum, newValue)}            
             onFilterDeleteClick={() => this.handleFilterDeleteClick(c.displayNum)}
-            onSiderChange={() => this.handleSiderChange()}
-            // NOTES:
-            // This prop is used by the value column component, because it contains complex business logic,
-            // so we pass data to it, and let it handle more complex behavior by itself.
-            record={c}
-          />
+          >
+            <ValueColumn
+              onSearchIconClick={() => this.handleSearchIconClick(c.displayNum)}
+              onValueChange={(newSubtype, newValue) => this.handleFilterValueChange(c.displayNum, newValue, newSubtype)}
+              // NOTES:
+              // This prop is used by the ValueColumn component, because it contains complex business logic,
+              // so we pass data to it, and let it handle more complex behavior by itself.
+              record={c}
+            />
+          </Criterion>
         ))}
       </Fragment>
     );

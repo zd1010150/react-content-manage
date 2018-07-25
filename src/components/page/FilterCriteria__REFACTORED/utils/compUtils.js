@@ -1,6 +1,6 @@
 import Enums from 'utils/EnumsManager';
 
-const { FieldTypes, Conditions } = Enums;
+const { FieldTypes, Conditions, DateTimeConfigs } = Enums;
 const {
   DateOnly,
   DateTime,
@@ -26,6 +26,8 @@ const {
   IsNotNull,
   HasRelation,
 } = Conditions;
+const { SubTypes } = DateTimeConfigs;
+const { Range } = SubTypes;
 
 const getConditionIdsByType = (type) => {
   // Type and Conditions mapping please refer to http://c7git.acy.svr/LogixCRM/fe_logix_crm/issues/176
@@ -88,7 +90,7 @@ export const getConditionsByFieldType = (type, conditions) => {
  * This is just a temporary rule applied in this part.
  * We have feature that allow more conditions to work with 'Range' filter. So if changed, this functionality should be removed.
  */
-// TODO: finish this function.
-export const shouldDisableCondition = (subtype) => {
+export const shouldConditionDisabled = (subtype) => {
+  if (subtype === Range) return true;
   return false;
 };

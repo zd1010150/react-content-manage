@@ -22,7 +22,7 @@ const CriteriaHeader = ({
   const i18n = 'page.FilterCriteria__REFACTORED';
 
   return (
-    <Row>
+    <Row className={cx('row')}>
       <div className={cx('firstCol')} />
       <Row className={cx('mainCol')}>
         <Col {...mainColLayout} className="required">

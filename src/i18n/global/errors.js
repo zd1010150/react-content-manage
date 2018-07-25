@@ -16,6 +16,7 @@ export default {
     returnDashboard: '返回Dashboard',
     notFound: '404未找到此页面！',
     exceedMaximumLength: '至少一个字段超出长度要求！',
+    fieldColRequired: '请先从左侧选择字段！',
   },
   en: {
     NO_AUTHENTICATION: 'No authentication to access this page!',
@@ -34,5 +35,6 @@ export default {
     returnDashboard: 'Return to Dashboard',
     notFound: '404 Page Not Found!',
     exceedMaximumLength: 'At least one field has exceeded maximum length!',
+    fieldColRequired: 'Please select a field from left-hand side!',
   },
 };

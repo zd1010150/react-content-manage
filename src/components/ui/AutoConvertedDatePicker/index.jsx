@@ -17,8 +17,6 @@ import Enums from 'utils/EnumsManager';
 
 const { FieldTypes } = Enums;
 const { DateOnly, DateTime } = FieldTypes;
-// Get datetime format and offset from localstorage. The values are consistent with Company Setup in application.
-const timeSetting = getTimeSetting();
 
 
 const defaultProps = {
@@ -38,21 +36,24 @@ const AutoConvertedDatePicker = ({
   onChange,
   value,
   ...others
-}) => (
-  <DatePicker
-    className="full-width"
-    size="small"
-    format={timeSetting.format}
-    showTime={type === DateTime}
-    onChange={onChange}
-    // NOTES:
-    // We use string value to pass between redux and component props, it's easy to manipulate and convert with lower cost in memory.
-    value={moment(value, timeSetting.format).isValid()
-            ? moment(value, timeSetting.format)
-            : undefined}
-    {...others}
-  />
-);
+}) => {
+  const timeSetting = getTimeSetting(type === DateTime);
+  return (
+    <DatePicker
+      className="full-width"
+      size="small"
+      format={timeSetting.format}
+      showTime={type === DateTime}
+      onChange={onChange}
+      // NOTES:
+      // We use string value to pass between redux and component props, it's easy to manipulate and convert with lower cost in memory.
+      value={moment(value, timeSetting.format).isValid()
+              ? moment(value, timeSetting.format)
+              : undefined}
+      {...others}
+    />
+  );
+};
 
 AutoConvertedDatePicker.defaultProps = defaultProps;
 AutoConvertedDatePicker.propTypes = propTypes;

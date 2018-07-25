@@ -25,6 +25,8 @@ const { Option } = Select;
 
 
 const defaultProps = {
+  onSubtypeChange: null,
+  onValueChange: null,
 };
 const propTypes = {
   intl: intlShape.isRequired,
@@ -32,6 +34,8 @@ const propTypes = {
   subtype: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
+  onSubtypeChange: PropTypes.func,
+  onValueChange: PropTypes.func,
 };
 
 
@@ -40,8 +44,8 @@ const TimeRangeFilter = ({
   value,
   type,
   subtype,
-  onChange,
-  displayNum,
+  onSubtypeChange,
+  onValueChange,
 }) => {
   const { formatMessage } = intl;
   const i18n = 'global.ui.DateTimeSubTypes';
@@ -52,7 +56,7 @@ const TimeRangeFilter = ({
         <Select
           className="full-width"
           size="small"
-          onChange={st => onChange(displayNum, 'subtype', st)}
+          onChange={onSubtypeChange}
           value={subtype}
         >
           {SubTypesInArray.map(st => <Option key={st} value={st}>{formatMessage({ id: `${i18n}.${st}` })}</Option>)}
@@ -60,10 +64,9 @@ const TimeRangeFilter = ({
       </Col>
       <Col lg={24} xl={18}>
         <CombinedSelection
-          displayNum={displayNum}
           type={type}
           subtype={subtype}
-          onChange={onChange}
+          onChange={onValueChange}
           value={value}
         />
       </Col>

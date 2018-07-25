@@ -14,9 +14,9 @@ export const setFields = fields => ({
   payload: { fields },
 });
 
-export const setCriterionByColumn = (column, displayNum, newValue) => ({
+export const setCriterionByColumn = (column, displayNum, newValue, newSubtype) => ({
   type: SET_CRITERION,
-  payload: { column, displayNum, newValue },
+  payload: { column, displayNum, newValue, newSubtype },
 });
 
 export const removeCriterionByDisplayNum = removedDisplayNum => ({
