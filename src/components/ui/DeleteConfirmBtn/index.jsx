@@ -1,13 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl, intlShape } from 'react-intl';
 import { Button, Icon, Popconfirm } from 'antd';
+import classNames from 'classnames/bind';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { injectIntl, intlShape } from 'react-intl';
+import styles from './index.less';
 
+const cx = classNames.bind(styles);
 
 const defaultProps = {
   type: 'icon',
 };
 const propTypes = {
+  intl: intlShape.isRequired,
   onConfirm: PropTypes.func,
   placement: PropTypes.string,
   size: PropTypes.oneOf([
@@ -48,11 +52,11 @@ const DeleteConfirmButton = ({
         <Button
           size={size}
         >
-          <Icon className="deleteIcon cursor-pointer" size={size} type="delete" />
+          <Icon className={`${cx('deleteIcon')} cursor-pointer`} size={size} type="delete" />
           {text}
         </Button>
       ) : (
-        <Icon className="deleteIcon cursor-pointer" size={size} type="delete" />
+        <Icon className={`${cx('deleteIcon')} cursor-pointer`} size={size} type="delete" />
       )}
     </Popconfirm>
   );

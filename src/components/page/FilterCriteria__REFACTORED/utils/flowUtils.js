@@ -74,6 +74,7 @@ Criterion.prototype.setValueByType = function (newValue, newSubtype) {
       break;
     case PickList:
     case Lookup:
+      this.setProperty('value', newValue);
       break;
     case DateOnly:
     case DateTime:
@@ -142,6 +143,7 @@ const updateFilterByCondition = (displayNum, newValue, criteria) => criteria.map
  * Helper - Update specific filter's value
  * @param {number} displayNum
  * @param {string} newValue
+ * @param {string} newSubtype
  * @param {Array} criteria
  */
 const updateFilterByValue = (displayNum, newValue, newSubtype, criteria) => criteria.map((c) => {

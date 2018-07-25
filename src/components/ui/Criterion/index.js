@@ -73,7 +73,7 @@ const Criterion = ({
   const i18n = 'global.errors';
 
   return (
-    <div className={`${cx('row')} mb-md`}>
+    <div className={`${cx('row')} mb-sm`}>
       {/* Display Num Col */}
       <div className={`${cx('numCol')} text-center`}>{displayNum}</div>
       {/* Main Col */}
