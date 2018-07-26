@@ -91,6 +91,13 @@ Criterion.prototype.setValueByType = function (newValue, newSubtype) {
       console.warn('No supported type has been found!');
   }
 };
+/**
+ * @description: This function should return a array of error messages with format { name, error } or a emtpy array if no error.
+ *               The errors array could be used by message component in Antd, or some wrapper component by us.
+ */
+Criterion.prototype.checkValidation = function () {
+  return [];
+};
 export const getNewCriterion = maxNum => new Criterion(maxNum);
 
 /**

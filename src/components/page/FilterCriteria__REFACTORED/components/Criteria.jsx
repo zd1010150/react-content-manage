@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import {
   removeCriterionByDisplayNum,
   setCriterionByColumn,
-  fetchOptionsIfNeeded,
+  tryFetchOptionsIfNeeded,
 } from '../flow/actions';
 import { getConditionsByFieldType, shouldConditionDisabled } from '../utils/compUtils';
 import CriteriaHeader from './CriteriaHeader';
@@ -70,7 +70,7 @@ class Criteria extends Component {
   }
   handleSearchIconClick = (criterion) => {
     this.props.toggleRightSider(false);
-    this.props.fetchOptionsIfNeeded(criterion);
+    this.props.tryFetchOptionsIfNeeded(criterion);
   }
 
   render() {
@@ -123,7 +123,7 @@ const mapDispatchToProps = {
   setCriterionByColumn,
   removeCriterionByDisplayNum,
   toggleRightSider,
-  fetchOptionsIfNeeded,
+  tryFetchOptionsIfNeeded,
 };
 export default connect(
   mapStateToProps,

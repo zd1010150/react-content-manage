@@ -6,6 +6,7 @@ import {
   REMOVE_CRITERION,
   SET_SIDER_RECORD,
   SET_FIELD_OPTIONS,
+  RESET_CRITERIA,
 } from './actionTypes';
 
 export const addCriterion = () => ({
@@ -37,7 +38,7 @@ export const setFieldOptions = (criterion, options) => ({
   payload: { criterion, options },
 });
 
-export const fetchOptionsIfNeeded = criterion => (dispatch) => {
+export const tryFetchOptionsIfNeeded = criterion => (dispatch) => {
   const { field } = criterion;
   if (field.fetched) {
     return dispatch(setSiderRecord(criterion));
@@ -50,3 +51,8 @@ export const fetchOptionsIfNeeded = criterion => (dispatch) => {
             }
           });
 };
+
+
+export const resetCriteria = () => ({
+  type: RESET_CRITERIA,
+});

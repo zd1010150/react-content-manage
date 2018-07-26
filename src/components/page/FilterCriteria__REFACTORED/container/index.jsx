@@ -18,7 +18,7 @@ import { intlShape, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Criteria from '../components/Criteria';
-import { addCriterion } from '../flow/actions';
+import { addCriterion, resetCriteria } from '../flow/actions';
 
 
 const defaultProps = {};
@@ -28,6 +28,10 @@ const propTypes = {
 };
 
 class FilterCriteria extends Component {
+  componentWillUnmount() {
+    this.props.resetCriteria();
+  }
+
   handleAddFilterClick = () => this.props.addCriterion()
 
   handleLogicChange = () => {
@@ -65,6 +69,7 @@ const mapStateToProps = ({ global, FilterCriteria__REFACTORED }) => ({
 });
 const mapDispatchToProps = {
   addCriterion,
+  resetCriteria,
 };
 export default connect(
   mapStateToProps,

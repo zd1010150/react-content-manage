@@ -6,6 +6,7 @@ import {
   REMOVE_CRITERION,
   SET_SIDER_RECORD,
   SET_FIELD_OPTIONS,
+  RESET_CRITERIA,
 } from './actionTypes';
 import {
   formatFields,
@@ -18,8 +19,13 @@ import {
 /**
  * Condition Logic Reducer
  */
-const logic = (state = '', action) => {
+const logicInitialState = '';
+const logic = (state = logicInitialState, action) => {
   switch (action.type) {
+    case RESET_CRITERIA:
+      return logicInitialState;
+
+
     default:
       return state;
   }
@@ -42,6 +48,7 @@ const sider = (state = siderInitialState, action) => {
 
 
     case REMOVE_CRITERION:
+    case RESET_CRITERIA:
       return siderInitialState;
 
 
@@ -53,12 +60,12 @@ const sider = (state = siderInitialState, action) => {
 /**
  * Filter Criteria Reducer
  */
-const initialState = {
+const criteriaInitialState = {
   criteria: [],
   fields: [],
 };
 
-const criteria = (state = initialState, action) => {
+const criteria = (state = criteriaInitialState, action) => {
   switch (action.type) {
     case SET_FIELDS:
       const { fields } = action.payload;
@@ -107,6 +114,11 @@ const criteria = (state = initialState, action) => {
         ...state,
         fields: updatedFields,
       };
+
+
+    case RESET_CRITERIA:
+      return criteriaInitialState;
+
 
     default:
       return state;
