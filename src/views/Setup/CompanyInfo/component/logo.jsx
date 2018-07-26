@@ -37,7 +37,6 @@ class logo extends React.Component {
       });
     }
     beforeUpload = (file, fileList) => {
-      console.log(file, fileList);
       if (fileList[0] && fileList[0].size > maxSize) {
         this.setState({
           isMaxSizeError: true,
@@ -48,7 +47,6 @@ class logo extends React.Component {
       return true;
     }
     onChange = ({ file, fileList }) => {
-      console.log(this.state.fileList);
       const { tryLogout } = this.props;
       this.setState({ fileList: fileList[0] && fileList[0].size < maxSize ? fileList : [] });
       if (file.status === 'done') {
