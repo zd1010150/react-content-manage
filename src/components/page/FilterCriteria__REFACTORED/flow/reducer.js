@@ -4,6 +4,8 @@ import {
   ADD_CRITERION,
   SET_CRITERION,
   REMOVE_CRITERION,
+  SET_SIDER_RECORD,
+  SET_FIELD_OPTIONS,
 } from './actionTypes';
 import {
   formatFields,
@@ -18,6 +20,31 @@ import {
  */
 const logic = (state = '', action) => {
   switch (action.type) {
+    default:
+      return state;
+  }
+};
+/**
+ * Right side bar Reducer
+ */
+const siderInitialState = {
+  record: null,
+};
+const sider = (state = siderInitialState, action) => {
+  switch (action.type) {
+    case SET_SIDER_RECORD:
+      const { criterion } = action.payload;
+      if (!criterion) return state;
+      return {
+        ...state,
+        record: criterion,
+      };
+
+
+    case REMOVE_CRITERION:
+      return siderInitialState;
+
+
     default:
       return state;
   }
@@ -67,6 +94,20 @@ const criteria = (state = initialState, action) => {
       };
 
 
+    case SET_FIELD_OPTIONS:
+      const { options, criterion } = action.payload;
+      const updatedFields = state.fields.map((f) => {
+        if (f.id === criterion.fieldId) {
+          f.options = options;
+          f.fetched = true;
+        }
+        return f;
+      });
+      return {
+        ...state,
+        fields: updatedFields,
+      };
+
     default:
       return state;
   }
@@ -74,5 +115,6 @@ const criteria = (state = initialState, action) => {
 
 export default combineReducers({
   criteria,
+  sider,
   logic,
 });

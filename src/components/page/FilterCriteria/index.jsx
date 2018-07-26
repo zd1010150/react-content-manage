@@ -200,7 +200,7 @@ class FilterCriteria extends Component {
             </Checkbox>
           </Row>
         )}
-        <RightSider collapsed={collapsed}>
+        {/* <RightSider collapsed={collapsed}>
           <CheckboxGroup
             value={siderSelection.map(select => select.id)}
             className={cx('siderCheckboxGroup')}
@@ -237,7 +237,7 @@ class FilterCriteria extends Component {
               {formatMessage({ id: `${i18n}.done` })}
             </Button>
           </div>
-        </RightSider>
+        </RightSider> */}
       </Fragment>
     );
   }

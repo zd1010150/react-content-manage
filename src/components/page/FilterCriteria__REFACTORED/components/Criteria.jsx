@@ -1,13 +1,19 @@
 /**
  * Criteria is used to wrap Criterion UI component, with controls to redux and render.
  */
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
+import { toggleRightSider } from 'components/page/RightSider/flow/action';
 import { Criterion } from 'components/ui/index';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import CriteriaHeader from './CriteriaHeader';
+import {
+  removeCriterionByDisplayNum,
+  setCriterionByColumn,
+  fetchOptionsIfNeeded,
+} from '../flow/actions';
 import { getConditionsByFieldType, shouldConditionDisabled } from '../utils/compUtils';
-import { setCriterionByColumn, removeCriterionByDisplayNum } from '../flow/actions';
+import CriteriaHeader from './CriteriaHeader';
+import Sider from './Sider';
 import ValueColumn from './ValueColumn';
 
 
@@ -62,8 +68,9 @@ class Criteria extends Component {
     console.log(`deleting -=- ${displayNum}`);
     this.props.removeCriterionByDisplayNum(displayNum);
   }
-  handleSearchIconClick = (displayNum) => {
-    console.log(`icon clicked -=- ${displayNum}`);
+  handleSearchIconClick = (criterion) => {
+    this.props.toggleRightSider(false);
+    this.props.fetchOptionsIfNeeded(criterion);
   }
 
   render() {
@@ -89,7 +96,7 @@ class Criteria extends Component {
             onFilterDeleteClick={() => this.handleFilterDeleteClick(c.displayNum)}
           >
             <ValueColumn
-              onSearchIconClick={() => this.handleSearchIconClick(c.displayNum)}
+              onSearchIconClick={() => this.handleSearchIconClick(c)}
               onValueChange={(newSubtype, newValue) => this.handleFilterValueChange(c.displayNum, newValue, newSubtype)}
               // NOTES:
               // This prop is used by the ValueColumn component, because it contains complex business logic,
@@ -98,6 +105,7 @@ class Criteria extends Component {
             />
           </Criterion>
         ))}
+        <Sider />
       </Fragment>
     );
   }
@@ -114,6 +122,8 @@ const mapStateToProps = ({ global, FilterCriteria__REFACTORED }) => ({
 const mapDispatchToProps = {
   setCriterionByColumn,
   removeCriterionByDisplayNum,
+  toggleRightSider,
+  fetchOptionsIfNeeded,
 };
 export default connect(
   mapStateToProps,

@@ -38,7 +38,10 @@ export const formatFields = (fields) => {
     name: f.field_name,
     type: f.crm_data_type,
     label: f.field_label,
+    // Extended properties used by types
     lookupKey: f.lookup_own_field_name ? f.lookup_own_field_name : '',
+    options: f.crm_data_type === PickList ? f.picklists : null,
+    fetched: f.crm_data_type !== Lookup,
   }));
 };
 
@@ -54,7 +57,6 @@ function Criterion(maxNum) {
   this.value = null;
   this.field = null;
   // required by type
-  this.options = null;
   this.subtype = null;
   this.rangeValue = null;
 };
