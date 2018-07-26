@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 import PropTypes from 'prop-types';
+import Enums from 'utils/EnumsManager';
 
 import { intlShape, injectIntl } from 'react-intl';
 import classNames from 'classnames/bind';
@@ -8,10 +9,12 @@ import { Modal, Checkbox, Row, Col, Button } from 'antd';
 import styles from '../../../../index.less';
 
 const cx = classNames.bind(styles);
+const CheckboxGroup = Checkbox.Group;
+const { ReadOnly, Required } = Enums.EditViewType;
 
 class SectionFieldEditDialog extends React.Component {
-  valueChange(attr, e) {
-    this.props.setEditField({ [`${attr}Value`]: e.target.checked });
+  valueChange(checkedValues) {
+    this.props.setEditField({ showValue: checkedValues });
   }
   save() {
     const {
@@ -28,11 +31,11 @@ class SectionFieldEditDialog extends React.Component {
     const {
       isShow,
       fieldLabel,
-      requiredValue,
       requiredDisable,
-      readOnlyValue,
       readOnlyDisable,
+      showValue,
     } = this.props.fieldEditDialog;
+
     return (
       <Modal
         title={formatMessage({ id: 'page.layouts.editField' })}
@@ -46,12 +49,14 @@ class SectionFieldEditDialog extends React.Component {
         <Row>
           <Col span={22} offset={2}>
             <span className={classNames(cx('field-edit-dialog-label'), 'pr-lg')}>{fieldLabel}: </span>
-            <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-              <Checkbox checked={requiredValue} disabled={requiredDisable} onChange={e => this.valueChange('required', e)}> required </Checkbox>
-            </span>
-            <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
-              <Checkbox checked={readOnlyValue} disabled={readOnlyDisable} onChange={e => this.valueChange('readOnly', e)}> read only </Checkbox>
-            </span>
+            <CheckboxGroup value={showValue} onChange={checkedValues => this.valueChange(checkedValues)}>
+              <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
+                <Checkbox value={Required} disabled={requiredDisable}> {formatMessage({ id: 'page.layouts.edit.required' })} </Checkbox>
+              </span>
+              <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
+                <Checkbox value={ReadOnly} disabled={readOnlyDisable}> {formatMessage({ id: 'page.layouts.edit.readOnly' })} </Checkbox>
+              </span>
+            </CheckboxGroup>
           </Col>
         </Row>
       </Modal>
