@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
 import {
+  SET_CRITERIA,
   SET_FIELDS,
+  SET_LOGIC,
   ADD_CRITERION,
   SET_CRITERION,
   REMOVE_CRITERION,
@@ -9,6 +11,7 @@ import {
   RESET_CRITERIA,
 } from './actionTypes';
 import {
+  formatCriteria,
   formatFields,
   sortFieldsByLabel,
   getNewCriterion,
@@ -22,6 +25,10 @@ import {
 const logicInitialState = '';
 const logic = (state = logicInitialState, action) => {
   switch (action.type) {
+    case SET_LOGIC:
+      return action.payload.logic;
+
+
     case RESET_CRITERIA:
       return logicInitialState;
 
@@ -67,6 +74,14 @@ const criteriaInitialState = {
 
 const criteria = (state = criteriaInitialState, action) => {
   switch (action.type) {
+    case SET_CRITERIA:
+      const { criteriaData } = action.payload;
+      return {
+        ...state,
+        criteria: formatCriteria(criteriaData, state.fields),
+      };
+
+
     case SET_FIELDS:
       const { fields } = action.payload;
       const sortedFields = sortFieldsByLabel(fields);

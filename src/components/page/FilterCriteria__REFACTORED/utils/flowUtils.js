@@ -1,5 +1,6 @@
 /* eslint-disable func-names */
 import Enums from 'utils/EnumsManager';
+import { toTimezone } from 'utils/dateTimeUtils';
 
 const { FieldTypes, DateTimeConfigs, Conditions } = Enums;
 const {
@@ -12,8 +13,9 @@ const {
   PickList,
   TextInput,
 } = FieldTypes;
-const { SubTypes } = DateTimeConfigs;
+const { SubTypes, TimeRangePrefix } = DateTimeConfigs;
 const { SpecificDate, Range } = SubTypes;
+const { Today, ThisWeek, ThisMonth } = Range;
 const { Equals } = Conditions;
 /**
  * Sort fields by label alphabetically
@@ -49,6 +51,7 @@ export const formatFields = (fields) => {
  * Criterion constructor, should be used with 'new'
  * @param {number} maxDisplayNum: current biggest display num in all criteria
  */
+// NOTES: this is an experiment implementation. Still thinking better way to manage this part.
 function Criterion(maxNum) {
   // required for all
   this.displayNum = maxNum ? (maxNum + 1) : 1;
@@ -91,6 +94,68 @@ Criterion.prototype.setValueByType = function (newValue, newSubtype) {
       console.warn('No supported type has been found!');
   }
 };
+Criterion.prototype.parseValueByType = function (value) {
+  if (!this.field) return null;
+
+  const { type } = this.field;
+  switch (type) {
+    case Email:
+    case LongText:
+    case TextInput:
+    case NumberInput:
+    case PickList:
+    case Lookup:
+      return value;
+    case DateOnly:
+    case DateTime:
+      const parsedDateValue = this.parseDateValue(value, type === DateTime);
+      // convert to local value
+      return parsedDateValue;
+    default:
+      console.warn('No supported type has been found!');
+      return null;
+  }
+};
+Criterion.prototype.parseDateValue = function (value, isTime) {
+  if (!this.field || !this.field.type) return null;
+
+  // Convert value for 'Specific Date' subtype
+  if (value.indexOf(TimeRangePrefix) < 0) {
+    return toTimezone(value, isTime);
+  }
+  // Convert value for 'Range' subtype
+  const rangeStr = value.replace(TimeRangePrefix, '');
+  switch (rangeStr) {
+    case Today:
+    case ThisWeek:
+    case ThisMonth:
+      return rangeStr;
+    default:
+      return null;
+  }
+};
+Criterion.prototype.parseSubtype = function (value) {
+  if (!this.field || !this.field.type) return null;
+
+  const { type } = this.field;
+  switch (type) {
+    case DateOnly:
+    case DateTime:
+      if (value.indexOf(TimeRangePrefix) < 0) {
+        return SpecificDate;
+      }
+      return Range;
+    case Email:
+    case LongText:
+    case TextInput:
+    case NumberInput:
+    case PickList:
+    case Lookup:
+    default:
+      return null;
+  }
+};
+
 /**
  * @description: This function should return a array of error messages with format { name, error } or a emtpy array if no error.
  *               The errors array could be used by message component in Antd, or some wrapper component by us.
@@ -194,4 +259,29 @@ export const updateFiltersByColumn = (column, payload, state) => {
       console.warn('No Supported Column has been found!');
       return criteria;
   }
+};
+
+
+export const formatCriteria = (criteria, fields) => {
+  if (_.isEmpty(criteria) || !_.isArray(criteria)) {
+    return [];
+  }
+  // TODO: rethink the best practice
+  return criteria.map((c) => {
+    const criterion = new Criterion();
+    criterion.setProperty('displayNum', c.display_num);
+    criterion.setProperty('conditionId', c.condition);
+    // set field
+    const field = fields.find(f => f.id === c.id);
+    if (field) {
+      criterion.setProperty('fieldId', field.id);
+      criterion.setProperty('field', field);
+    }
+    // set options
+    // value, subtype
+    const parsedValue = criterion.parseValueByType(c.value);
+    const parsedSubtype = criterion.parseSubtype(c.value);
+    criterion.setValueByType(parsedValue, parsedSubtype);
+    return criterion;
+  });
 };

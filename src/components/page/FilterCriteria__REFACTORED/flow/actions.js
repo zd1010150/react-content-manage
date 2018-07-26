@@ -1,5 +1,7 @@
 import { get } from 'store/http/httpAction';
 import {
+  SET_LOGIC,
+  SET_CRITERIA,
   SET_FIELDS,
   ADD_CRITERION,
   SET_CRITERION,
@@ -8,6 +10,16 @@ import {
   SET_FIELD_OPTIONS,
   RESET_CRITERIA,
 } from './actionTypes';
+
+export const setCriteria = criteriaData => ({
+  type: SET_CRITERIA,
+  payload: { criteriaData },
+});
+
+export const setLogic = logic => ({
+  type: SET_LOGIC,
+  payload: { logic },
+});
 
 export const addCriterion = () => ({
   type: ADD_CRITERION,

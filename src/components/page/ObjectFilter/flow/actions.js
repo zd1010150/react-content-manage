@@ -1,5 +1,4 @@
-// TODO:
-import { setFields } from 'components/page/FilterCriteria__REFACTORED/flow/actions';
+import { setFields, setCriteria, setLogic } from 'components/page/FilterCriteria__REFACTORED/flow/actions';
 import { get } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
 import { addToSelection, setAvailableFields } from '../components/FieldsSelection/flow/actions';
@@ -42,8 +41,12 @@ export const fetchViewById = (id, objectType) => dispatch => get(getFetchUrlById
       // set section 1
       dispatch(setViewName(view_name));
       // set section 2
+      // TODO: deprecated actions for old filter criteria component
       dispatch(setConditionLogic(condition_logic));
       dispatch(setFilters(filters.data));
+      // new actions      
+      dispatch(setCriteria(filters.data));
+      dispatch(setLogic(condition_logic));
       // set section 3
       dispatch(addToSelection(selectors.data));
       // set section 4
