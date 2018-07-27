@@ -155,7 +155,13 @@ Criterion.prototype.parseSubtype = function (value) {
       return null;
   }
 };
-
+/**
+ * @description: This function should return truthy value if all necessary properties are passed rules, otherwise return false.
+ *               But no error message will return. If need more details about which property is incorrect, please use checkValidation method.
+ */
+Criterion.prototype.isValid = function () {
+  return false;
+};
 /**
  * @description: This function should return a array of error messages with format { name, error } or a emtpy array if no error.
  *               The errors array could be used by message component in Antd, or some wrapper component by us.

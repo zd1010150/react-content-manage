@@ -39,12 +39,48 @@ class ViewActions extends Component {
     }
   }
 
-  checkValidation = (data) => {
-    const { intl } = this.props;
+  getI18nMessageByKey = key => this.props.intl.formatMessage({ id: `global.errors.${key}` })
+
+  // TODO: testing if this will work or not
+  showNotificationByKey = key => notification.error({
+    duration: 3,
+    message: this.getI18nMessageByKey(key),
+  })
+
+  checkCriteria = (criteria) => {
+    if (!_.isArray(criteria)) {
+      this.showNotificationByKey('testing');
+      return false;
+    }
+    const isAnyInvalid = criteria.some(c => !c.isValid());
+    if (isAnyInvalid) {
+      this.showNotificationByKey('fieldOrConditionRequired');
+      return false;
+    }
+    return true;
+  }
+  checkLogic = (logic) => {
+    notification.error({
+      duration: 3,
+      message: this.getI18nMessageByKey('filterNumRequired'),
+    });
+    return false;
+  }
+  checkCriteriaAndLogic = () => {
+    const { CriteriaAndLogic } = this.props;
+    const { criteria, logic } = CriteriaAndLogic;
+    return this.checkCriteria(criteria) && this.checkLogic(logic);
+  }
+
+  checkValidationBySection = () => {
+    const {
+      intl,
+      objectView,
+    } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.errors';
 
-    const { name, filterCriteria, fields } = data;
+    const { name, fields } = objectView;
     // check name
     if (_.isEmpty(name.view_name)) {
       notification.error({
@@ -53,26 +89,9 @@ class ViewActions extends Component {
       });
       return false;
     }
-    // check criteria
-    const { condition_logic, filters } = filterCriteria;
-    if (filters.length > 0) {
-      if (_.isEmpty(condition_logic)) {
-        notification.error({
-          duration: 3,
-          message: formatMessage({ id: `${i18n}.filterNumRequired` }),
-        });
-        return false;
-      }
-      if (this.isMissingFieldOrConditionValue(filters)) {
-        notification.error({
-          duration: 3,
-          message: formatMessage({ id: `${i18n}.fieldOrConditionRequired` }),
-        });
-        return false;
-      }
-      // TODO: backend finish the validation check about which filter num is missing from condition logic. The front end will implement this as well later.
-    }
-    // check selection
+    
+    this.checkCriteriaAndLogic();
+
     const { selectedFields } = fields;
     if (selectedFields.length < 1) {
       notification.error({
@@ -94,8 +113,8 @@ class ViewActions extends Component {
       viewId,
     } = this.props;
 
-    const isValid = this.checkValidation(objectView);
-    if (!isValid) return;
+    const isAllSectionsValid = this.checkValidationBySection();
+    if (!isAllSectionsValid) return;
 
     const funcKey = viewId === PhantomId ? 'trySaveNew' : 'trySave';
     this.props[funcKey](model[objectType], objectView, viewId);
@@ -141,10 +160,11 @@ class ViewActions extends Component {
 
 ViewActions.defaultProps = defaultProps;
 ViewActions.propTypes = propTypes;
-const mapStateToProps = ({ global, objectView }) => ({
+const mapStateToProps = ({ global, objectView, FilterCriteria__REFACTORED }) => ({
   model: global.settings.model,
   done: objectView.actions,
   objectView,
+  CriteriaAndLogic: FilterCriteria__REFACTORED,
 });
 const mapDispatchToProps = {
   tryDeleteView,
