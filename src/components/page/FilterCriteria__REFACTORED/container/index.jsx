@@ -48,7 +48,7 @@ class FilterCriteria extends Component {
     return (
       <Fragment>
         <Criteria />
-        <div className="text-center">
+        <div className="mt-md text-center">
           <Button size="small" onClick={this.handleAddFilterClick}>
             <Icon className="font-sm" type="plus" />
             {formatMessage({ id: `${i18nPrefix}.buttons.newFilter` })}

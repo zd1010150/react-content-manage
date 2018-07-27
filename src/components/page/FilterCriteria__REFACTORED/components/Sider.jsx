@@ -50,10 +50,13 @@ class Sider extends Component {
   }
 
   valueToArray = (value) => {
-    if (_.isEmpty(value)) return [];
+    if (_.isEmpty(value) || !_.isString(value)) return [];
 
-    const newValue = value.trim();
-    return newValue.split(',').filter(option => option !== '');
+    return value
+            .trim()
+            .split(',')
+            .filter(s => s !== '')
+            .map(str => str.trim());
   }
 
   valueToString = value => value.join(',').trim()
@@ -89,6 +92,11 @@ class Sider extends Component {
     return (
       <RightSider collapsed={collapsed}>
         <div className="pt-xlg pr-lg pb-xlg pl-lg">
+          {record && record.displayNum ? (
+            <div className="mb-md">
+              Options for display number {record.displayNum}
+            </div>
+          ) : null}
           <CheckboxGroup
             className="block"
             options={this.formatOptions(record)}
