@@ -8,7 +8,7 @@ import { setLogo, setTimeZone } from 'store/global/action';
 import ComponanyInfoPanel from '../component/companyInfoPanel';
 import CompaneyUserStatic from '../component/companyUserStatic';
 import Logo from '../component/logo';
-import { getCompanyInfo, updateCompanyInfo } from '../flow/action';
+import { getCompanyInfo, updateCompanyInfo, updateCompanyLogo } from '../flow/action';
 import { tryLogout } from '../../../LoginForm/flow/actions';
 
 
@@ -23,6 +23,7 @@ class companyInfo extends Component {
       setLogo,
       history,
       tryLogout,
+      updateCompanyLogo
     } = this.props;
 
     return (
@@ -30,7 +31,7 @@ class companyInfo extends Component {
         <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_COMPANYINFORMATION} errorComponent={<Unauthentication />}>
           <ComponanyInfoPanel {...this.props} />
           <CompaneyUserStatic userInfo={userInfo} history={history} />
-          <Logo companyLogo={companyLogo} setLogo={setLogo} tryLogout={tryLogout} />
+          <Logo companyLogo={companyLogo} setLogo={setLogo} tryLogout={tryLogout} updateCompanyLogo={updateCompanyLogo} />
         </Permission>
       </Fragment>
     );
@@ -59,5 +60,6 @@ const mapDispatchToProps = {
   setLogo,
   setTimeZone,
   tryLogout,
+  updateCompanyLogo,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(companyInfo));
