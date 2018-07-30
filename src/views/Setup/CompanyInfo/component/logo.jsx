@@ -120,7 +120,8 @@ class logo extends React.Component {
               </Button>
             </Upload>
             {
-              this.state.isMaxSizeError ? <p className="error-msg"> {formatMessage({ id: 'global.ui.upload.errorMax' }, { size })} </p>
+              this.state.isMaxSizeError ?
+                <p className="error-msg"> {formatMessage({ id: 'global.ui.upload.errorMax' }, { size })} </p>
                 : <p className="error-msg"> {formatMessage({ id: 'global.ui.upload.maxSize' }, { size })} </p>
             }
           </Modal>
