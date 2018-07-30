@@ -108,7 +108,6 @@ class TemplateContent extends React.Component {
             // An error occurred during upload.
             data.message = response[1];
             evt.cancel();
-            console.log('something');
         } else {
             data.url = JSON.parse(response[0]).data.url
         }
