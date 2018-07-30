@@ -98,14 +98,18 @@ const FieldInfo = ({selectedField, selectField, selectedLabel, selectedValue, te
             </div>
             <Select onChange={selectField} className="full-width">
                 { fieldOption[template.category] && fieldOption[template.category].map((item, index) =>
-                    <Select.Option key={item.id ? item.id : index} value={item}>{item.field_label}</Select.Option>
+                    <Select.Option key={item.id ? item.id : index} value={item.field_label}>{item.field_label}</Select.Option>
                 )}
             </Select>
         </Col>
 
         <Col className="gutter-row field-value" offset={2} span={10}>
             <div>{formatMessage({id: 'page.emailTemplates.fieldValue'})}</div>
-            <div>{selectedField.field_value}</div>
+            { fieldOption[template.category] && fieldOption[template.category].map((item, index) => {
+                if (item.field_label === selectedField) {
+                    return <div>{item.field_value}</div>
+                }
+            })}
         </Col>
         {/*<Col className="gutter-row field-value" offset={2} span={10}>*/}
             {/*<SelectComponentVertical labelInValue={false} defaultValue={selectedValue} items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}*/}
