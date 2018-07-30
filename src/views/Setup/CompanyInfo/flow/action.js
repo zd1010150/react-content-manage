@@ -26,10 +26,3 @@ export const updateCompanyInfo = (form, callback) => dispatch => patch('/admin/c
   }
 });
 
-export const updateCompanyLogo = (formData, onResponse) => dispatch => post('/admin/files/company_logo', { ...formData, IS_FORM_DATA: true }, dispatch).then((data) => {
-  if (!_.isEmpty(data)) {
-    if (_.isFunction(onResponse)) {
-      onResponse(data);
-    }
-  }
-});

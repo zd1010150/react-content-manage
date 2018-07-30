@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import fetch from 'isomorphic-fetch';
 import { Permission } from 'components/page/index';
 import PERMISSIONS from 'config/app-permission.config';
 import { baseUrl } from 'config/env.config';
@@ -33,24 +34,32 @@ class logo extends React.Component {
       });
     }
     onResponse = (data) => {
-      const { setLogo } = this.props;
+      const { setLogo, settingPageloading } = this.props;
       if (data.hasOwnProperty('logo')) {
         setLogo(data.logo);
+        this.setState({
+          visible: false,
+        });
       }
       if (data.hasOwnProperty('error')) {
         notification.error(data.error);
       }
+      settingPageloading({ isShow: false });
     }
     onOk() {
       const { fileList } = this.state;
-      const { updateCompanyLogo } = this.props;
+      const { settingPageloading } = this.props;
       const formData = new FormData();
+      settingPageloading({ isShow: true });
       formData.append('document', fileList[0]);
-      updateCompanyLogo({ FORM_DATA: formData }, this.onResponse);
-      this.setState({
-        visible: false,
-        fileList: [],
-        isMaxSizeError: false,
+      fetch(`${baseUrl}/admin/files/company_logo`, {
+        credentials: 'include',
+        method: 'POST',
+        body: formData,
+      }).then((response) => {
+        response.json().then((data) => {
+          this.onResponse(data);
+        });
       });
     }
     onCancel() {
@@ -124,7 +133,7 @@ logo.propTypes = {
   intl: intlShape.isRequired,
   companyLogo: PropTypes.string.isRequired,
   setLogo: PropTypes.func.isRequired,
-  tryLogout: PropTypes.func.isRequired,
+  settingPageloading: PropTypes.func.isRequired,
 };
 
 export default injectIntl(logo);

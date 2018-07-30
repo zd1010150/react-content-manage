@@ -35,15 +35,10 @@ export default async (type = 'GET', url = '', data = {}, headers = {}, apiDomain
       dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
       url = `${url}?${dataStr}`;
     }
-  } else if ((!_.isEmpty(data)) && !data.hasOwnProperty('IS_FORM_DATA')) {
+  } else if ((!_.isEmpty(data))) {
     Object.defineProperty(requestConfig, 'body', {
       value: JSON.stringify(data),
     });
-  } else if (data.IS_FORM_DATA && type === 'POST') {
-    Object.defineProperty(requestConfig, 'body', {
-      value: data.FORM_DATA,
-    });
-    Reflect.deleteProperty(requestConfig.headers, 'Content-Type');
   }
 
   // 下面_fetch方法是不是可以这么写？
