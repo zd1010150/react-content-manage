@@ -131,9 +131,9 @@ class logo extends React.Component {
 
 logo.propTypes = {
   intl: intlShape.isRequired,
-  companyLogo: PropTypes.string.isRequired,
+  companyLogo: PropTypes.string,
   setLogo: PropTypes.func.isRequired,
-  settingPageloading: PropTypes.func.isRequired,
+  settingPageloading: PropTypes.func,
 };
 
 export default injectIntl(logo);

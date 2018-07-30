@@ -1,4 +1,4 @@
-import { get, patch, post } from 'store/http/httpAction';
+import { get, patch } from 'store/http/httpAction';
 import _ from 'lodash';
 
 import { SETUP_COMINFO_COMPANY_INFO } from './actionType';
@@ -25,4 +25,3 @@ export const updateCompanyInfo = (form, callback) => dispatch => patch('/admin/c
     }
   }
 });
-
