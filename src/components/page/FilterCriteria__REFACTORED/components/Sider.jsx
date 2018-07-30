@@ -70,14 +70,14 @@ class Sider extends Component {
 
     const { type, lookupKey, options } = data.field;
     if (type === PickList) {
-      return options.map(record => ({
-        label: record.option_value,
-        value: record.option_value,
+      return options.map(op => ({
+        label: op.option_value,
+        value: op.option_value,
       }));
     } else if (type === Lookup) {
-      return options.map(record => ({
-        label: record[lookupKey],
-        value: record[lookupKey],
+      return options.map(op => ({
+        label: op[lookupKey],
+        value: op[lookupKey],
       }));
     }
     return [];
