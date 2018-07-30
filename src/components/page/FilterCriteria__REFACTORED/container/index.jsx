@@ -12,50 +12,64 @@
  * * Easy to use time range filter with advanced functionalities.
  *
  */
-import React, { Component, Fragment } from 'react';
 import { Button, Icon } from 'antd';
-import { intlShape, injectIntl } from 'react-intl';
+import { FloatingLabelInput } from 'components/ui/index';
 import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
+import { setTheme } from 'store/global/action';
 import Criteria from '../components/Criteria';
-import { addCriterion, resetCriteria } from '../flow/actions';
+import { addCriterion, resetCriteria, setLogic } from '../flow/actions';
 
 
 const defaultProps = {};
 const propTypes = {
   intl: intlShape.isRequired,
   logic: PropTypes.string.isRequired,
+  criteria: PropTypes.array.isRequired,
 };
 
 class FilterCriteria extends Component {
+  // TODO: move setTheme to upper class
+  componentDidMount() {
+    this.props.setTheme(this.props.theme);
+  }
+
   componentWillUnmount() {
     this.props.resetCriteria();
   }
 
-  handleAddFilterClick = () => this.props.addCriterion()
-
-  handleLogicChange = () => {
-    console.log(`Changing filter logic`);
-    // TODO: dispatch action to change filter logic text
-    // this.props.changeFilterLogic();
+  handleAddFilterClick = () => {
+    const { criteria } = this.props;
+    if (criteria.length < 1) {
+      this.props.setLogic('1');
+    }
+    return this.props.addCriterion();
   }
 
+  handleLogicChange = newLogic => this.props.setLogic(newLogic)
+
   render() {
-    const { intl, logic } = this.props;
+    const { intl, logic, activeTheme } = this.props;
     const { formatMessage } = intl;
-    const i18nPrefix = 'page.filterCriteria';
+    const i18n = 'page.filterCriteria';
 
     return (
       <Fragment>
         <Criteria />
         <div className="mt-md text-center">
-          <Button size="small" onClick={this.handleAddFilterClick}>
+          <Button className={`${activeTheme}-theme-btn`} size="small" onClick={this.handleAddFilterClick}>
             <Icon className="font-sm" type="plus" />
-            {formatMessage({ id: `${i18nPrefix}.buttons.newFilter` })}
+            {formatMessage({ id: `${i18n}.buttons.newFilter` })}
           </Button>
         </div>
-        {/* Floating input component */}
-        {logic}
+        <FloatingLabelInput
+          labelText={formatMessage({ id: `${i18n}.inputs.condition` })}
+          labelColor="#4e4e4e"
+          handleChange={this.handleLogicChange}
+          value={logic}
+        />
       </Fragment>
     );
   }
@@ -65,11 +79,15 @@ FilterCriteria.defaultProps = defaultProps;
 FilterCriteria.propTypes = propTypes;
 const mapStateToProps = ({ global, FilterCriteria__REFACTORED }) => ({
   language: global.language,
-  logic: FilterCriteria__REFACTORED.conditionLogic,
+  activeTheme: global.theme,
+  logic: FilterCriteria__REFACTORED.logic,
+  criteria: FilterCriteria__REFACTORED.criteria.criteria,
 });
 const mapDispatchToProps = {
   addCriterion,
   resetCriteria,
+  setLogic,
+  setTheme,
 };
 export default connect(
   mapStateToProps,

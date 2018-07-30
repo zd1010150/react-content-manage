@@ -13,9 +13,9 @@ const {
   PickList,
   TextInput,
 } = FieldTypes;
-const { SubTypes, TimeRangePrefix } = DateTimeConfigs;
+const { SubTypes, TimeRangePrefix, Ranges } = DateTimeConfigs;
 const { SpecificDate, Range } = SubTypes;
-const { Today, ThisWeek, ThisMonth } = Range;
+const { Today, ThisWeek, ThisMonth } = Ranges;
 const { Equals } = Conditions;
 /**
  * Sort fields by label alphabetically
@@ -108,9 +108,7 @@ Criterion.prototype.parseValueByType = function (value) {
       return value;
     case DateOnly:
     case DateTime:
-      const parsedDateValue = this.parseDateValue(value, type === DateTime);
-      // convert to local value
-      return parsedDateValue;
+      return this.parseDateValue(value, type === DateTime);
     default:
       console.warn('No supported type has been found!');
       return null;
@@ -125,6 +123,7 @@ Criterion.prototype.parseDateValue = function (value, isTime) {
   }
   // Convert value for 'Range' subtype
   const rangeStr = value.replace(TimeRangePrefix, '');
+  this.setProperty('');
   switch (rangeStr) {
     case Today:
     case ThisWeek:

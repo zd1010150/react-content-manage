@@ -84,8 +84,7 @@ class Sider extends Component {
   }
 
   render() {
-    console.log('testing');
-    const { intl, collapsed, record } = this.props;
+    const { intl, collapsed, record, theme } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui';
 
@@ -104,7 +103,11 @@ class Sider extends Component {
             onChange={this.onOptionChange}
           />
           <div className="mt-lg">
-            <Button onClick={this.onAddClick} size="small" className="mr-sm">
+            <Button
+              className={`${theme}-theme-btn mr-sm`}
+              onClick={this.onAddClick}
+              size="small"
+            >
               <Icon className="font-sm" type="plus" />
               {formatMessage({ id: `${i18n}.button.add` })}
             </Button>
@@ -121,7 +124,8 @@ class Sider extends Component {
 
 Sider.defaultProps = defaultProps;
 Sider.propTypes = propTypes;
-const mapStateToProps = ({ ui, FilterCriteria__REFACTORED }) => ({
+const mapStateToProps = ({ ui, FilterCriteria__REFACTORED, global }) => ({
+  theme: global.theme,
   collapsed: ui.rightSider.collapsed,
   record: FilterCriteria__REFACTORED.sider.record,
   // NOTES: connect value here is used enable sync input value to checked boxes.

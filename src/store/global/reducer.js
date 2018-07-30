@@ -18,6 +18,7 @@ import { SET_ACCOUNTINFO,
   TOGGLE_LANGUAGE,
   SET_APP_ROUTER_HASH,
   SET_TIME_ZONE,
+  SET_THEME,
 } from './actionType';
 
 const { LocalStorageKeys, DateTimeConfigs } = Enums;
@@ -199,6 +200,18 @@ const timeZoneSetting = (state = { dateFormat: DEFAULT_DATE_SETTING.DATE_FORMAT,
   }
 };
 
+
+const initialTheme = '';
+const theme = (state = initialTheme, action) => {
+  const { type } = action;
+  switch (type) {
+    case SET_THEME:
+      return action.payload.theme;
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   language,
   permissions,
@@ -208,5 +221,6 @@ const rootReducer = combineReducers({
   companyLogo,
   appRoutHash,
   timeZoneSetting,
+  theme,
 });
 export default rootReducer;

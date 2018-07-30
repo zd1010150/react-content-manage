@@ -1,44 +1,15 @@
 import { httpDelete, patch, post } from 'store/http/httpAction';
-import Enums from 'utils/EnumsManager';
-import { toUtc } from 'utils/dateTimeUtils';
 import { DONE } from './actionTypes';
 import mapCriteriaToApi from './utils';
-
-const {
-  DateOnly,
-  DateTime,
-} = Enums.FieldTypes;
 
 // Format redux to cater for API data format requirement
 const mapDataToAPI = (objectType, data, getState) => {
   const {
     name,
     fields,
-    filterCriteria,
     visibilities,
   } = data;
   const { view_name } = name;
-
-  const { condition_logic, filters } = filterCriteria;
-  const formattedFilter = filters.map((filter) => {
-    const {
-      displayNum,
-      fieldId,
-      conditionId,
-      value,
-      type,
-    } = filter;
-    let newValue = filter.value;
-    if (type === DateOnly || type === DateTime) {
-      newValue = toUtc(value, type === DateTime);
-    }
-    return {
-      id: fieldId,
-      display_num: displayNum,
-      condition: conditionId,
-      value: newValue,
-    };
-  });
 
   const { selectedFields } = fields;
   const selectors = selectedFields.map((field, i) => ({

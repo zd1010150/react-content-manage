@@ -26,7 +26,7 @@ const logicInitialState = '';
 const logic = (state = logicInitialState, action) => {
   switch (action.type) {
     case SET_LOGIC:
-      return action.payload.logic;
+      return action.payload.newLogic;
 
 
     case RESET_CRITERIA:

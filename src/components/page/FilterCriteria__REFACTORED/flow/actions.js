@@ -16,9 +16,9 @@ export const setCriteria = criteriaData => ({
   payload: { criteriaData },
 });
 
-export const setLogic = logic => ({
+export const setLogic = newLogic => ({
   type: SET_LOGIC,
-  payload: { logic },
+  payload: { newLogic },
 });
 
 export const addCriterion = () => ({
@@ -63,7 +63,6 @@ export const tryFetchOptionsIfNeeded = criterion => (dispatch) => {
             }
           });
 };
-
 
 export const resetCriteria = () => ({
   type: RESET_CRITERIA,

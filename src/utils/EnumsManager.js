@@ -58,9 +58,9 @@ const BaseEnums = Object.freeze({
   }),
 
   DateTimeRanges: Object.freeze({
-    Today: 'Today',
-    ThisWeek: 'This_Week',
-    ThisMonth: 'This_Month',
+    Today: 'TODAY',
+    ThisWeek: 'THIS_WEEK',
+    ThisMonth: 'THIS_MONTH',
   }),
 
   DateTimePeriodPrefixs: Object.freeze({

@@ -51,6 +51,7 @@ const CombinedSelection = ({
           placeholder={formatMessage({ id: `${i18n}.placeholders.range` })}
           size="small"
           onChange={onChange}
+          value={value}
         >
           {RangesInArray.map(rg => <Option key={rg} value={rg}>{formatMessage({ id: `${rangeI18n}.${rg}` })}</Option>)}
         </Select>
