@@ -13,12 +13,12 @@
  *
  */
 import { Button, Icon } from 'antd';
-import { FloatingLabelInput } from 'components/ui/index';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { setTheme } from 'store/global/action';
+import ConditionLogic from '../components/ConditionLogic';
 import Criteria from '../components/Criteria';
 import { addCriterion, resetCriteria, setLogic } from '../flow/actions';
 
@@ -40,18 +40,12 @@ class FilterCriteria extends Component {
     this.props.resetCriteria();
   }
 
-  handleAddFilterClick = () => {
-    const { criteria } = this.props;
-    if (criteria.length < 1) {
-      this.props.setLogic('1');
-    }
-    return this.props.addCriterion();
-  }
+  handleAddFilterClick = () => this.props.addCriterion()
 
   handleLogicChange = newLogic => this.props.setLogic(newLogic)
 
   render() {
-    const { intl, logic, activeTheme } = this.props;
+    const { intl, activeTheme } = this.props;
     const { formatMessage } = intl;
     const i18n = 'page.filterCriteria';
 
@@ -64,12 +58,7 @@ class FilterCriteria extends Component {
             {formatMessage({ id: `${i18n}.buttons.newFilter` })}
           </Button>
         </div>
-        <FloatingLabelInput
-          labelText={formatMessage({ id: `${i18n}.inputs.condition` })}
-          labelColor="#4e4e4e"
-          handleChange={this.handleLogicChange}
-          value={logic}
-        />
+        <ConditionLogic />
       </Fragment>
     );
   }

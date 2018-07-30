@@ -94,3 +94,43 @@ export const shouldConditionDisabled = (subtype) => {
   if (subtype === Range) return true;
   return false;
 };
+
+/**
+ * @param {string} logic
+ * @param {array} criteria
+ */
+export const validateLogic = (logic, criteria) => {
+  const i18n = 'page.FilterCriteria__REFACTORED.errors';
+  const errors = [];
+  if (!_.isString(logic) || !_.isArray(criteria)) {
+    errors.push({
+      location: 'logic',
+      errorId: `${i18n}.incorrectType`,
+    });
+    return errors;
+  }
+
+  // Check if logic contains non-supported keywords
+  // TODO: this is a simple version, more complex version should be split logic by words not letters.
+  const keywords = ['(', ')', 'A', 'N', 'D', 'O', 'R'];
+  const letters = logic.split('');
+  const isContainIncorrectLetter = letters.some(l => (keywords.indexOf(l) < 0 && !/[\s\d]/.test(l)));
+  if (isContainIncorrectLetter) {
+    errors.push({
+      location: 'logic',
+      errorId: `${i18n}.incorrectLetter`,
+    });
+  }
+
+  // Check if some criteria display num is not in logic
+  // TODO: This is a simple version, will fail on double digits cases
+  const displayNums = criteria.map(c => String(c.displayNum));
+  const isDisplayNumMissingFromLogic = displayNums.some(dn => logic.indexOf(dn) < 0);
+  if (isDisplayNumMissingFromLogic) {
+    errors.push({
+      location: 'logic',
+      errorId: `${i18n}.displayNumMissing`,
+    });
+  }
+  return errors;
+};
