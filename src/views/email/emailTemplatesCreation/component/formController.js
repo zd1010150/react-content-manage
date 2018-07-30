@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import styles from '../emailTemplatesCreation.less';
 const cx = classNames.bind(styles);
 const TextArea = Input.TextArea;
-export const SelectComponent = ({hint, defaultValue, items, label, onChange, value, optional}) => {
+export const SelectComponent = ({hint, defaultValue, items, label, onChange, value, optional, fixedID}) => {
     return <Row className={`pt-lg ${cx('new-template-input-row')}`}>
         <Col className="gutter-row field-label" span={4}>
             {label}{!optional && <span className={`${cx('create-template-red-color')}`}>*</span>}
@@ -13,7 +13,7 @@ export const SelectComponent = ({hint, defaultValue, items, label, onChange, val
         <Col className="gutter-row field-value" span={20}>
             <Select onChange={(value) => {
                 onChange(value)
-            }} defaultValue={defaultValue} className="full-width">
+            }} defaultValue={defaultValue} className="full-width"  getPopupContainer={() => document.getElementById(fixedID)}>
                 {items && items.map((item) =>
                     <Select.Option key={item.id} value={value(item)}>{item.name}</Select.Option>
                 )}

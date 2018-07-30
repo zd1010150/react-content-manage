@@ -49,6 +49,7 @@ const BasicInfo = ({
     return <Fragment>
         <SelectComponent defaultValue={selectedFolder.name ? selectedFolder.name : ''}
                          onChange={setTemplateFolder} items={userFolders}
+                         fixedID='TemplateInformation'
                          label={formatMessage({id: 'page.emailTemplates.folder'})}
                          value={v => v.id}/>
         <InputComponent value={editTemplate.name} onChange={setTemplateName}
@@ -59,6 +60,7 @@ const BasicInfo = ({
                         label={formatMessage({id: 'page.emailTemplates.newTemplateDescription'})}/>
         <SelectComponent hint={formatMessage({id: 'page.emailTemplates.selectCategoryHint'})} defaultValue={editTemplate.category ? editTemplate.category : 'leads'}
                          onChange={setTemplateCategory} items={categories}
+                         fixedID='TemplateInformation'
                          label={formatMessage({id: 'page.emailTemplates.category'})}
                          value={v => v.name}/>
     </Fragment>
