@@ -105,7 +105,7 @@ const FieldInfo = ({selectedField, selectField, selectedLabel, selectedValue, te
 
         <Col className="gutter-row field-value" offset={2} span={10}>
             <div>{formatMessage({id: 'page.emailTemplates.fieldValue'})}</div>
-            { fieldOption[template.category] && fieldOption[template.category].map((item, index) => {
+            { fieldOption[template.category] && fieldOption[template.category].map((item) => {
                 return item.field_label === selectedField ? <div>{item.field_value}</div> : null;
             })}
         </Col>
