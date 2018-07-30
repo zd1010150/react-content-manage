@@ -41,7 +41,6 @@ class ViewActions extends Component {
 
   getI18nMessageByKey = key => this.props.intl.formatMessage({ id: `global.errors.${key}` })
 
-  // TODO: testing if this will work or not
   showNotificationByKey = key => notification.error({
     duration: 3,
     message: this.getI18nMessageByKey(key),
@@ -49,55 +48,48 @@ class ViewActions extends Component {
 
   checkCriteria = (criteria) => {
     if (!_.isArray(criteria)) {
-      this.showNotificationByKey('testing');
+      // this.showNotificationByKey('testing');
       return false;
     }
     const isAnyInvalid = criteria.some(c => !c.isValid());
     if (isAnyInvalid) {
-      this.showNotificationByKey('fieldOrConditionRequired');
+      this.showNotificationByKey('fieldAndConditionRequired');
       return false;
     }
     return true;
   }
-  checkLogic = (logic) => {
-    notification.error({
-      duration: 3,
-      message: this.getI18nMessageByKey('filterNumRequired'),
-    });
-    return false;
+  checkLogic = (logic, criteria) => {
+    if (criteria.length > 0 && !logic) {
+      this.showNotificationByKey('filterNumRequired');
+      return false;
+    }
+    // TODO: Add further validation to test if each display num has appeared in logic at least once.
+    //       It's not necessary because backend has implemented this validation.
+    return true;
   }
   checkCriteriaAndLogic = () => {
-    const { CriteriaAndLogic } = this.props;
-    const { criteria, logic } = CriteriaAndLogic;
-    return this.checkCriteria(criteria) && this.checkLogic(logic);
+    const { criteriaAndLogic } = this.props;
+    const { criteria, logic } = criteriaAndLogic;
+    return this.checkCriteria(criteria.criteria) && this.checkLogic(logic, criteria.criteria);
   }
 
   checkValidationBySection = () => {
-    const {
-      intl,
-      objectView,
-    } = this.props;
-    const { formatMessage } = intl;
-    const i18n = 'global.errors';
-
+    const { objectView } = this.props;
     const { name, fields } = objectView;
     // check name
     if (_.isEmpty(name.view_name)) {
-      notification.error({
-        duration: 3,
-        message: formatMessage({ id: `${i18n}.nameRequired` }),
-      });
+      this.showNotificationByKey('nameRequired');
       return false;
     }
     
-    this.checkCriteriaAndLogic();
+    const isCriteriaValid = this.checkCriteriaAndLogic();
+    if (!isCriteriaValid) {
+      return false;
+    }
 
     const { selectedFields } = fields;
     if (selectedFields.length < 1) {
-      notification.error({
-        duration: 3,
-        message: formatMessage({ id: `${i18n}.selectionRequired` }),
-      });
+      this.showNotificationByKey('selectionRequired');
       return false;
     }
     return true;
@@ -164,7 +156,7 @@ const mapStateToProps = ({ global, objectView, FilterCriteria__REFACTORED }) => 
   model: global.settings.model,
   done: objectView.actions,
   objectView,
-  CriteriaAndLogic: FilterCriteria__REFACTORED,
+  criteriaAndLogic: FilterCriteria__REFACTORED,
 });
 const mapDispatchToProps = {
   tryDeleteView,

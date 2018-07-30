@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
 import Enums from 'utils/EnumsManager';
-import { toTimezone } from 'utils/dateTimeUtils';
+import { toTimezone, toUtc } from 'utils/dateTimeUtils';
 
 const { FieldTypes, DateTimeConfigs, Conditions } = Enums;
 const {
@@ -160,7 +160,21 @@ Criterion.prototype.parseSubtype = function (value) {
  *               But no error message will return. If need more details about which property is incorrect, please use checkValidation method.
  */
 Criterion.prototype.isValid = function () {
-  return false;
+  // Validate required fields for backend
+  // NOTES: this function only check if specific field has value, no other specific rules.
+  if (!this.displayNum
+      || !this.fieldId
+      || !this.field
+      || !this.conditionId) {
+    return false;
+  }
+  // Extended validation for date/time filter
+  if (this.field.type === DateOnly || this.field.type === DateTime) {
+    if (!this.subtype) {
+      return false;
+    }
+  }
+  return true;
 };
 /**
  * @description: This function should return a array of error messages with format { name, error } or a emtpy array if no error.
@@ -169,6 +183,46 @@ Criterion.prototype.isValid = function () {
 Criterion.prototype.checkValidation = function () {
   return [];
 };
+/**
+ * 
+ */
+Criterion.prototype.toApi = function () {
+  switch (this.field.type) {
+    case Email:
+    case LongText:
+    case TextInput:
+    case NumberInput:
+    case PickList:
+    case Lookup:
+      return {
+        display_num: this.displayNum,
+        id: this.fieldId,
+        condition: this.conditionId,
+        value: this.value,
+      };
+    case DateOnly:
+    case DateTime:
+      return this.dateTimeToApi(this.field.type === DateTime);
+    default:
+      return null;
+  }
+};
+Criterion.prototype.dateTimeToApi = function (isTime) {
+  let value = null;
+  if (this.subtype === SpecificDate) {
+    value = toUtc(this.value, isTime);
+  } else if (this.subtype === Range) {
+    value = `${TimeRangePrefix}${this.value}`;
+    value = value.toUpperCase();
+  }
+  return {
+    display_num: this.displayNum,
+    id: this.fieldId,
+    condition: this.conditionId,
+    value,
+  };
+};
+
 export const getNewCriterion = maxNum => new Criterion(maxNum);
 
 /**
