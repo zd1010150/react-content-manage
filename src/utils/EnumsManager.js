@@ -421,6 +421,12 @@ const EnumsManager = Object.freeze({
   }),
 
   Conditions: BaseEnums.Conditions,
+
+  EditViewType: Object.freeze({
+    ReadOnly: 'readOnly',
+    Required: 'required',
+  }),
+
 });
 
 export default EnumsManager;

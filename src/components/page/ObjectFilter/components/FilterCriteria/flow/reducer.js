@@ -52,6 +52,9 @@ const formatData = (data) => {
       extraProperties.options = picklists;
     }
     if (crm_data_type === Lookup) {
+      if (value !== '' && value.slice(-1) !== ',') {
+        newValue = value.concat(', ');
+      }
       extraProperties.options = [];
     }
 
@@ -238,7 +241,6 @@ const filterCriteria = (state = initialState, action) => {
 
     case RESET_VIEW:
       return initialState;
-
 
     default:
       return state;
