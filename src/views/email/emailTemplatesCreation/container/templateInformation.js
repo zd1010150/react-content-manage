@@ -96,7 +96,7 @@ const FieldInfo = ({selectedField, selectField, selectedLabel, selectedValue, te
             <div>
                 {formatMessage({id: 'page.emailTemplates.selectField'})}
             </div>
-            <Select onChange={selectField} className="full-width">
+            <Select onChange={selectField} className="full-width" getPopupContainer={() => document.getElementById('TemplateInformation')}>
                 { fieldOption[template.category] && fieldOption[template.category].map((item, index) =>
                     <Select.Option key={item.id ? item.id : index} value={item.field_label}>{item.field_label}</Select.Option>
                 )}
