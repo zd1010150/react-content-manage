@@ -16,7 +16,8 @@ export const SelectComponent = ({hint, defaultValue, items, label, onChange, val
                 onChange(value)
             }} 
             defaultValue={defaultValue} 
-            className="full-width"  getPopupContainer={() => document.getElementById(fixedID)}>
+            className="full-width" 
+            getPopupContainer={() => document.getElementById(fixedID)}>
                 {items && items.map((item) =>
                     <Select.Option key={item.id} value={value(item)}>{item.name}</Select.Option>
                 )}
