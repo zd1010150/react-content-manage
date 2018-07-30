@@ -11,9 +11,12 @@ export const SelectComponent = ({hint, defaultValue, items, label, onChange, val
             {label}{!optional && <span className={`${cx('create-template-red-color')}`}>*</span>}
         </Col>
         <Col className="gutter-row field-value" span={20}>
-            <Select onChange={(value) => {
+            <Select 
+            onChange={(value) => {
                 onChange(value)
-            }} defaultValue={defaultValue} className="full-width"  getPopupContainer={() => document.getElementById(fixedID)}>
+            }} 
+            defaultValue={defaultValue} 
+            className="full-width"  getPopupContainer={() => document.getElementById(fixedID)}>
                 {items && items.map((item) =>
                     <Select.Option key={item.id} value={value(item)}>{item.name}</Select.Option>
                 )}
