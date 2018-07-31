@@ -1,8 +1,9 @@
 import Upload from './Upload';
-import CompanyInfo from './CompanyInfo';
-import BillingInfo from './BillingInfo';
+import CompanyInfo from './CompanyAddress/CompanyInfo';
+import BillingInfo from './BillAddress/BillingInfo';
 import InvoiceInfo from './InvoiceInfo';
 import ItemDetails from './ItemDetails/index';
+import ItemsList from './ItemsList/index';
 
 export {
   Upload,
@@ -10,4 +11,5 @@ export {
   BillingInfo,
   InvoiceInfo,
   ItemDetails,
+  ItemsList,
 };

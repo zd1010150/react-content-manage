@@ -10,7 +10,7 @@ import React from 'react';
 import Enums from 'utils/EnumsManager';
 import { DisplayField, EmailInput } from './index';
 import styles from './index.less';
-import { getDisplayValue } from './utils';
+import { displayValue } from './utils';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -217,7 +217,7 @@ const CustomizedField = ({
           isValueChanged={value !== initialValue}
           readOnly={readOnly}
           value={fieldType === Lookup ?
-                  getDisplayValue(value, options, lookupDisplayKey) :
+                  displayValue(value, options, lookupDisplayKey) :
                   value
           }
           onRevertClick={onRevertClick}

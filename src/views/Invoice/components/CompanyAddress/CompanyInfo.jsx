@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setCIField } from '../flow/actions';
+import { setCIField } from '../../flow/actions';
 import CIForm from './CIForm';
 
 const defaultProps = {};
