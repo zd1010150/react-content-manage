@@ -107,9 +107,7 @@ const FieldInfo = ({selectedField, selectField, selectedLabel, selectedValue, te
 
         <Col className="gutter-row field-value" offset={2} span={10}>
             <div>{formatMessage({id: 'page.emailTemplates.fieldValue'})}</div>
-            { fieldOption[template.category] && fieldOption[template.category].map((item) => {
-                return item.field_label === selectedField ? <div>{item.field_value}</div> : null;
-            })}
+            <div>{selectedField.field_value}</div>
         </Col>
         {/*<Col className="gutter-row field-value" offset={2} span={10}>*/}
             {/*<SelectComponentVertical labelInValue={false} defaultValue={selectedValue} items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}*/}
@@ -146,9 +144,14 @@ class TemplateInformation extends React.Component {
 
 
     selectField = (value) => {
-        this.setState({selectedField: value}, ()=>{
-            this.setState({selectedValue: value.field_value})
-        })
+        const { newTemplate, fieldOption } = this.props;
+        { fieldOption[newTemplate.category] && fieldOption[newTemplate.category].map((item) => {
+            if (value === item.field_label) {
+                this.setState({selectedField: item}, ()=>{
+                    this.setState({selectedValue: item.field_value})
+                })
+            }
+        })}
     }
 
     setTemplateCategory = (value) => {
