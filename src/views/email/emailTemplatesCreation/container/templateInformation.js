@@ -145,10 +145,11 @@ class TemplateInformation extends React.Component {
 
     selectField = (value) => {
         const { newTemplate, fieldOption } = this.props;
-        { fieldOption[newTemplate.category] && fieldOption[newTemplate.category].map((item) => {
+        { _.isArray(fieldOption[newTemplate.category]) && fieldOption[newTemplate.category].map((item) => {
             if (value === item.field_label) {
-                this.setState({selectedField: item}, ()=>{
-                    this.setState({selectedValue: item.field_value})
+                this.setState({
+                    selectedField: item,
+                    selectedValue: item.field_value
                 })
             }
         })}
