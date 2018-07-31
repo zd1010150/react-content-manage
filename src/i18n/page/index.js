@@ -25,6 +25,7 @@ import objectList from 'views/ObjectList/i18n';
 import convertDetails from 'components/page/ConvertDetails/i18n';
 import findDuplicates from 'components/page/FindDuplicates/i18n';
 import invoice from 'views/Invoice/i18n';
+import FilterCriteria__REFACTORED from 'components/page/FilterCriteria__REFACTORED/i18n';
 
 export default {
   comInfo,
@@ -54,4 +55,5 @@ export default {
   convertDetails,
   findDuplicates,
   invoice,
+  FilterCriteria__REFACTORED,
 };

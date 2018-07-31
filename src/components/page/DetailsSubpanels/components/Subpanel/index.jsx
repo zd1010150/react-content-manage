@@ -159,6 +159,7 @@ class Subpanel extends Component {
       priorities,
       statuses,
       categories,
+      theme,
     } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui.table';
@@ -173,6 +174,19 @@ class Subpanel extends Component {
           {
             dataIndex: 'subject',
             title: formatMessage({ id: `${i18n}.subject` }),
+            render: (text, record) => {
+              if (code === TaskHistory) {
+                return (
+                  <Link
+                    className={`${theme}-theme-text`}
+                    to={`/${objectType}/${objectId}/tasks/history/${record.id}`}
+                  >
+                    {text}
+                  </Link>
+                );
+              }
+              return text;
+            },
           },
           {
             dataIndex: 'status_code',
@@ -193,6 +207,7 @@ class Subpanel extends Component {
           {
             dataIndex: 'due_date',
             title: formatMessage({ id: `${i18n}.dueOn` }),
+            render: text => toTimezone(text),
           },
           {
             dataIndex: 'updated_at',
@@ -271,6 +286,7 @@ class Subpanel extends Component {
           {
             dataIndex: 'updated_at',
             title: formatMessage({ id: `${i18n}.date` }),
+            render: text => toTimezone(text, true),
           },
           {
             dataIndex: 'causer.name',
@@ -332,6 +348,17 @@ class Subpanel extends Component {
             </Fragment>
           );
         },
+      });
+    } else if (code === TaskHistory) {
+      columns.unshift({
+        key: 'actions',
+        className: cx('firstCol'),
+        title: formatMessage({ id: `${i18n}.action` }),
+        render: (text, record) => (
+          <Link to={`/${objectType}/${objectId}/tasks/history/${record.id}`}>
+            <Icon style={{ fontWeight: 400 }} className="cursor-pointer" size="small" type="eye" />
+          </Link>
+        ),
       });
     }
     return columns;

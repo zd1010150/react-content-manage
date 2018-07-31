@@ -43,6 +43,7 @@ const Actions = ({
   onDelete,
   onSave,
   onSaveAndNew,
+  isHistoryTask,
 }) => {
 
   const _onCancel = $ => {
@@ -85,6 +86,14 @@ const Actions = ({
   const i18nPrefix = 'global.ui.button';
   const { formatMessage } = intl;
 
+  if (isHistoryTask) {
+    return (
+      <Button onClick={getFuncByKey('cancel')}>
+        <Icon className="font-sm" type="close" />
+        {formatMessage({ id: `${i18nPrefix}.close` })}
+      </Button>
+    );
+  }
   return (
     <Fragment>
       {buttons.map((btn, i) => {

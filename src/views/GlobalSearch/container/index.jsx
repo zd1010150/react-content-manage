@@ -8,7 +8,7 @@ import { injectIntl } from 'react-intl';
 import { toTimezone } from 'utils/dateTimeUtils';
 import Enums from 'utils/EnumsManager';
 import { Link } from 'react-router-dom';
-import { fetchResultFromRemote, fetchResultByObjtype } from '../flow/action';
+import { fetchResultByObjtype } from '../flow/action';
 
 
 const { FieldTypes } = Enums;
@@ -25,16 +25,7 @@ const {
 
 
 class GlobalSearch extends React.Component {
-  componentDidMount() {
-    const { fetchResultFromRemote, keys } = this.props;
-    fetchResultFromRemote(keys);
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.keys !== this.props.keys) {
-      const { fetchResultFromRemote, keys } = nextProps;
-      fetchResultFromRemote(keys);
-    }
-  }
+ 
     parsePagination = (objType) => {
       const { fetchResultByObjtype, keys } = this.props;
       const pagination = this.props.paginations[objType];
@@ -63,6 +54,16 @@ class GlobalSearch extends React.Component {
           extraConfigs.render = text => toTimezone(text, '+1100', 'YYYY-MM-DD');
           break;
         case Lookup:
+        if(column.field_name === 'target_account_id') {
+          extraConfigs.render = (lookup, record) => (
+            <Link
+              className={`account-theme-text`}
+              to={`accounts/${record.target_account_id.id}`}
+            >
+              {lookup}
+            </Link>
+          );
+        }
           extraConfigs.dataIndex = `${column.field_name}.${column.lookup_own_field_name}`;
           break;
         case PickList:
@@ -128,7 +129,6 @@ const mapStateToProps = ({ globalSearch }) => ({
   columnsMeta: globalSearch.globalSearchColumnsMeta,
 });
 const mapDispatchToProp = {
-  fetchResultFromRemote,
   fetchResultByObjtype,
 };
 

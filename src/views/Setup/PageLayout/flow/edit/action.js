@@ -155,4 +155,3 @@ export const updateLayoutDetail = (id, name, structure, cb) => dispatch => patch
     cb();
   }
 });
-

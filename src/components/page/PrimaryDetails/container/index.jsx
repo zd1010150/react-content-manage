@@ -90,6 +90,7 @@ class PrimaryDetails extends Component {
             title={section.label}
             fields={section.fields}
             columns={section.columns}
+            objectType={objectType}
           />
         ))}
       </Panel>

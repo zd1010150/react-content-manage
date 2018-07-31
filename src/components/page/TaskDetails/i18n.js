@@ -2,6 +2,7 @@ export default {
   zh: {
     newTitle: '添加新任务',
     editTitle: '编辑任务',
+    viewTitle: '查看任务',
     labels: {
       assignTo: '任务分配给',
       status: '状态',
@@ -16,6 +17,7 @@ export default {
   en: {
     newTitle: 'Add New Task',
     editTitle: 'Edit Task',
+    viewTitle: 'View Task',
     labels: {
       assignTo: 'Assign To',
       status: 'Status',
@@ -28,4 +30,3 @@ export default {
     },
   },
 };
-  

@@ -124,11 +124,10 @@ class TableWrapper extends Component {
         break;
       case Lookup:
         if (column.field_name === 'target_account_id') {
-          const { theme, objectType } = this.props;
           extraConfigs.render = (lookup, record) => (
             <Link
-              className={`${theme}-theme-text`}
-              to={`${objectType}/${record.id}`}
+              className="account-theme-text"
+              to={`accounts/${record.target_account_id.id}`}
             >
               {lookup}
             </Link>

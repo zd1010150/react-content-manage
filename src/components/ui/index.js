@@ -32,6 +32,9 @@ import PopDeleteConfirm from './PopDeleteConfirm/index';
 import ErrorText from './ErrorText/index';
 import FormatedTime from './FormatedTime/index';
 import { ManualFileUpload, CommonManualFileUpload, InstantUpload } from './FileUploads/index';
+import TimeRangeFilter from './TimeRangeFilter/index';
+import AutoConvertedDatePicker from './AutoConvertedDatePicker/index';
+import Criterion from './Criterion/index';
 
 export {
   Upload,
@@ -72,4 +75,7 @@ export {
   ManualFileUpload,
   CommonManualFileUpload,
   InstantUpload,
+  TimeRangeFilter,
+  AutoConvertedDatePicker,
+  Criterion,
 };

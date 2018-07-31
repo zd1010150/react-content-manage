@@ -18,6 +18,7 @@ import { SET_ACCOUNTINFO,
   TOGGLE_LANGUAGE,
   SET_APP_ROUTER_HASH,
   SET_TIME_ZONE,
+  SET_THEME,
 } from './actionType';
 
 const { LocalStorageKeys, DateTimeConfigs } = Enums;
@@ -97,6 +98,7 @@ const mapSettingData = (state, data) => Object.assign({}, state, {
   model: data.model,
   conditions: data.list_view.conditions,
   assignOptions: data.list_view.assign_options,
+  timeRanges: data.list_view.variables,
   categories: data.file.category,
   statuses: data.task.statuses,
   priorities: data.task.priorities,
@@ -117,6 +119,7 @@ const settings = (state = {
   users: [],
   conditions: [],
   assignOptions: [],
+  timeRanges: [],
   categories: [],
   statuses: [],
   priorities: [],
@@ -205,6 +208,18 @@ const timeZoneSetting = (state = { dateFormat: DEFAULT_DATE_SETTING.DATE_FORMAT,
   }
 };
 
+
+const initialTheme = '';
+const theme = (state = initialTheme, action) => {
+  const { type } = action;
+  switch (type) {
+    case SET_THEME:
+      return action.payload.theme;
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   language,
   permissions,
@@ -214,5 +229,6 @@ const rootReducer = combineReducers({
   companyLogo,
   appRoutHash,
   timeZoneSetting,
+  theme,
 });
 export default rootReducer;

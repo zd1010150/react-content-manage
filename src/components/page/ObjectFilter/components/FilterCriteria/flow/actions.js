@@ -9,6 +9,8 @@ import {
   ADD_FILTER,
   REMOVE_FILTER,
   CHANGE_FILTER,
+  SET_ALL_FIELDS,
+  SET_TIME_RANGE_VALUE,
 } from './actionTypes';
 
 export const setFilters = data => ({
@@ -35,7 +37,7 @@ export const changeFilterByColumn = (displayNum, key, value, fieldId) => ({
   payload: { displayNum, key, value, fieldId },
 });
 
-export const setSiderSelection = $ => ({
+export const setSiderSelection = () => ({
   type: SET_SIDER_SELECTION,
 });
 
@@ -44,7 +46,7 @@ export const setSiderOptions = (siderDisplayNum, siderOptions) => ({
   payload: { siderDisplayNum, siderOptions },
 });
 
-export const fetchLookupValuesById = (displayNum, id) => dispatch => get(`/admin/objects/lookup-metadata/${id}`, {}, dispatch).then(json => {
+export const fetchLookupValuesById = (displayNum, id) => dispatch => get(`/admin/objects/lookup-metadata/${id}`, {}, dispatch).then((json) => {
   if (json) {
     dispatch(setSiderOptions(displayNum, json));
     dispatch(setSiderSelection());
@@ -56,6 +58,16 @@ export const syncSiderSelection = checkedIds => ({
   payload: { checkedIds },
 });
 
-export const insertSiderSelectionToField = $ => ({
+export const insertSiderSelectionToField = () => ({
   type: INSERT_SIDER_SELECTION,
+});
+
+export const setAllFields = fields => ({
+  type: SET_ALL_FIELDS,
+  payload: { fields },
+});
+
+export const setTimeRangeValue = (displayNum, prop, newValue) => ({
+  type: SET_TIME_RANGE_VALUE,
+  payload: { displayNum, prop, newValue },
 });

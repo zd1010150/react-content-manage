@@ -15,7 +15,7 @@ const { Timezone } = LocalStorageKeys;
 // All possible utc offset list pls refer to https://en.wikipedia.org/wiki/List_of_UTC_time_offsets
 
 
-const getTimeSetting = (isTime) => {
+export const getTimeSetting = (isTime) => {
   const timezone = getStore(Timezone);
   const parsedTimezone = JSON.parse(timezone);
 
