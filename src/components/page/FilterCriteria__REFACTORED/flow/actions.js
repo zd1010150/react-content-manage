@@ -58,7 +58,9 @@ export const tryFetchOptionsIfNeeded = criterion => (dispatch) => {
   return get(`/admin/objects/lookup-metadata/${field.id}`, {}, dispatch)
           .then((data) => {
             if (data) {
-              dispatch(setFieldOptions(criterion, data));
+              // NOTES: Lookup field may contain duplicate values, we need to remove the duplication here.
+              //        Otherwise, duplications will cause issue on Sider selection and render due to same key issue.
+              dispatch(setFieldOptions(criterion, _.uniqBy(data, criterion.field.lookupKey)));
               dispatch(setSiderRecord(criterion));
             }
           });
