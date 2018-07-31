@@ -52,22 +52,10 @@ const propTypes = {
 
 class Criteria extends Component {
   // TODO: clean up
-  handleFilterFieldChange = (displayNum, newValue) => {
-    console.log(`field change ${displayNum} -=- ${newValue}`);
-    this.props.setCriterionByColumn('field', displayNum, newValue);
-  }
-  handleFilterConditionChange = (displayNum, newValue) => {
-    console.log(`condition change ${displayNum} -=- ${newValue}`);
-    this.props.setCriterionByColumn('condition', displayNum, newValue);
-  }
-  handleFilterValueChange = (displayNum, newValue, newSubtype) => {
-    console.log(`value change ${displayNum} -=- ${newValue} -=- ${newSubtype}`);
-    this.props.setCriterionByColumn('value', displayNum, newValue, newSubtype);
-  }
-  handleFilterDeleteClick = (displayNum) => {
-    console.log(`deleting -=- ${displayNum}`);
-    this.props.removeCriterionByDisplayNum(displayNum);
-  }
+  handleFilterFieldChange = (displayNum, newValue) => this.props.setCriterionByColumn('field', displayNum, newValue)
+  handleFilterConditionChange = (displayNum, newValue) => this.props.setCriterionByColumn('condition', displayNum, newValue)
+  handleFilterValueChange = (displayNum, newValue, newSubtype) => this.props.setCriterionByColumn('value', displayNum, newValue, newSubtype)
+  handleFilterDeleteClick = displayNum => this.props.removeCriterionByDisplayNum(displayNum)
   handleSearchIconClick = (criterion) => {
     this.props.toggleRightSider(false);
     this.props.tryFetchOptionsIfNeeded(criterion);
