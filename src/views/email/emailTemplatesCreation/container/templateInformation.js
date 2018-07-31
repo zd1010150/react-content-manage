@@ -49,6 +49,7 @@ const BasicInfo = ({
     return <Fragment>
         <SelectComponent defaultValue={selectedFolder.name ? selectedFolder.name : ''}
                          onChange={setTemplateFolder} items={userFolders}
+                         fixedID='TemplateInformation'
                          label={formatMessage({id: 'page.emailTemplates.folder'})}
                          value={v => v.id}/>
         <InputComponent value={editTemplate.name} onChange={setTemplateName}
@@ -59,6 +60,7 @@ const BasicInfo = ({
                         label={formatMessage({id: 'page.emailTemplates.newTemplateDescription'})}/>
         <SelectComponent hint={formatMessage({id: 'page.emailTemplates.selectCategoryHint'})} defaultValue={editTemplate.category ? editTemplate.category : 'leads'}
                          onChange={setTemplateCategory} items={categories}
+                         fixedID='TemplateInformation'
                          label={formatMessage({id: 'page.emailTemplates.category'})}
                          value={v => v.name}/>
     </Fragment>
@@ -96,16 +98,18 @@ const FieldInfo = ({selectedField, selectField, selectedLabel, selectedValue, te
             <div>
                 {formatMessage({id: 'page.emailTemplates.selectField'})}
             </div>
-            <Select onChange={selectField} className="full-width">
+            <Select onChange={selectField} className="full-width" getPopupContainer={() => document.getElementById('TemplateInformation')}>
                 { fieldOption[template.category] && fieldOption[template.category].map((item, index) =>
-                    <Select.Option key={item.id ? item.id : index} value={item}>{item.field_label}</Select.Option>
+                    <Select.Option key={item.id ? item.id : index} value={item.field_label}>{item.field_label}</Select.Option>
                 )}
             </Select>
         </Col>
 
         <Col className="gutter-row field-value" offset={2} span={10}>
             <div>{formatMessage({id: 'page.emailTemplates.fieldValue'})}</div>
-            <div>{selectedField.field_value}</div>
+            { fieldOption[template.category] && fieldOption[template.category].map((item) => {
+                return item.field_label === selectedField ? <div>{item.field_value}</div> : null;
+            })}
         </Col>
         {/*<Col className="gutter-row field-value" offset={2} span={10}>*/}
             {/*<SelectComponentVertical labelInValue={false} defaultValue={selectedValue} items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}*/}
