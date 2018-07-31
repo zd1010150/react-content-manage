@@ -61,6 +61,8 @@ const getConditionIdsByType = (type) => {
       ];
     case Lookup:
       return [
+        Equals,
+        NotEquals,
         StartsWith,
         Contains,
         NotContains,
