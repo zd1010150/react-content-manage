@@ -90,6 +90,15 @@ const BaseEnums = Object.freeze({
     HasRelation: 'has_relation',
   }),
 
+  InvoiceItemsListColumns: Object.freeze({
+    Action: 'action',
+    Description: 'description',
+    Code: 'code',
+    Quantity: 'quantity',
+    UnitPrice: 'unitPrice',
+    Total: 'total',
+  }),
+
 });
 
 const tableIntl = 'global.ui.table';
@@ -431,6 +440,13 @@ const EnumsManager = Object.freeze({
   FileExtensions: Object.freeze({
     Images: '.jpg, .png, .gif, .jpeg',
     Pdf: '.pdf',
+  }),
+
+  Invoice: Object.freeze({
+    ItemsList: Object.freeze({
+      Columns: BaseEnums.InvoiceItemsListColumns,
+      ColumnsInArray: Object.freeze(_.values(BaseEnums.InvoiceItemsListColumns)),
+    }),
   }),
 
 });

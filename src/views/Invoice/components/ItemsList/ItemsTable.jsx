@@ -1,139 +1,122 @@
-import { Icon, Input, Table, Tooltip } from 'antd';
+import { Input, Table, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import { } from '../../flow/actions';
+import Enums from 'utils/EnumsManager';
+import { activateCell, deactivateCell, deleteItemById, setColumnValue } from '../../flow/itemsList/actions';
+import { DeleteConfirmButton } from 'components/ui/index';
+
+const { Columns, ColumnsInArray } = Enums.Invoice.ItemsList;
+const {
+  Action,
+  Description,
+  Code,
+  Quantity,
+  UnitPrice,
+  Total,
+} = Columns;
 
 
 const defaultProps = {};
 const propTypes = {
   intl: intlShape.isRequired,
-  setActiveRecord: PropTypes.func.isRequired,
+  // TODO: lift it up to util/prop checks
+  data: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    description: PropTypes.string,
+    code: PropTypes.string,
+    quantity: PropTypes.number,
+    unitPrice: PropTypes.number,
+    editingColName: PropTypes.string,
+    isEditingAll: PropTypes.bool.isRequired,
+  })).isRequired,
 };
 
 class ItemsTable extends Component {
-  constructor(props) {
-    super(props);
-    this.columnKeys = {
-      description: 'itemDescription',
-      code: 'itemCode',
-      quantity: 'quantity',
-      unitPrice: 'unitPrice',
-      total: 'total',
+  onCellChange = (id, column, newValue) => this.props.setColumnValue(id, column, newValue)
+
+  getColumnConfig = (col) => {
+    const { formatMessage } = this.props.intl;
+    const i18n = 'global.ui.table';
+
+    let renderer;
+    switch (col) {
+      case Description:
+      case Code:
+        renderer = (text, record) => this.TextRenderer(text, record, `${col}`);
+        break;
+      case Quantity:
+      case UnitPrice:
+        renderer = (text, record) => this.NumberRenderer(text, record, `${col}`);
+        break;
+      case Action:
+        renderer = this.ActionRenderer;
+        break;
+      case Total:
+        renderer = (text, record) => record.quantity * record.unitPrice;
+        break;
+      default:
+        renderer = null;
+    }
+    return {
+      dataIndex: `${col}`,
+      width: '20%',
+      title: formatMessage({ id: `${i18n}.${col}` }),
+      onCell: record => ({
+        onDoubleClick: () => this.props.activateCell(record.id, col),
+        onBlur: () => this.handleCellBlur(record.id, col),
+      }),
+      render: renderer,
     };
   }
 
-  handleCellBlur = (e, id) => {}
-
-  editableCellRenderer = (text, record, colName) => {
-    if (!record.active
-      || record.activeCol !== colName) {
-      return <div className="text-center" data-name={colName}>{text}</div>;
+  handleCellBlur = (id, column) => this.props.deactivateCell(id, column)  
+  ActionRenderer = (text, record) => <DeleteConfirmButton onConfirm={() => this.props.deleteItemById(record.id)} />
+  TextRenderer = (text, record, column) => {
+    if (record.isEditingAll
+        || (record.editingCol && record.editingCol === column)) {
+      return (
+        <Input
+          className="text-center"
+          size="small"
+          onChange={e => this.onCellChange(record.id, column, e.target.value)}
+          // onBlur={() => this.handleCellBlur(record.id, column)}
+          onFocus={e => console.log('testing on cell with onfocus')}
+          value={text}
+        />
+      );
     }
-
-    const {
-      description,
-      code,
-      quantity,
-      unitPrice,
-    } = this.columnKeys;
-    const value = record[record.activeCol];
-    switch (record.activeCol) {
-      case description:
-      case code:
-      case quantity:
-      case unitPrice:
-        return (
-          <Input
-            className="text-center"
-            size="small"
-            defaultValue={value}
-            data-name={colName}
-            onBlur={e => this.handleCellBlur(e, record.id)}
-          />
-        );
-      default:
-        return null;
-    }
+    return text;
   }
-  
-  renderColumns = () => {
-    const { intl } = this.props;
-    const { formatMessage } = intl;
-    const i18n = 'global.ui.table';
-
-    const {
-      description,
-      code,
-      quantity,
-      unitPrice,
-      total,
-    } = this.columnKeys;
-
-    const colWidth = '20%';
-    return [
-      {
-        dataIndex: `${description}`,
-        width: colWidth,
-        title: <div className="text-center">{formatMessage({ id: `${i18n}.${description}` })}</div>,
-        render: (text, record) => this.editableCellRenderer(text, record, `${description}`),
-      },
-      {
-        dataIndex: `${code}`,
-        width: colWidth,
-        title: (
-          <div className="text-center">
-            {formatMessage({ id: `${i18n}.${code}` })}
-            <Tooltip title="Item number or SKU">
-              <Icon type="question-circle" style={{ fontWeight: 400 }} className="ml-sm" />
-            </Tooltip>
-          </div>
-        ),
-        render: (text, record) => this.editableCellRenderer(text, record, `${code}`),
-      },
-      {
-        dataIndex: `${quantity}`,
-        width: colWidth,
-        title: <div className="text-center">{formatMessage({ id: `${i18n}.${quantity}` })}</div>,
-        render: (text, record) => this.editableCellRenderer(text, record, `${quantity}`),
-      },
-      {
-        dataIndex: `${unitPrice}`,
-        width: colWidth,
-        title: <div className="text-center">{formatMessage({ id: `${i18n}.${unitPrice}` })}</div>,
-        render: (text, record) => this.editableCellRenderer(text, record, `${unitPrice}`),
-      },
-      {
-        dataIndex: `${total}`,
-        width: colWidth,
-        title: <div className="text-center">{formatMessage({ id: `${i18n}.${total}` })}</div>,
-        render: (text, record) => <div className="text-center">{record.quantity * record.unitPrice}</div>,
-      },
-    ];
+  NumberRenderer = (text, record) => {
+    return text;
   }
+
+  renderColumns = () => ColumnsInArray.map(col => this.getColumnConfig(col))
 
   render() {
     const { data } = this.props;
 
     return (
       <Table
-        className="fixedTable"
+        className="fixedTable textCenter"
         columns={this.renderColumns()}
         dataSource={data}
         bordered
+        size="small"
         pagination={false}
         rowKey="id"
         onRow={record => ({
-          onDoubleClick: (e) => {
-            let colName;
-            if (e.target.dataset.name) {
-              colName = e.target.dataset.name;
-            } else if (e.target.firstChild.dataset) {
-              colName = e.target.firstChild.dataset.name;
-            }
-            return this.props.setActiveRecord(record.id, colName);
-          },
+          // TODO: add onFocus on tbody level, and check on every onblur
+
+
+          // probably need to compare focus target to determine if we need to deactivate the whole row.
+          // it depends on focus/blur related event triggered order.
+          onFocus: (e) => console.log(`focus on => ${record.id}`),
+          // TODO: testing purpose to check if onBlur in React with propagation capability by default
+          // NOTES: focus on diff cells of same row will trigger this part as well. so the on blur of Antd is propagated
+          onBlur: (e) => { console.log(`blur from record id => ${record.id}`); },
         })}
       />
     );
@@ -143,10 +126,15 @@ class ItemsTable extends Component {
 
 ItemsTable.defaultProps = defaultProps;
 ItemsTable.propTypes = propTypes;
-const mapStateToProps = ({ invoice }) => ({
+const mapStateToProps = ({ global, invoice }) => ({
+  language: global.language,
   data: invoice.itemsList.data,
 });
 const mapDispatchToProps = {
+  activateCell,
+  deactivateCell,
+  deleteItemById,
+  setColumnValue,
 };
 export default connect(
   mapStateToProps,

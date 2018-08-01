@@ -25,7 +25,7 @@ class ItemsList extends Component {
 
     return (
       <Fragment>
-        <div className="text-right">
+        <div className="text-right mb-sm">
           <Button
             size="small"
             onClick={this.onAddNewClick}
