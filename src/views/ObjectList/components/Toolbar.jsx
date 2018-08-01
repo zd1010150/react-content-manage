@@ -44,7 +44,7 @@ class Toolbar extends Component {
       tryDeleteClientsByType,
       activeViewId,
     } = this.props;
-    tryDeleteClientsByType(objectType, selectedRowKeys, tableParams, meta, activeViewId);
+    tryDeleteClientsByType(objectType, selectedRowKeys, tableParams, meta, [objectType]);
   }
 
   handleMassUpdate = (fieldName, value) => {
@@ -60,7 +60,7 @@ class Toolbar extends Component {
       field_name: fieldName,
       value,
     };
-    tryUpdateClients(params, objectType, tableParams, activeViewId);
+    tryUpdateClients(params, objectType, tableParams, activeViewId[objectType]);
     this.setState({ visible: false });
   }
 
