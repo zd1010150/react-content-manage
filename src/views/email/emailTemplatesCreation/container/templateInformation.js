@@ -107,7 +107,7 @@ const FieldInfo = ({selectedField, selectField, selectedLabel, selectedValue, te
 
         <Col className="gutter-row field-value" offset={2} span={10}>
             <div>{formatMessage({id: 'page.emailTemplates.fieldValue'})}</div>
-            <div>{selectedField.field_value}</div>
+            <div>{selectedValue}</div>
         </Col>
         {/*<Col className="gutter-row field-value" offset={2} span={10}>*/}
             {/*<SelectComponentVertical labelInValue={false} defaultValue={selectedValue} items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}*/}
@@ -145,7 +145,7 @@ class TemplateInformation extends React.Component {
 
     selectField = (value) => {
         const { newTemplate, fieldOption } = this.props;
-        { _.isArray(fieldOption[newTemplate.category]) && fieldOption[newTemplate.category].map((item) => {
+        { _.isArray(fieldOption[newTemplate.category]) && fieldOption[newTemplate.category].forEach((item) => {
             if (value === item.field_label) {
                 this.setState({
                     selectedField: item,
