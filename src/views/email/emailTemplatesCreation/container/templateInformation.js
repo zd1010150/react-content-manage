@@ -144,8 +144,9 @@ class TemplateInformation extends React.Component {
 
 
     selectField = (value) => {
-        const { newTemplate, fieldOption } = this.props;
-        { _.isArray(fieldOption[newTemplate.category]) && fieldOption[newTemplate.category].forEach((item) => {
+        const { newTemplate, fieldOption, editTemplate } = this.props;
+        const setTemplate = !_.isEmpty(newTemplate) ? newTemplate : editTemplate;
+        { !_.isEmpty(setTemplate) &&_.isArray(fieldOption[setTemplate.category]) && fieldOption[setTemplate.category].forEach((item) => {
             if (value === item.field_label) {
                 this.setState({
                     selectedField: item,
