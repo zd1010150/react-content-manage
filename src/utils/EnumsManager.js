@@ -50,6 +50,46 @@ const BaseEnums = Object.freeze({
     Logs: 'Logs',
   }),
 
+  DateTimeSubTypes: Object.freeze({
+    SpecificDate: 'SpecificDate',
+    Range: 'Range',
+    // TODO: This is comment out right now, but will eventually added as a feature in future.
+    // CustomRange: 'CustomRange',
+  }),
+
+  DateTimeRanges: Object.freeze({
+    Today: 'TODAY',
+    ThisWeek: 'THIS_WEEK',
+    ThisMonth: 'THIS_MONTH',
+  }),
+
+  DateTimePeriodPrefixs: Object.freeze({
+    Next: 'Next',
+    Last: 'Last',
+  }),
+
+  DateTimePeriodTypes: Object.freeze({
+    Days: 'Days',
+    Weeks: 'Weeks',
+    Months: 'Months',
+  }),
+
+  Conditions: Object.freeze({
+    StartsWith: 'starts_with',
+    Contains: 'contains',
+    Equals: 'equals',
+    NotEquals: 'not_equals',
+    NotContains: 'not_contains',
+    LessThan: 'less_than',
+    GreaterThan: 'greater_than',
+    LessOrEquals: 'less_or_equals',
+    GreaterOrEquals: 'greater_or_equals',
+    WithIn: 'within',
+    IsNull: 'is_null',
+    IsNotNull: 'is_not_null',
+    HasRelation: 'has_relation',
+  }),
+
 });
 
 const tableIntl = 'global.ui.table';
@@ -124,6 +164,7 @@ const EnumsManager = Object.freeze({
     OBJECTSHARE: 'OBJECTSHARE',
     OBJECTDETAILS: 'OBJECTDETAILS',
     CONVERSION: 'CONVERSION',
+    CRITERIA: 'CRITERIA',
   }),
 
   ViewVisibilityIds: Object.freeze({
@@ -362,6 +403,28 @@ const EnumsManager = Object.freeze({
     DefaultOffset: '+1100',
     DateFormatKey: 'dateFormat',
     TimeFormatKey: 'timeFormat',
+
+    TimeRangePrefix: 'VAR__',
+
+    SubTypes: BaseEnums.DateTimeSubTypes,
+    SubTypesInArray: Object.freeze(_.values(BaseEnums.DateTimeSubTypes)),
+
+    Ranges: BaseEnums.DateTimeRanges,
+    RangesInArray: Object.freeze(_.values(BaseEnums.DateTimeRanges)),
+
+    PeriodPrefixs: BaseEnums.DateTimePeriodPrefixs,
+    PeriodPrefixsInArray: Object.freeze(_.values(BaseEnums.DateTimePeriodPrefixs)),
+
+    PeriodTypes: BaseEnums.DateTimePeriodTypes,
+    PeriodTypesInArray: Object.freeze(_.values(BaseEnums.DateTimePeriodTypes)),
+
+  }),
+
+  Conditions: BaseEnums.Conditions,
+
+  EditViewType: Object.freeze({
+    ReadOnly: 'readOnly',
+    Required: 'required',
   }),
 
 });

@@ -1,23 +1,38 @@
 /* eslint-disable max-len */
 import Enums from 'utils/EnumsManager';
 import { toTimezone } from 'utils/dateTimeUtils';
-import { ADD_FILTER, CHANGE_FILTER, INSERT_SIDER_SELECTION, REMOVE_FILTER, RESET_VIEW, SET_CONDITION_LOGIC, SET_FILTERS, SET_SIDER_OPTIONS, SET_SIDER_SELECTION, SYNC_SIDER_SELECTION } from './actionTypes';
-import { getConditionLogic } from './utils';
+import {
+  ADD_FILTER,
+  CHANGE_FILTER,
+  INSERT_SIDER_SELECTION,
+  REMOVE_FILTER,
+  RESET_VIEW,
+  SET_CONDITION_LOGIC,
+  SET_FILTERS,
+  SET_SIDER_OPTIONS,
+  SET_SIDER_SELECTION,
+  SYNC_SIDER_SELECTION,
+  SET_ALL_FIELDS,
+  SET_TIME_RANGE_VALUE,
+} from './actionTypes';
+import {
+  getConditionLogic,
+  getDefaultValueByFieldType,
+  getFieldMeta,
+  formatFields,
+} from './utils';
 
+const { FieldTypes, DateTimeConfigs } = Enums;
 const {
   DateOnly,
   DateTime,
-  Email,
-  LongText,
   Lookup,
-  NumberInput,
   PickList,
-  TextInput,
-  Display,
-} = Enums.FieldTypes;
+} = FieldTypes;
+const { SubTypes } = DateTimeConfigs;
+const { Range } = SubTypes;
 
-
-const formatData = data => {
+const formatData = (data) => {
   if (!_.isArray(data)) return [];
 
   return data.map(record => {
@@ -37,6 +52,9 @@ const formatData = data => {
       extraProperties.options = picklists;
     }
     if (crm_data_type === Lookup) {
+      if (value !== '' && value.slice(-1) !== ',') {
+        newValue = value.concat(', ');
+      }
       extraProperties.options = [];
     }
 
@@ -58,6 +76,7 @@ const initialSider = {
   siderSelection: [],
 };
 const initialState = {
+  fields: [],
   condition_logic: '',
   filters: [],
   ...initialSider,
@@ -70,6 +89,13 @@ const filterCriteria = (state = initialState, action) => {
       return {
         ...state,
         filters: formatData(data),
+      };
+
+    case SET_ALL_FIELDS:
+      const { fields } = action.payload;
+      return {
+        ...state,
+        fields: formatFields(fields),
       };
 
 
@@ -118,13 +144,24 @@ const filterCriteria = (state = initialState, action) => {
         fieldId,
         displayNum,
       } = action.payload;
+      // TODO: Refactor needed to cater for new requirements
       const filtersAfterChange = state.filters.map((filter) => {
-        if (filter.displayNum === displayNum) {
-          if (key === 'type') {
-            filter.fieldId = fieldId;
-            filter.value = '';
+        if (filter.displayNum === displayNum) {          
+          const meta = getFieldMeta(fieldId, state.fields);
+          if (key === 'type') {            
+            if (meta) {
+              filter.fieldId = fieldId;
+              filter.type = meta.type;
+              filter.value = getDefaultValueByFieldType(meta.type);
+            }
           }
           filter[key] = value;
+          // case to lock condition to be equals when time range subtype is range
+          if (key === 'conditionId') {
+            if (_.isPlainObject(filter.value) && filter.value.subtype === Range) {
+              filter[key] = 'equals';
+            }
+          }
         }
         return filter;
       });
@@ -141,7 +178,7 @@ const filterCriteria = (state = initialState, action) => {
         filters: filtersAfterChange,
       };
 
-    
+
     case SET_SIDER_OPTIONS:
       const { siderDisplayNum, siderOptions } = action.payload;
       return {
@@ -193,10 +230,17 @@ const filterCriteria = (state = initialState, action) => {
         filters: newFilters,
       };
 
+    case SET_TIME_RANGE_VALUE:
+      const timeRangeFilter = state.filters.find(f => f.displayNum === action.payload.displayNum);
+      timeRangeFilter.value[action.payload.prop] = action.payload.newValue;
+      return {
+        ...state,
+        filters: [...state.filters],
+      };
+
 
     case RESET_VIEW:
       return initialState;
-
 
     default:
       return state;

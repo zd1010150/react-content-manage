@@ -89,6 +89,8 @@ class MassUpdateModal extends Component {
       columns,
       setOptions,
       tryFetchOptionsById,
+      selectedRowKeys,
+      data,
     } = this.props;
     // Try find column from all non system auto generated columns
     const column = columns.find(col => col.id === fieldId);
@@ -106,8 +108,10 @@ class MassUpdateModal extends Component {
       tryFetchOptionsById(fieldId);
       this.setState({ lookupDisplayKey: lookup_own_field_name });
     } else if (crm_data_type === PickList) {
-      setOptions(column.picklists.data);
+      setOptions(column.picklists);
     }
+
+    const selectData = data.find(findData => findData.id === selectedRowKeys[0]);
 
     this.setState({
       fieldId: id,
@@ -115,7 +119,7 @@ class MassUpdateModal extends Component {
       type: crm_data_type,
       // CustomField component has added validation for date/datetime,
       // if the value is not valid moment string, will be converted to a valid value, so we can pass '' here
-      value: '',
+      value: Object.values(FieldTypes).indexOf(crm_data_type) > -1 ? selectData[field_name] : '',
     });
   }
 
@@ -194,6 +198,8 @@ class MassUpdateModal extends Component {
 const mapStateToProps = ({ objectList }) => ({
   columns: objectList.columns,
   selectedFieldOptions: objectList.selectedFieldOptions,
+  selectedRowKeys: objectList.selectedRowKeys,
+  data: objectList.data,
 });
 const mapDispatchToProps = {
   setOptions,

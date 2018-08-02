@@ -20,6 +20,8 @@ import attachment from 'views/ClientAttachments/flow/reducer';
 import multiDndFields from 'components/ui/MultiSelectDnD/flow/reducer';
 // test ends
 
+import FilterCriteria__REFACTORED from 'components/page/FilterCriteria__REFACTORED/flow/reducer';
+
 export default {
   loginUser,
   setup,
@@ -39,4 +41,5 @@ export default {
   convertDetails,
   convertStatus,
   attachment,
+  FilterCriteria__REFACTORED,
 };

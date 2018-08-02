@@ -1,14 +1,16 @@
 import { ObjectFilter } from 'components/page/index';
-import React from 'react';
-
+import React, { Fragment } from 'react';
 
 const ObjectView = ({ match }) => {
   const { viewId, objectType } = match.params;
   return (
-    <ObjectFilter
-      viewId={viewId}
-      objectType={objectType}
-    />
+    <Fragment>
+      <ObjectFilter
+        viewId={viewId}
+        objectType={objectType}
+      />
+      {/* <ObjectView__REFACTORED /> */}      
+    </Fragment>
   );
 };
 
