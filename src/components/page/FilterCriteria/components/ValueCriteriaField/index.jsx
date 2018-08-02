@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Input, DatePicker, InputNumber, Icon } from 'antd';
 import { getTimeSetting } from 'utils/dateTimeUtils';
 import Enums from 'utils/EnumsManager';
-
+import { TimeRangeFilter } from 'components/ui/index';
 
 const {
   DateOnly,
@@ -15,53 +15,66 @@ const {
   NumberInput,
   PickList,
   TextInput,
-  Display,
 } = Enums.FieldTypes;
 
-
+const defaultProps = {
+  handleAddonClick: null,
+  handleTimeRangeChange: null,
+  handleValueChange: null,
+};
 const propTypes = {
   displayNum: PropTypes.number.isRequired,
   type: PropTypes.oneOf(Enums.FieldTypesInArray).isRequired,
-  handleValueChange: PropTypes.func,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
+    PropTypes.object,
   ]).isRequired,
+  handleAddonClick: PropTypes.func,
+  handleValueChange: PropTypes.func,
+  handleTimeRangeChange: PropTypes.func,
 };
 
-// TODO: replace the hardcoded date and datetime formats with user info
 const ValueCriteriaField = ({
   displayNum,
   type,
   handleValueChange,
   handleAddonClick,
+  handleTimeRangeChange,
   value,
 }) => {
-  
   switch (type) {
     case DateOnly:
     case DateTime:
-    const timeSetting = getTimeSetting(type);
       return (
-        <DatePicker
-          allowClear={false}
-          className="full-width"
-          size="small"
-          format={timeSetting.format}
-          showTime={type === DateTime}
-          onChange={(date, dateString) => handleValueChange(dateString, displayNum)}
-          // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
-          // In this way we can use string outside, and only convert to certain time format in reducer.
-          value={moment(value, timeSetting.format).isValid() ? moment(value, timeSetting.format) : undefined}
+        <TimeRangeFilter
+          displayNum={displayNum}
+          type={type}
+          subtype={value.subtype}
+          value={value.value}
+          onChange={handleTimeRangeChange}
         />
       );
+      // return (
+      //   <DatePicker
+      //     allowClear={false}
+      //     className="full-width"
+      //     size="small"
+      //     format={timeSetting.format}
+      //     showTime={type === DateTime}
+      //     onChange={(date, dateString) => handleValueChange(dateString, displayNum)}
+      //     // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
+      //     // In this way we can use string outside, and only convert to certain time format in reducer.
+      //     value={moment(value, timeSetting.format).isValid() ? moment(value, timeSetting.format) : undefined}
+      //   />
+      // );
     case NumberInput:
       // TODO: add scale and precision as restriction rules
       return (
         <InputNumber
           className="full-width"
           size="small"
-          onChange={value => handleValueChange(value, displayNum)}
+          onChange={num => handleValueChange(num, displayNum)}
           value={value}
         />
       );
@@ -84,5 +97,6 @@ const ValueCriteriaField = ({
   }
 };
 
+ValueCriteriaField.defaultProps = defaultProps;
 ValueCriteriaField.propTypes = propTypes;
 export default ValueCriteriaField;

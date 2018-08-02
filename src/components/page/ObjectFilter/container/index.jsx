@@ -5,7 +5,7 @@ import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
 import { getThemeByType } from 'utils/common';
-import { FieldsSelection, FilterCriteria, ViewActions, ViewName, ViewVisibility } from '../components/index';
+import { FieldsSelection, FilterCriteria__REFACTORED, ViewActions, ViewName, ViewVisibility } from '../components/index';
 import { resetView, fetchViewById } from '../flow/actions';
 
 const sections = [
@@ -15,7 +15,7 @@ const sections = [
   },
   {
     titleI18n: 'criteria',
-    component: FilterCriteria,
+    component: FilterCriteria__REFACTORED,
   },
   {
     titleI18n: 'selectors',
@@ -68,7 +68,9 @@ class ObjectFilter extends Component {
               key={i}
               title={`${i + 1}. ${stepName}`}
             >
-              <section.component theme={theme} />
+              {section.titleI18n === 'criteria'
+                ? <FilterCriteria__REFACTORED theme={theme} />
+                : <section.component theme={theme} />}
             </Section>
           );
         })}

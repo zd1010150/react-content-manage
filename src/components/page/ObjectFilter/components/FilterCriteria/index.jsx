@@ -16,6 +16,7 @@ import {
   syncSiderSelection,
   fetchLookupValuesById,
   insertSiderSelectionToField,
+  setTimeRangeValue,
 } from './flow/actions';
 
 
@@ -23,7 +24,7 @@ const defaultProps = {
   siderCollapsed: true,
 };
 const propTypes = {
-  siderCollapsed: PropTypes.bool.isRequired,
+  siderCollapsed: PropTypes.bool,
 };
 
 class FilterCriteriaWrapper extends Component {
@@ -71,11 +72,24 @@ class FilterCriteriaWrapper extends Component {
     return toggleRightSider(false);
   }
 
-  onSiderClose = $ => this.props.toggleRightSider(true)
+  onSiderClose = () => this.props.toggleRightSider(true)
 
   onSiderValuesChange = checkedIds => this.props.syncSiderSelection(checkedIds)
 
-  onInsertSelection = $ => this.props.insertSiderSelectionToField()
+  onInsertSelection = () => this.props.insertSiderSelectionToField()
+
+  onTimeRangeChange = (displayNum, prop, newValue) => {
+    console.info(`${displayNum} => ${prop} => ${newValue}`);
+    this.props.setTimeRangeValue(displayNum, prop, newValue);
+    // NOTES:
+    // Special rule: If user selects value from 'Range' subtype, e.g. 'TODAY', 'THIS WEEK' and so on,
+    // then force condition to be 'equals'.
+    // About the rule pls refer to: ISSUE#17x
+    // TODO: think a better practice for similar circumstances.
+    if (prop === 'subtype' && newValue === 'Range') {
+      this.props.changeFilterByColumn(displayNum, 'conditionId', 'equals');
+    }
+  }
 
   render() {
     const {
@@ -114,6 +128,7 @@ class FilterCriteriaWrapper extends Component {
         siderSelection={siderSelection}
         logicText={logicText}
         handleLogicChange={this.onLogicChange}
+        handleTimeRangeChange={this.onTimeRangeChange}
       />
     );
   }
@@ -142,5 +157,6 @@ const mapDispatchToProps = {
   insertSiderSelectionToField,
   fetchLookupValuesById,
   toggleRightSider,
+  setTimeRangeValue,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(FilterCriteriaWrapper));
