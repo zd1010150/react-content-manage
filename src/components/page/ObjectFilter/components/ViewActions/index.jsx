@@ -100,14 +100,19 @@ class ViewActions extends Component {
 
   isMissingFieldOrConditionValue = data => data.every(record => (record.conditionId === PhantomId || record.fieldId === PhantomId))
 
-  getViewID = (id) => {
-    const { setActiveView, objectType, tryFetchDataByView } = this.props;
+  handleViewChange = (id, objectType) => {
+    const { setActiveView, tryFetchDataByView } = this.props;
     setActiveView(id, objectType);
     tryFetchDataByView(
       objectType,
       id,
       { page: 1, per_page: PageSize },
     );
+  }
+
+  getViewID = (id) => {
+    const { objectType } = this.props;
+    this.handleViewChange(id, objectType);
   }
 
   handleSaveClick = () => {
@@ -129,16 +134,10 @@ class ViewActions extends Component {
     const {
       tryDeleteView,
       viewId,
-      setActiveView,
       objectType
     } = this.props;
     tryDeleteView(viewId);
-    setActiveView(PhantomId, objectType);
-    tryFetchDataByView(
-      objectType,
-      PhantomId,
-      { page: 1, per_page: PageSize },
-    );
+    this.handleViewChange(PhantomId, objectType);
   }
 
   render() {
