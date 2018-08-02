@@ -42,46 +42,57 @@ class ViewActions extends Component {
     }
   }
 
-  checkValidation = (data) => {
-    const { intl } = this.props;
-    const { formatMessage } = intl;
-    const i18n = 'global.errors';
+  getI18nMessageByKey = key => this.props.intl.formatMessage({ id: `global.errors.${key}` })
 
-    const { name, filterCriteria, fields } = data;
-    // check name
-    if (_.isEmpty(name.view_name)) {
-      notification.error({
-        duration: 3,
-        message: formatMessage({ id: `${i18n}.nameRequired` }),
-      });
+  showNotificationByKey = key => notification.error({
+    duration: 3,
+    message: this.getI18nMessageByKey(key),
+  })
+
+  checkCriteria = (criteria) => {
+    if (!_.isArray(criteria)) {
+      // this.showNotificationByKey('testing');
       return false;
     }
-    // check criteria
-    const { condition_logic, filters } = filterCriteria;
-    if (filters.length > 0) {
-      if (_.isEmpty(condition_logic)) {
-        notification.error({
-          duration: 3,
-          message: formatMessage({ id: `${i18n}.filterNumRequired` }),
-        });
-        return false;
-      }
-      if (this.isMissingFieldOrConditionValue(filters)) {
-        notification.error({
-          duration: 3,
-          message: formatMessage({ id: `${i18n}.fieldOrConditionRequired` }),
-        });
-        return false;
-      }
-      // TODO: backend finish the validation check about which filter num is missing from condition logic. The front end will implement this as well later.
+    const isAnyInvalid = criteria.some(c => !c.isValid());
+    if (isAnyInvalid) {
+      this.showNotificationByKey('fieldAndConditionRequired');
+      return false;
     }
-    // check selection
+    return true;
+  }
+  checkLogic = (logic, criteria) => {
+    if (criteria.length > 0 && !logic) {
+      this.showNotificationByKey('filterNumRequired');
+      return false;
+    }
+    // TODO: Add further validation to test if each display num has appeared in logic at least once.
+    //       It's not necessary because backend has implemented this validation.
+    return true;
+  }
+  checkCriteriaAndLogic = () => {
+    const { criteriaAndLogic } = this.props;
+    const { criteria, logic } = criteriaAndLogic;
+    return this.checkCriteria(criteria.criteria) && this.checkLogic(logic, criteria.criteria);
+  }
+
+  checkValidationBySection = () => {
+    const { objectView } = this.props;
+    const { name, fields } = objectView;
+    // check name
+    if (_.isEmpty(name.view_name)) {
+      this.showNotificationByKey('nameRequired');
+      return false;
+    }
+    
+    const isCriteriaValid = this.checkCriteriaAndLogic();
+    if (!isCriteriaValid) {
+      return false;
+    }
+
     const { selectedFields } = fields;
     if (selectedFields.length < 1) {
-      notification.error({
-        duration: 3,
-        message: formatMessage({ id: `${i18n}.selectionRequired` }),
-      });
+      this.showNotificationByKey('selectionRequired');
       return false;
     }
     return true;
@@ -107,8 +118,8 @@ class ViewActions extends Component {
       viewId,
     } = this.props;
 
-    const isValid = this.checkValidation(objectView);
-    if (!isValid) return;
+    const isAllSectionsValid = this.checkValidationBySection();
+    if (!isAllSectionsValid) return;
 
     const funcKey = viewId === PhantomId ? 'trySaveNew' : 'trySave';
     this.props[funcKey](model[objectType], objectView, viewId, this.getViewID);
@@ -163,10 +174,11 @@ class ViewActions extends Component {
 
 ViewActions.defaultProps = defaultProps;
 ViewActions.propTypes = propTypes;
-const mapStateToProps = ({ global, objectView }) => ({
+const mapStateToProps = ({ global, objectView, FilterCriteria__REFACTORED }) => ({
   model: global.settings.model,
   done: objectView.actions,
   objectView,
+  criteriaAndLogic: FilterCriteria__REFACTORED,
 });
 const mapDispatchToProps = {
   tryDeleteView,
