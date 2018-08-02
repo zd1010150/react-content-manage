@@ -92,11 +92,12 @@ class TableWrapper extends Component {
 
   parsePagination = (meta) => {
     const { pagination } = meta;
+    const { PageSizeValue } = this.props;
     let extraParams = {};
     if (!_.isEmpty(pagination)) {
       extraParams = {
         current: pagination.current_page,
-        pageSize: this.props.PageSizeValue,
+        pageSize: PageSizeValue,
         total: pagination.total,
       };
     }
