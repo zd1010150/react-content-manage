@@ -49,6 +49,7 @@ const BasicInfo = ({
     return <Fragment>
         <SelectComponent defaultValue={selectedFolder.name ? selectedFolder.name : ''}
                          onChange={setTemplateFolder} items={userFolders}
+                         fixedID='TemplateInformation'
                          label={formatMessage({id: 'page.emailTemplates.folder'})}
                          value={v => v.id}/>
         <InputComponent value={editTemplate.name} onChange={setTemplateName}
@@ -59,6 +60,7 @@ const BasicInfo = ({
                         label={formatMessage({id: 'page.emailTemplates.newTemplateDescription'})}/>
         <SelectComponent hint={formatMessage({id: 'page.emailTemplates.selectCategoryHint'})} defaultValue={editTemplate.category ? editTemplate.category : 'leads'}
                          onChange={setTemplateCategory} items={categories}
+                         fixedID='TemplateInformation'
                          label={formatMessage({id: 'page.emailTemplates.category'})}
                          value={v => v.name}/>
     </Fragment>
@@ -96,16 +98,16 @@ const FieldInfo = ({selectedField, selectField, selectedLabel, selectedValue, te
             <div>
                 {formatMessage({id: 'page.emailTemplates.selectField'})}
             </div>
-            <Select onChange={selectField} className="full-width">
+            <Select onChange={selectField} className="full-width" getPopupContainer={() => document.getElementById('TemplateInformation')}>
                 { fieldOption[template.category] && fieldOption[template.category].map((item, index) =>
-                    <Select.Option key={item.id ? item.id : index} value={item}>{item.field_label}</Select.Option>
+                    <Select.Option key={item.id ? item.id : index} value={item.field_label}>{item.field_label}</Select.Option>
                 )}
             </Select>
         </Col>
 
         <Col className="gutter-row field-value" offset={2} span={10}>
             <div>{formatMessage({id: 'page.emailTemplates.fieldValue'})}</div>
-            <div>{selectedField.field_value}</div>
+            <div>{selectedValue}</div>
         </Col>
         {/*<Col className="gutter-row field-value" offset={2} span={10}>*/}
             {/*<SelectComponentVertical labelInValue={false} defaultValue={selectedValue} items={fieldValues} label={formatMessage({id: 'page.emailTemplates.fieldValue'})}*/}
@@ -142,9 +144,16 @@ class TemplateInformation extends React.Component {
 
 
     selectField = (value) => {
-        this.setState({selectedField: value}, ()=>{
-            this.setState({selectedValue: value.field_value})
-        })
+        const { newTemplate, fieldOption, editTemplate } = this.props;
+        const setTemplate = !_.isEmpty(newTemplate) ? newTemplate : editTemplate;
+        { !_.isEmpty(setTemplate) &&_.isArray(fieldOption[setTemplate.category]) && fieldOption[setTemplate.category].forEach((item) => {
+            if (value === item.field_label) {
+                this.setState({
+                    selectedField: item,
+                    selectedValue: item.field_value
+                })
+            }
+        })}
     }
 
     setTemplateCategory = (value) => {

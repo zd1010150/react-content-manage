@@ -20,6 +20,7 @@ import PrimaryDetails from './PrimaryDetails/index';
 import DetailsToolbar from './DetailsToolbar/index';
 import DetailsSubpanels from './DetailsSubpanels/index';
 import ConvertDetails from './ConvertDetails/index';
+import FilterCriteria__REFACTORED from './FilterCriteria__REFACTORED/index';
 
 export {
   TopPanel,
@@ -44,4 +45,5 @@ export {
   DetailsToolbar,
   DetailsSubpanels,
   ConvertDetails,
+  FilterCriteria__REFACTORED,
 };

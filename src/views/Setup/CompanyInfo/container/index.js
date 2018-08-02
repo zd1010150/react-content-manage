@@ -5,10 +5,12 @@ import { connect } from 'react-redux';
 import { Permission, Unauthentication } from 'components/page/index';
 import PERMISSIONS from 'config/app-permission.config';
 import { setLogo, setTimeZone } from 'store/global/action';
+import { settingPageloading } from 'components/page/PageLoading/flow/action';
 import ComponanyInfoPanel from '../component/companyInfoPanel';
 import CompaneyUserStatic from '../component/companyUserStatic';
 import Logo from '../component/logo';
 import { getCompanyInfo, updateCompanyInfo } from '../flow/action';
+
 
 
 class companyInfo extends Component {
@@ -21,6 +23,7 @@ class companyInfo extends Component {
       companyLogo,
       setLogo,
       history,
+      settingPageloading,
     } = this.props;
 
     return (
@@ -28,7 +31,7 @@ class companyInfo extends Component {
         <Permission permission={PERMISSIONS.SETUP_COMPANYPROFILE_COMPANYINFORMATION} errorComponent={<Unauthentication />}>
           <ComponanyInfoPanel {...this.props} />
           <CompaneyUserStatic userInfo={userInfo} history={history} />
-          <Logo companyLogo={companyLogo} setLogo={setLogo} />
+          <Logo companyLogo={companyLogo} setLogo={setLogo} settingPageloading={settingPageloading} />
         </Permission>
       </Fragment>
     );
@@ -56,5 +59,6 @@ const mapDispatchToProps = {
   updateCompanyInfo,
   setLogo,
   setTimeZone,
+  settingPageloading,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(companyInfo));
