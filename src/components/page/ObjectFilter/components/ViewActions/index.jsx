@@ -123,6 +123,11 @@ class ViewActions extends Component {
     } = this.props;
     tryDeleteView(viewId);
     setActiveView(PhantomId, objectType);
+    tryFetchDataByView(
+      objectType,
+      PhantomId,
+      { page: 1, per_page: PageSize },
+    );
   }
 
   render() {
