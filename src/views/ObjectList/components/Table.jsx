@@ -47,7 +47,7 @@ const propTypes = {
 
 class TableWrapper extends Component {
   componentDidMount() {
-    const { activeViewId, objectType, tryFetchDataByView } = this.props;
+    const { activeViewId, tryFetchDataByView, objectType } = this.props;
     tryFetchDataByView(
       this.props.objectType,
       activeViewId[objectType],
@@ -63,8 +63,7 @@ class TableWrapper extends Component {
       tableParams,
       meta,
     } = this.props;
-    activeViewId =
-    tryDeleteClientByType(objectType, id, tableParams, meta, activeViewId[objectType]);
+    tryDeleteClientByType(objectType, id, tableParams, meta, activeViewId);
   }
 
   handleSelectionChange = selectedKeys => this.props.setRowSelection(selectedKeys)
@@ -86,7 +85,7 @@ class TableWrapper extends Component {
       }
     }
     const { activeViewId, objectType, tryFetchDataByView } = this.props;
-    return tryFetchDataByView(objectType, activeViewId[objectType], { ...paginationParams, ...sorterParams });
+    return tryFetchDataByView(objectType, activeViewId, { ...paginationParams, ...sorterParams });
   }
 
   parsePagination = (meta) => {

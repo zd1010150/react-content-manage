@@ -67,7 +67,6 @@ const objectList = (state = initialState, action) => {
 
     case SET_ACTIVE_VIEW:
       const { viewId, objectType } = action.payload;
-      console.log(state.activeViewId, {[objectType]: viewId});
       return {
         ...state,
         activeViewId: {

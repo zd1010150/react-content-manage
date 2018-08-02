@@ -74,10 +74,11 @@ export const done = () => ({
 });
 
 
-export const trySaveNew = (objectType, viewData) => dispatch =>
+export const trySaveNew = (objectType, viewData, id, getViewID) => dispatch =>
   post('/admin/list_views', mapDataToAPI(objectType, viewData), dispatch).then((data) => {
     if (data && !_.isEmpty(data.data)) {
       dispatch(done());
+      getViewID(data.data.id);
     }
   });
 

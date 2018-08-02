@@ -7,8 +7,10 @@ import { withRouter, Link } from 'react-router-dom';
 import { PopDeleteConfirm } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
 import { trySave, trySaveNew, tryDeleteView } from './flow/actions';
+import { setActiveView, tryFetchDataByView } from 'views/ObjectList/flow/actions';
 
-const { PhantomId } = Enums;
+const { PhantomId, DefaultPageConfigs } = Enums;
+const { PageSize } = DefaultPageConfigs;
 
 
 const defaultProps = {
@@ -30,6 +32,7 @@ const propTypes = {
   trySaveNew: PropTypes.func,
   tryDeleteView: PropTypes.func,
 };
+
 
 class ViewActions extends Component {
   componentDidUpdate() {
@@ -86,6 +89,16 @@ class ViewActions extends Component {
 
   isMissingFieldOrConditionValue = data => data.every(record => (record.conditionId === PhantomId || record.fieldId === PhantomId))
 
+  getViewID = (id) => {
+    const { setActiveView, objectType, tryFetchDataByView } = this.props;
+    setActiveView(id, objectType);
+    tryFetchDataByView(
+      objectType,
+      id,
+      { page: 1, per_page: PageSize },
+    );
+  }
+
   handleSaveClick = () => {
     const {
       model,
@@ -98,10 +111,19 @@ class ViewActions extends Component {
     if (!isValid) return;
 
     const funcKey = viewId === PhantomId ? 'trySaveNew' : 'trySave';
-    this.props[funcKey](model[objectType], objectView, viewId);
+    this.props[funcKey](model[objectType], objectView, viewId, this.getViewID);
   }
 
-  handleDeleteClick = () => this.props.tryDeleteView(this.props.viewId)
+  handleDeleteClick = () => {
+    const {
+      tryDeleteView,
+      viewId,
+      setActiveView,
+      objectType
+    } = this.props;
+    tryDeleteView(viewId);
+    setActiveView(PhantomId, objectType);
+  }
 
   render() {
     const {
@@ -150,6 +172,8 @@ const mapDispatchToProps = {
   tryDeleteView,
   trySave,
   trySaveNew,
+  setActiveView,
+  tryFetchDataByView,
 };
 export default connect(
   mapStateToProps,
