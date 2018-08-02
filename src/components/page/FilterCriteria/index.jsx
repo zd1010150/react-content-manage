@@ -4,8 +4,8 @@ import classNames from 'classnames/bind';
 import { RightSider } from 'components/page/index';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
 import Enums from 'utils/EnumsManager';
-import { intlShape, injectIntl } from 'react-intl';
 import { Buttons, ConditionLogic, Filters } from './components/index';
 import styles from './index.less';
 
@@ -27,6 +27,7 @@ const defaultProps = {
   enableTopSelection: false,
   enableCheckbox: false,
   siderOptions: [],
+  handleTimeRangeChange: null,
 };
 const propTypes = {
   intl: intlShape.isRequired,
@@ -35,38 +36,39 @@ const propTypes = {
   conditions: PropTypes.array.isRequired,
   fields: PropTypes.array.isRequired,
   // TODO: add function props checking to verify that each filter follow the same shape
-  filters: PropTypes.array.isRequired,  
+  filters: PropTypes.array.isRequired,
   handleAddNewClick: PropTypes.func,
   handleLogicChange: PropTypes.func,
   handleFilterRemove: PropTypes.func,
   enableTopSelection: PropTypes.bool.isRequired,
   enableCheckbox: PropTypes.bool.isRequired,
   siderOptions: PropTypes.array,
+  handleTimeRangeChange: PropTypes.func,
 };
 
 class FilterCriteria extends Component {
-  _handleAddNewClick = $ => {
+  _handleAddNewClick = () => {
     const { handleAddNewClick } = this.props;
     if (_.isFunction(handleAddNewClick)) {
       return handleAddNewClick();
     }
   }
 
-  _handleLogicChange = value => {
+  _handleLogicChange = (value) => {
     const { handleLogicChange } = this.props;
     if (_.isFunction(handleLogicChange)) {
       return handleLogicChange(value);
     }
   }
 
-  _onUserTypeChange = value => {
+  _onUserTypeChange = (value) => {
     const { onUserTypeChange } = this.props;
     if (_.isFunction(onUserTypeChange)) {
       return onUserTypeChange(value);
     }
   }
 
-  _handleCheckboxChange = e => {
+  _handleCheckboxChange = (e) => {
     const { handleCheckboxChange } = this.props;
     if (_.isFunction(handleCheckboxChange)) {
       return handleCheckboxChange(e.target.checked);
@@ -90,42 +92,49 @@ class FilterCriteria extends Component {
   _handleValueChange = (value, displayNum) => {
     const { handleValueChange } = this.props;
     if (_.isFunction(handleValueChange)) {
-      return handleValueChange(value, displayNum);
+      return handleValueChange(displayNum, value);
     }
   }
 
-  _handleAddonClick = displayNum => {
+  _handleAddonClick = (displayNum) => {
     const { handleAddonClick } = this.props;
     if (_.isFunction(handleAddonClick)) {
       return handleAddonClick(displayNum);
     }
   }
   
-  _handleSiderClose = e => {
+  _handleSiderClose = () => {
     const { handleSiderClose } = this.props;
     if (_.isFunction(handleSiderClose)) {
       return handleSiderClose();
     }
   }
 
-  _handleFilterRemove = displayNum => {
+  _handleFilterRemove = (displayNum) => {
     const { handleFilterRemove } = this.props;
     if (_.isFunction(handleFilterRemove)) {
       return handleFilterRemove(displayNum);
     }
   }
 
-  _handleSiderValuesChange = checkedValues => {
+  _handleSiderValuesChange = (checkedValues) => {
     const { handleSiderValuesChange } = this.props;
     if (_.isFunction(handleSiderValuesChange)) {
       return handleSiderValuesChange(checkedValues);
     }
   }
 
-  _handleInsertSelection = $ => {
+  _handleInsertSelection = () => {
     const { handleInsertSelection } = this.props;
     if (_.isFunction(handleInsertSelection)) {
       return handleInsertSelection();
+    }
+  }
+
+  _handleTimeRangeChange = (displayNum, prop, newValue) => {
+    const func = this.props.handleTimeRangeChange;
+    if (_.isFunction(func)) {
+      func(displayNum, prop, newValue);
     }
   }
 
@@ -140,7 +149,6 @@ class FilterCriteria extends Component {
       enableTopSelection,
       enableCheckbox,
       collapsed,
-      siderFieldId,
       siderOptions,
       siderSelection,
     } = this.props;
@@ -168,6 +176,7 @@ class FilterCriteria extends Component {
             handleValueChange={this._handleValueChange}
             handleAddonClick={this._handleAddonClick}
             handleFilterRemove={this._handleFilterRemove}
+            handleTimeRangeChange={this._handleTimeRangeChange}
           />
         </Row>
         <Row style={{ textAlign: 'center', margin: '10px 0' }}>
@@ -191,7 +200,7 @@ class FilterCriteria extends Component {
             </Checkbox>
           </Row>
         )}
-        <RightSider collapsed={collapsed}>
+        {/* <RightSider collapsed={collapsed}>
           <CheckboxGroup
             value={siderSelection.map(select => select.id)}
             className={cx('siderCheckboxGroup')}
@@ -228,7 +237,7 @@ class FilterCriteria extends Component {
               {formatMessage({ id: `${i18n}.done` })}
             </Button>
           </div>
-        </RightSider>
+        </RightSider> */}
       </Fragment>
     );
   }

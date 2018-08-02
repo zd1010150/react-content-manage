@@ -1,17 +1,19 @@
 import _ from 'lodash';
-import { get, post } from 'store/http/httpAction';
+import { get } from 'store/http/httpAction';
 import { LOGIN_SUCCESS } from 'views/LoginForm/flow/actionTypes';
-import { RESET_USER,
+import {
+  RESET_USER,
   SET_ACCOUNTINFO,
+  SET_APP_ROUTER_HASH,
   SET_GLOBAL_SETTING,
   SET_LOGO,
   SET_PAGETITLE,
-  SET_USERS_GLOBAL,
   SET_PERMISSION,
   SET_TEAMS_GLOBAL,
-  TOGGLE_LANGUAGE,
-  SET_APP_ROUTER_HASH,
+  SET_THEME,
   SET_TIME_ZONE,
+  SET_USERS_GLOBAL,
+  TOGGLE_LANGUAGE,
 } from './actionType';
 
 /**
@@ -115,3 +117,10 @@ export const tryFetchAllTeamsIfNeeded = () => (dispatch, getState) =>
     }
   });
 
+/**
+ * Sync store theme
+ */
+export const setTheme = theme => ({
+  type: SET_THEME,
+  payload: { theme },
+});

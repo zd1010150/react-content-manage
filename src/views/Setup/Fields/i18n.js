@@ -40,7 +40,7 @@ export default {
     api: 'Field API',
     helpText: 'Help Text',
     description: 'Description',
-    length: 'Lenght',
+    length: 'Length',
     scale: 'Decimal Places',
     nameDuplicate: 'API duplicate, modify to {value}',
     notNullTip1: 'Always require value in order to save',

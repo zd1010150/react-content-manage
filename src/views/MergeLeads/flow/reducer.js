@@ -3,6 +3,7 @@
 import Enums from 'utils/EnumsManager';
 import { toTimezone } from 'utils/dateTimeUtils';
 import { MERGE_SUCCESS, RESET, SET_DATA, SET_MASTER_RECORD, SET_MERGED_DATA } from './actionTypes';
+import { setDefaultCheckedData } from './utils';
 
 const { FieldTypes, MasterKey } = Enums;
 const {
@@ -13,7 +14,6 @@ const {
 } = FieldTypes;
 
 const parseKeys = keys => {
-  // const masterKey = keys.find(key => key.field_name === MasterKey);
   const masterKey = {
     is_merge_master: false,
     field_name: MasterKey, // this is the field we use as a key to sync with backend for changes
@@ -22,7 +22,6 @@ const parseKeys = keys => {
     lookupKey: '',
   };
   const restKeys = keys.filter(key => key.field_name !== MasterKey);
-  // return [...restKeys].map(key => ({
   return [masterKey, ...restKeys].map(key => ({
     isFollowMaster: !!key.is_merge_master,
     key: key.field_name, // this is the field we use as a key to sync with backend for changes
@@ -57,10 +56,13 @@ const mergence = (state = initialState, action) => {
       const parsedKeys = parseKeys(originalKeys);
       // process data of Date, Datetime
       convertToTimeZone(data, parsedKeys);
+      // process default checked fields
+      const mergedData = setDefaultCheckedData(parsedKeys, data);
       return {
         ...state,
         keys: parsedKeys,
         data,
+        mergedData,
       };
 
 

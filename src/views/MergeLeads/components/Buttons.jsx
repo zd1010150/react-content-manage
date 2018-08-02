@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { tryMergeLeads } from '../flow/actions';
+import { toApi } from '../flow/utils';
 
 const { MasterKey } = Enums;
 
@@ -49,10 +50,9 @@ class Buttons extends Component {
     }
 
     const masterRecordId = mergedData[MasterKey];
-    delete mergedData[MasterKey];
     return tryMergeLeads({
       merged_ids: data.map(record => record.id),
-      lead: mergedData,
+      lead: toApi(mergedData, keys),
       [MasterKey]: masterRecordId,
     });
   }

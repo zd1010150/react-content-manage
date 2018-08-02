@@ -99,7 +99,9 @@ class EmailTemplatesCreation extends React.Component {
     render() {
         return (
             <Fragment>
-                <TemplateInformation onFileUpload={this.onFileUpload} isNewTemplateRouter={this.isNewTemplateRouter} save={this.save} cancel={this.cancel} registerGetContentHook={this.registerGetContentHook}/>
+                <div id="TemplateInformation">
+                    <TemplateInformation onFileUpload={this.onFileUpload} isNewTemplateRouter={this.isNewTemplateRouter} save={this.save} cancel={this.cancel} registerGetContentHook={this.registerGetContentHook}/>
+                </div>
             </Fragment>
 
         );

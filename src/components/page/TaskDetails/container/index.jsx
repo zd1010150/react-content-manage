@@ -126,11 +126,19 @@ class TaskDetails extends Component {
       taskId,
       theme,
       disableActions,
+      isHistoryTask,
     } = this.props;
 
     const { formatMessage } = intl;
     const i18nPrefix = 'page.taskDetails';
-    const titleKey = taskId === PhantomId ? 'newTitle' : 'editTitle';
+    let titleKey = '';
+    if (isHistoryTask) {
+      titleKey = 'viewTitle';
+    } else if (taskId === PhantomId) {
+      titleKey = 'newTitle';
+    } else {
+      titleKey = 'editTitle';
+    }
     
     return (
       <Panel
@@ -143,6 +151,7 @@ class TaskDetails extends Component {
             objectId={objectId}
             objectType={objectType}
             taskId={taskId}
+            isHistoryTask={isHistoryTask}
           />
         </Row>
         {!disableActions && (
@@ -154,6 +163,7 @@ class TaskDetails extends Component {
               onDelete={this.handleDelete}
               onSave={this.handleSave}
               onSaveAndNew={this.handleSaveAndNew}
+              isHistoryTask={isHistoryTask}
             />
           </Row>
         )}

@@ -25,4 +25,3 @@ export const updateCompanyInfo = (form, callback) => dispatch => patch('/admin/c
     }
   }
 });
-

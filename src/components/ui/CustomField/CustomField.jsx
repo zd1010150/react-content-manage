@@ -6,7 +6,7 @@ import React from 'react';
 import Enums from 'utils/EnumsManager';
 import { DisplayField, EmailInput } from './index';
 import styles from './index.less';
-import { getDisplayValue } from './utils';
+import { displayValue } from './utils';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -23,7 +23,6 @@ const {
   Display,
   ApiError,
 } = Enums.FieldTypes;
-
 
 const defaultProps = {
   options: [],
@@ -55,7 +54,7 @@ const propTypes = {
     sm: PropTypes.number,
   }).isRequired,
   lookupDisplayKey: PropTypes.string,
-  name: PropTypes.string.isRequired,
+  fieldName: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   onDoubleClick: PropTypes.func,
   onDropdownOpen: PropTypes.func,
@@ -88,7 +87,6 @@ const CustomField = ({
   label,
   labelCol,
   lookupDisplayKey,
-  name,
   onBlur,
   onChange,
   onDoubleClick,
@@ -103,6 +101,8 @@ const CustomField = ({
   value,
   valueCol,
   useDefaultRowCls,
+  fieldName,
+  objectType,
 }) => {
   const _onBlur = () => {
     if (_.isFunction(onBlur)) {
@@ -120,7 +120,7 @@ const CustomField = ({
     if (_.isFunction(onDropdownOpen)) {
       onDropdownOpen(id, fetched);
     }
-  }
+  };
 
   const others = {
     className: cx('customField'),
@@ -129,6 +129,7 @@ const CustomField = ({
   };
 
   let field = null;
+
   switch (type) {
     case ApiError:
       return null;
@@ -241,10 +242,7 @@ const CustomField = ({
           id={id}
           isValueChanged={value !== initialValue}
           readOnly={readOnly}
-          value={fieldType === Lookup ?
-                  getDisplayValue(value, options, lookupDisplayKey) :
-                  value
-          }
+          value={displayValue(fieldName, objectType, value, options, lookupDisplayKey, fieldType)}
           onRevertClick={onRevertClick}
           onDoubleClick={onDoubleClick}
         />

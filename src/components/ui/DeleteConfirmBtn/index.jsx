@@ -1,10 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl, intlShape } from 'react-intl';
 import { Button, Icon, Popconfirm } from 'antd';
+import classNames from 'classnames/bind';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { injectIntl, intlShape } from 'react-intl';
+import styles from './index.less';
 
+const cx = classNames.bind(styles);
 
+const defaultProps = {
+  type: 'icon',
+};
 const propTypes = {
+  intl: intlShape.isRequired,
   onConfirm: PropTypes.func,
   placement: PropTypes.string,
   size: PropTypes.oneOf([
@@ -13,20 +20,20 @@ const propTypes = {
   text: PropTypes.string,
   type: PropTypes.oneOf([
     'button', 'icon', // icon is default
-  ]).isRequired,
+  ]),
 };
 
 
 const DeleteConfirmButton = ({
   intl,
-  callbackValue,
   onConfirm,
   size,
   type,
+  placement,
 }) => {
-  const _onConfirm = ($) => {
+  const _onConfirm = () => {
     if (_.isFunction(onConfirm)) {
-      onConfirm(callbackValue);
+      onConfirm();
     }
   };
 
@@ -39,22 +46,22 @@ const DeleteConfirmButton = ({
       okText={formatMessage({ id: `${i18n}.button.ok` })}
       placement={placement}
       title={formatMessage({ id: `${i18n}.dialog.deleteTitle` })}
-      onConfirm={e => _onConfirm}
+      onConfirm={_onConfirm}
     >
       {type === 'button' ? (
         <Button
           size={size}
         >
-          <Icon className={cx('deleteIcon')} size={size} type="delete" />
+          <Icon className={`${cx('deleteIcon')} cursor-pointer`} size={size} type="delete" />
           {text}
         </Button>
       ) : (
-        <Icon className={cx('deleteIcon')} size={size} type="delete" />
+        <Icon className={`${cx('deleteIcon')} cursor-pointer`} size={size} type="delete" />
       )}
     </Popconfirm>
   );
 };
 
-
+DeleteConfirmButton.defaultProps = defaultProps;
 DeleteConfirmButton.propTypes = propTypes;
 export default injectIntl(DeleteConfirmButton);

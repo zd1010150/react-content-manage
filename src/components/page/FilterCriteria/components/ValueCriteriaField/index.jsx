@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Input, DatePicker, InputNumber, Icon } from 'antd';
-
+import { getTimeSetting } from 'utils/dateTimeUtils';
 import Enums from 'utils/EnumsManager';
-
+import { TimeRangeFilter } from 'components/ui/index';
 
 const {
   DateOnly,
@@ -15,56 +15,66 @@ const {
   NumberInput,
   PickList,
   TextInput,
-  Display,
 } = Enums.FieldTypes;
 
-
+const defaultProps = {
+  handleAddonClick: null,
+  handleTimeRangeChange: null,
+  handleValueChange: null,
+};
 const propTypes = {
   displayNum: PropTypes.number.isRequired,
   type: PropTypes.oneOf(Enums.FieldTypesInArray).isRequired,
-  handleValueChange: PropTypes.func,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
+    PropTypes.object,
   ]).isRequired,
-  dateFormat: PropTypes.string,
-  datetimeFormat: PropTypes.string,
+  handleAddonClick: PropTypes.func,
+  handleValueChange: PropTypes.func,
+  handleTimeRangeChange: PropTypes.func,
 };
 
-// TODO: replace the hardcoded date and datetime formats with user info
 const ValueCriteriaField = ({
   displayNum,
   type,
   handleValueChange,
   handleAddonClick,
+  handleTimeRangeChange,
   value,
-  dateFormat = 'YYYY-MM-DD',
-  datetimeFormat = 'YYYY-MM-DD HH:mm:ss',
 }) => {
-
   switch (type) {
     case DateOnly:
     case DateTime:
       return (
-        <DatePicker
-          allowClear={false}
-          style={{ width: '100%' }}
-          size="small"
-          format={type === DateTime ? datetimeFormat : dateFormat}
-          showTime={type === DateTime}
-          onChange={(date, dateString) => handleValueChange(displayNum, dateString)}
-          // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
-          // In this way we can use string outside, and only convert to certain time format in reducer.
-          value={moment(value ? value : Date.now())}
+        <TimeRangeFilter
+          displayNum={displayNum}
+          type={type}
+          subtype={value.subtype}
+          value={value.value}
+          onChange={handleTimeRangeChange}
         />
       );
+      // return (
+      //   <DatePicker
+      //     allowClear={false}
+      //     className="full-width"
+      //     size="small"
+      //     format={timeSetting.format}
+      //     showTime={type === DateTime}
+      //     onChange={(date, dateString) => handleValueChange(dateString, displayNum)}
+      //     // The Datepicker component needs a moment object for 'value' property, so we do the transfer here.
+      //     // In this way we can use string outside, and only convert to certain time format in reducer.
+      //     value={moment(value, timeSetting.format).isValid() ? moment(value, timeSetting.format) : undefined}
+      //   />
+      // );
     case NumberInput:
       // TODO: add scale and precision as restriction rules
       return (
         <InputNumber
-          style={{ width: '100%' }}
+          className="full-width"
           size="small"
-          onChange={value => handleValueChange(displayNum, value)}
+          onChange={num => handleValueChange(num, displayNum)}
           value={value}
         />
       );
@@ -74,18 +84,19 @@ const ValueCriteriaField = ({
         <Input
           size="small"
           addonAfter={<Icon type="search" onClick={e => handleAddonClick(displayNum)} />}
-          onChange={e => handleValueChange(displayNum, e.target.value)}
+          onChange={e => handleValueChange(e.target.value, displayNum)}
           value={value}
         />
       );
     case Email:
     case LongText:
     case TextInput:
-      return <Input size="small" onChange={e => handleValueChange(displayNum, e.target.value)} value={value} />;
+      return <Input size="small" onChange={e => handleValueChange(e.target.value, displayNum)} value={value} />;
     default:
       throw Error('No such type in ValueCriteriaField component.');
   }
 };
 
+ValueCriteriaField.defaultProps = defaultProps;
 ValueCriteriaField.propTypes = propTypes;
 export default ValueCriteriaField;

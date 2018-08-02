@@ -156,6 +156,10 @@ class MainContent extends React.Component {
           render={props => <ObjectTask {...props} defaultStateId={1} />}
         />
         <Route
+          path="/:objectType/:objectId/tasks/history/:taskId"
+          render={props => <ObjectTask {...props} isHistoryTask />}
+        />
+        <Route
           path="/:objectType/:objectId/tasks/:taskId"
           component={ObjectTask}
         />
