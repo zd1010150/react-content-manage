@@ -44,11 +44,11 @@ class ItemsTable extends Component {
     switch (col) {
       case Description:
       case Code:
-        renderer = (text, record) => this.TextRenderer(text, record, `${col}`);
-        break;
+      // NOTES: In order to simplify the process, we use text input for quantity and unit price columns as well.
+      //        And formatting value in reducer when editing status is off.
       case Quantity:
       case UnitPrice:
-        renderer = (text, record) => this.NumberRenderer(text, record, `${col}`);
+        renderer = (text, record) => this.TextRenderer(text, record, `${col}`);
         break;
       case Action:
         renderer = this.ActionRenderer;
@@ -61,7 +61,7 @@ class ItemsTable extends Component {
     }
     return {
       dataIndex: `${col}`,
-      width: '20%',
+      width: col === Action ? '10%' : '18%',
       title: formatMessage({ id: `${i18n}.${col}` }),
       onCell: record => ({
         onDoubleClick: () => this.props.activateCell(record.id, col),
@@ -81,16 +81,60 @@ class ItemsTable extends Component {
           className="text-center"
           size="small"
           onChange={e => this.onCellChange(record.id, column, e.target.value)}
-          // onBlur={() => this.handleCellBlur(record.id, column)}
-          onFocus={e => console.log('testing on cell with onfocus')}
           value={text}
         />
       );
     }
     return text;
   }
-  NumberRenderer = (text, record) => {
+  NumberRenderer = (text, record, column) => {
+    if (record.isEditingAll
+      || (record.editingCol && record.editingCol === column)) {
+      return (
+        <InputNumber
+          className="text-center"
+          size="small"
+          // parser, onchange, formatter
+          parser={value => this.numberParserByColumn(column, value)}
+          onChange={value => this.onCellChange(record.id, column, value)}
+          formatter={value => this.numberFormatterByColumn(column, value)}
+          step={column === Quantity ? 1 : 0.01}
+          value={text}
+        />
+      );
+    }
     return text;
+  }
+  // NOTES: parse function only triggered on all content of current input is changing,
+  //        click up/down arrow to increase/decrease number will not trigger this function.
+  // TODO: move value validate to onChange becuase no matter what behavior user used, onChange will be called eventually.
+  // @description: This function will take a string to a number
+  numberParserByColumn = (col, value) => {
+    console.log('parsing');
+    let number = -1;
+    if (col === Quantity) {
+      // @Rule: Only natural number (integer and positive) is allowed in quantity column
+      number = parseInt(value, 10);
+      if (_.isNaN(number) || number < 0) {
+        number = 0;
+      }
+    } else if (col === UnitPrice) {
+      // TODO: Need to deal with precision issue with native js if there is a bug.
+      // @Rule: Only two digits are allowed after the decimal points
+      number = Number(value);
+      if (_.isNaN(number) || number < 0) {
+        number = 0;
+      }
+      number = Number(number.toFixed(2));
+    }
+    return number;
+  }
+  // @description: This function will take a number|string to a string
+  numberFormatterByColumn = (col, value) => {
+    if (col === UnitPrice) {
+      return _.isString(value) ? Number(value).toFixed(2) : value.toFixed(2);
+    }
+    return String(value);
   }
 
   renderColumns = () => ColumnsInArray.map(col => this.getColumnConfig(col))
@@ -100,7 +144,7 @@ class ItemsTable extends Component {
 
     return (
       <Table
-        className="fixedTable textCenter"
+        className="fixedTable textCenter itemsList"
         columns={this.renderColumns()}
         dataSource={data}
         bordered
@@ -108,15 +152,7 @@ class ItemsTable extends Component {
         pagination={false}
         rowKey="id"
         onRow={record => ({
-          // TODO: add onFocus on tbody level, and check on every onblur
-
-
-          // probably need to compare focus target to determine if we need to deactivate the whole row.
-          // it depends on focus/blur related event triggered order.
-          onFocus: (e) => console.log(`focus on => ${record.id}`),
-          // TODO: testing purpose to check if onBlur in React with propagation capability by default
-          // NOTES: focus on diff cells of same row will trigger this part as well. so the on blur of Antd is propagated
-          onBlur: (e) => { console.log(`blur from record id => ${record.id}`); },
+          'data-item-id': record.id,
         })}
       />
     );
@@ -128,7 +164,7 @@ ItemsTable.defaultProps = defaultProps;
 ItemsTable.propTypes = propTypes;
 const mapStateToProps = ({ global, invoice }) => ({
   language: global.language,
-  data: invoice.itemsList.data,
+  data: invoice.itemsList,
 });
 const mapDispatchToProps = {
   activateCell,

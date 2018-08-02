@@ -4,6 +4,7 @@ import {
   ACTIVATE_CELL,
   DEACTIVATE_CELL,
   SET_COLUMN_VALUE,
+  DEACTIVATE_ROW,
 } from './actionTypes';
 
 export const addNewItem = () => ({
@@ -28,4 +29,9 @@ export const deleteItemById = id => ({
 export const setColumnValue = (id, column, newValue) => ({
   type: SET_COLUMN_VALUE,
   payload: { id, column, newValue },
+});
+
+export const deactivateRow = id => ({
+  type: DEACTIVATE_ROW,
+  payload: { id },
 });

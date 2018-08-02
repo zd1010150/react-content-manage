@@ -5,50 +5,39 @@ import {
   ACTIVATE_CELL,
   DEACTIVATE_CELL,
   SET_COLUMN_VALUE,
+  DEACTIVATE_ROW,
 } from './actionTypes';
 import { RESET } from '../actionTypes';
 
-const initialState = {
-  data: [],
-};
+const initialState = [];
 
 const itemsList = (state = initialState, action) => {
   switch (action.type) {
     case ADD_NEW_ITEM:
-      return {
-        ...state,
-        data: [...state.data, new Item()],
-      };
+      return [...state, new Item()];
 
     case DELETE_ITEM:
-      return {
-        ...state,
-        data: state.data.filter(r => r.id !== action.payload.id),
-      };
+      return state.filter(r => r.id !== action.payload.id);
 
     case ACTIVATE_CELL:
-      const activatedRecord = state.data.find(r => r.id === action.payload.id);
+      const activatedRecord = state.find(r => r.id === action.payload.id);
       activatedRecord.setProperty('editingCol', action.payload.column);
-      return {
-        ...state,
-        data: [...state.data],
-      };
+      return [...state];
 
     case DEACTIVATE_CELL:
-      const deactivatedRecord = state.data.find(r => r.id === action.payload.id);
+      const deactivatedRecord = state.find(r => r.id === action.payload.id);
       deactivatedRecord.setProperty('editingCol', '');
-      return {
-        ...state,
-        data: [...state.data],
-      };
+      return [...state];
+
+    case DEACTIVATE_ROW:
+      const focusingRecord = state.find(r => r.id === action.payload.id);
+      focusingRecord.setProperty('isEditingAll', false);
+      return [...state];
 
     case SET_COLUMN_VALUE:
-      const modifyingRecord = state.data.find(r => r.id === action.payload.id);
+      const modifyingRecord = state.find(r => r.id === action.payload.id);
       modifyingRecord.setProperty(action.payload.column, action.payload.newValue);
-      return {
-        ...state,
-        data: [...state.data],
-      };
+      return [...state];
 
     case RESET:
       return initialState;
