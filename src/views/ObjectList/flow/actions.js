@@ -1,6 +1,6 @@
 import { get, httpDelete, patch } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
-import { SET_ACTIVE_VIEW, SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS, SET_PAGESIZE } from './actionTypes';
+import { SET_ACTIVE_VIEW, SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS, SET_PAGE_SIZE } from './actionTypes';
 
 const { PhantomId } = Enums;
 
@@ -138,6 +138,6 @@ export const setActiveView = activeViewId => ({
 });
 
 export const setPageSize = PageSizeValue => ({
-  type: SET_PAGESIZE,
+  type: SET_PAGE_SIZE,
   payload: { PageSizeValue },
 });

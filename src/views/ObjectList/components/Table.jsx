@@ -48,10 +48,11 @@ const propTypes = {
 
 class TableWrapper extends Component {
   componentDidMount() {
-    this.props.tryFetchDataByView(
-      this.props.objectType,
+    const { tryFetchDataByView, objectType, PageSizeValue} = this.props;
+    tryFetchDataByView(
+      objectType,
       PhantomId,
-      { page: 1, per_page: this.props.PageSizeValue },
+      { page: 1, per_page: PageSizeValue },
     );
   }
 
@@ -84,9 +85,8 @@ class TableWrapper extends Component {
         sortedBy: mapToAPIOrderStr(sorter.order),
       }
     }
-    let PageSizeValue = paginationParams.per_page;
-    this.props.setPageSize(PageSizeValue);
-    const { activeViewId, objectType, tryFetchDataByView } = this.props;
+    const { activeViewId, objectType, tryFetchDataByView, setPageSize } = this.props;
+    setPageSize(paginationParams.per_page);
     return tryFetchDataByView(objectType, activeViewId, { ...paginationParams, ...sorterParams });
   }
 

@@ -1,5 +1,5 @@
 import Enums from 'utils/EnumsManager';
-import { SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS, SET_ACTIVE_VIEW, SET_PAGESIZE } from './actionTypes';
+import { SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS, SET_ACTIVE_VIEW, SET_PAGE_SIZE } from './actionTypes';
 
 const { PhantomId } = Enums;
 
@@ -70,12 +70,12 @@ const objectList = (state = initialState, action) => {
         activeViewId,
       };
 
-    case SET_PAGESIZE:
-    const { PageSizeValue } = action.payload;
-    return {
-      ...state,
-      PageSizeValue,
-    };
+    case SET_PAGE_SIZE:
+      const { PageSizeValue } = action.payload;
+      return {
+        ...state,
+        PageSizeValue,
+      };
 
     default:
       return state;
