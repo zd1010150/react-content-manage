@@ -1,11 +1,11 @@
-import { Input, Table, InputNumber } from 'antd';
+import { Input, Table } from 'antd';
+import { DeleteConfirmButton } from 'components/ui/index';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
 import { activateCell, deactivateCell, deleteItemById, setColumnValue } from '../../flow/itemsList/actions';
-import { DeleteConfirmButton } from 'components/ui/index';
 
 const { Columns, ColumnsInArray } = Enums.Invoice.ItemsList;
 const {
@@ -34,8 +34,6 @@ const propTypes = {
 };
 
 class ItemsTable extends Component {
-  onCellChange = (id, column, newValue) => this.props.setColumnValue(id, column, newValue)
-
   getColumnConfig = (col) => {
     const { formatMessage } = this.props.intl;
     const i18n = 'global.ui.table';
@@ -54,7 +52,7 @@ class ItemsTable extends Component {
         renderer = this.ActionRenderer;
         break;
       case Total:
-        renderer = (text, record) => record.quantity * record.unitPrice;
+        renderer = (text, record) => (record.quantity * record.unitPrice).toFixed(2);
         break;
       default:
         renderer = null;
@@ -71,7 +69,9 @@ class ItemsTable extends Component {
     };
   }
 
-  handleCellBlur = (id, column) => this.props.deactivateCell(id, column)  
+  handleCellBlur = (id, column) => this.props.deactivateCell(id, column)
+  handleCellChange = (id, column, newValue) => this.props.setColumnValue(id, column, newValue)
+
   ActionRenderer = (text, record) => <DeleteConfirmButton onConfirm={() => this.props.deleteItemById(record.id)} />
   TextRenderer = (text, record, column) => {
     if (record.isEditingAll
@@ -80,61 +80,12 @@ class ItemsTable extends Component {
         <Input
           className="text-center"
           size="small"
-          onChange={e => this.onCellChange(record.id, column, e.target.value)}
+          onChange={e => this.handleCellChange(record.id, column, e.target.value)}
           value={text}
         />
       );
     }
     return text;
-  }
-  NumberRenderer = (text, record, column) => {
-    if (record.isEditingAll
-      || (record.editingCol && record.editingCol === column)) {
-      return (
-        <InputNumber
-          className="text-center"
-          size="small"
-          // parser, onchange, formatter
-          parser={value => this.numberParserByColumn(column, value)}
-          onChange={value => this.onCellChange(record.id, column, value)}
-          formatter={value => this.numberFormatterByColumn(column, value)}
-          step={column === Quantity ? 1 : 0.01}
-          value={text}
-        />
-      );
-    }
-    return text;
-  }
-  // NOTES: parse function only triggered on all content of current input is changing,
-  //        click up/down arrow to increase/decrease number will not trigger this function.
-  // TODO: move value validate to onChange becuase no matter what behavior user used, onChange will be called eventually.
-  // @description: This function will take a string to a number
-  numberParserByColumn = (col, value) => {
-    console.log('parsing');
-    let number = -1;
-    if (col === Quantity) {
-      // @Rule: Only natural number (integer and positive) is allowed in quantity column
-      number = parseInt(value, 10);
-      if (_.isNaN(number) || number < 0) {
-        number = 0;
-      }
-    } else if (col === UnitPrice) {
-      // TODO: Need to deal with precision issue with native js if there is a bug.
-      // @Rule: Only two digits are allowed after the decimal points
-      number = Number(value);
-      if (_.isNaN(number) || number < 0) {
-        number = 0;
-      }
-      number = Number(number.toFixed(2));
-    }
-    return number;
-  }
-  // @description: This function will take a number|string to a string
-  numberFormatterByColumn = (col, value) => {
-    if (col === UnitPrice) {
-      return _.isString(value) ? Number(value).toFixed(2) : value.toFixed(2);
-    }
-    return String(value);
   }
 
   renderColumns = () => ColumnsInArray.map(col => this.getColumnConfig(col))

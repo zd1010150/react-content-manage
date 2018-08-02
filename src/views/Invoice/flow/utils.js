@@ -1,4 +1,9 @@
-import {} from 'utils/dateTimeUtils';
+import Enums from 'utils/EnumsManager';
+
+const {
+  Quantity,
+  UnitPrice,
+} = Enums.Invoice.ItemsList.Columns;
 
 export const mapToCIForm = (data) => {
   const {

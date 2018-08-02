@@ -9,6 +9,7 @@ import {
 } from './actionTypes';
 import { RESET } from '../actionTypes';
 
+
 const initialState = [];
 
 const itemsList = (state = initialState, action) => {
@@ -26,6 +27,7 @@ const itemsList = (state = initialState, action) => {
 
     case DEACTIVATE_CELL:
       const deactivatedRecord = state.find(r => r.id === action.payload.id);
+      deactivatedRecord.toValidValue();
       deactivatedRecord.setProperty('editingCol', '');
       return [...state];
 
