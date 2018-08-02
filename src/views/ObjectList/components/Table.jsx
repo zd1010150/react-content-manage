@@ -30,10 +30,7 @@ const { Options, PageSize } = DefaultPageConfigs;
 
 
 const propTypes = {
-  activeViewId: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]).isRequired,
+  activeViewId: PropTypes.object.isRequired,
   columns: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
   meta: PropTypes.object.isRequired,
@@ -85,7 +82,7 @@ class TableWrapper extends Component {
       }
     }
     const { activeViewId, objectType, tryFetchDataByView } = this.props;
-    return tryFetchDataByView(objectType, activeViewId, { ...paginationParams, ...sorterParams });
+    return tryFetchDataByView(objectType, activeViewId[objectType], { ...paginationParams, ...sorterParams });
   }
 
   parsePagination = (meta) => {
