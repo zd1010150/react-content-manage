@@ -44,11 +44,7 @@ export const done = () => ({
 });
 
 
-<<<<<<< HEAD
 export const trySaveNew = (objectType, viewData, id, getViewID) => (dispatch, getState) =>
-=======
-export const trySaveNew = (objectType, viewData) => (dispatch, getState) =>
->>>>>>> a8c7253076e73db24bc116725f6fcac319957b57
   post('/admin/list_views', mapDataToAPI(objectType, viewData, getState), dispatch).then((data) => {
     if (data && !_.isEmpty(data.data)) {
       dispatch(done());
