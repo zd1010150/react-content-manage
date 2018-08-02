@@ -1,7 +1,7 @@
 import { Panel, Section } from 'components/ui/index';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
-import { BillingInfo, CompanyInfo, InvoiceInfo, ItemDetails, ItemsList } from '../components/index';
+import { BillingInfo, CompanyInfo, InvoiceInfo, ItemDetails } from '../components/index';
 import { connect } from 'react-redux';
 import { tryFetchInvoiceDetails } from '../flow/actions';
 import { withRouter } from 'react-router-dom';
@@ -20,11 +20,6 @@ class Invoice extends Component {
   constructor(props) {
     super(props);
     this.sections = [
-      {
-        key: 'il',
-        titleId: 'il',
-        child: ItemsList,
-      },
       {
         key: 'ci',
         titleId: 'ci',

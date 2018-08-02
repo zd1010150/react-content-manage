@@ -1,3 +1,11 @@
+import Enums from 'utils/EnumsManager';
+
+const {
+  Description,
+  Code,
+  Total,
+} = Enums.Invoice.ItemsList.Columns;
+
 export default {
   zh: {
     attachment: '附件',
@@ -18,6 +26,9 @@ export default {
       grandTotal: '实际总价',
     },
     tips: {
+      [Description]: '产品描述',
+      [Code]: '产品编号或SKU',
+      [Total]: '产品总价 = 数量 * 单价 (自动计算)',
       rowTotal: '商品总价',
       tax: '税价',
       grandTotal: '实际总价',
@@ -42,6 +53,9 @@ export default {
       grandTotal: 'Grand Total',
     },
     tips: {
+      [Description]: 'Item Description',
+      [Code]: 'Item Number or SKU',
+      [Total]: 'Total = Quantity * Unit Price, calculated by default',
       rowTotal: 'Subtotal',
       tax: 'Taxable Amount',
       grandTotal: 'Grand Total',

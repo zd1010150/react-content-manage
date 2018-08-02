@@ -1,13 +1,14 @@
 import React, { Fragment } from 'react';
-import EditableTable from './EditableTable';
 import SummaryTable from './SummaryTable';
 import ItemInfo from './ItemInfo';
 import Uploader from './Uploader';
 
+import { ItemsList } from '../index';
+
 const ItemDetails = () => (
   <Fragment>
     <Uploader />
-    <EditableTable />
+    <ItemsList />
     <SummaryTable />
     <ItemInfo />
   </Fragment>

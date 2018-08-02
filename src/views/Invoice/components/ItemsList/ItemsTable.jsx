@@ -1,7 +1,7 @@
-import { Input, Table } from 'antd';
+import { Input, Table, Tooltip, Icon } from 'antd';
 import { DeleteConfirmButton } from 'components/ui/index';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
@@ -26,9 +26,9 @@ const propTypes = {
     id: PropTypes.number.isRequired,
     description: PropTypes.string,
     code: PropTypes.string,
-    quantity: PropTypes.number,
-    unitPrice: PropTypes.number,
-    editingColName: PropTypes.string,
+    quantity: PropTypes.string,
+    unitPrice: PropTypes.string,
+    editingCol: PropTypes.string,
     isEditingAll: PropTypes.bool.isRequired,
   })).isRequired,
 };
@@ -37,25 +37,59 @@ class ItemsTable extends Component {
   getColumnConfig = (col) => {
     const { formatMessage } = this.props.intl;
     const i18n = 'global.ui.table';
+    const pageI18n = 'page.invoice.tips';
 
-    let renderer;
+    let customConfig;
     switch (col) {
       case Description:
+        customConfig = {
+          title: (
+            <Fragment>
+              {formatMessage({ id: `${i18n}.${col}` })}
+              <Tooltip title={formatMessage({ id: `${pageI18n}.${col}` })}>
+                <Icon type="question-circle" className="font-sm ml-sm icon-thinner" />
+              </Tooltip>
+            </Fragment>
+          ),
+        };
+        break;
       case Code:
+        customConfig = {
+          title: (
+            <Fragment>
+              {formatMessage({ id: `${i18n}.${col}` })}
+              <Tooltip title={formatMessage({ id: `${pageI18n}.${col}` })}>
+                <Icon type="question-circle" className="font-sm ml-sm icon-thinner" />
+              </Tooltip>
+            </Fragment>
+          ),
+        };
+        break;
       // NOTES: In order to simplify the process, we use text input for quantity and unit price columns as well.
       //        And formatting value in reducer when editing status is off.
       case Quantity:
       case UnitPrice:
-        renderer = (text, record) => this.TextRenderer(text, record, `${col}`);
         break;
       case Action:
-        renderer = this.ActionRenderer;
+        customConfig = {
+          render: this.ActionRenderer,
+        };
         break;
       case Total:
-        renderer = (text, record) => (record.quantity * record.unitPrice).toFixed(2);
+        customConfig = {
+          title: (
+            <Fragment>
+              {formatMessage({ id: `${i18n}.${col}` })}
+              <Tooltip title={formatMessage({ id: `${pageI18n}.${col}` })}>
+                <Icon type="question-circle" className="font-sm ml-sm icon-thinner" />
+              </Tooltip>
+            </Fragment>
+          ),
+          render: (text, record) => (record.quantity * record.unitPrice).toFixed(2),
+        };
         break;
       default:
-        renderer = null;
+        break;
     }
     return {
       dataIndex: `${col}`,
@@ -65,7 +99,8 @@ class ItemsTable extends Component {
         onDoubleClick: () => this.props.activateCell(record.id, col),
         onBlur: () => this.handleCellBlur(record.id, col),
       }),
-      render: renderer,
+      render: (text, record) => this.TextRenderer(text, record, `${col}`),
+      ...customConfig,
     };
   }
 
