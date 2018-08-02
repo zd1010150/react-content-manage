@@ -5,6 +5,8 @@ import biForm from './biReducer';
 import invoiceInfo from './invoiceInfoReducer';
 import itemDetails from './itemDetailsReducer';
 import itemsList from './itemsList/reducer';
+import summary from './summary/reducer';
+
 
 const initialState = {
   fileList: [],
@@ -38,4 +40,5 @@ export default combineReducers({
   itemDetails,
   attachment,
   itemsList,
+  summary,
 });

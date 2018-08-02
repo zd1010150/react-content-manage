@@ -4,6 +4,7 @@ import BillingInfo from './BillAddress/BillingInfo';
 import InvoiceInfo from './InvoiceInfo';
 import ItemDetails from './ItemDetails/index';
 import ItemsList from './ItemsList/index';
+import Summary from './Summary/index';
 
 export {
   Upload,
@@ -12,4 +13,5 @@ export {
   InvoiceInfo,
   ItemDetails,
   ItemsList,
+  Summary,
 };
