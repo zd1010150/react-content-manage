@@ -35,7 +35,7 @@ const propTypes = {
 
 class Topbar extends Component {
   componentDidMount() {
-    const { objectType, tryFetchViewsByType, activeViewId } = this.props;
+    const { objectType, tryFetchViewsByType } = this.props;
     tryFetchViewsByType(objectType);
   }
 

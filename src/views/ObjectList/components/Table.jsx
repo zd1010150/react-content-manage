@@ -63,7 +63,7 @@ class TableWrapper extends Component {
       tableParams,
       meta,
     } = this.props;
-    tryDeleteClientByType(objectType, id, tableParams, meta, activeViewId);
+    tryDeleteClientByType(objectType, id, tableParams, meta, activeViewId[objectType]);
   }
 
   handleSelectionChange = selectedKeys => this.props.setRowSelection(selectedKeys)
