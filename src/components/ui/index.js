@@ -35,7 +35,7 @@ import TimeRangeFilter from './TimeRangeFilter/index';
 import AutoConvertedDatePicker from './AutoConvertedDatePicker/index';
 import Criterion from './Criterion/index';
 import { StyledAdditionSelector } from './AdditionSelector/index';
-// import StyledAdditionSelector from './AdditionSelector/StyledAdditionSelector';
+import RelatedToSelection from './RelatedToSelection/index';
 
 export {
   Upload,
@@ -80,4 +80,5 @@ export {
   AutoConvertedDatePicker,
   Criterion,
   StyledAdditionSelector,
+  RelatedToSelection,
 };
