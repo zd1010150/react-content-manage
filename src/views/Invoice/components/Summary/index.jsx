@@ -123,15 +123,16 @@ class Summary extends Component {
     }
   }
   getTax = (val, operator, base) => {
+    const addition = Number(val);
     switch (operator) {
       case 'add':
-        return base + val;
+        return base + addition;
       case 'sub':
-        return base - val;
+        return base - addition;
       case 'add_percentage':
-        return base * (1 + (val / 100));
+        return base * (addition / 100);
       case 'sub_percentage':
-        return base * (1 - (val / 100));
+        return base * (addition / -100);
       default:
         return 0;
     }
