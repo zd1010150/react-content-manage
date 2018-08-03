@@ -4,6 +4,7 @@ const {
   DetailTools,
   DetailModules,
   DateTimeConfigs,
+  Invoice,
 } = Enums;
 
 const {
@@ -47,6 +48,12 @@ const {
   Next,
   Last,
 } = PeriodPrefixs;
+
+const {
+  SDescription,
+  SAddition,
+  STotal,
+} = Invoice.Summary.Columns;
 
 export default {
   zh: {
@@ -155,6 +162,9 @@ export default {
       total: '总价',
       description: '描述',
       addition: '附加费用',
+      [SDescription]: '描述',
+      [SAddition]: '附加费用',
+      [STotal]: '总价',
     },
     select: {
       label: '视图',
@@ -327,6 +337,9 @@ export default {
       total: 'Total',
       description: 'Description',
       addition: 'Addition',
+      [SDescription]: 'Description',
+      [SAddition]: 'Addtion',
+      [STotal]: 'Total',
     },
     select: {
       label: 'View',

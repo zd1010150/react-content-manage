@@ -99,6 +99,18 @@ const BaseEnums = Object.freeze({
     Total: 'total',
   }),
 
+  InvoiceSummaryColumns: Object.freeze({
+    SDescription: 'sDescription',
+    SAddition: 'sAddition',
+    STotal: 'sTotal',
+  }),
+
+  InvoiceSummaryRows: Object.freeze({
+    Subtotal: 'subtotal',
+    Tax: 'tax',
+    GrandTotal: 'grandTotal',
+  }),
+
 });
 
 const tableIntl = 'global.ui.table';
@@ -446,6 +458,12 @@ const EnumsManager = Object.freeze({
     ItemsList: Object.freeze({
       Columns: BaseEnums.InvoiceItemsListColumns,
       ColumnsInArray: Object.freeze(_.values(BaseEnums.InvoiceItemsListColumns)),
+    }),
+    Summary: Object.freeze({
+      Columns: BaseEnums.InvoiceSummaryColumns,
+      ColumnsInArray: Object.freeze(_.values(BaseEnums.InvoiceSummaryColumns)),
+      Rows: BaseEnums.InvoiceSummaryRows,
+      RowsInArray: Object.freeze(_.values(BaseEnums.InvoiceSummaryRows)),
     }),
   }),
 

@@ -1,17 +1,23 @@
+import { Row } from 'antd';
 import React, { Fragment } from 'react';
-import SummaryTable from './SummaryTable';
+import { ItemsList, Summary } from '../index';
 import ItemInfo from './ItemInfo';
 import Uploader from './Uploader';
 
-import { ItemsList, Summary } from '../index';
-
 const ItemDetails = () => (
-  <Fragment>
-    <Summary />
-    <Uploader />
-    <ItemsList />
-    <SummaryTable />
-    <ItemInfo />
+  <Fragment>    
+    <Row className="mb-lg">
+      <ItemsList />
+    </Row>
+    <Row className="mb-lg">
+      <Summary />
+    </Row>
+    <Row className="mb-lg">
+      <Uploader />
+    </Row>
+    <Row className="mb-lg">
+      <ItemInfo />
+    </Row>
   </Fragment>
 );
 

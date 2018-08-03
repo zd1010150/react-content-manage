@@ -13,6 +13,10 @@ const { Option } = Select;
 
 
 const defaultProps = {
+  inputCls: '',
+  selectCls: '',
+  displayCls: '',
+  onAdditionBlur: null,
   onAdditionChange: null,
   onOperatorChange: null,
 };
@@ -20,9 +24,14 @@ const propTypes = {
   addition: PropTypes.string.isRequired,
   operator: PropTypes.string.isRequired,
   operators: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     display_value: PropTypes.string.isRequired,
   })).isRequired,
+  inputCls: PropTypes.string,
+  selectCls: PropTypes.string,
+  displayCls: PropTypes.string,
+  isActivated: PropTypes.bool.isRequired,
+  onAdditionBlur: PropTypes.func,
   onAdditionChange: PropTypes.func,
   onOperatorChange: PropTypes.func,
 };
@@ -31,15 +40,31 @@ const AdditionSelector = ({
   addition,
   operator,
   operators,
+  inputCls,
+  selectCls,
+  displayCls,
+  isActivated,
+  onAdditionBlur,
   onAdditionChange,
   onOperatorChange,
 }) => (
   <div>
-    <Input
-      value={addition}
-      onChange={onAdditionChange}
-    />
+    {isActivated ? (
+      <Input
+        className={inputCls}
+        size="small"
+        value={addition}
+        onBlur={onAdditionBlur}
+        onChange={onAdditionChange}
+      />
+    ) : (
+      <div className={displayCls}>
+        {addition}
+      </div>
+    )}
     <Select
+      className={selectCls}
+      size="small"
       value={operator}
       onChange={onOperatorChange}
     >
