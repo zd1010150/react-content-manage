@@ -35,13 +35,13 @@ const BIForm = Form.create({
         <Col xs={24} sm={12}>
           <FormItem label="Name" colon={false}>
             {getFieldDecorator('biName', {
-            })(<Input />)}
+            })(<Input size="small" />)}
           </FormItem>
         </Col>
         <Col xs={24} sm={12}>
           <FormItem label="Address" colon={false}>
             {getFieldDecorator('biAddress', {
-            })(<Input />)}
+            })(<Input size="small" />)}
           </FormItem>
         </Col>
       </Row>
@@ -50,7 +50,7 @@ const BIForm = Form.create({
           <FormItem label="Country" colon={false}>
             {getFieldDecorator('biCountry', {
             })(
-              <Select>
+              <Select size="small" >
                 {props.countries.map(c =>
                   <Option key={c.id} value={c.id}>{c.display_value}</Option>)}
               </Select>
@@ -60,7 +60,7 @@ const BIForm = Form.create({
         <Col xs={24} sm={12}>
           <FormItem label="Phone" colon={false}>
             {getFieldDecorator('biPhone', {
-            })(<Input />)}
+            })(<Input size="small" />)}
           </FormItem>
         </Col>
       </Row>

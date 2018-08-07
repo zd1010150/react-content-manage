@@ -20,16 +20,16 @@ class Invoice extends Component {
   constructor(props) {
     super(props);
     this.sections = [
-      // {
-      //   key: 'ci',
-      //   titleId: 'ci',
-      //   child: CompanyInfo,
-      // },
-      // {
-      //   key: 'bi',
-      //   titleId: 'bi',
-      //   child: BillingInfo,
-      // },
+      {
+        key: 'ci',
+        titleId: 'ci',
+        child: CompanyInfo,
+      },
+      {
+        key: 'bi',
+        titleId: 'bi',
+        child: BillingInfo,
+      },
       {
         key: 'ii',
         titleId: 'ii',

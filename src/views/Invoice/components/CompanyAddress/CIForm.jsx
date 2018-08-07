@@ -40,14 +40,14 @@ const CIForm = Form.create({
           <FormItem label="Organization" colon={false}>
             {getFieldDecorator('ciName', {
               rules: [{ required: true, message: requiredError }],
-            })(<Input />)}
+            })(<Input size="small" />)}
           </FormItem>
         </Col>
         <Col xs={24} sm={12}>
           <FormItem label="Address" colon={false}>
             {getFieldDecorator('ciAddress', {
               rules: [{ required: true, message: requiredError }],
-            })(<Input />)}
+            })(<Input size="small" />)}
           </FormItem>
         </Col>
       </Row>
@@ -57,9 +57,10 @@ const CIForm = Form.create({
             {getFieldDecorator('ciCountry', {
               rules: [{ required: true, message: requiredError }],
             })(
-              <Select>
+              <Select size="small">
                 {props.countries.map(c =>
-                  <Option key={c.id} value={c.id}>{c.display_value}</Option>)}
+                  <Option key={c.id} value={c.id}>{c.display_value}</Option>
+                )}
               </Select>
             )}
           </FormItem>
@@ -68,7 +69,7 @@ const CIForm = Form.create({
           <FormItem label="Phone" colon={false}>
             {getFieldDecorator('ciPhone', {
               rules: [{ required: true, message: requiredError }],
-            })(<Input />)}
+            })(<Input size="small" />)}
           </FormItem>
         </Col>
       </Row>

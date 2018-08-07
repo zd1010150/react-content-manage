@@ -15,64 +15,68 @@
 import React from 'react';
 import { Upload, Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
+import { baseUrl } from 'config/env.config';
+import { getAuthorization } from 'utils/common';
 
 
 const defaultProps = {
   wrapperCls: '',
-  selectFileBtnText: 'Select File',
-  uploadProps: null,
+  selectFileText: 'Select File',
+  extraUploadProps: null,
+  onUploadStateChange: null,
   onBeforeUpload: null,
   onRemove: null,
 };
 const propTypes = {
+  action: PropTypes.string.isRequired,
   wrapperCls: PropTypes.string,
-  selectFileBtnText: PropTypes.string,
-  uploadProps: PropTypes.object,
+  selectFileText: PropTypes.string,
+  extraUploadProps: PropTypes.object,
+  fileList: PropTypes.array.isRequired,
   onBeforeUpload: PropTypes.func,
   onRemove: PropTypes.func,
+  onUploadStateChange: PropTypes.func,
 };
 
 
 const InstantUpload = ({
+  action,
   wrapperCls,
-  selectFileBtnText,
+  selectFileText,
+  fileList,
+  onUploadStateChange,
   onBeforeUpload,
   onRemove,
-  uploadProps,
+  extraUploadProps,
 }) => {
   const combinedUploadProps = {
-    ...uploadProps,
-    // with exist file
-    // fileList: [{
-    //   uid: 'test123',
-    //   name: 'xx.png',
-    //   status: 'done',
-    //   response: '',
-    // }],
-    onRemove: (file) => {
-      if (_.isFunction(onRemove)) {
-        onRemove(file);
-      }
-    },
+    action: `${baseUrl}/${action}`,
+    fileList,
+    onChange: onUploadStateChange,
+    onRemove,
     beforeUpload: (file) => {
       if (_.isFunction(onBeforeUpload)) {
         onBeforeUpload(file);
       }
       return true;
     },
+    headers: {
+      Authorization: getAuthorization(),
+    },
+    withCredentials: true,
+    ...extraUploadProps,
   };
 
   return (
-    // <div className={`fileUploadWrapper ${wrapperCls}`}>
-    <div className={`${wrapperCls}`}>
+    <div className={`fileUploader ${wrapperCls}`}>
       <Upload {...combinedUploadProps}>
         <Button>
-          <Icon type="upload" /> {selectFileBtnText}
+          <Icon type="upload" /> {selectFileText}
         </Button>
       </Upload>
     </div>
   );
-}
+};
 
 
 InstantUpload.defaultProps = defaultProps;

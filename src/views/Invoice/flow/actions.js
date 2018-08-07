@@ -1,11 +1,6 @@
 import { get } from 'store/http/httpAction';
 import {
-  // Set after load
   SET_CI_FORM,
-  SET_ITEM_DETAILS,
-
-  SET_ATTACHMENT,
-  REMOVE_ATTACHMENT,
   SET_CI_FIELD,
   SET_BI_FIELD,
 } from './actionTypes';
@@ -13,11 +8,6 @@ import {
 // Component level
 export const setCIForm = data => ({
   type: SET_CI_FORM,
-  payload: { data },
-});
-
-export const setItemDetails = data => ({
-  type: SET_ITEM_DETAILS,
   payload: { data },
 });
 
@@ -29,21 +19,8 @@ export const tryFetchInvoiceDetails = id => dispatch =>
       // TODO: set bi form
       // TODO: set invoice form
       // TODO: set item description
-      dispatch(setItemDetails(data.data));
     }
   });
-
-export const setAttachment = newFile => ({
-  type: SET_ATTACHMENT,
-  payload: { newFile },
-});
-
-
-export const removeAttachment = existFile => ({
-  type: REMOVE_ATTACHMENT,
-  payload: { existFile },
-});
-
 
 // CIForm
 export const setCIField = field => ({
