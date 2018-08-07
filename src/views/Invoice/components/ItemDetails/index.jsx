@@ -2,7 +2,6 @@ import { Row } from 'antd';
 import React, { Fragment } from 'react';
 import { ItemsList, Summary } from '../index';
 import SecondaryInfo from '../SecondaryInfo/index';
-import Uploader from './Uploader';
 
 const ItemDetails = () => (
   <Fragment>
@@ -13,7 +12,7 @@ const ItemDetails = () => (
       <Summary />
     </Row>
     <Row className="mb-lg">
-      <Uploader />
+      {/* <Uploader /> */}
     </Row>
     <Row className="mb-lg">
       <SecondaryInfo />

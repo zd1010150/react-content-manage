@@ -3,7 +3,6 @@ import { REMOVE_ATTACHMENT, SET_ATTACHMENT } from './actionTypes';
 import ciForm from './ciReducer';
 import biForm from './biReducer';
 import invoiceInfo from './invoiceInfoReducer';
-import itemDetails from './itemDetailsReducer';
 // NOTES: new reducers
 import itemsList from './itemsList/reducer';
 import summary from './summary/reducer';
@@ -38,7 +37,6 @@ export default combineReducers({
   ciForm,
   biForm,
   invoiceInfo,
-  itemDetails,
   attachment,
   itemsList,
   summary,
