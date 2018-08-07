@@ -1,3 +1,4 @@
+import { notification } from 'antd';
 import { InstantUpload } from 'components/ui/index';
 import { baseUrl } from 'config/env.config';
 import fetch from 'isomorphic-fetch';
@@ -51,7 +52,10 @@ class Upload extends Component {
           status: 'done',
           url,
         });
-      });
+      })
+      .catch(() => notification.error({
+        message: 'Fail to add attachment.',
+      }));
   }
 
   handleRemove = file => this.props.tryDeleteFile(file.uid)

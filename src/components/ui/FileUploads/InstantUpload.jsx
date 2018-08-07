@@ -68,7 +68,7 @@ const InstantUpload = ({
   };
 
   return (
-    <div className={`fileUploader ${wrapperCls}`}>
+    <div className={`fileUploadWrapper ${wrapperCls}`}>
       <Upload {...combinedUploadProps}>
         <Button>
           <Icon type="upload" /> {selectFileText}
