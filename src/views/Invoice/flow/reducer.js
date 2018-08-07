@@ -2,8 +2,8 @@ import { combineReducers } from 'redux';
 import { REMOVE_ATTACHMENT, SET_ATTACHMENT } from './actionTypes';
 import ciForm from './ciReducer';
 import biForm from './biReducer';
-import invoiceInfo from './invoiceInfoReducer';
 // NOTES: new reducers
+import invoiceInfo from './invoiceInfo/reducer';
 import itemsList from './itemsList/reducer';
 import summary from './summary/reducer';
 import secondaryInfo from './secondaryInfo/reducer';

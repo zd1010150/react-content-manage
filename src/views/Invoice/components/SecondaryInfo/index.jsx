@@ -58,11 +58,11 @@ class SecondaryInfo extends Component {
           <Col {...colLayout}><RelatedTo /></Col>
           <Col {...colLayout}>
             <div {...titleStyle}>{formatMessage({ id: `${i18n}.lastModifiedAt` })}</div>
-            <Input readOnly size="small" value={lastModifiedAt} />
+            <Input className="readOnly" readOnly size="small" value={lastModifiedAt} />
           </Col>
           <Col {...colLayout}>
             <div {...titleStyle}>{formatMessage({ id: `${i18n}.modifiedBy` })}</div>
-            <Input readOnly size="small" value={lastModifiedBy} />
+            <Input className="readOnly" readOnly size="small" value={lastModifiedBy} />
           </Col>
         </Row>
         <Row className="mt-lg">
