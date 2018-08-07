@@ -11,6 +11,7 @@ const defaultProps = {
   onChange: null,
 };
 const propTypes = {
+  relatedTo: PropTypes.string.isRequired,
   accountGroupLabel: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.node,
@@ -33,6 +34,7 @@ const propTypes = {
 const RelatedToSelection = ({
   accountGroupLabel,
   opportunityGroupLabel,
+  relatedTo,
   accounts,
   opportunities,
   onChange,
@@ -41,6 +43,7 @@ const RelatedToSelection = ({
     className="full-width"
     size="small"
     onChange={onChange}
+    value={relatedTo}
   >
     <OptGroup label={accountGroupLabel}>
       {accounts.map(a => <Option key={a.id} value={a.id}>{a.name}</Option>)}

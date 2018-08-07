@@ -4,9 +4,10 @@ import ciForm from './ciReducer';
 import biForm from './biReducer';
 import invoiceInfo from './invoiceInfoReducer';
 import itemDetails from './itemDetailsReducer';
+// NOTES: new reducers
 import itemsList from './itemsList/reducer';
 import summary from './summary/reducer';
-
+import secondaryInfo from './secondaryInfo/reducer';
 
 const initialState = {
   fileList: [],
@@ -41,4 +42,5 @@ export default combineReducers({
   attachment,
   itemsList,
   summary,
+  secondaryInfo,
 });

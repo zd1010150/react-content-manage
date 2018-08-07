@@ -4,6 +4,7 @@ import { Row, Col, Select, Input } from 'antd';
 import { connect } from 'react-redux';
 import { injectIntl, intlShape } from 'react-intl';
 import RelatedTo from './RelatedTo';
+import { setStatus, setDescription } from '../../flow/secondaryInfo/actions';
 
 const colLayout = {
   xs: 24,
@@ -13,6 +14,7 @@ const titleStyle = {
   className: 'mb-sm ant-form-item-label',
   style: { lineHeight: 1.5 },
 };
+const { TextArea } = Input;
 const { Option } = Select;
 
 
@@ -24,12 +26,18 @@ const propTypes = {
     id: PropTypes.string.isRequired,
     display_value: PropTypes.string.isRequired,
   })).isRequired,
+  status: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  lastModifiedAt: PropTypes.string.isRequired,
+  lastModifiedBy: PropTypes.string.isRequired,
 };
 
 class SecondaryInfo extends Component {
-  handleStatusChange = () => {}
+  handleDescriptionChange = e => this.props.setDescription(e.target.value)
+  handleStatusChange = newStatus => this.props.setStatus(newStatus)
+
   render() {
-    const { intl, statuses } = this.props;
+    const { intl, statuses, status, lastModifiedAt, lastModifiedBy } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui.table';
 
@@ -42,6 +50,7 @@ class SecondaryInfo extends Component {
               className="full-width"
               size="small"
               onChange={this.handleStatusChange}
+              value={status}
             >
               {statuses.map(s => <Option key={s.id} value={s.id}>{s.display_value}</Option>)}
             </Select>
@@ -49,14 +58,20 @@ class SecondaryInfo extends Component {
           <Col {...colLayout}><RelatedTo /></Col>
           <Col {...colLayout}>
             <div {...titleStyle}>{formatMessage({ id: `${i18n}.lastModifiedAt` })}</div>
-            <Input readOnly size="small" />
+            <Input readOnly size="small" value={lastModifiedAt} />
           </Col>
           <Col {...colLayout}>
             <div {...titleStyle}>{formatMessage({ id: `${i18n}.modifiedBy` })}</div>
-            <Input readOnly size="small" />
+            <Input readOnly size="small" value={lastModifiedBy} />
           </Col>
         </Row>
-        <Row></Row>
+        <Row className="mt-lg">
+          <div {...titleStyle}>{formatMessage({ id: `${i18n}.descriptionOfInvoice` })}</div>
+          <TextArea
+            autosize={{ minRows: 6, maxRows: 10 }}
+            onChange={this.handleDescriptionChange}
+          />
+        </Row>
       </Fragment>
     );
   }
@@ -67,8 +82,14 @@ SecondaryInfo.propTypes = propTypes;
 const mapStateToProps = ({ global, invoice }) => ({
   language: global.language,
   statuses: global.settings.invoice.statuses,
+  status: invoice.secondaryInfo.status,
+  description: invoice.secondaryInfo.description,
+  lastModifiedAt: invoice.secondaryInfo.lastModifiedAt,
+  lastModifiedBy: invoice.secondaryInfo.lastModifiedBy,
 });
 const mapDispatchToProps = {
+  setStatus,
+  setDescription,
 };
 export default connect(
   mapStateToProps,

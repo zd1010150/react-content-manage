@@ -154,7 +154,7 @@ export default {
       invoiceNo: '发票号',
       invoiceDate: '发票时间',
       invoiceDescription: '发票描述',
-      relateTo: '相关者',
+      relatedTo: '相关者',
       modifiedBy: '修改人',
       code: '货物编号',
       quantity: '数量',
@@ -165,6 +165,7 @@ export default {
       [SDescription]: '描述',
       [SAddition]: '附加费用',
       [STotal]: '总价',
+      descriptionOfInvoice: '发票备注',
     },
     select: {
       label: '视图',
@@ -329,7 +330,7 @@ export default {
       invoiceNo: 'Invoice Number',
       invoiceDate: 'Invoice Date',
       invoiceDescription: 'Description of Invoice',
-      relateTo: 'Related To',
+      relatedTo: 'Related To',
       modifiedBy: 'Modified By',
       code: 'Item Code',
       quantity: 'Quantity',
@@ -340,6 +341,7 @@ export default {
       [SDescription]: 'Description',
       [SAddition]: 'Addtion',
       [STotal]: 'Total',
+      descriptionOfInvoice: 'Description of Invoice',
     },
     select: {
       label: 'View',
