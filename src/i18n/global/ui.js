@@ -4,7 +4,7 @@ const {
   DetailTools,
   DetailModules,
   DateTimeConfigs,
-  Invoice,
+  InvoicePage,
 } = Enums;
 
 const {
@@ -21,6 +21,7 @@ const {
   EmailSent,
   Attachments,
   Logs,
+  Invoice,
 } = DetailModules;
 
 const {
@@ -53,7 +54,7 @@ const {
   SDescription,
   SAddition,
   STotal,
-} = Invoice.Summary.Columns;
+} = InvoicePage.Summary.Columns;
 
 export default {
   zh: {
@@ -105,6 +106,7 @@ export default {
       done: '完成',
       add: '添加',
       close: '关闭',
+      [Invoice]: '发票',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -206,6 +208,7 @@ export default {
       [EmailSent]: '已发送的邮件',
       [Attachments]: '附件',
       [Logs]: '日志',
+      [Invoice]: '发票',
     },
     upload: {
       maxSize: '文件最大是{size}M',
@@ -281,6 +284,7 @@ export default {
       done: 'Done',
       add: 'Add',
       close: 'Close',
+      [Invoice]: 'Invoice',
     },
     input: {
       searchStore: 'Search entire store here...',
@@ -382,6 +386,7 @@ export default {
       [EmailSent]: 'Email Sent',
       [Attachments]: 'Attachments',
       [Logs]: 'Logs',
+      [Invoice]: 'Invoice',
     },
     upload: {
       maxSize: 'Maximum file size is {size}M',

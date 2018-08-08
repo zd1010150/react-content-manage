@@ -48,6 +48,7 @@ const BaseEnums = Object.freeze({
     EmailSent: 'EmailSent',
     Attachments: 'Attachments',
     Logs: 'Logs',
+    Invoice: 'Invoice',
   }),
 
   DateTimeSubTypes: Object.freeze({
@@ -251,6 +252,7 @@ const EnumsManager = Object.freeze({
       EmailSent: 'EmailSent',
       Attachments: 'Attachments',
       Logs: 'Logs',
+      Invoice: 'Invoice',
     },
     [BaseEnums.ObjectTypes.Opportunities]: {
       TaskOpen: 'TaskOpen',
@@ -258,6 +260,7 @@ const EnumsManager = Object.freeze({
       EmailSent: 'EmailSent',
       Attachments: 'Attachments',
       Logs: 'Logs',
+      Invoice: 'Invoice',
     },
   },
 
@@ -396,6 +399,33 @@ const EnumsManager = Object.freeze({
         titleId: `${tableIntl}.action`,
       },
     ],
+    [BaseEnums.DetailModules.Invoice]: [
+      {
+        dataIndex: 'invoice_no',
+        titleId: `${tableIntl}.invoiceNo`,
+      },
+      {
+        dataIndex: 'related_to',
+        titleId: `${tableIntl}.relatedTo`,
+      },
+      {
+        dataIndex: 'status',
+        titleId: `${tableIntl}.status`,
+      },
+
+      {
+        dataIndex: 'due_date',
+        titleId: `${tableIntl}.dueOn`,
+      },
+      {
+        dataIndex: 'last_modified_by_user',
+        titleId: `${tableIntl}.modifiedBy`,
+      },
+      {
+        dataIndex: 'last_modified_at',
+        titleId: `${tableIntl}.lastModifiedAt`,
+      },
+    ],
   },
 
   MaxDisplayResults: 20,
@@ -454,7 +484,7 @@ const EnumsManager = Object.freeze({
     Pdf: '.pdf',
   }),
 
-  Invoice: Object.freeze({
+  InvoicePage: Object.freeze({
     ItemsList: Object.freeze({
       Columns: BaseEnums.InvoiceItemsListColumns,
       ColumnsInArray: Object.freeze(_.values(BaseEnums.InvoiceItemsListColumns)),

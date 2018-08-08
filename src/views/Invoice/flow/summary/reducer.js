@@ -8,7 +8,7 @@ const {
   Subtotal,
   Tax,
   GrandTotal,
-} = Enums.Invoice.Summary.Rows;
+} = Enums.InvoicePage.Summary.Rows;
 
 const initialState = [
   new Summary(Subtotal),

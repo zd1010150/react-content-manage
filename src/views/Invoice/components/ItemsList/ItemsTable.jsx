@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
 import { activateCell, deactivateCell, deleteItemById, setColumnValue } from '../../flow/itemsList/actions';
 
-const { Columns, ColumnsInArray } = Enums.Invoice.ItemsList;
+const { Columns, ColumnsInArray } = Enums.InvoicePage.ItemsList;
 const {
   Action,
   Description,

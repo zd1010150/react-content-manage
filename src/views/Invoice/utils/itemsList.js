@@ -4,7 +4,7 @@ import Enums from 'utils/EnumsManager';
 const {
   Quantity,
   UnitPrice,
-} = Enums.Invoice.ItemsList.Columns;
+} = Enums.InvoicePage.ItemsList.Columns;
 
 /**
  * Use to convert value of Quantity/Unit Price to valid value

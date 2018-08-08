@@ -1,6 +1,6 @@
 import Enums from 'utils/EnumsManager';
 
-const { ItemsList, Summary } = Enums.Invoice;
+const { ItemsList, Summary } = Enums.InvoicePage;
 const {
   Description,
   Code,

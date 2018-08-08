@@ -5,7 +5,7 @@ const {
   Subtotal,
   Tax,
   GrandTotal,
-} = Enums.Invoice.Summary.Rows;
+} = Enums.InvoicePage.Summary.Rows;
 
 function Summary(description = '') {
   this.description = description;

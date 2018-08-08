@@ -86,3 +86,11 @@ export const tryDeleteAttachment = (code, fileId, objectType, objectId) => dispa
       dispatch(tryFetchModuleData(code, objectType, objectId, { page: 1, per_page: 10 }));
     }
   });
+
+export const tryDeleteInvoice = (code, invoiceId, objectType, objectId) => dispatch =>
+  httpDelete(`/admin/invoice/${invoiceId}`, {}, dispatch).then((data) => {
+    if (data && data.deleted) {
+      // TODO: replace per_page with actual params
+      dispatch(tryFetchModuleData(code, objectType, objectId, { page: 1, per_page: 10 }));
+    }
+  });

@@ -3,7 +3,7 @@ import Enums from 'utils/EnumsManager';
 const {
   Quantity,
   UnitPrice,
-} = Enums.Invoice.ItemsList.Columns;
+} = Enums.InvoicePage.ItemsList.Columns;
 
 export const mapToCIForm = (data) => {
   const {

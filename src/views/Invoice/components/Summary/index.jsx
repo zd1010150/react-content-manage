@@ -11,7 +11,7 @@ const {
   Columns,
   ColumnsInArray,
   Rows,
-} = Enums.Invoice.Summary;
+} = Enums.InvoicePage.Summary;
 const {
   SDescription,
   SAddition,

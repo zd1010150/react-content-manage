@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { toTimezone } from 'utils/dateTimeUtils';
 import styles from './index.less';
-import { tryDeleteAttachment, tryDeleteTask, tryFetchModuleData } from '../../flow/actions';
+import { tryDeleteAttachment, tryDeleteTask, tryFetchModuleData, tryDeleteInvoice } from '../../flow/actions';
 
 const cx = classNames.bind(styles);
 
@@ -30,6 +30,7 @@ const {
   Opportunities,
   TaskOpen,
   TaskHistory,
+  Invoice,
 } = DetailModules;
 const { PageSizeSmall } = DefaultPageConfigs;
 
@@ -86,6 +87,9 @@ class Subpanel extends Component {
       case Attachments:
         link = `/${objectType}/${objectId}/attachments/${PhantomId}`;
         break;
+      case Invoice:
+        link = `/${objectType}/${objectId}/invoice/${PhantomId}`;
+        break;
       case TaskHistory:
       case Logs:
       default:
@@ -107,12 +111,15 @@ class Subpanel extends Component {
       objectType,
       tryDeleteTask,
       tryDeleteAttachment,
+      tryDeleteInvoice,
     } = this.props;
     switch (code) {
       case TaskOpen:
         return tryDeleteTask(code, id, objectType, objectId);
       case Attachments:
         return tryDeleteAttachment(code, id, objectType, objectId);
+      case Invoice:
+        return tryDeleteInvoice(code, id, objectType, objectId);
       default:
         console.log('no such code has been found.');
     }
@@ -298,11 +305,41 @@ class Subpanel extends Component {
           },
         ];
         break;
+      case Invoice:
+        editLink = 'invoice';
+        columns = [
+          {
+            dataIndex: 'invoice_no',
+            title: formatMessage({ id: `${i18n}.invoiceNo` }),
+          },
+          {
+            dataIndex: 'related_to',
+            title: formatMessage({ id: `${i18n}.relatedTo` }),
+          },
+          {
+            dataIndex: 'status',
+            title: formatMessage({ id: `${i18n}.status` }),
+          },
+          {
+            dataIndex: 'due_date',
+            title: formatMessage({ id: `${i18n}.dueOn` }),
+          },
+          {
+            dataIndex: 'last_modified_by_user',
+            title: formatMessage({ id: `${i18n}.modifiedBy` }),
+          },
+          {
+            dataIndex: 'last_modified_at',
+            title: formatMessage({ id: `${i18n}.lastModifiedAt` }),
+            render: text => toTimezone(text, false),
+          },
+        ];
+        break;
       default:
         console.log('The module is not found.');
     }
     // TODO: need to add checking about permissions of edit and delete to decide whether shows 'Action' column
-    if (code === TaskOpen || code === Opportunities) {
+    if (code === TaskOpen || code === Opportunities || code === Invoice) {
       columns.unshift({
         key: 'actions',
         className: cx('firstCol'),
@@ -413,5 +450,6 @@ const mapDispatchToProps = {
   tryDeleteAttachment,
   tryDeleteTask,
   tryFetchModuleData,
+  tryDeleteInvoice,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Subpanel));
