@@ -5,5 +5,6 @@ import ItemDetails from './ItemDetails/index';
 import ItemsList from './ItemsList/index';
 import Summary from './Summary/index';
 import Upload from './Upload/index';
+import Actions from './Actions/index';
 
-export { Upload, CompanyInfo, BillingInfo, InvoiceInfo, ItemDetails, ItemsList, Summary };
+export { Actions, Upload, CompanyInfo, BillingInfo, InvoiceInfo, ItemDetails, ItemsList, Summary };

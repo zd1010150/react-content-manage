@@ -16,7 +16,7 @@ const ItemDetails = () => (
         <Upload />
       </Col>
     </Row>
-    <Row className="mb-lg">
+    <Row>
       <SecondaryInfo />
     </Row>
   </Fragment>

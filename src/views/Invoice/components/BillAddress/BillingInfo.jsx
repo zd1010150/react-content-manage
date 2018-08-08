@@ -6,7 +6,7 @@ import BIForm from './BIForm';
 
 const defaultProps = {};
 const propTypes = {
-  setCIField: PropTypes.func.isRequired,
+  setBIField: PropTypes.func.isRequired,
 };
 
 

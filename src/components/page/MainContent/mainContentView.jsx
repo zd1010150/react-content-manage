@@ -44,21 +44,21 @@ const { Leads, Accounts, Opportunities } = ObjectTypes;
 class MainContent extends React.Component {
   componentDidMount() {
     const { history, location } = this.props;
-    if (location.pathname === "/") {
-      history.push("/dashboard");
+    if (location.pathname === '/') {
+      history.push('/dashboard');
     }
   }
 
-  componentDidUpdate() {
-    // TESTING
-    // TODO: config to easy dev for specific page
-    // debugger;
-    console.log(process.env);
-    const { history, location } = this.props;
-    if (location.pathname !== '/leads/3409/invoice/1') {
-      history.push("/leads/3409/invoice/1");
-    }    
-  }
+  // componentDidUpdate() {
+  //   // TESTING
+  //   // TODO: config to easy dev for specific page
+  //   // debugger;
+  //   console.log(process.env);
+  //   const { history, location } = this.props;
+  //   if (location.pathname !== '/accounts/169/invoice/1') {
+  //     history.push("/accounts/169/invoice/1");
+  //   }    
+  // }
   render() {
     return (
       <Switch>

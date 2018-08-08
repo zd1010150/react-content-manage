@@ -1,11 +1,11 @@
 import { Panel, Section } from 'components/ui/index';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
-import { BillingInfo, CompanyInfo, InvoiceInfo, ItemDetails } from '../components/index';
 import { connect } from 'react-redux';
-import { tryFetchInvoiceDetails } from '../flow/actions';
 import { withRouter } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
+import { Actions, BillingInfo, CompanyInfo, InvoiceInfo, ItemDetails } from '../components/index';
+import { tryFetchInvoiceDetails } from '../flow/actions';
 import { deactivateRow } from '../flow/itemsList/actions';
 
 const { PhantomId } = Enums;
@@ -113,6 +113,7 @@ class Invoice extends Component {
               {s.child}
             </Section>
           ))}
+          <Actions />
         </Panel>
       </div>
     );
