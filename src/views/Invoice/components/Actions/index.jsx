@@ -1,4 +1,4 @@
-import { Button, Icon, Row } from 'antd';
+import { Button, Icon, Row, notification } from 'antd';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { isCIFormValid } from '../../utils/ciForm';
 import { isBIFormValid } from '../../utils/biForm';
+import { isInvoiceInfoValid } from '../../utils/invoiceInfo';
+import { isSecondaryInfoValid } from '../../utils/secondaryInfo';
+
 
 const propTypes = {
   intl: intlShape.isRequired,
@@ -26,20 +29,38 @@ class Actions extends Component {
   }
 
   handleSave = () => {
+    if (this.isAnyFieldInvalid()) return;
+  }
+  handleCancel = () => this.props.history.goBack()
+  getNotification = errorId => notification.error({
+    message: this.props.intl.formatMessage({ id: `global.errors.${errorId}` }),
+    duration: 3,
+  })
+  isAnyFieldInvalid = () => {
     const {
-      attachments,
       biForm,
       ciForm,
       invoiceInfo,
-      itemsList,
       secondaryInfo,
-      summary,
     } = this.props.invoice;
-    console.log('on saving');
-    console.log(`CIFORM ->> ${isCIFormValid(ciForm)}`);
-    console.log(`BIFORM ->> ${isBIFormValid(biForm)}`);
+    if (isCIFormValid(ciForm)) {
+      this.getNotification('ciForm');
+      return true;
+    }
+    if (isBIFormValid(biForm)) {
+      this.getNotification('biForm');
+      return true;
+    }
+    if (isInvoiceInfoValid(invoiceInfo)) {
+      this.getNotification('invoiceInfo');
+      return true;
+    }
+    if (isSecondaryInfoValid(secondaryInfo)) {
+      this.getNotification('secondaryInfo');
+      return true;
+    }
+    return false;
   }
-  handleCancel = () => this.props.history.goBack()
 
   render() {
     console.log('render actions');

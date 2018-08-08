@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { RESET } from '../actionTypes';
-import { SET_FIELD, SET_INVOICE_NUMBER } from './actionTypes';
+import { SET_FIELD, SET_INVOICE_NUMBER, SET_INVOICE_INFO } from './actionTypes';
+import { formatData } from '../../utils/invoiceInfo';
 
 const initialState = {
   invoiceNum: {
@@ -16,6 +17,9 @@ const initialState = {
 
 const invoiceInfo = (state = initialState, action) => {
   switch (action.type) {
+    case SET_INVOICE_INFO:
+      return formatData(action.payload.data);
+
     case SET_INVOICE_NUMBER:
       return {
         ...state,

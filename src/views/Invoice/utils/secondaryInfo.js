@@ -8,3 +8,11 @@ export const formatRelatedTos = (data, type) => {
     name: rt.name,
   }));
 };
+
+export const isSecondaryInfoValid = (data) => {
+  const keys = ['relatedTo', 'status'];
+  return !keys.some((key) => {
+    const value = data[key];
+    return !value;
+  });
+};

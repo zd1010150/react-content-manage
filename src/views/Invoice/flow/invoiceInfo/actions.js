@@ -2,6 +2,7 @@ import { get } from 'store/http/httpAction';
 import {
   SET_FIELD,
   SET_INVOICE_NUMBER,
+  SET_INVOICE_INFO,
 } from './actionTypes';
 
 export const setField = field => ({
@@ -20,3 +21,8 @@ export const tryFetchAutoNumber = () => dispatch =>
       dispatch(setInvoiceNumber(data.data));
     }
   });
+
+export const setInvoiceInfo = data => ({
+  type: SET_INVOICE_INFO,
+  payload: { data },
+});
