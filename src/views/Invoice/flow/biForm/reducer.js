@@ -1,4 +1,5 @@
-import { SET_BI_FIELD } from './actionTypes';
+import { SET_BI_FIELD, SET_BI_FORM } from './actionTypes';
+import { formatData } from '../../utils/biForm';
 
 const initialState = {
   biName: {
@@ -17,6 +18,9 @@ const initialState = {
 
 const biForm = (state = initialState, action) => {
   switch (action.type) {
+    case SET_BI_FORM:
+      return formatData(action.payload.data);
+
     case SET_BI_FIELD:
       const { field } = action.payload;
       return {

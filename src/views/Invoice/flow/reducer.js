@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import ciForm from './ciReducer';
-import biForm from './biReducer';
-// NOTES: new reducers
+
+import ciForm from './ciForm/reducer';
+import biForm from './biForm/reducer';
 import invoiceInfo from './invoiceInfo/reducer';
 import itemsList from './itemsList/reducer';
 import summary from './summary/reducer';

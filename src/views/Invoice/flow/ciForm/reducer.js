@@ -1,5 +1,5 @@
 import { SET_CI_FORM, SET_CI_FIELD } from './actionTypes';
-import { mapToCIForm } from './utils';
+import { formatData } from '../../utils/ciForm';
 
 const initialState = {
   ciName: {
@@ -19,11 +19,7 @@ const initialState = {
 const ciForm = (state = initialState, action) => {
   switch (action.type) {
     case SET_CI_FORM:
-      const mappedData = mapToCIForm(action.payload.data);
-      return {
-        ...state,
-        ...mappedData,
-      };
+      return formatData(action.payload.data);
 
     case SET_CI_FIELD:
       const { field } = action.payload;

@@ -39,7 +39,7 @@ class RelatedTo extends Component {
     return (
       <Fragment>
         <div
-          className="mb-sm ant-form-item-label"
+          className="mb-sm ant-form-item-label required"
           style={{ lineHeight: 1.5 }}
         >
           {formatMessage({ id: `${i18n}.relatedTo` })}

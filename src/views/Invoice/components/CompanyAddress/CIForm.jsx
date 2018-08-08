@@ -29,34 +29,24 @@ const CIForm = Form.create({
 })((props) => {
   const { getFieldDecorator } = props.form;
 
-  const { formatMessage } = props.intl;
-  const errorI18n = 'global.errors';
-  const requiredError = formatMessage({ id: `${errorI18n}.inputRequired` });
-
   return (
     <Form className="normalLabel">
       <Row gutter={24}>
         <Col xs={24} sm={12}>
           <FormItem label="Organization" colon={false}>
-            {getFieldDecorator('ciName', {
-              rules: [{ required: true, message: requiredError }],
-            })(<Input size="small" />)}
+            {getFieldDecorator('ciName')(<Input size="small" />)}
           </FormItem>
         </Col>
         <Col xs={24} sm={12}>
           <FormItem label="Address" colon={false}>
-            {getFieldDecorator('ciAddress', {
-              rules: [{ required: true, message: requiredError }],
-            })(<Input size="small" />)}
+            {getFieldDecorator('ciAddress')(<Input size="small" />)}
           </FormItem>
         </Col>
       </Row>
       <Row gutter={24}>
         <Col xs={24} sm={12}>
           <FormItem label="Country" colon={false}>
-            {getFieldDecorator('ciCountry', {
-              rules: [{ required: true, message: requiredError }],
-            })(
+            {getFieldDecorator('ciCountry')(
               <Select size="small">
                 {props.countries.map(c =>
                   <Option key={c.id} value={c.id}>{c.display_value}</Option>
@@ -67,9 +57,7 @@ const CIForm = Form.create({
         </Col>
         <Col xs={24} sm={12}>
           <FormItem label="Phone" colon={false}>
-            {getFieldDecorator('ciPhone', {
-              rules: [{ required: true, message: requiredError }],
-            })(<Input size="small" />)}
+            {getFieldDecorator('ciPhone')(<Input size="small" />)}
           </FormItem>
         </Col>
       </Row>

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { Actions, BillingInfo, CompanyInfo, InvoiceInfo, ItemDetails } from '../components/index';
-import { tryFetchInvoiceDetails } from '../flow/actions';
+import { tryFetchInvoiceDetails, tryFetchInvoiceDefaults } from '../flow/actions';
 import { deactivateRow } from '../flow/itemsList/actions';
 
 const { PhantomId } = Enums;
@@ -46,11 +46,11 @@ class Invoice extends Component {
   }
 
   componentDidMount() {
-    const { tryFetchInvoiceDetails, match } = this.props;
-    const { objectId, objectType, invoiceId } = match.params;
-
+    const { objectId, objectType, invoiceId } = this.props.match.params;
     if (invoiceId !== PhantomId) {
-      tryFetchInvoiceDetails(invoiceId);
+      this.props.tryFetchInvoiceDetails(invoiceId);
+    } else {
+      this.props.tryFetchInvoiceDefaults(objectId, objectType, invoiceId);
     }
 
     // Register focus handler
@@ -128,7 +128,7 @@ const mapStateToProps = ({ invoice }) => ({
 });
 const mapDispatchToProps = {
   tryFetchInvoiceDetails,
-  // tryFetchInvoiceDefaultDetails,
+  tryFetchInvoiceDefaults,
   deactivateRow,
 };
 export default connect(

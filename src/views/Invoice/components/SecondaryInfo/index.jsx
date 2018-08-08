@@ -45,7 +45,9 @@ class SecondaryInfo extends Component {
       <Fragment>
         <Row gutter={16}>
           <Col {...colLayout}>
-            <div {...titleStyle}>{formatMessage({ id: `${i18n}.status` })}</div>
+            <div {...titleStyle} className="mb-sm ant-form-item-label required">
+              {formatMessage({ id: `${i18n}.status` })}
+            </div>
             <Select
               className="full-width"
               size="small"

@@ -82,6 +82,7 @@ const InvoiceInfoForm = Form.create({
             colon={false}
           >
             {getFieldDecorator('invoiceDate', {
+              rules: [{ required: true, message: requiredError }],
             })(<DatePicker className="full-width" format={format} size="small" />)}
           </FormItem>
         </Col>

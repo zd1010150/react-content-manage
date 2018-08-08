@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
+import { isCIFormValid } from '../../utils/ciForm';
+import { isBIFormValid } from '../../utils/biForm';
 
 const propTypes = {
   intl: intlShape.isRequired,
@@ -20,6 +21,10 @@ const propTypes = {
 };
 
 class Actions extends Component {
+  shouldComponentUpdate() {
+    return false;
+  }
+
   handleSave = () => {
     const {
       attachments,
@@ -31,6 +36,8 @@ class Actions extends Component {
       summary,
     } = this.props.invoice;
     console.log('on saving');
+    console.log(`CIFORM ->> ${isCIFormValid(ciForm)}`);
+    console.log(`BIFORM ->> ${isBIFormValid(biForm)}`);
   }
   handleCancel = () => this.props.history.goBack()
 
