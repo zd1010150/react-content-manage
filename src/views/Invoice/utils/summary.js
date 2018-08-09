@@ -25,4 +25,12 @@ Summary.prototype.getRowKey = function () {
   return this.description;
 };
 
+Summary.prototype.toApi = function () {
+  return {
+    description: this.description,
+    additions: Number(this.addition),
+    price_operator: this.operator,
+  };
+};
+
 export default Summary;

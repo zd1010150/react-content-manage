@@ -1,13 +1,17 @@
-import { Button, Icon, Row, notification } from 'antd';
+import { Button, Icon, notification, Row } from 'antd';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { isCIFormValid } from '../../utils/ciForm';
-import { isBIFormValid } from '../../utils/biForm';
-import { isInvoiceInfoValid } from '../../utils/invoiceInfo';
-import { isSecondaryInfoValid } from '../../utils/secondaryInfo';
+import Enums from 'utils/EnumsManager';
+import * as biUtils from '../../utils/biForm';
+import * as ciUtils from '../../utils/ciForm';
+import * as iiUtils from '../../utils/invoiceInfo';
+import * as siUtils from '../../utils/secondaryInfo';
+import { trySaveNewInvoice } from '../../flow/actions';
+
+const { PhantomId } = Enums;
 
 
 const propTypes = {
@@ -24,15 +28,21 @@ const propTypes = {
 };
 
 class Actions extends Component {
-  shouldComponentUpdate() {
-    return false;
-  }
+  shouldComponentUpdate() { return false; }
 
   handleSave = () => {
     if (this.isAnyFieldInvalid()) return;
+    const payload = this.toApi();
+    console.table(payload);
+    const { invoiceId } = this.props.match.params;
+    if (invoiceId === PhantomId) {
+      this.props.trySaveNewInvoice(payload, this.handleCancel);
+    } else {
+      // this.props.tryUpdateInvoice();
+    }
   }
   handleCancel = () => this.props.history.goBack()
-  getNotification = errorId => notification.error({
+  showNotification = errorId => notification.error({
     message: this.props.intl.formatMessage({ id: `global.errors.${errorId}` }),
     duration: 3,
   })
@@ -43,23 +53,53 @@ class Actions extends Component {
       invoiceInfo,
       secondaryInfo,
     } = this.props.invoice;
-    if (isCIFormValid(ciForm)) {
-      this.getNotification('ciForm');
+    if (!ciUtils.isCIFormValid(ciForm)) {
+      this.showNotification('ciForm');
       return true;
     }
-    if (isBIFormValid(biForm)) {
-      this.getNotification('biForm');
+    if (!biUtils.isBIFormValid(biForm)) {
+      this.showNotification('biForm');
       return true;
     }
-    if (isInvoiceInfoValid(invoiceInfo)) {
-      this.getNotification('invoiceInfo');
+    if (!iiUtils.isInvoiceInfoValid(invoiceInfo)) {
+      this.showNotification('invoiceInfo');
       return true;
     }
-    if (isSecondaryInfoValid(secondaryInfo)) {
-      this.getNotification('secondaryInfo');
+    if (!siUtils.isSecondaryInfoValid(secondaryInfo)) {
+      this.showNotification('secondaryInfo');
       return true;
     }
     return false;
+  }
+  toApi = () => {
+    const {
+      attachments,
+      biForm,
+      ciForm,
+      invoiceInfo,
+      itemsList,
+      secondaryInfo,
+      summary,
+    } = this.props.invoice;
+    const ciData = ciUtils.toApi(ciForm);
+    const biData = biUtils.toApi(biForm);
+    const iiData = iiUtils.toApi(invoiceInfo);
+    const items = itemsList.map(item => item.toApi());
+    // TODO: rethink about better way to convert summary.
+    const sumData = summary.filter(item => item.description !== 'grandTotal').map(item => item.toApi());
+    const attachedData = attachments.map(item => item.toApi());
+    const otherData = siUtils.toApi(secondaryInfo);
+    return {
+      ...ciData,
+      ...biData,
+      ...iiData,
+      items: {
+        items,
+      },
+      extra_prices: sumData,
+      attachments: attachedData,
+      ...otherData,
+    };
   }
 
   render() {
@@ -92,7 +132,7 @@ const mapStateToProps = ({ global, invoice }) => ({
   invoice,
 });
 const mapDispatchToProps = {
-
+  trySaveNewInvoice,
 };
 export default connect(
   mapStateToProps,

@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { getTimeSetting, toUtc } from 'utils/dateTimeUtils';
 
 export const formatData = data => ({
   invoiceNum: {
@@ -20,3 +21,17 @@ export const isInvoiceInfoValid = (data) => {
     return false;
   });
 };
+
+const momentToStr = (obj) => {
+  const timeSetting = getTimeSetting();
+  if (obj && obj.isValid() && obj.isValid()) {
+    return obj.format(timeSetting.format);
+  }
+  return '';
+};
+
+export const toApi = data => ({
+  invoice_no: data.invoiceNum.value,
+  invoice_date: toUtc(momentToStr(data.invoiceDate.value)),
+  due_date: toUtc(momentToStr(data.invoiceDueDate.value)),
+});

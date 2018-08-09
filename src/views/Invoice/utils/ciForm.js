@@ -29,3 +29,10 @@ export const isCIFormValid = (data) => {
     return false;
   });
 };
+
+export const toApi = data => ({
+  bill_from_address: data.ciAddress.value,
+  bill_from_country: data.ciCountry.value,
+  bill_from_name: data.ciName.value,
+  bill_from_phone: data.ciPhone.value,
+});

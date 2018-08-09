@@ -10,5 +10,11 @@ Attachment.prototype.setProperty = function (propertyName, newValue) {
     this[propertyName] = newValue;
   }
 };
+Attachment.prototype.toApi = function () {
+  return {
+    file_id: Number(this.uid),
+    description: this.name,
+  };
+};
 
 export default Attachment;

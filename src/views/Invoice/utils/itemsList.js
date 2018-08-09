@@ -56,5 +56,13 @@ Item.prototype.toValidValue = function () {
       getValueByColumn(key, this[key]),
     ), this);
 };
+Item.prototype.toApi = function () {
+  return {
+    description: this.description,
+    code: this.code,
+    quantity: Number(this.quantity),
+    unit_price: Number(this.unitPrice),
+  };
+};
 
 export default Item;

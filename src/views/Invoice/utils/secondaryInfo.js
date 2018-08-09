@@ -16,3 +16,13 @@ export const isSecondaryInfoValid = (data) => {
     return !value;
   });
 };
+
+const getRelateToId = value => value.split('__')[1];
+const getRelatedToType = value => value.split('__')[0];
+
+export const toApi = data => ({
+  status: data.status,
+  invoice_able_id: Number(getRelateToId(data.relatedTo)),
+  invoice_able_type: getRelatedToType(data.relatedTo),
+  description: data.description,
+});

@@ -1,4 +1,4 @@
-import { get } from 'store/http/httpAction';
+import { get, post } from 'store/http/httpAction';
 import { setCIForm } from '../flow/ciForm/actions';
 import { setBIForm } from '../flow/biForm/actions';
 import { setInvoiceInfo } from '../flow/invoiceInfo/actions';
@@ -23,5 +23,14 @@ export const tryFetchInvoiceDefaults = (objectId, objectType) => dispatch =>
       dispatch(setInvoiceInfo(data.default));
       // TODO: replace this part w/ shared func in order to share it within other part.
       dispatch(setRelatedTo(`${data.default.invoice_able_type}__${data.default.invoice_able_id}`));
+    }
+  });
+
+export const trySaveNewInvoice = (payload, callback) => dispatch =>
+  post('/admin/invoice', payload, dispatch).then((data) => {
+    if (data && !_.isEmpty(data.data)) {
+      if (_.isFunction(callback)) {
+        callback();
+      }
     }
   });

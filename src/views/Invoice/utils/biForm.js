@@ -29,3 +29,10 @@ export const isBIFormValid = (data) => {
     return false;
   });
 };
+
+export const toApi = data => ({
+  bill_to_address: data.biAddress.value,
+  bill_to_country: data.biCountry.value,
+  bill_to_name: data.biName.value,
+  bill_to_phone: data.biPhone.value,
+});
