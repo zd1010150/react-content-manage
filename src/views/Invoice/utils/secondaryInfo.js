@@ -1,3 +1,5 @@
+import { toTimezone } from 'utils/dateTimeUtils';
+
 export const formatRelatedTos = (data, type) => {
   if (!data || !_.isArray(data) || !type) return [];
   
@@ -31,6 +33,6 @@ export const formatInfo = data => ({
   status: data.status,
   description: data.description,
   relatedTo: `${data.invoice_able_type}__${data.invoice_able_id}`,
-  lastModifiedAt: '',
+  lastModifiedAt: toTimezone(data.updated_at, true),
   lastModifiedBy: '',
 });
