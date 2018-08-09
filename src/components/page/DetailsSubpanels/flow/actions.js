@@ -10,6 +10,7 @@ const {
   EmailSent,
   Attachments,
   Logs,
+  Invoice,
 } = DetailModules;
 
 const concatParams = (params) => {
@@ -42,6 +43,9 @@ const getModuleFetchUrl = (code, objectType, objectId, params) => {
       break;
     case Logs:
       url = `crm_logs/object/${objectType}/${objectId}/index`;
+      break;
+    case Invoice:
+      url = `invoice/for-object/${objectType}/${objectId}`;
       break;
     default:
       console.log(' No such module.');
