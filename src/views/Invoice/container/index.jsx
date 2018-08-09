@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { getThemeByType } from 'utils/common';
 import Enums from 'utils/EnumsManager';
 import { Actions, BillingInfo, CompanyInfo, InvoiceInfo, ItemDetails } from '../components/index';
-import { tryFetchInvoiceDetails, tryFetchInvoiceDefaults } from '../flow/actions';
+import { tryFetchInvoiceDefaults, tryFetchInvoiceDetails, reset } from '../flow/actions';
 import { deactivateRow } from '../flow/itemsList/actions';
 
 const { PhantomId } = Enums;
@@ -62,6 +63,8 @@ class Invoice extends Component {
   componentWillUnmount() {
     // Unregister focus handler
     this.panel.removeEventListener('focus', this.handlePageFocus, true);
+    // Reset
+    this.props.reset();
   }
 
   getRowElement = (e) => {
@@ -93,17 +96,17 @@ class Invoice extends Component {
   }
 
   render() {
-    const { intl, objectType } = this.props;
+    const { intl, match } = this.props;
     const { formatMessage } = intl;
     const i18n = 'page.invoice';
+    const { invoiceId, objectType } = match.params;
+    const titleId = invoiceId === PhantomId ? 'new' : 'edit';
 
     return (
       <div ref={(panel) => { this.panel = panel; }}>
         <Panel
-          panelClasses={`${objectType}-theme-panel`}
-          panelTitle='Adding new invoice'
-          // panelClasses={`${theme}-theme-panel`}
-          // panelTitle={formatMessage({ id: `${i18n}.${titleId}` })}        
+          panelClasses={`${getThemeByType(objectType)}-theme-panel`}
+          panelTitle={formatMessage({ id: `${i18n}.pageTitles.${titleId}` })}
         >
           {this.sections.map(s => (
             <Section
@@ -123,13 +126,15 @@ class Invoice extends Component {
 
 Invoice.defaultProps = defaultProps;
 Invoice.propTypes = propTypes;
-const mapStateToProps = ({ invoice }) => ({
+const mapStateToProps = ({ global, invoice }) => ({
+  language: global.language,
   items: invoice.itemsList,
 });
 const mapDispatchToProps = {
   tryFetchInvoiceDetails,
   tryFetchInvoiceDefaults,
   deactivateRow,
+  reset,
 };
 export default connect(
   mapStateToProps,

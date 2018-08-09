@@ -3,6 +3,7 @@ import { setCIForm } from '../flow/ciForm/actions';
 import { setBIForm } from '../flow/biForm/actions';
 import { setInvoiceInfo } from '../flow/invoiceInfo/actions';
 import { setRelatedTo } from '../flow/secondaryInfo/actions';
+import { RESET } from './actionTypes';
 
 export const tryFetchInvoiceDetails = id => dispatch =>
   get(`/admin/invoice/${id}`, {}, dispatch).then((data) => {
@@ -34,3 +35,7 @@ export const trySaveNewInvoice = (payload, callback) => dispatch =>
       }
     }
   });
+
+export const reset = () => ({
+  type: RESET,
+});

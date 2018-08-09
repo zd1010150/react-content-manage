@@ -1,5 +1,6 @@
 import { SET_CI_FORM, SET_CI_FIELD } from './actionTypes';
 import { formatData } from '../../utils/ciForm';
+import { RESET } from '../actionTypes';
 
 const initialState = {
   ciName: {
@@ -27,6 +28,9 @@ const ciForm = (state = initialState, action) => {
         ...state,
         ...field,
       };
+    
+    case RESET:
+      return initialState;
 
     default:
       return state;

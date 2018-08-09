@@ -1,5 +1,6 @@
 import { SET_BI_FIELD, SET_BI_FORM } from './actionTypes';
 import { formatData } from '../../utils/biForm';
+import { RESET } from '../actionTypes';
 
 const initialState = {
   biName: {
@@ -27,6 +28,9 @@ const biForm = (state = initialState, action) => {
         ...state,
         ...field,
       };
+
+    case RESET:
+      return initialState;
 
     default:
       return state;

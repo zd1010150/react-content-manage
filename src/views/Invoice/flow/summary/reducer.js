@@ -1,5 +1,4 @@
 import Enums from 'utils/EnumsManager';
-import Item from '../../utils/itemsList';
 import Summary from '../../utils/summary';
 import { RESET } from '../actionTypes';
 import { ACTIVATE_ROW, DEACTIVATE_ROW, SET_ROW_VALUE } from './actionTypes';
