@@ -335,6 +335,7 @@ class Subpanel extends Component {
           {
             dataIndex: 'due_date',
             title: formatMessage({ id: `${i18n}.dueOn` }),
+            render: text => toTimezone(text, false),
           },
           {
             dataIndex: 'last_modified_by_user',

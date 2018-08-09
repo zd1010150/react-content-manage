@@ -401,6 +401,10 @@ const EnumsManager = Object.freeze({
     ],
     [BaseEnums.DetailModules.Invoice]: [
       {
+        dataIndex: 'action',
+        titleId: `${tableIntl}.action`,
+      },
+      {
         dataIndex: 'invoice_no',
         titleId: `${tableIntl}.invoiceNo`,
       },

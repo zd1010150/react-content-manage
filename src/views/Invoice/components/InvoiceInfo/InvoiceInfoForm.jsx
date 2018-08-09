@@ -12,6 +12,7 @@ const defaultProps = {
 const propTypes = {
   intl: intlShape.isRequired,
   onNumReload: PropTypes.func,
+  invoiceNumReadOnly: PropTypes.bool.isRequired,
 };
 
 
@@ -27,7 +28,7 @@ const InvoiceInfoForm = Form.create({
     };
   },
 })((props) => {
-  const { format, form, intl, onNumReload } = props;
+  const { format, form, intl, onNumReload, invoiceNumReadOnly } = props;
   const { getFieldDecorator } = form;
 
   const { formatMessage } = intl;
@@ -50,19 +51,21 @@ const InvoiceInfoForm = Form.create({
                     style={{ verticalAlign: 'middle' }}
                   />
                 </Tooltip>
-                <Icon
-                  type="reload"
-                  className="ml-md cursor-pointer"
-                  onClick={onNumReload}
-                  style={{ verticalAlign: 'middle' }}
-                />
+                {!invoiceNumReadOnly ? (
+                  <Icon
+                    type="reload"
+                    className="ml-md cursor-pointer"
+                    onClick={onNumReload}
+                    style={{ verticalAlign: 'middle' }}
+                  />
+                ) : null}
               </Fragment>
             )}
             colon={false}
           >
             {getFieldDecorator('invoiceNum', {
               rules: [{ required: true, message: requiredError }],
-            })(<Input size="small" />)}
+            })(<Input size="small" className={invoiceNumReadOnly ? 'readOnly' : ''} readOnly={invoiceNumReadOnly} />)}
           </FormItem>
         </Col>
         <Col xs={24} sm={12}>

@@ -1,9 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { getTimeSetting } from 'utils/dateTimeUtils';
+import Enums from 'utils/EnumsManager';
 import { setField, tryFetchAutoNumber } from '../../flow/invoiceInfo/actions';
 import InvoiceInfoForm from './InvoiceInfoForm';
+
+const { PhantomId } = Enums;
 
 
 const defaultProps = {
@@ -21,13 +25,16 @@ class InvoiceInfo extends Component {
   handleReloadNumClick = () => this.props.tryFetchAutoNumber()
 
   render() {
-    const { form } = this.props;
+    const { form, match } = this.props;
+    const { invoiceId } = match.params;
     const setting = getTimeSetting();
+
     return (
       <InvoiceInfoForm
         format={setting.format}
         onChange={this.handleFieldChange}
         onNumReload={this.handleReloadNumClick}
+        invoiceNumReadOnly={invoiceId !== PhantomId}
         {...form}
       />
     );
@@ -47,4 +54,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(InvoiceInfo);
+)(withRouter(InvoiceInfo));
