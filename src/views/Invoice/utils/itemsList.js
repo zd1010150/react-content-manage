@@ -15,6 +15,8 @@ const getValueByColumn = (col, val) => {
     newVal = Number(newVal);
     if (_.isNaN(newVal) || newVal < 0) {
       newVal = '0';
+    } else {
+      newVal = parseInt(newVal, 10);
     }
   } else if (col === UnitPrice) {
     newVal = Number(newVal);
