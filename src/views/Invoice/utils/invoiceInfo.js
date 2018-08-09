@@ -1,15 +1,27 @@
 import moment from 'moment';
-import { getTimeSetting, toUtc } from 'utils/dateTimeUtils';
+import { getTimeSetting, toTimezone, toUtc } from 'utils/dateTimeUtils';
+
+/**
+ * @description Convert response for front end needs.
+ * @returns A moment object should be returned in order to work with Ant design form
+ * @param {string} dateStr
+ */
+const formatDate = (dateStr) => {
+  if (_.isEmpty(dateStr) || !moment(dateStr).isValid) {
+    return moment();
+  }
+  return moment(dateStr);
+};
 
 export const formatData = data => ({
   invoiceNum: {
     value: data.invoice_no,
   },
   invoiceDate: {
-    value: moment(),
+    value: formatDate(data.invoice_date),
   },
   invoiceDueDate: {
-    value: moment(),
+    value: formatDate(data.due_date),
   },
 });
 

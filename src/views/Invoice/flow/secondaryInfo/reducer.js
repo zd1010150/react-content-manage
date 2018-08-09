@@ -1,7 +1,7 @@
 import Enums from 'utils/EnumsManager';
-import { formatRelatedTos } from '../../utils/secondaryInfo';
+import { formatRelatedTos, formatInfo } from '../../utils/secondaryInfo';
 import { RESET } from '../actionTypes';
-import { SET_RELATED_TO, SET_RELATED_TOS, SET_STATUS, SET_DESCRIPTION } from './actionTypes';
+import { SET_INFO, SET_RELATED_TO, SET_RELATED_TOS, SET_STATUS, SET_DESCRIPTION } from './actionTypes';
 
 const {
   Accounts,
@@ -20,6 +20,12 @@ const initialState = {
 
 const secondaryInfo = (state = initialState, action) => {
   switch (action.type) {
+    case SET_INFO:
+      return {
+        ...state,
+        ...formatInfo(action.payload.data),
+      };
+
     case SET_RELATED_TOS:
       return {
         ...state,

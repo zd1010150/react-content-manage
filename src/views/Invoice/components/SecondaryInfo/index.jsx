@@ -37,7 +37,7 @@ class SecondaryInfo extends Component {
   handleStatusChange = newStatus => this.props.setStatus(newStatus)
 
   render() {
-    const { intl, statuses, status, lastModifiedAt, lastModifiedBy } = this.props;
+    const { intl, statuses, status, lastModifiedAt, lastModifiedBy, description } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui.table';
 
@@ -72,6 +72,7 @@ class SecondaryInfo extends Component {
           <TextArea
             autosize={{ minRows: 6, maxRows: 10 }}
             onChange={this.handleDescriptionChange}
+            value={description}
           />
         </Row>
       </Fragment>

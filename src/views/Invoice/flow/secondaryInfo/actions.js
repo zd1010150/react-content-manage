@@ -4,7 +4,13 @@ import {
   SET_RELATED_TOS,
   SET_STATUS,
   SET_DESCRIPTION,
+  SET_INFO,
 } from './actionTypes';
+
+export const setInfo = data => ({
+  type: SET_INFO,
+  payload: { data },
+});
 
 export const setRelatedTo = id => ({
   type: SET_RELATED_TO,

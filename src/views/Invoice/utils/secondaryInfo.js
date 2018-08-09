@@ -26,3 +26,11 @@ export const toApi = data => ({
   invoice_able_type: getRelatedToType(data.relatedTo),
   description: data.description,
 });
+
+export const formatInfo = data => ({
+  status: data.status,
+  description: data.description,
+  relatedTo: `${data.invoice_able_type}__${data.invoice_able_id}`,
+  lastModifiedAt: '',
+  lastModifiedBy: '',
+});

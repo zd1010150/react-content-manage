@@ -13,6 +13,11 @@ function Summary(description = '') {
   this.operator = 'add_percentage';
   this.isEditing = false;
 };
+Summary.prototype.setData = function (data) {
+  this.description = data.description;
+  this.addition = String(data.additions);
+  this.operator = data.price_operator;
+};
 Summary.prototype.setProperty = function (propertyName, newValue) {
   if (this[propertyName] !== undefined) {
     this[propertyName] = newValue;

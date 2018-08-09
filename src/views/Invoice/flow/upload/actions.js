@@ -2,7 +2,13 @@ import { httpDelete } from 'store/http/httpAction';
 import {
   ADD_ATTACHMENT,
   REMOVE_ATTACHMENT,
+  SET_ATTACHMENTS,
 } from './actionTypes';
+
+export const setAttachments = data => ({
+  type: SET_ATTACHMENTS,
+  payload: { data },
+});
 
 export const addAttachment = data => ({
   type: ADD_ATTACHMENT,

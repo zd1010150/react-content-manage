@@ -6,6 +6,7 @@ import {
   DEACTIVATE_CELL,
   SET_COLUMN_VALUE,
   DEACTIVATE_ROW,
+  SET_ITEMS_LIST,
 } from './actionTypes';
 import { RESET } from '../actionTypes';
 
@@ -14,6 +15,13 @@ const initialState = [];
 
 const itemsList = (state = initialState, action) => {
   switch (action.type) {
+    case SET_ITEMS_LIST:
+      return action.payload.data.map((item) => {
+        const newItem = new Item();
+        newItem.setData(item);
+        return newItem;
+      });
+
     case ADD_NEW_ITEM:
       return [...state, new Item()];
 

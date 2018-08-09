@@ -44,6 +44,13 @@ Item.prototype.gid = 0;
 Item.prototype.count = function () {
   Item.prototype.gid += 1;
 };
+Item.prototype.setData = function (data) {
+  this.description = data.description;
+  this.code = data.code;
+  this.quantity = String(data.quantity);
+  this.unitPrice = String(data.unit_price);
+  this.isEditingAll = false;
+};
 Item.prototype.setProperty = function (propertyName, newValue) {
   if (this[propertyName] !== undefined) {
     this[propertyName] = newValue;

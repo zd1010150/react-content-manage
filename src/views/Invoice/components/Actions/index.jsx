@@ -9,7 +9,7 @@ import * as biUtils from '../../utils/biForm';
 import * as ciUtils from '../../utils/ciForm';
 import * as iiUtils from '../../utils/invoiceInfo';
 import * as siUtils from '../../utils/secondaryInfo';
-import { trySaveNewInvoice } from '../../flow/actions';
+import { trySaveNewInvoice, tryUpdateInvoice } from '../../flow/actions';
 
 const { PhantomId } = Enums;
 
@@ -38,7 +38,7 @@ class Actions extends Component {
     if (invoiceId === PhantomId) {
       this.props.trySaveNewInvoice(payload, this.handleCancel);
     } else {
-      // this.props.tryUpdateInvoice();
+      this.props.tryUpdateInvoice(invoiceId, payload, this.handleCancel);
     }
   }
   handleCancel = () => this.props.history.goBack()
@@ -133,6 +133,7 @@ const mapStateToProps = ({ global, invoice }) => ({
 });
 const mapDispatchToProps = {
   trySaveNewInvoice,
+  tryUpdateInvoice,
 };
 export default connect(
   mapStateToProps,

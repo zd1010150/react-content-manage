@@ -16,5 +16,9 @@ Attachment.prototype.toApi = function () {
     description: this.name,
   };
 };
+Attachment.prototype.setData = function (data) {
+  this.uid = String(data.file_id);
+  this.name = data.description;
+};
 
 export default Attachment;

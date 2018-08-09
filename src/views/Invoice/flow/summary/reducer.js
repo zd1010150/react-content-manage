@@ -1,7 +1,7 @@
 import Enums from 'utils/EnumsManager';
 import Summary from '../../utils/summary';
 import { RESET } from '../actionTypes';
-import { ACTIVATE_ROW, DEACTIVATE_ROW, SET_ROW_VALUE } from './actionTypes';
+import { ACTIVATE_ROW, DEACTIVATE_ROW, SET_ROW_VALUE, SET_SUMMARY } from './actionTypes';
 
 const {
   Subtotal,
@@ -17,6 +17,19 @@ const initialState = [
 
 const summary = (state = initialState, action) => {
   switch (action.type) {
+    case SET_SUMMARY:
+      console.log('-------------===============SUMMARY=============-------------');
+      console.table(state);
+      const subTotal = action.payload.data.find(r => r.description === Subtotal);
+      if (subTotal) {
+        state[0].setData(subTotal);
+      }
+      const tax = action.payload.data.find(r => r.description === Tax);
+      if (tax) {
+        state[1].setData(tax);
+      }
+      return [...state];
+
     case ACTIVATE_ROW:
       const activatedRow = state.find(r => r.description === action.payload.key);
       activatedRow.setProperty('isEditing', true);
@@ -33,7 +46,11 @@ const summary = (state = initialState, action) => {
       return [...state];
 
     case RESET:
-      return initialState;
+      return [
+        new Summary(Subtotal),
+        new Summary(Tax),
+        new Summary(GrandTotal),
+      ];
 
     default:
       return state;
