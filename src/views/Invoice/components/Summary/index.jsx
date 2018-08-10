@@ -125,9 +125,9 @@ class Summary extends Component {
     const addition = Number(val);
     switch (operator) {
       case 'add':
-        return base + addition;
+        return addition;
       case 'sub':
-        return base - addition;
+        return -addition;
       case 'add_percentage':
         return base * (addition / 100);
       case 'sub_percentage':
