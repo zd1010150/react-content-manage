@@ -15,8 +15,7 @@ const attachments = (state = initialState, action) => {
         const info = {
           uid: item.file_id,
           name: item.description,
-          // TODO: url is needed when load exist invoice's attachments
-          url: item.url,
+          url: item.full_url,
         };
         return new Attachment(info);
       });

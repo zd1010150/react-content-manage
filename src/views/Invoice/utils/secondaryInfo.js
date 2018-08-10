@@ -34,5 +34,5 @@ export const formatInfo = data => ({
   description: data.description,
   relatedTo: `${data.invoice_able_type}__${data.invoice_able_id}`,
   lastModifiedAt: toTimezone(data.updated_at, true),
-  lastModifiedBy: '',
+  lastModifiedBy: data.last_modified_by_user ? data.last_modified_by_user.name : '',
 });
