@@ -17,6 +17,8 @@ export default {
     notFound: '404未找到此页面！',
     exceedMaximumLength: '至少一个字段超出长度要求！',
     fieldColRequired: '请先从左侧选择字段！',
+    invoiceInfo: '必填项未添加!',
+    secondaryInfo: '必填项未添加!',
   },
   en: {
     NO_AUTHENTICATION: 'No authentication to access this page!',
@@ -36,5 +38,7 @@ export default {
     notFound: '404 Page Not Found!',
     exceedMaximumLength: 'At least one field has exceeded maximum length!',
     fieldColRequired: 'Please select a field from left-hand side!',
+    invoiceInfo: 'Required field is empty!',
+    secondaryInfo: 'Required field is empty!',
   },
 };

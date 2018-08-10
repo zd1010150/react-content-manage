@@ -8,13 +8,13 @@ import React, { Component, Fragment } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Enums from 'utils/EnumsManager';
+import { getThemeByType } from 'utils/common';
 import { toTimezone } from 'utils/dateTimeUtils';
+import Enums from 'utils/EnumsManager';
+import { tryDeleteAttachment, tryDeleteInvoice, tryDeleteTask, tryFetchModuleData } from '../../flow/actions';
 import styles from './index.less';
-import { tryDeleteAttachment, tryDeleteTask, tryFetchModuleData } from '../../flow/actions';
 
 const cx = classNames.bind(styles);
-
 const {
   DefaultPageConfigs,
   DetailModules,
@@ -30,6 +30,7 @@ const {
   Opportunities,
   TaskOpen,
   TaskHistory,
+  Invoice,
 } = DetailModules;
 const { PageSizeSmall } = DefaultPageConfigs;
 
@@ -60,9 +61,13 @@ class Subpanel extends Component {
       code,
       objectId,
       objectType,
-      tryFetchModuleData,
     } = this.props;
-    tryFetchModuleData(code, objectType, objectId, { per_page: PageSizeSmall });
+    this.props.tryFetchModuleData(
+      code,
+      objectType,
+      objectId,
+      { per_page: PageSizeSmall },
+    );
   }
 
   getActionBtnByModule = () => {
@@ -86,6 +91,9 @@ class Subpanel extends Component {
       case Attachments:
         link = `/${objectType}/${objectId}/attachments/${PhantomId}`;
         break;
+      case Invoice:
+        link = `/${objectType}/${objectId}/invoice/${PhantomId}`;
+        break;
       case TaskHistory:
       case Logs:
       default:
@@ -107,14 +115,17 @@ class Subpanel extends Component {
       objectType,
       tryDeleteTask,
       tryDeleteAttachment,
+      tryDeleteInvoice,
     } = this.props;
     switch (code) {
       case TaskOpen:
         return tryDeleteTask(code, id, objectType, objectId);
       case Attachments:
         return tryDeleteAttachment(code, id, objectType, objectId);
+      case Invoice:
+        return tryDeleteInvoice(code, id, objectType, objectId);
       default:
-        console.log('no such code has been found.');
+        return console.warn('Current code has no delete handler!');
     }
   }
 
@@ -298,11 +309,50 @@ class Subpanel extends Component {
           },
         ];
         break;
+      case Invoice:
+        editLink = `${objectType}/${objectId}/invoice`;
+        columns = [
+          {
+            dataIndex: 'invoice_no',
+            title: formatMessage({ id: `${i18n}.invoiceNo` }),
+          },
+          {
+            key: 'related_to',
+            title: formatMessage({ id: `${i18n}.relatedTo` }),
+            render: (text, record) => (
+              <Link
+                className={`${getThemeByType(record.invoice_able_type)}-theme-text`}
+                to={`/${record.invoice_able_type}/${record.invoice_able_id}`}
+              >
+                {record.invoice_able.name}
+              </Link>
+            ),
+          },
+          {
+            dataIndex: 'status',
+            title: formatMessage({ id: `${i18n}.status` }),
+          },
+          {
+            dataIndex: 'due_date',
+            title: formatMessage({ id: `${i18n}.dueOn` }),
+            render: text => toTimezone(text, false),
+          },
+          {
+            dataIndex: 'last_modified_by_user',
+            title: formatMessage({ id: `${i18n}.modifiedBy` }),
+          },
+          {
+            dataIndex: 'updated_at',
+            title: formatMessage({ id: `${i18n}.lastModifiedAt` }),
+            render: text => toTimezone(text, false),
+          },
+        ];
+        break;
       default:
         console.log('The module is not found.');
     }
     // TODO: need to add checking about permissions of edit and delete to decide whether shows 'Action' column
-    if (code === TaskOpen || code === Opportunities) {
+    if (code === TaskOpen || code === Opportunities || code === Invoice) {
       columns.unshift({
         key: 'actions',
         className: cx('firstCol'),
@@ -402,6 +452,8 @@ class Subpanel extends Component {
 }
 
 
+Subpanel.defaultProps = defaultProps;
+Subpanel.propTypes = propTypes;
 const mapStateToProps = ({ global, clientDetails }) => ({
   language: global.language,
   categories: global.settings.categories,
@@ -413,5 +465,6 @@ const mapDispatchToProps = {
   tryDeleteAttachment,
   tryDeleteTask,
   tryFetchModuleData,
+  tryDeleteInvoice,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Subpanel));
