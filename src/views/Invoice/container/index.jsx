@@ -58,16 +58,19 @@ class Invoice extends Component {
     // NOTES: The following listener is helping us to manage interaction with ItemsList component.
     //        Deactivate all editable fields in ItemsList when no more focus away from the current row.
     this.panel.addEventListener('focus', this.handlePageFocus, true);
+    // NOTES: deactivate row if user click on other area, in order to complement cases that the above handler can't do
+    this.panel.addEventListener('click', this.handlePageClick, true);
   }
 
   componentWillUnmount() {
     // Unregister focus handler
     this.panel.removeEventListener('focus', this.handlePageFocus, true);
+    this.panel.removeEventListener('click', this.handlePageClick, true);
     // Reset
     this.props.reset();
   }
 
-  getRowElement = (e) => {
+  getRowElement = (e) => {    
     let element = e.target.parentNode ? e.target.parentNode.parentNode : null;
     if (element.classList.contains('ant-input-number')) {
       element = element.parentNode ? element.parentNode.parentNode : null;
@@ -93,6 +96,26 @@ class Invoice extends Component {
       //       Another click handler needs to be added in order to handle such scenarios.
       this.props.deactivateRow(focusingItem.id);
     }
+  }
+
+  isClsInScope = (node, cls) => {
+    if (node.classList.contains(cls)) return true;
+    if (node.classList.contains('itemsList')) return false;
+    if (node.classList.contains('panel-content')) return false;
+    // Recursion
+    if (node.parentNode) return this.isClsInScope(node.parentNode, cls);
+  }
+
+  isClickInTarget = (event, target) => {
+    // consider performance, we end exist recursion when 'panel' is found
+    // recusively find if parent or itself has targetselector
+    return this.isClsInScope(event.target, target.selector);
+  }
+  // Reset row status if click outside itemsTable
+  handlePageClick = (e) => {
+    if (this.isClickInTarget(e, { selector: 'itemsList', type: 'class' })) return;
+    const { items, deactivateRow } = this.props;
+    items.filter(item => item.isEditingAll).forEach(item => deactivateRow(item.id));
   }
 
   render() {
