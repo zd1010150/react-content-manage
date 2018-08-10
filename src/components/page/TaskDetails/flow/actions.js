@@ -10,6 +10,7 @@ import {
   REMOVE_MY_SUBJECT,
   SET_TASK_SUCCESS,
   RESET_TASK,
+  RESET_NEW_TASK,
   SET_DEFAULT_STATE,
 } from './actionTypes';
 
@@ -101,13 +102,16 @@ export const setSuccess = () => ({
   type: SET_TASK_SUCCESS,
 });
 
+export const resetNewTask = () => ({
+  type: RESET_NEW_TASK,
+})
+
 //
 export const trySaveNewTask = (taskId, taskData, saveAndAddNew) => dispatch =>
   post('/admin/tasks/', { ...taskData }, dispatch).then((data) => {
     if (data && !_.isEmpty(data.data)) {
       if (saveAndAddNew) {
-        // TODO: add save and add new process
-        // dispatch(resetNewTask());
+        dispatch(resetNewTask());
       } else {
         dispatch(setSuccess());
       }
@@ -120,8 +124,7 @@ export const tryUpdateTask = (taskId, taskData, saveAndAddNew) => dispatch =>
   patch(`/admin/tasks/${taskId}`, { ...taskData }, dispatch).then((data) => {
     if (data && !_.isEmpty(data.data)) {
       if (saveAndAddNew) {
-        // TODO: add save and add new process
-        // dispatch(resetNewTask());
+        dispatch(resetNewTask());
       } else {
         dispatch(setSuccess());
       }

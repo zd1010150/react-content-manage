@@ -1,5 +1,5 @@
 import { toTimezone } from 'utils/dateTimeUtils';
-import { ADD_NEW_SUBJECT, REMOVE_MY_SUBJECT, RESET_TASK, SET_TASK_ASSIGNEE, SET_TASK_ASSIGNEES, SET_TASK_FIELD, SET_TASK_FIELDS, SET_TASK_RECENT_ASSIGNEES, SET_TASK_SUBJECTS, SET_TASK_SUCCESS } from './actionTypes';
+import { ADD_NEW_SUBJECT, REMOVE_MY_SUBJECT, RESET_TASK, SET_TASK_ASSIGNEE, SET_TASK_ASSIGNEES, SET_TASK_FIELD, SET_TASK_FIELDS, SET_TASK_RECENT_ASSIGNEES, SET_TASK_SUBJECTS, SET_TASK_SUCCESS, RESET_NEW_TASK } from './actionTypes';
 
 const initialState = {
   globalSubjects: [],
@@ -15,6 +15,7 @@ const initialState = {
   statusCode: 0,
   subject: '',
   synced: false,
+  resetTask: false,
 };
 
 const mapResponseToStore = ({
@@ -123,6 +124,12 @@ const taskDetails = (state = initialState, action) => {
         ...state,
         synced: true,
       };
+     
+    case RESET_NEW_TASK: 
+      return {
+        ...state,
+        resetTask: true,
+      };
 
 
     case RESET_TASK:
@@ -131,6 +138,7 @@ const taskDetails = (state = initialState, action) => {
         globalSubjects: state.globalSubjects,
         mySubjects: state.mySubjects,
         assignees: state.assignees,
+        recentAssignees: state.recentAssignees,
       };
 
 

@@ -45,9 +45,14 @@ class TaskDetails extends Component {
       objectId,
       objectType,
       synced,
+      resetTask,
     } = this.props;
     if (synced) {
       history.push(`/${objectType}/${objectId}`);
+    }
+    if (resetTask) {
+      this.props.reset();
+      history.push(`/${objectType}/${objectId}/tasks/${PhantomId}`);
     }
   }
 
@@ -178,6 +183,7 @@ const mapStateToProps = ({ global, taskDetails }) => ({
   language: global.language,
   taskDetails,
   synced: taskDetails.synced,
+  resetTask: taskDetails.resetTask,
 });
 const mapDispatchToProps = {
   reset,
