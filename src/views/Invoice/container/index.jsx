@@ -100,7 +100,6 @@ class Invoice extends Component {
 
   isClsInScope = (node, cls) => {
     if (node.classList.contains(cls)) return true;
-    if (node.classList.contains('itemsList')) return false;
     if (node.classList.contains('panel-content')) return false;
     // Recursion
     if (node.parentNode) return this.isClsInScope(node.parentNode, cls);
