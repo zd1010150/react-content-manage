@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { getThemeByType } from 'utils/common';
 import Enums from 'utils/EnumsManager';
 import { Actions, BillingInfo, CompanyInfo, InvoiceInfo, ItemDetails } from '../components/index';
-import { tryFetchInvoiceDefaults, tryFetchInvoiceDetails, reset } from '../flow/actions';
+import { reset, tryFetchInvoiceDefaults, tryFetchInvoiceDetails } from '../flow/actions';
 import { deactivateRow } from '../flow/itemsList/actions';
 
 const { PhantomId } = Enums;

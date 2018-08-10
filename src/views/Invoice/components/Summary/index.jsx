@@ -147,7 +147,6 @@ class Summary extends Component {
         this[Subtotal] = total;
         break;
       case Tax:
-        // TODO: confirm if tax calculation should based on items' total or calculated subtotal
         total = this.getTax(record.addition, record.operator, this[Subtotal]);
         this[Tax] = total;
         break;
@@ -157,24 +156,12 @@ class Summary extends Component {
       default:
         break;
     }
-    return total;
+    return total.toFixed(2);
   }
-  handleAdditionDbClick = (rowKey) => {
-    console.log(`Row focus -> ${rowKey}`);
-    this.props.activatedRowByKey(rowKey);
-  }
-  handleAdditionBlur = (rowKey) => {
-    console.log(`Row blur -> ${rowKey}`);
-    this.props.deactivatedRowByKey(rowKey);
-  }
-  handleAdditionChange = (rowKey, newValue) => {
-    console.log(`Row add change -> ${rowKey} - ${newValue}`);
-    this.props.setRowValueByKey(rowKey, 'addition', newValue);
-  }
-  handleOperatorChange = (rowKey, newValue) => {
-    console.log(`Row op change -> ${rowKey} - ${newValue}`);
-    this.props.setRowValueByKey(rowKey, 'operator', newValue);
-  }
+  handleAdditionDbClick = rowKey => this.props.activatedRowByKey(rowKey)
+  handleAdditionBlur = rowKey => this.props.deactivatedRowByKey(rowKey)
+  handleAdditionChange = (rowKey, newValue) => this.props.setRowValueByKey(rowKey, 'addition', newValue)
+  handleOperatorChange = (rowKey, newValue) => this.props.setRowValueByKey(rowKey, 'operator', newValue)
   renderColumns = () => ColumnsInArray.map(col => this.getColumnConfig(col), this)
 
   render() {

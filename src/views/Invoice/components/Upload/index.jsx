@@ -7,25 +7,21 @@ import React, { Component, Fragment } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { addAttachment, tryDeleteFile } from '../../flow/upload/actions';
+import { addAttachment, removeAttachment } from '../../flow/upload/actions';
 
 
 const defaultProps = {
   addAttachment: null,
-  tryDeleteFile: null,
+  removeAttachment: null,
 };
 const propTypes = {
   intl: intlShape.isRequired,
   addAttachment: PropTypes.func,
-  tryDeleteFile: PropTypes.func,
+  removeAttachment: PropTypes.func,
 };
 
 
 class Upload extends Component {
-  componentDidMount() {
-    // TODO: fetch exist attachment if in edit
-  }
-
   handleFileUpload = (data) => {
     const { addAttachment } = this.props;
 
@@ -58,7 +54,7 @@ class Upload extends Component {
       }));
   }
 
-  handleRemove = file => this.props.tryDeleteFile(file.uid)
+  handleRemove = file => this.props.removeAttachment(file.uid)
 
   render() {
     const { intl, attachments, match } = this.props;
@@ -105,7 +101,7 @@ const mapStateToProps = ({ global, invoice }) => ({
 });
 const mapDispatchToProps = {
   addAttachment,
-  tryDeleteFile,
+  removeAttachment,
 };
 export default connect(
   mapStateToProps,
