@@ -86,8 +86,6 @@ class Invoice extends Component {
   }
 
   handlePageFocus = (e) => {
-    // console.log('<----- focusing on invoice page ----->');
-    // console.log(e.target);
     const row = this.getRowElement(e);
     const { items } = this.props;
     const focusingItem = items.find(item => item.isEditingAll);
@@ -98,18 +96,15 @@ class Invoice extends Component {
     }
   }
 
+  // consider performance, we end exist recursion when 'panel' is found
   isClsInScope = (node, cls) => {
     if (node.classList.contains(cls)) return true;
     if (node.classList.contains('panel-content')) return false;
     // Recursion
     if (node.parentNode) return this.isClsInScope(node.parentNode, cls);
   }
-
-  isClickInTarget = (event, target) => {
-    // consider performance, we end exist recursion when 'panel' is found
-    // recusively find if parent or itself has targetselector
-    return this.isClsInScope(event.target, target.selector);
-  }
+  // recusively find if parent or itself has target
+  isClickInTarget = (event, target) => this.isClsInScope(event.target, target.selector)
   // Reset row status if click outside itemsTable
   handlePageClick = (e) => {
     if (this.isClickInTarget(e, { selector: 'itemsList', type: 'class' })) return;

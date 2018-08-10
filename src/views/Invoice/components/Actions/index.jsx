@@ -33,7 +33,6 @@ class Actions extends Component {
   handleSave = () => {
     if (this.isAnyFieldInvalid()) return;
     const payload = this.toApi();
-    console.table(payload);
     const { invoiceId } = this.props.match.params;
     if (invoiceId === PhantomId) {
       this.props.trySaveNewInvoice(payload, this.handleCancel);
@@ -103,7 +102,6 @@ class Actions extends Component {
   }
 
   render() {
-    console.log('render actions');
     const { formatMessage } = this.props.intl;
     const i18n = 'global.ui.button';
 

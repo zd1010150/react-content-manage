@@ -18,8 +18,6 @@ const initialState = [
 const summary = (state = initialState, action) => {
   switch (action.type) {
     case SET_SUMMARY:
-      console.log('-------------===============SUMMARY=============-------------');
-      console.table(state);
       const subTotal = action.payload.data.find(r => r.description === Subtotal);
       if (subTotal) {
         state[0].setData(subTotal);

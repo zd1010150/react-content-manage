@@ -1,11 +1,9 @@
+import { Button, Icon } from 'antd';
 import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import { Button, Icon, Table } from 'antd';
 import { addNewItem } from '../../flow/itemsList/actions';
 import ItemsTable from './ItemsTable';
-// import { withEdit } from 'components/hoc/index';
 
 const defaultProps = {};
 const propTypes = {
@@ -13,10 +11,7 @@ const propTypes = {
 };
 
 class ItemsList extends Component {
-  onAddNewClick = () => {
-    console.log(`Add New ---><---`);
-    this.props.addNewItem();
-  }
+  onAddNewClick = () => this.props.addNewItem()
 
   render() {
     const { intl } = this.props;

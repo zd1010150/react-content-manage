@@ -1,10 +1,10 @@
 import { Icon, Table, Tooltip } from 'antd';
+import { StyledAdditionSelector } from 'components/ui/index';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
-import { StyledAdditionSelector } from 'components/ui/index';
 import { activatedRowByKey, deactivatedRowByKey, setRowValueByKey } from '../../flow/summary/actions';
 
 const {
@@ -107,7 +107,6 @@ class Summary extends Component {
   getSubtotal = (val, operator, data) => {
     const prices = data.map(item => item.quantity * item.unitPrice);
     const total = prices.reduce((accumulator, currentVal) => accumulator + currentVal, 0);
-    console.log(`===SUBTOTALBEFORE===${total}`);
     const addition = Number(val);
     switch (operator) {
       case 'add':
