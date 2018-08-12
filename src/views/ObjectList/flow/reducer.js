@@ -4,7 +4,11 @@ import { SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS, SET_ACTIVE_VIEW } 
 const { PhantomId } = Enums;
 
 const initialState = {
-  activeViewId: PhantomId,
+  activeViewId: {
+    leads: PhantomId,
+    accounts: PhantomId,
+    opportunities: PhantomId,
+  },
   columns: [],
   data: [],
   meta: {},
@@ -57,16 +61,18 @@ const objectList = (state = initialState, action) => {
       };
       return {
         ...state,
-        activeViewId: PhantomId,
         views: [viewAll, ...views],
       };
 
 
     case SET_ACTIVE_VIEW:
-      const { activeViewId } = action.payload;
+      const { viewId, objectType } = action.payload;
       return {
         ...state,
-        activeViewId,
+        activeViewId: {
+          ...state.activeViewId,
+          [objectType]: viewId,
+        },
       };
 
 

@@ -7,8 +7,10 @@ import { withRouter, Link } from 'react-router-dom';
 import { PopDeleteConfirm } from 'components/ui/index';
 import Enums from 'utils/EnumsManager';
 import { trySave, trySaveNew, tryDeleteView } from './flow/actions';
+import { setActiveView, tryFetchDataByView } from 'views/ObjectList/flow/actions';
 
-const { PhantomId } = Enums;
+const { PhantomId, DefaultPageConfigs } = Enums;
+const { PageSize } = DefaultPageConfigs;
 
 
 const defaultProps = {
@@ -30,6 +32,7 @@ const propTypes = {
   trySaveNew: PropTypes.func,
   tryDeleteView: PropTypes.func,
 };
+
 
 class ViewActions extends Component {
   componentDidUpdate() {
@@ -97,6 +100,21 @@ class ViewActions extends Component {
 
   isMissingFieldOrConditionValue = data => data.every(record => (record.conditionId === PhantomId || record.fieldId === PhantomId))
 
+  handleViewChange = (id, objectType) => {
+    const { setActiveView, tryFetchDataByView } = this.props;
+    setActiveView(id, objectType);
+    tryFetchDataByView(
+      objectType,
+      id,
+      { page: 1, per_page: PageSize },
+    );
+  }
+
+  getViewID = (id) => {
+    const { objectType } = this.props;
+    this.handleViewChange(id, objectType);
+  }
+
   handleSaveClick = () => {
     const {
       model,
@@ -109,10 +127,18 @@ class ViewActions extends Component {
     if (!isAllSectionsValid) return;
 
     const funcKey = viewId === PhantomId ? 'trySaveNew' : 'trySave';
-    this.props[funcKey](model[objectType], objectView, viewId);
+    this.props[funcKey](model[objectType], objectView, viewId, this.getViewID);
   }
 
-  handleDeleteClick = () => this.props.tryDeleteView(this.props.viewId)
+  handleDeleteClick = () => {
+    const {
+      tryDeleteView,
+      viewId,
+      objectType
+    } = this.props;
+    tryDeleteView(viewId);
+    this.handleViewChange(PhantomId, objectType);
+  }
 
   render() {
     const {
@@ -162,6 +188,8 @@ const mapDispatchToProps = {
   tryDeleteView,
   trySave,
   trySaveNew,
+  setActiveView,
+  tryFetchDataByView,
 };
 export default connect(
   mapStateToProps,
