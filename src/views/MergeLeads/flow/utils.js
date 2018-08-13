@@ -1,22 +1,25 @@
 import { toUtc } from 'utils/dateTimeUtils';
+import _ from 'lodash';
 import Enums from 'utils/EnumsManager';
 
 const { FieldTypes, MasterKey } = Enums;
 const { DateOnly, DateTime, Lookup } = FieldTypes;
-const toApi = (data, keys) => {
-  const dataCopy = _.cloneDeep(data);
+const toApi = (mergedData, keys, sourceData) => {
+  const dataCopy = _.cloneDeep(mergedData);
   // First, need to remove master record id, due to request format, see more on our POSTMAN doc
   delete dataCopy[MasterKey];
   // Second, convert all data to utc format
+
   keys.forEach((key) => {
-    if (key.type === DateOnly || key.type === DateTime) {
-      if (dataCopy[key.key] !== undefined) {
-        const value = dataCopy[key.key];
-        dataCopy[key.key] = toUtc(value, key.type === DateTime);
+    for (let i = 0; i < sourceData.length; i++) {
+      if (_.isObject(sourceData[i][key.key]) && dataCopy[key.key] === sourceData[i][key.key].id) {
+        dataCopy[key.key] = sourceData[i].id;
+      }
+      if (!_.isObject(sourceData[i][key.key]) && dataCopy[key.key] === sourceData[i][key.key]) {
+        dataCopy[key.key] = sourceData[i].id;
       }
     }
   });
-
   return dataCopy;
 };
 

@@ -52,7 +52,7 @@ class Buttons extends Component {
     const masterRecordId = mergedData[MasterKey];
     return tryMergeLeads({
       merged_ids: data.map(record => record.id),
-      lead: toApi(mergedData, keys),
+      lead: toApi(mergedData, keys, data),
       [MasterKey]: masterRecordId,
     });
   }
