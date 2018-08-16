@@ -132,9 +132,9 @@ export const tryFetchViewsByType = objectType => dispatch =>
 
 
 //
-export const setActiveView = activeViewId => ({
+export const setActiveView = (viewId, objectType) => ({
   type: SET_ACTIVE_VIEW,
-  payload: { activeViewId },
+  payload: { viewId, objectType },
 });
 
 export const setPageSize = PageSizeValue => ({

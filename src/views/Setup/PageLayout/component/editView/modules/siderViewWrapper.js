@@ -28,11 +28,20 @@ class moduleSiderViewWrapper extends React.Component {
     const {
       isOver, connectDropTarget, theme,
     } = this.props;
-    return connectDropTarget(<div className={classNames(cx('fields'),'pl-lg', 'pr-lg', 'pt-lg', 'pb-lg', isOver ? `${theme}-sider-view-can-drop` : '')}>
-      {
-            this.props.children
-        }
-                             </div>);
+    return connectDropTarget(
+      <div
+        className={classNames(
+          cx('fields'),
+          'pl-lg',
+          'pr-lg',
+          'pt-lg',
+          'pb-lg',
+          isOver ? `${theme}-sider-view-can-drop` : '',
+        )}
+      >
+        {this.props.children}
+      </div>
+    );
   }
 }
 moduleSiderViewWrapper.propTypes = {
@@ -43,4 +52,8 @@ moduleSiderViewWrapper.propTypes = {
 };
 
 
-export default DropTarget(ItemTypes.MODULE, moduleFieldsTarget, collect)(moduleSiderViewWrapper);
+export default DropTarget(
+  ItemTypes.MODULE,
+  moduleFieldsTarget,
+  collect,
+)(moduleSiderViewWrapper);

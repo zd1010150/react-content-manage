@@ -31,10 +31,7 @@ const { Options, PageSize } = DefaultPageConfigs;
 
 
 const propTypes = {
-  activeViewId: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]).isRequired,
+  activeViewId: PropTypes.object.isRequired,
   columns: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
   meta: PropTypes.object.isRequired,
@@ -48,11 +45,11 @@ const propTypes = {
 
 class TableWrapper extends Component {
   componentDidMount() {
-    const { tryFetchDataByView, objectType, PageSizeValue} = this.props;
+    const { activeViewId, tryFetchDataByView, objectType } = this.props;
     tryFetchDataByView(
       objectType,
-      PhantomId,
-      { page: 1, per_page: PageSizeValue },
+      activeViewId[objectType],
+      { page: 1, per_page: PageSize },
     );
   }
 
@@ -64,7 +61,7 @@ class TableWrapper extends Component {
       tableParams,
       meta,
     } = this.props;
-    tryDeleteClientByType(objectType, id, tableParams, meta, activeViewId);
+    tryDeleteClientByType(objectType, id, tableParams, meta, activeViewId[objectType]);
   }
 
   handleSelectionChange = selectedKeys => this.props.setRowSelection(selectedKeys)
@@ -87,7 +84,7 @@ class TableWrapper extends Component {
     }
     const { activeViewId, objectType, tryFetchDataByView, setPageSize } = this.props;
     setPageSize(paginationParams.per_page);
-    return tryFetchDataByView(objectType, activeViewId, { ...paginationParams, ...sorterParams });
+    return tryFetchDataByView(objectType, activeViewId[objectType], { ...paginationParams, ...sorterParams });
   }
 
   parsePagination = (meta) => {
@@ -127,10 +124,10 @@ class TableWrapper extends Component {
         extraConfigs.render = text => toTimezone(text, type === DateTime);
         break;
       case Lookup:
-        if(column.field_name === 'target_account_id') {
+        if (column.field_name === 'target_account_id') {
           extraConfigs.render = (lookup, record) => (
             <Link
-              className={`account-theme-text`}
+              className="account-theme-text"
               to={`accounts/${record.target_account_id.id}`}
             >
               {lookup}

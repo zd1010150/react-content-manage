@@ -32,6 +32,7 @@ import {
   ClientDetails,
   Exceptions,
   Conversion,
+  Invoice,
 } from 'views/index';
 
 const { NotFound } = Exceptions;
@@ -43,10 +44,21 @@ const { Leads, Accounts, Opportunities } = ObjectTypes;
 class MainContent extends React.Component {
   componentDidMount() {
     const { history, location } = this.props;
-    if (location.pathname === "/") {
-      history.push("/dashboard");
+    if (location.pathname === '/') {
+      history.push('/dashboard');
     }
   }
+
+  // componentDidUpdate() {
+  //   // TESTING
+  //   // TODO: config to easy dev for specific page
+  //   // debugger;
+  //   console.log(process.env);
+  //   const { history, location } = this.props;
+  //   if (location.pathname !== '/accounts/169/invoice/1') {
+  //     history.push("/accounts/169/invoice/1");
+  //   }    
+  // }
   render() {
     return (
       <Switch>
@@ -145,6 +157,11 @@ class MainContent extends React.Component {
             // TOOD: return 404 page
             return null;
           }}
+        />
+        <Route
+          path="/:objectType/:objectId/invoice/:invoiceId"
+          component={Invoice}
+          exact
         />
         <Route
           path="/:objectType/:objectId/attachments/:attachmentId"
