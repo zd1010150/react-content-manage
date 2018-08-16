@@ -4,6 +4,7 @@ const {
   DetailTools,
   DetailModules,
   DateTimeConfigs,
+  InvoicePage,
 } = Enums;
 
 const {
@@ -20,6 +21,7 @@ const {
   EmailSent,
   Attachments,
   Logs,
+  Invoice,
 } = DetailModules;
 
 const {
@@ -47,6 +49,12 @@ const {
   Next,
   Last,
 } = PeriodPrefixs;
+
+const {
+  SDescription,
+  SAddition,
+  STotal,
+} = InvoicePage.Summary.Columns;
 
 export default {
   zh: {
@@ -98,6 +106,7 @@ export default {
       done: '完成',
       add: '添加',
       close: '关闭',
+      [Invoice]: '发票',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -144,6 +153,21 @@ export default {
       name: '用户名',
       opportName: 'Opportunity姓名',
       comment: '备注',
+      invoiceNo: '发票号',
+      invoiceDate: '发票时间',
+      invoiceDescription: '发票描述',
+      relatedTo: '相关者',
+      modifiedBy: '修改人',
+      code: '货物编号',
+      quantity: '数量',
+      unitPrice: '单价',
+      total: '总价',
+      description: '描述',
+      addition: '附加费用',
+      [SDescription]: '描述',
+      [SAddition]: '附加费用',
+      [STotal]: '总价',
+      descriptionOfInvoice: '发票备注',
     },
     select: {
       label: '视图',
@@ -184,6 +208,7 @@ export default {
       [EmailSent]: '已发送的邮件',
       [Attachments]: '附件',
       [Logs]: '日志',
+      [Invoice]: '发票',
     },
     upload: {
       maxSize: '文件最大是{size}M',
@@ -259,6 +284,7 @@ export default {
       done: 'Done',
       add: 'Add',
       close: 'Close',
+      [Invoice]: 'Invoice',
     },
     input: {
       searchStore: 'Search entire store here...',
@@ -305,6 +331,21 @@ export default {
       name: 'Name',
       opportName: 'Opportunity Name',
       comment: 'Comment',
+      invoiceNo: 'Invoice Number',
+      invoiceDate: 'Invoice Date',
+      invoiceDescription: 'Description of Invoice',
+      relatedTo: 'Related To',
+      modifiedBy: 'Modified By',
+      code: 'Item Code',
+      quantity: 'Quantity',
+      unitPrice: 'Unit Price',
+      total: 'Total',
+      description: 'Description',
+      addition: 'Addition',
+      [SDescription]: 'Description',
+      [SAddition]: 'Addtion',
+      [STotal]: 'Total',
+      descriptionOfInvoice: 'Description of Invoice',
     },
     select: {
       label: 'View',
@@ -345,6 +386,7 @@ export default {
       [EmailSent]: 'Email Sent',
       [Attachments]: 'Attachments',
       [Logs]: 'Logs',
+      [Invoice]: 'Invoice',
     },
     upload: {
       maxSize: 'Maximum file size is {size}M',

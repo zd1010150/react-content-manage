@@ -39,13 +39,14 @@ class Topbar extends Component {
     tryFetchViewsByType(objectType);
   }
 
+
   handleViewChange = (value) => {
     const {
       objectType,
       setActiveView,
       tryFetchDataByView,
     } = this.props;
-    setActiveView(value);
+    setActiveView(value, objectType);
     // change view will reset table params
     tryFetchDataByView(
       objectType,
@@ -72,13 +73,13 @@ class Topbar extends Component {
             labelText={formatMessage({ id: `${i18n}.select.label` })}
             options={views}
             onChange={this.handleViewChange}
-            value={activeViewId}
+            value={activeViewId[objectType]}
           />
         </Col>
         <Col sm={12} style={{ textAlign: 'right' }}>
           <Permission permission={PERMISSIONS[`${objectType.toUpperCase()}_EDITVIEWLIST`]}>
-            <Link to={`/${objectType}/views/${activeViewId}`}>
-              <Button className="mr-sm" size="small" disabled={activeViewId === PhantomId} >
+            <Link to={`/${objectType}/views/${activeViewId[objectType]}`}>
+              <Button className="mr-sm" size="small" disabled={activeViewId[objectType] === PhantomId} >
                 <Icon className="font-sm" type="edit" size="small" />
                 {formatMessage({ id: `${i18n}.button.edit` })}
                 {formatMessage({ id: 'global.properNouns.view' })}
