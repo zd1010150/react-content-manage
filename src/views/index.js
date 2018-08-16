@@ -30,9 +30,10 @@ import Task from './Task/index';
 import Exceptions from './Exceptions/index';
 import Conversion from './Conversion/index';
 import Invoice from './Invoice/index';
-
+import Attachment from './Attachment/index';
 
 export {
+  Attachment,
   Dashboard,
   LoginForm,
   UIDemo,
