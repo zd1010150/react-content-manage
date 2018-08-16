@@ -98,22 +98,20 @@ export const setFieldValue = (field, value) => ({
 });
 
 //
-export const setSuccess = () => ({
+export const setSuccess = args => ({
   type: SET_TASK_SUCCESS,
+  payload: args,
 });
 
-export const resetNewTask = () => ({
-  type: RESET_NEW_TASK,
-})
 
 //
 export const trySaveNewTask = (taskId, taskData, saveAndAddNew) => dispatch =>
   post('/admin/tasks/', { ...taskData }, dispatch).then((data) => {
     if (data && !_.isEmpty(data.data)) {
       if (saveAndAddNew) {
-        dispatch(resetNewTask());
+        dispatch(setSuccess({ synced: 'saveAndNew' }));
       } else {
-        dispatch(setSuccess());
+        dispatch(setSuccess({ synced: 'save' }));
       }
     }
   });
@@ -124,9 +122,9 @@ export const tryUpdateTask = (taskId, taskData, saveAndAddNew) => dispatch =>
   patch(`/admin/tasks/${taskId}`, { ...taskData }, dispatch).then((data) => {
     if (data && !_.isEmpty(data.data)) {
       if (saveAndAddNew) {
-        dispatch(resetNewTask());
+        dispatch(setSuccess({ synced: 'saveAndNew' }));
       } else {
-        dispatch(setSuccess());
+        dispatch(setSuccess({ synced: 'save' }));
       }
     }
   });

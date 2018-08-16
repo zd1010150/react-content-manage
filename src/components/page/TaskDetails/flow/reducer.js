@@ -14,7 +14,7 @@ const initialState = {
   // default status is 'Not Started'
   statusCode: 0,
   subject: '',
-  synced: false,
+  synced: '',
   resetTask: false,
 };
 
@@ -120,17 +120,11 @@ const taskDetails = (state = initialState, action) => {
 
 
     case SET_TASK_SUCCESS:
+      const { synced } = action.payload;
       return {
         ...state,
-        synced: true,
+        synced,
       };
-     
-    case RESET_NEW_TASK: 
-      return {
-        ...state,
-        resetTask: true,
-      };
-
 
     case RESET_TASK:
       return {

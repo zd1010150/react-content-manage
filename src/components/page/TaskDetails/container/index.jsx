@@ -47,10 +47,10 @@ class TaskDetails extends Component {
       synced,
       resetTask,
     } = this.props;
-    if (synced) {
+    if (synced === 'save' || synced === 'cancel') {
       history.push(`/${objectType}/${objectId}`);
     }
-    if (resetTask) {
+    if (synced === 'saveAndNew') {
       this.props.reset();
       history.push(`/${objectType}/${objectId}/tasks/${PhantomId}`);
     }
@@ -60,7 +60,7 @@ class TaskDetails extends Component {
     this.props.reset();
   }
 
-  handleCancel = () => this.props.setSuccess()
+  handleCancel = () => this.props.setSuccess({ synced: 'cancel' })
 
   handleSave = (saveAndAddNew) => {
     const {
