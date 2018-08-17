@@ -1,35 +1,59 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { Row, Icon, Button } from 'antd';
-import { connect } from 'react-redux';
+import { Button, Icon } from 'antd';
 import { getTheme } from 'components/hoc/index';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
+import { connect } from 'react-redux';
+import { tryUpdateAttachmentInfo } from '../flow/actions';
 
+
+const propTypes = {
+  intl: intlShape.isRequired,
+  // TODO: lifted prop check for substore
+  attachment: PropTypes.object.isRequired,
+};
 
 class Actions extends PureComponent {
-  componentDidMount() {}
-
-  onSaveClick = () => {}
-  onCancelClick = () => {}
+  onSaveClick = () => {
+    const { attachment } = this.props;
+    const { id, category, comment } = attachment;
+    this.props.tryUpdateAttachmentInfo(id, category, comment);
+  }
+  // NOTES: history prop has been introduced when we use getTheme() HOC, so here we skip the wrapper of 'withRouter'
+  onCancelClick = () => this.props.history.goBack()
 
   render() {
-    const { theme } = this.props;
+    const { theme, intl } = this.props;
+    const { formatMessage } = intl;
+    const i18n = 'global.ui.button';
+
     return (
-      <Row>
+      <div>
         <Button
-          size="small"
           className={`${theme}-theme-btn mr-sm`}
           onClick={this.onSaveClick}
         >
           <Icon type="save" className="font-sm icon-thinner" />
-          Save
+          {formatMessage({ id: `${i18n}.save` })}
         </Button>
-        <Button size="small" onClick={this.onCancelClick}>
+        <Button onClick={this.onCancelClick}>
           <Icon type="close" className="font-sm icon-thinner" />
-          Cancel
+          {formatMessage({ id: `${i18n}.cancel` })}
         </Button>
-      </Row>
+      </div>
     );
   }
 }
 
-export default getTheme(Actions);
+Actions.propTypes = propTypes;
+const mapStateToProps = ({ global, attachment }) => ({
+  language: global.language,
+  attachment,
+});
+const mapDispatchToProps = {
+  tryUpdateAttachmentInfo,
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(injectIntl(getTheme(Actions)));
