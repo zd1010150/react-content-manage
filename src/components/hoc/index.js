@@ -1,9 +1,9 @@
 import getTheme from './getTheme';
 import withEdit from './withEdit';
-import isPhantom from './isPhantom';
+import hasPhantomId from './hasPhantomId';
 
 export {
-  isPhantom,
+  hasPhantomId,
   getTheme,
   withEdit,
 };
