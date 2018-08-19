@@ -90,6 +90,7 @@ class ToolContainer extends React.Component {
                         moveFieldsBetweenSection={moveFieldsBetweenSection}
                         deleteFromSection={deleteFromSection}
                         setEditField={setEditField}
+                        fieldEditDialog={fieldEditDialog}
                       />
                     </SectionWrapper>))
             }

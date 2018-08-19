@@ -10,17 +10,32 @@ import {
 
 const { ReadOnly, Required } = Enums.EditViewType;
 const setupLayoutEditField = (fieldEditDialog, payload) => {
-  if ((payload.readOnlyDisable && payload.requiredDisable) || payload.showValue === undefined) {
+  const {
+    readOnlyDisable,
+    requiredDisable,
+    showValue,
+    fieldId,
+  } = payload;
+  // The third condition is about the showValue is seted after the component rendering
+  if ((readOnlyDisable && requiredDisable) || showValue === undefined || (showValue !== undefined && fieldId === undefined)) {
     return {
       ...fieldEditDialog,
       ...payload,
+      showValue: {
+        ...fieldEditDialog.showValue,
+        ...showValue,
+      },
     };
   }
   return {
     ...fieldEditDialog,
     ...payload,
-    readOnlyDisable: payload.showValue.length !== 0 && payload.showValue[0] !== ReadOnly,
-    requiredDisable: payload.showValue.length !== 0 && payload.showValue[0] !== Required,
+    showValue: {
+      ...fieldEditDialog.showValue,
+      ...showValue,
+    },
+    readOnlyDisable: !_.isEmpty(showValue[fieldId]) && payload.showValue[fieldId][0] !== ReadOnly,
+    requiredDisable: !_.isEmpty(showValue[fieldId]) && payload.showValue[fieldId][0] !== Required,
   };
 };
 
@@ -40,7 +55,7 @@ const ui = (state = {
     sectionCode: '',
     requiredDisable: false,
     readOnlyDisable: false,
-    showValue: [],
+    showValue: {},
   },
   fieldCanDrop: true,
   currentTab: OPERATES[1],
