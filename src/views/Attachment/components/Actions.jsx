@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import { tryUpdateAttachmentInfo, setAttachmentInfo } from '../flow/actions';
+import { hideLoading, showLoading } from 'store/loading/loadingAction';
+import { setAttachmentInfo, tryUpdateAttachmentInfo } from '../flow/actions';
 
 
 const propTypes = {
@@ -17,20 +18,28 @@ const propTypes = {
 
 class Actions extends PureComponent {
   onPhantomSave = (payload, callback) => {
+    const me = this;
     fetch(`${baseUrl}/admin/files/asset`, {
       credentials: 'include',
       method: 'POST',
       body: payload,
     }).then((response) => {
       if (response.status >= 400) {
-        throw new Error("Bad response from server");
+        throw new Error('Bad response from server');
       }
       return response.json();
-    }).then((json) => {
-      callback(json.data);
-    }).catch(() => notification.error({
-      message: 'Fail to add attachment.',
-    }));
+    }).then(() => {
+      me.props.hideLoading();
+      notification.success({
+        message: me.props.intl.formatMessage({ id: 'global.info.post' }),
+      });
+      callback();
+    }).catch(() => {
+      me.props.hideLoading();
+      notification.error({
+        message: 'Fail to add attachment.',
+      });
+    });
   }
 
   onSaveClick = () => {
@@ -47,21 +56,15 @@ class Actions extends PureComponent {
         comment,
       };
       Object.keys(data).forEach(key => payload.append(key, data[key]));
-      this.onPhantomSave(payload, this.saveNewCallBack);
+      this.props.showLoading();
+      this.onPhantomSave(payload, this.onCancelClick);
     } else {
       this.props.tryUpdateAttachmentInfo(id, category, comment);
+      this.onCancelClick();
     }
-  }  
+  }
   // NOTES: history prop has been introduced when we use getTheme() HOC, so here we skip the wrapper of 'withRouter'
   onCancelClick = () => this.props.history.goBack()
-
-  saveNewCallBack = (data) => {
-    this.props.history.replace(`/${this.props.objectType}/${this.props.objectId}/attachments/${data.id}`);
-    this.props.setAttachmentInfo({
-      ...data,
-      category: Number(data.category),
-    });
-  }
 
   render() {
     const { theme, intl } = this.props;
@@ -94,6 +97,8 @@ const mapStateToProps = ({ global, attachment }) => ({
 const mapDispatchToProps = {
   tryUpdateAttachmentInfo,
   setAttachmentInfo,
+  showLoading,
+  hideLoading,
 };
 export default connect(
   mapStateToProps,
