@@ -1,10 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import { MainLayout, AuthLayout } from './components/layout/index';
+import { Route, Switch } from 'react-router-dom';
+import { AuthLayout, MainLayout } from './components/layout/index';
 import { PageLoading } from './components/page/index';
+
 
 class App extends React.Component {
   render() {
@@ -20,4 +21,3 @@ class App extends React.Component {
   }
 }
 export default DragDropContext(HTML5Backend)(App);
-

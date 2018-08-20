@@ -17,7 +17,6 @@ import Fields from './Setup/Fields';
 import FindDuplicates from './FindDuplicates/index';
 import Layouts from './Setup/PageLayout';
 import ObjectTask from './ObjectTask/index';
-import ClientAttachments from './ClientAttachments/index';
 import MergeLeads from './MergeLeads/index';
 import MySetting from './MySetting/index';
 import ConvertLeads from './ConvertLeads/index';
@@ -30,9 +29,10 @@ import Task from './Task/index';
 import Exceptions from './Exceptions/index';
 import Conversion from './Conversion/index';
 import Invoice from './Invoice/index';
-
+import Attachment from './Attachment/index';
 
 export {
+  Attachment,
   Dashboard,
   LoginForm,
   UIDemo,
@@ -50,7 +50,6 @@ export {
   FindDuplicates,
   Layouts,
   ObjectTask,
-  ClientAttachments,
   MySetting,
   MergeLeads,
   ConvertLeads,
