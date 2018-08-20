@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import { tryUpdateAttachmentInfo } from '../flow/actions';
+import { tryUpdateAttachmentInfo, setAttachmentInfo } from '../flow/actions';
 
 
 const propTypes = {
@@ -27,7 +27,7 @@ class Actions extends PureComponent {
       }
       return response.json();
     }).then((json) => {
-      callback();
+      callback(json.data);
     }).catch(() => notification.error({
       message: 'Fail to add attachment.',
     }));
@@ -36,7 +36,6 @@ class Actions extends PureComponent {
   onSaveClick = () => {
     const { attachment, isPhantom, objectId, objectType } = this.props;
     const { id, category, comment, file } = attachment;
-    debugger;
     if (isPhantom) {
       // TODO: update global request to fit different request type of request
       const payload = new FormData();
@@ -48,13 +47,21 @@ class Actions extends PureComponent {
         comment,
       };
       Object.keys(data).forEach(key => payload.append(key, data[key]));
-      this.onPhantomSave(payload, this.onCancelClick);
+      this.onPhantomSave(payload, this.saveNewCallBack);
     } else {
       this.props.tryUpdateAttachmentInfo(id, category, comment);
     }
-  }
+  }  
   // NOTES: history prop has been introduced when we use getTheme() HOC, so here we skip the wrapper of 'withRouter'
   onCancelClick = () => this.props.history.goBack()
+
+  saveNewCallBack = (data) => {
+    this.props.history.replace(`/${this.props.objectType}/${this.props.objectId}/attachments/${data.id}`);
+    this.props.setAttachmentInfo({
+      ...data,
+      category: Number(data.category),
+    });
+  }
 
   render() {
     const { theme, intl } = this.props;
@@ -86,6 +93,7 @@ const mapStateToProps = ({ global, attachment }) => ({
 });
 const mapDispatchToProps = {
   tryUpdateAttachmentInfo,
+  setAttachmentInfo,
 };
 export default connect(
   mapStateToProps,

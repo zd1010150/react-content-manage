@@ -1,7 +1,7 @@
 import { get, patch } from 'store/http/httpAction';
 import { SET_ATTACHMENT_INFO, SET_FIELD_VALUE, RESET } from './actionTypes';
 
-const setAttachmentInfo = data => ({
+export const setAttachmentInfo = data => ({
   type: SET_ATTACHMENT_INFO,
   payload: { data },
 });

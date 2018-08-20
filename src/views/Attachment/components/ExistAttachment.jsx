@@ -44,6 +44,7 @@ class ExistAttachment extends Component {
                 style={{
                   fontWeight: 400,
                   fontSize: '16px',
+                  verticalAlign: 'top',
                 }}
                 className="ml-md cursor-pointer"
                 type="eye"
