@@ -7,6 +7,7 @@ export default {
     category: '文件类型',
     comment: '备注',
     preview: '预览',
+    upload: '选择文件',
   },
   en: {
     titles: {
@@ -16,5 +17,6 @@ export default {
     category: 'Type',
     comment: 'Comment',
     preview: 'Preview',
+    upload: 'Select a file',
   },
 };

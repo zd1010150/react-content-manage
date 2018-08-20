@@ -1,5 +1,7 @@
-import { Button, Icon } from 'antd';
-import { getTheme } from 'components/hoc/index';
+import { Button, Icon, notification } from 'antd';
+import { getObjectInfo, getTheme, hasPhantomId } from 'components/hoc/index';
+import { baseUrl } from 'config/env.config';
+import fetch from 'isomorphic-fetch';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
@@ -14,10 +16,42 @@ const propTypes = {
 };
 
 class Actions extends PureComponent {
+  onPhantomSave = (payload, callback) => {
+    fetch(`${baseUrl}/admin/files/asset`, {
+      credentials: 'include',
+      method: 'POST',
+      body: payload,
+    }).then((response) => {
+      if (response.status >= 400) {
+        throw new Error("Bad response from server");
+      }
+      return response.json();
+    }).then((json) => {
+      callback();
+    }).catch(() => notification.error({
+      message: 'Fail to add attachment.',
+    }));
+  }
+
   onSaveClick = () => {
-    const { attachment } = this.props;
-    const { id, category, comment } = attachment;
-    this.props.tryUpdateAttachmentInfo(id, category, comment);
+    const { attachment, isPhantom, objectId, objectType } = this.props;
+    const { id, category, comment, file } = attachment;
+    debugger;
+    if (isPhantom) {
+      // TODO: update global request to fit different request type of request
+      const payload = new FormData();
+      const data = {
+        ownerId: objectId,
+        ownerType: objectType,
+        category,
+        document: file,
+        comment,
+      };
+      Object.keys(data).forEach(key => payload.append(key, data[key]));
+      this.onPhantomSave(payload, this.onCancelClick);
+    } else {
+      this.props.tryUpdateAttachmentInfo(id, category, comment);
+    }
   }
   // NOTES: history prop has been introduced when we use getTheme() HOC, so here we skip the wrapper of 'withRouter'
   onCancelClick = () => this.props.history.goBack()
@@ -56,4 +90,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(injectIntl(getTheme(Actions)));
+)(injectIntl(getObjectInfo(getTheme(hasPhantomId(Actions, 'attachmentId')))));
