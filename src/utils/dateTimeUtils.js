@@ -1,4 +1,5 @@
 import moment from 'moment';
+import momentTz from 'moment-timezone';
 import Enums from './EnumsManager';
 import { getStore } from './localStorage';
 
@@ -13,7 +14,6 @@ const {
 const { Timezone } = LocalStorageKeys;
 
 // All possible utc offset list pls refer to https://en.wikipedia.org/wiki/List_of_UTC_time_offsets
-
 
 export const getTimeSetting = (isTime) => {
   const timezone = getStore(Timezone);
@@ -74,6 +74,31 @@ export const toUtc = (str, isConvertingTime = false) => {
   }
   return moment(str, sourceSettings.format).format(targetFormat);
 };
+
+/**
+ * Format offset to a valid string in '+xx00' or '-xx00'
+ * @param {number} value
+ */
+export const stringifyOffset = (value) => {
+  if (!_.isNumber(value) || value < -11 || value > 14) {
+    console.warn('The offset has invalid type or value!');
+    return '+0000';
+  }
+  const sign = value < 0 ? '-' : '+';
+  const absValue = Math.abs(value);
+  const offset = absValue < 10 ? `0${absValue}00` : `${absValue}00`;
+  return `${sign}${offset}`;
+};
+
+export const getOffsetByTimeZone = (timezone) => {
+  const a = momentTz.tz(timezone).utcOffset() / 60;
+  console.log(`tz is ${a}`);
+  return console.log(stringifyOffset(a));
+};
+
+getOffsetByTimeZone('America/New_York');
+getOffsetByTimeZone('Australia/Sydney');
+getOffsetByTimeZone('Australia/Sydn');
 
 // !!!deprecated, please use toUtc or toTimezone to convert date/datetime
 export const moments = (() => {
