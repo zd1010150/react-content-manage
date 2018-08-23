@@ -75,36 +75,27 @@ export const toUtc = (str, isConvertingTime = false) => {
   return moment(str, sourceSettings.format).format(targetFormat);
 };
 
+const concatBits = (value) => {
+  const absValue = Math.abs(value);
+  return absValue < 10 ? `0${absValue}` : `${absValue}`;
+};
 /**
  * Format offset to a valid string in '+xx00' or '-xx00'
  * @param {number} value
  */
-export const stringifyOffset = (value) => {
+export const stringifyOffset = (value, extra) => {
   if (!_.isNumber(value) || value < -11 || value > 14) {
     console.warn('The offset has invalid type or value!');
     return '+0000';
   }
   const sign = value < 0 ? '-' : '+';
-  const absValue = Math.abs(value);
-  const offset = absValue < 10 ? `0${absValue}00` : `${absValue}00`;
-  return `${sign}${offset}`;
+  return `${sign}${concatBits(value)}${concatBits(extra)}`;
 };
 
 export const getOffsetByTimeZone = (timezone) => {
   const offset = momentTz.tz(timezone).utcOffset() / 60;
-  console.log(stringifyOffset(offset));
-  return stringifyOffset(offset);
-};
-
-export const setOffsetToLocalStorage = (timezone) => {
-  const companyTimezone = getStore(Timezone);
-  const parsedTimezone = JSON.parse(companyTimezone);
-  const newTimezone = {
-    ...parsedTimezone,
-    offset: getOffsetByTimeZone(timezone),
-  };
-  console.table(newTimezone);
-  // set again
+  const extra = momentTz.tz(timezone).utcOffset() % 60;
+  return stringifyOffset(parseInt(offset, 10), extra);
 };
 
 // !!!deprecated, please use toUtc or toTimezone to convert date/datetime

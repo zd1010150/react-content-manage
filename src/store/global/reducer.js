@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import { combineReducers } from 'redux';
 import { flattenTree } from 'utils/common';
-import { moments, years } from 'utils/dateTimeUtils';
+import { moments, years, getOffsetByTimeZone } from 'utils/dateTimeUtils';
 import { navLanguage } from 'utils/navigationUtil';
 import Enums from 'utils/EnumsManager';
 import { getStore, setStore } from 'utils/localStorage';
@@ -130,6 +130,9 @@ const settings = (state = {
 }, action) => {
   switch (action.type) {
     case SET_GLOBAL_SETTING:
+      action.settings.timezones.forEach((tz) => {
+        tz.display_value = `(GMT${getOffsetByTimeZone(tz.id)}) ${tz.display_value}`;
+      });
       setTimezoneInStorage(action.settings.timezones, action.settings.countries);
       return mapSettingData(state, action.settings);
 
@@ -172,7 +175,7 @@ const appRoutHash = (state = Math.random(), action) => {
 };
 
 const getTimeZone = (state, globalSetting, loginUser) => {
-  const { countries, timeZones } = globalSetting;
+  const { countries } = globalSetting;
   const { country_code, time_zone } = loginUser.company;
   let newDateFormat = {};
   let newOffset = {};
@@ -184,13 +187,11 @@ const getTimeZone = (state, globalSetting, loginUser) => {
   };
   newDateFormat = Object.assign({}, newDateFormat, { timeFormat: `${newDateFormat.dateFormat} HH:mm:ss` });
 
-  const timeZoneArr = timeZones.filter(t => t.id === time_zone);
-  const timeZone = _.isEmpty(timeZoneArr) ? { tz_offset: DEFAULT_DATE_SETTING.OFFSET } : timeZoneArr[0];
   newOffset = {
-    offset: timeZone.tz_offset,
+    offset: getOffsetByTimeZone(time_zone),
   };
   const newState = Object.assign({}, state, { ...newDateFormat }, { ...newOffset });
-  setStore(Enums.LocalStorageKeys.Timezone, JSON.stringify(newState));
+  setStore(Timezone, JSON.stringify(newState));
   return newState;
 };
 
