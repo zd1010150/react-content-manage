@@ -10,6 +10,11 @@ import { setRelatedTo, tryFetchRelatedTos } from '../../flow/secondaryInfo/actio
 const defaultProps = {};
 const propTypes = {
   intl: intlShape.isRequired,
+  leads: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  })).isRequired,
   accounts: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -32,7 +37,7 @@ class RelatedTo extends Component {
   handleRelatedToChange = id => this.props.setRelatedTo(id)
 
   render() {
-    const { intl, accounts, opportunities, relatedTo } = this.props;
+    const { intl, leads, accounts, opportunities, relatedTo } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui.table';
 
@@ -46,6 +51,7 @@ class RelatedTo extends Component {
         </div>
         <RelatedToSelection
           relatedTo={relatedTo}
+          leads={leads}
           accounts={accounts}
           opportunities={opportunities}
           onChange={this.handleRelatedToChange}
@@ -59,6 +65,7 @@ RelatedTo.defaultProps = defaultProps;
 RelatedTo.propTypes = propTypes;
 const mapStateToProps = ({ global, invoice }) => ({
   language: global.language,
+  leads: invoice.secondaryInfo.relatedLeads,
   accounts: invoice.secondaryInfo.relatedAccounts,
   opportunities: invoice.secondaryInfo.relatedOpportunities,
   relatedTo: invoice.secondaryInfo.relatedTo,

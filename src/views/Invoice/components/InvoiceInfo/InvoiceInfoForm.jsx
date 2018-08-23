@@ -44,7 +44,7 @@ const InvoiceInfoForm = Form.create({
             label={(
               <Fragment>
                 {formatMessage({ id: `${labelI18n}.invoiceNo` })}
-                <Tooltip title="By Default: Organization ID + Date (day/month/year) + 01(02,03,04,05...)">
+                <Tooltip title="By Default: Organization ID + day + month + year + hour + min + sec + 4 random digits">
                   <Icon
                     type="question-circle"
                     className="font-sm ml-sm icon-thinner"

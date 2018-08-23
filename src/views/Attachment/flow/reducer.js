@@ -1,12 +1,21 @@
-/* eslint-disable no-case-declarations */
 import { SET_ATTACHMENT_INFO, SET_FIELD_VALUE, RESET } from './actionTypes';
 
-const attachment = (state = {}, action) => {
+const initState = {
+  url: '',
+  file: null,
+  category: null,
+  comment: '',
+};
+
+const attachment = (state = initState, action) => {
   switch (action.type) {
     case SET_ATTACHMENT_INFO:
       const { data } = action.payload;
       return {
-        ...data,
+        id: data.id,
+        url: data.url,
+        comment: data.comment,
+        category: data.category,
       };
 
     case SET_FIELD_VALUE:
@@ -17,7 +26,7 @@ const attachment = (state = {}, action) => {
       };
 
     case RESET:
-      return {};
+      return initState;
 
     default:
       return state;

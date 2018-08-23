@@ -4,11 +4,13 @@ import { RESET } from '../actionTypes';
 import { SET_INFO, SET_RELATED_TO, SET_RELATED_TOS, SET_STATUS, SET_DESCRIPTION } from './actionTypes';
 
 const {
+  Leads,
   Accounts,
   Opportunities,
 } = Enums.ObjectTypes;
 
 const initialState = {
+  relatedLeads: [],
   relatedAccounts: [],
   relatedOpportunities: [],
   relatedTo: '',
@@ -29,6 +31,7 @@ const secondaryInfo = (state = initialState, action) => {
     case SET_RELATED_TOS:
       return {
         ...state,
+        relatedLeads: formatRelatedTos(action.payload.data, Leads),
         relatedAccounts: formatRelatedTos(action.payload.data, Accounts),
         relatedOpportunities: formatRelatedTos(action.payload.data, Opportunities),
       };

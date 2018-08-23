@@ -244,6 +244,7 @@ const EnumsManager = Object.freeze({
       EmailSent: 'EmailSent',
       Attachments: 'Attachments',
       Logs: 'Logs',
+      Invoice: 'Invoice',
     },
     [BaseEnums.ObjectTypes.Accounts]: {
       Opportunities: 'Opportunities',
