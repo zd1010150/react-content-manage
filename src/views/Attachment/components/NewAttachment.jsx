@@ -28,6 +28,11 @@ class NewAttachment extends Component {
         this.props.setFieldValue('file', newFile);
         return false;
       },
+      fileList: file !== null ? [{
+        uid: file.uid,
+        name: file.name,
+        status: 'done', // options：uploading, done, error, removed
+      }] : [],
       onRemove: () => this.props.setFieldValue('file', null),
       disabled: shouldDisabled,
     };

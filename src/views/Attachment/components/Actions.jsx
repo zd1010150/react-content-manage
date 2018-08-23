@@ -67,7 +67,7 @@ class Actions extends PureComponent {
   onCancelClick = () => this.props.history.goBack()
 
   render() {
-    const { theme, intl } = this.props;
+    const { theme, intl, isPhantom } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui.button';
 
@@ -78,7 +78,7 @@ class Actions extends PureComponent {
           onClick={this.onSaveClick}
         >
           <Icon type="save" className="font-sm icon-thinner" />
-          {formatMessage({ id: `${i18n}.save` })}
+          {formatMessage({ id: `${i18n}.${isPhantom ? 'uploadAndSave' : 'save'}` })}
         </Button>
         <Button onClick={this.onCancelClick}>
           <Icon type="close" className="font-sm icon-thinner" />
