@@ -16,6 +16,7 @@ import {
   TOGGLE_LANGUAGE,
 } from './actionType';
 
+import { tzs } from './tzs';
 /**
  * when page refresh fetch the current  user detail in order to get the latest information . As the previous user detail is set when login,so there invoke the  LOGIN_SUCCESS ,
  * this code will be restructured in the feature
@@ -72,6 +73,9 @@ const setGlobalSetting = (settings, loginUser) => ({
 export const fetchGlobalSetting = () => (dispatch, getState) => get('/admin/global-settings', {}, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
     const { loginUser } = getState();
+    debugger;
+    // TODO: remove debug
+    data.timezones = tzs;
     dispatch(setGlobalSetting(data, loginUser));
   }
 });

@@ -23,13 +23,13 @@ beforeEach(() => window.localStorage.removeItem(Timezone));
 
 // NOTES: lodash needs to be mocked, because we loaded lodash js in script rather than bundle it.
 //        So when run tests, lodash related function cannot be found.
+// TODO: finish the tests
 describe('---===BASIC FUNCS===---', () => {
-  const mock = jest.fn(() => "bar");
   describe('FUNC:STRINGIFYOFFSET', () => {
-    const noOffset = '+0000';
-    test('Format -> YYYY-MM-DD', () => {
-      expect(stringifyOffset('')).toBe(noOffset);
-    });
+    // const noOffset = '+0000';
+    // test('Format -> YYYY-MM-DD', () => {
+    //   expect(stringifyOffset('')).toBe(noOffset);
+    // });
   });
 
   describe('FUNC:GETOFFSETTIMEZONE', () => {

@@ -91,14 +91,10 @@ export const stringifyOffset = (value) => {
 };
 
 export const getOffsetByTimeZone = (timezone) => {
-  const a = momentTz.tz(timezone).utcOffset() / 60;
-  console.log(`tz is ${a}`);
-  return console.log(stringifyOffset(a));
+  const offset = momentTz.tz(timezone).utcOffset() / 60;
+  console.log(stringifyOffset(offset));
+  return stringifyOffset(offset);
 };
-
-getOffsetByTimeZone('America/New_York');
-getOffsetByTimeZone('Australia/Sydney');
-getOffsetByTimeZone('Australia/Sydn');
 
 // !!!deprecated, please use toUtc or toTimezone to convert date/datetime
 export const moments = (() => {
