@@ -1,7 +1,7 @@
 import moment from 'moment';
 import momentTz from 'moment-timezone';
 import Enums from './EnumsManager';
-import { getStore } from './localStorage';
+import { getStore, setStore } from './localStorage';
 
 const { DateTimeConfigs, LocalStorageKeys } = Enums;
 const {
@@ -96,7 +96,19 @@ export const getOffsetByTimeZone = (timezone) => {
   return stringifyOffset(offset);
 };
 
+export const setOffsetToLocalStorage = (timezone) => {
+  const companyTimezone = getStore(Timezone);
+  const parsedTimezone = JSON.parse(companyTimezone);
+  const newTimezone = {
+    ...parsedTimezone,
+    offset: getOffsetByTimeZone(timezone),
+  };
+  console.table(newTimezone);
+  // set again
+};
+
 // !!!deprecated, please use toUtc or toTimezone to convert date/datetime
+// By used in some views, e.g. company info in setup page. Be attention when remove.
 export const moments = (() => {
   const startTime = Date.UTC(1970, 0, 2, 0, 0);
   const endTime = Date.UTC(1970, 0, 3, 0, 0);
