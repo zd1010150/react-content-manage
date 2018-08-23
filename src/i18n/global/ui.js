@@ -107,6 +107,7 @@ export default {
       add: '添加',
       close: '关闭',
       [Invoice]: '发票',
+      uploadAndSave: '上传并保存',
     },
     input: {
       searchStore: '在此搜索全站商品...',
@@ -285,6 +286,7 @@ export default {
       add: 'Add',
       close: 'Close',
       [Invoice]: 'Invoice',
+      uploadAndSave: 'Upload And Save',
     },
     input: {
       searchStore: 'Search entire store here...',
