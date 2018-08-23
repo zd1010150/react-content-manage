@@ -21,6 +21,7 @@ export const getCompanyInfo = callback => dispatch => get('/admin/companies/me',
 export const updateCompanyInfo = (form, callback) => dispatch => patch('/admin/companies/me', { ...form }, dispatch).then((data) => {
   if (!_.isEmpty(data)) {
     if (_.isFunction(callback)) {
+      console.log('updating');
       callback();
     }
   }

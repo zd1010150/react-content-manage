@@ -1,6 +1,7 @@
 import moment from 'moment';
+import momentTz from 'moment-timezone';
 import Enums from './EnumsManager';
-import { getStore } from './localStorage';
+import { getStore, setStore } from './localStorage';
 
 const { DateTimeConfigs, LocalStorageKeys } = Enums;
 const {
@@ -13,7 +14,6 @@ const {
 const { Timezone } = LocalStorageKeys;
 
 // All possible utc offset list pls refer to https://en.wikipedia.org/wiki/List_of_UTC_time_offsets
-
 
 export const getTimeSetting = (isTime) => {
   const timezone = getStore(Timezone);
@@ -75,7 +75,31 @@ export const toUtc = (str, isConvertingTime = false) => {
   return moment(str, sourceSettings.format).format(targetFormat);
 };
 
+const concatBits = (value) => {
+  const absValue = Math.abs(value);
+  return absValue < 10 ? `0${absValue}` : `${absValue}`;
+};
+/**
+ * Format offset to a valid string in '+xx00' or '-xx00'
+ * @param {number} value
+ */
+export const stringifyOffset = (value, extra) => {
+  if (!_.isNumber(value) || value < -11 || value > 14) {
+    console.warn('The offset has invalid type or value!');
+    return '+0000';
+  }
+  const sign = value < 0 ? '-' : '+';
+  return `${sign}${concatBits(value)}${concatBits(extra)}`;
+};
+
+export const getOffsetByTimeZone = (timezone) => {
+  const offset = momentTz.tz(timezone).utcOffset() / 60;
+  const extra = momentTz.tz(timezone).utcOffset() % 60;
+  return stringifyOffset(parseInt(offset, 10), extra);
+};
+
 // !!!deprecated, please use toUtc or toTimezone to convert date/datetime
+// By used in some views, e.g. company info in setup page. Be attention when remove.
 export const moments = (() => {
   const startTime = Date.UTC(1970, 0, 2, 0, 0);
   const endTime = Date.UTC(1970, 0, 3, 0, 0);
