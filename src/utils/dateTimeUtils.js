@@ -1,7 +1,7 @@
 import moment from 'moment';
 import momentTz from 'moment-timezone';
 import Enums from './EnumsManager';
-import { getStore, setStore } from './localStorage';
+import { getStore } from './localStorage';
 
 const { DateTimeConfigs, LocalStorageKeys } = Enums;
 const {
@@ -10,6 +10,8 @@ const {
   DefaultOffset,
   DateFormatKey,
   TimeFormatKey,
+  DefaultTimezone,
+  UTCTimezone,
 } = DateTimeConfigs;
 const { Timezone } = LocalStorageKeys;
 
@@ -22,6 +24,7 @@ export const getTimeSetting = (isTime) => {
   if (!parsedTimezone) {
     return {
       format: 'N/A',
+      code: DefaultTimezone,
     };
   }
 
@@ -33,70 +36,49 @@ export const getTimeSetting = (isTime) => {
     format = isTime ? DefaultApiTimeFormat : DefaultApiDateFormat;
   }
   const offset = parsedTimezone.offset ? parsedTimezone.offset : DefaultOffset;
+  const code = parsedTimezone.code ? parsedTimezone.code : DefaultTimezone;
   return {
     format,
     offset,
+    code,
   };
 };
 
 
+// NOTES: this is used to unify our standard, if not set, moment timezone will use local timezone.
+momentTz.tz.setDefault(UTCTimezone);
 /**
  * Convert UTC date/time to specific timezone date/time, or null if value is invalid
- *
- * @param {string} str: could be a date string or datetime string, e.g. '2018-03-06 20:00:00'
+ * @param {string} str: must in utc timezone, could be a date string or datetime string, e.g. '2018-03-06 20:00:00'
  * @param {boolean} isConvertingTime: whether the result should be converted to a date or datetime string
  *
  */
 export const toTimezone = (str, isConvertingTime = false) => {
   const targetSettings = getTimeSetting(isConvertingTime);
-  const sourceFormat = isConvertingTime ? DefaultApiTimeFormat : DefaultApiDateFormat;
-
-  if (!moment(str, sourceFormat).isValid()) {
-    return null;
-  }
-  return moment.utc(str, sourceFormat).utcOffset(targetSettings.offset).format(targetSettings.format);
+  // Convert to utc
+  const utc = momentTz(str).utc();
+  if (!utc.isValid()) return null;
+  // Parse the utc to a specific zone
+  return momentTz.tz(utc, targetSettings.code).format(targetSettings.format);
 };
 
 /**
  * Convert specific timezone date/time to UTC date/time, or null if value is invalid
- *
  * @param {string} str: could be a date string or datetime string, e.g. '2018-03-06 20:00:00'
  * @param {boolean} isConvertingTime: whether the result should be converted to a date or datetime string
  *
  */
 export const toUtc = (str, isConvertingTime = false) => {
-  const sourceSettings = getTimeSetting(isConvertingTime);
-  const targetFormat = isConvertingTime ? DefaultApiTimeFormat : DefaultApiDateFormat;
+  const sourceSetting = getTimeSetting(isConvertingTime);
+  const utcFormat = isConvertingTime ? DefaultApiTimeFormat : DefaultApiDateFormat;
 
-  if (!moment(str, sourceSettings.format).isValid()) return null;
-  if (isConvertingTime) {
-    return moment.parseZone(`${str} ${sourceSettings.offset}`, `${sourceSettings.format} ZZ`).utc().format(targetFormat);
-  }
-  return moment(str, sourceSettings.format).format(targetFormat);
-};
-
-const concatBits = (value) => {
-  const absValue = Math.abs(value);
-  return absValue < 10 ? `0${absValue}` : `${absValue}`;
-};
-/**
- * Format offset to a valid string in '+xx00' or '-xx00'
- * @param {number} value
- */
-export const stringifyOffset = (value, extra) => {
-  if (!_.isNumber(value) || value < -11 || value > 14) {
-    console.warn('The offset has invalid type or value!');
-    return '+0000';
-  }
-  const sign = value < 0 ? '-' : '+';
-  return `${sign}${concatBits(value)}${concatBits(extra)}`;
+  // Parse value in a specific timezone
+  const timezone = momentTz.tz(str, sourceSetting.format, sourceSetting.code);
+  if (!timezone.isValid()) return null;
+  return timezone.utc().format(utcFormat);
 };
 
-export const getOffsetByTimeZone = (timezone) => {
-  const offset = momentTz.tz(timezone).utcOffset() / 60;
-  const extra = momentTz.tz(timezone).utcOffset() % 60;
-  return stringifyOffset(parseInt(offset, 10), extra);
-};
+export const getOffsetByTimeZone = timezone => momentTz.tz(timezone).format('ZZ');
 
 // !!!deprecated, please use toUtc or toTimezone to convert date/datetime
 // By used in some views, e.g. company info in setup page. Be attention when remove.
