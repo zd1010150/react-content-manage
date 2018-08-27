@@ -29,6 +29,7 @@ const {
   DefaultOffset,
   DateFormatKey,
   TimeFormatKey,
+  DefaultTimezone,
 } = DateTimeConfigs;
 
 
@@ -41,6 +42,8 @@ const setTimezoneInStorage = (timezones = [], countries = []) => {
   return setStore(Timezone, {
     [DateFormatKey]: country && country.date_format ? country.date_format : DefaultDateFormat,
     [TimeFormatKey]: country && country.time_format ? country.time_format : DefaultTimeFormat,
+    code: timezone && timezone.id ? timezone.id : DefaultTimezone,
+    // NOTES: offset is deprecated, since we started to use moment time zone library. Please do not use it in new code.
     offset: timezone && timezone.tz_offset ? timezone.tz_offset : DefaultOffset,
   });
 };
@@ -191,7 +194,12 @@ const getTimeZone = (state, globalSetting, loginUser) => {
     offset: getOffsetByTimeZone(time_zone),
   };
   const newState = Object.assign({}, state, { ...newDateFormat }, { ...newOffset });
-  setStore(Timezone, JSON.stringify(newState));
+  setStore(Timezone, JSON.stringify({
+    ...state,
+    ...newDateFormat,
+    ...newOffset,
+    code: time_zone.id || DefaultTimezone,
+  }));
   return newState;
 };
 
