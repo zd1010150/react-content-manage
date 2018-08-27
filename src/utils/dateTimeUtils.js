@@ -44,9 +44,6 @@ export const getTimeSetting = (isTime) => {
   };
 };
 
-
-// NOTES: this is used to unify our standard, if not set, moment timezone will use local timezone.
-momentTz.tz.setDefault(UTCTimezone);
 /**
  * Convert UTC date/time to specific timezone date/time, or null if value is invalid
  * @param {string} str: must in utc timezone, could be a date string or datetime string, e.g. '2018-03-06 20:00:00'
@@ -54,12 +51,13 @@ momentTz.tz.setDefault(UTCTimezone);
  *
  */
 export const toTimezone = (str, isConvertingTime = false) => {
+  const utcFormat = isConvertingTime ? DefaultApiTimeFormat : DefaultApiDateFormat;
   const targetSettings = getTimeSetting(isConvertingTime);
   // Convert to utc
-  const utc = momentTz(str).utc();
+  const utc = momentTz.tz(str, utcFormat, UTCTimezone);
   if (!utc.isValid()) return null;
   // Parse the utc to a specific zone
-  return momentTz.tz(utc, targetSettings.code).format(targetSettings.format);
+  return momentTz(utc).tz(targetSettings.code).format(targetSettings.format);
 };
 
 /**
@@ -72,9 +70,10 @@ export const toUtc = (str, isConvertingTime = false) => {
   const sourceSetting = getTimeSetting(isConvertingTime);
   const utcFormat = isConvertingTime ? DefaultApiTimeFormat : DefaultApiDateFormat;
 
-  // Parse value in a specific timezone
+  // Create a moment instance w/ a specific timezone
   const timezone = momentTz.tz(str, sourceSetting.format, sourceSetting.code);
   if (!timezone.isValid()) return null;
+  // Convert to utc time
   return timezone.utc().format(utcFormat);
 };
 
