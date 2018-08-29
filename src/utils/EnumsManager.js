@@ -244,6 +244,7 @@ const EnumsManager = Object.freeze({
       EmailSent: 'EmailSent',
       Attachments: 'Attachments',
       Logs: 'Logs',
+      Invoice: 'Invoice',
     },
     [BaseEnums.ObjectTypes.Accounts]: {
       Opportunities: 'Opportunities',
@@ -456,6 +457,8 @@ const EnumsManager = Object.freeze({
     DefaultDateFormat: 'DD-MM-YYYY',
     DefaultTimeFormat: 'DD-MM-YYYY HH:mm:ss',
     // Used sydney timezone as default for display
+    UTCTimezone: 'UTC',
+    DefaultTimezone: 'Australia/Sydney',
     DefaultOffset: '+1100',
     DateFormatKey: 'dateFormat',
     TimeFormatKey: 'timeFormat',

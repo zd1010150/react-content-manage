@@ -81,8 +81,8 @@ class Upload extends Component {
           extraUploadProps={{
             data: file => ({
               document: file,
-              ownerId: objectId,
-              ownerType: objectType,
+              // ownerId: objectId,
+              // ownerType: objectType,
             }),
             customRequest: ({ data }) => this.handleFileUpload(data),
           }}
