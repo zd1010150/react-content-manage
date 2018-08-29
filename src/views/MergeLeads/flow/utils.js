@@ -4,7 +4,8 @@ import Enums from 'utils/EnumsManager';
 const { FieldTypes, MasterKey } = Enums;
 const { DateOnly, DateTime, Lookup } = FieldTypes;
 
-const setDataCopy = (dataCopy, key, data) => {
+const replaceValueWithSource = (dataCopy, key, data) => {
+  // if the value of dataCopy is a object type, then it includes id and name. The first condition is to map the object type value.
   if (data[key.key] !== undefined && _.isObject(data[key.key]) && data[key.key].id !== undefined && dataCopy[key.key] === data[key.key].id) {
     return dataCopy[key.key] = data.id;
   }
@@ -20,7 +21,7 @@ const toApi = (mergedData, keys, sourceData) => {
   delete dataCopy[MasterKey];
   keys.forEach((key) => {
     sourceData.forEach((data) => {
-      setDataCopy(dataCopy, key, data);
+      replaceValueWithSource(dataCopy, key, data);
     });
   });
   return dataCopy;
