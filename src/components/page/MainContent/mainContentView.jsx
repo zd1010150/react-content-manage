@@ -1,52 +1,34 @@
 /* eslint-disable react/no-typos */
-import React from "react";
-import { Route, Switch, withRouter } from "react-router-dom";
-import { Permission, Unauthentication } from "components/page/index";
-import PERMISSIONS from "config/app-permission.config";
-import {
-  ClientAttachments,
-  CompanyInfo,
-  ConvertLeads,
-  Dashboard,
-  EditCampaign,
-  EmailCampaign,
-  EmailTemplates,
-  EmailTemplatesCreation,
-  Fields,
-  FindDuplicates,
-  Layouts,
-  MergeLeads,
-  MySetting,
-  NewCampaign,
-  NewEmail,
-  ObjectList,
-  ObjectView,
-  ObjectTask,
-  OrganisationChart,
-  PermissionProfile,
-  UIDemo,
-  Users,
-  GlobalSearch,
-  ObjectShare,
-  Task,
-  ClientDetails,
-  Exceptions,
-  Conversion,
-} from 'views/index';
+import { Permission, Unauthentication } from 'components/page/index';
+import PERMISSIONS from 'config/app-permission.config';
+import React from 'react';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import Enums from 'utils/EnumsManager';
+import { Attachment, ClientDetails, CompanyInfo, Conversion, Dashboard, EditCampaign, EmailCampaign, EmailTemplates, EmailTemplatesCreation, Exceptions, Fields, FindDuplicates, GlobalSearch, Invoice, Layouts, MergeLeads, MySetting, NewCampaign, NewEmail, ObjectList, ObjectShare, ObjectTask, ObjectView, OrganisationChart, PermissionProfile, Task, UIDemo, Users } from 'views/index';
 
 const { NotFound } = Exceptions;
-import Enums from "utils/EnumsManager";
-
 const { ObjectTypes, PhantomId } = Enums;
 const { Leads, Accounts, Opportunities } = ObjectTypes;
+
 
 class MainContent extends React.Component {
   componentDidMount() {
     const { history, location } = this.props;
-    if (location.pathname === "/") {
-      history.push("/dashboard");
+    if (location.pathname === '/') {
+      history.push('/dashboard');
     }
   }
+
+  // componentDidUpdate() {
+  //   // TESTING
+  //   // TODO: config to easy dev for specific page
+  //   // debugger;
+  //   console.log(process.env);
+  //   const { history, location } = this.props;
+  //   if (location.pathname !== '/accounts/169/invoice/1') {
+  //     history.push("/accounts/169/invoice/1");
+  //   }    
+  // }
   render() {
     return (
       <Switch>
@@ -147,8 +129,13 @@ class MainContent extends React.Component {
           }}
         />
         <Route
+          path="/:objectType/:objectId/invoice/:invoiceId"
+          component={Invoice}
+          exact
+        />
+        <Route
           path="/:objectType/:objectId/attachments/:attachmentId"
-          component={ClientAttachments}
+          component={Attachment}
           exact
         />
         <Route

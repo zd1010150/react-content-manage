@@ -9,6 +9,7 @@ const cx = classNames.bind(styles);
 
 const defaultProps = {
   type: 'icon',
+  size: 'small',
 };
 const propTypes = {
   intl: intlShape.isRequired,
@@ -16,7 +17,7 @@ const propTypes = {
   placement: PropTypes.string,
   size: PropTypes.oneOf([
     'small', 'default', 'large',
-  ]).isRequired,
+  ]),
   text: PropTypes.string,
   type: PropTypes.oneOf([
     'button', 'icon', // icon is default

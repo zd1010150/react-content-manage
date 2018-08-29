@@ -1,5 +1,5 @@
 import Enums from './EnumsManager';
-import { toTimezone, toUtc } from './dateTimeUtils';
+import { toTimezone, toUtc, stringifyOffset, getOffsetByTimeZone } from './dateTimeUtils';
 
 const { LocalStorageKeys } = Enums;
 const { Timezone } = LocalStorageKeys;
@@ -21,6 +21,20 @@ const setTimezone = (dateFormat, timeFormat, offset) => {
  */
 beforeEach(() => window.localStorage.removeItem(Timezone));
 
+// NOTES: lodash needs to be mocked, because we loaded lodash js in script rather than bundle it.
+//        So when run tests, lodash related function cannot be found.
+// TODO: finish the tests
+describe('---===BASIC FUNCS===---', () => {
+  describe('FUNC:STRINGIFYOFFSET', () => {
+    // const noOffset = '+0000';
+    // test('Format -> YYYY-MM-DD', () => {
+    //   expect(stringifyOffset('')).toBe(noOffset);
+    // });
+  });
+
+  describe('FUNC:GETOFFSETTIMEZONE', () => {
+  });
+});
 
 describe('---===CONVERT TO TIMEZONE===---', () => {
   describe('Convert Date only', () => {

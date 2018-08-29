@@ -15,12 +15,14 @@ import conversion from 'views/ConvertLeads/flow/reducer';
 import task from 'views/Task/flow/reducer';
 import convertDetails from 'components/page/ConvertDetails/flow/reducer';
 import convertStatus from 'views/Conversion/flow/reducer';
-import attachment from 'views/ClientAttachments/flow/reducer';
+import invoice from 'views/Invoice/flow/reducer';
+
 // test
 import multiDndFields from 'components/ui/MultiSelectDnD/flow/reducer';
 // test ends
 
 import FilterCriteria__REFACTORED from 'components/page/FilterCriteria__REFACTORED/flow/reducer';
+import attachment from 'views/Attachment/flow/reducer';
 
 export default {
   loginUser,
@@ -40,6 +42,7 @@ export default {
   task,
   convertDetails,
   convertStatus,
-  attachment,
+  invoice,
   FilterCriteria__REFACTORED,
+  attachment,
 };
