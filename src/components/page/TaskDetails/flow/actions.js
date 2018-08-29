@@ -10,7 +10,6 @@ import {
   REMOVE_MY_SUBJECT,
   SET_TASK_SUCCESS,
   RESET_TASK,
-  RESET_NEW_TASK,
   SET_DEFAULT_STATE,
 } from './actionTypes';
 
