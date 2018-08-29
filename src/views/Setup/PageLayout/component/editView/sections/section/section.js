@@ -40,7 +40,9 @@ class Section extends React.Component {
       setCanDrop,
       setEditField,
       theme,
+      fieldEditDialog
     } = props;
+    const { showValue } =fieldEditDialog;
     const trs = [];
     const table = [];
     let tds = [];
@@ -59,6 +61,7 @@ class Section extends React.Component {
           sectionCode={code}
           moveFieldsBetweenSection={moveFieldsBetweenSection}
           addFieldToSection={addFieldToSection}
+          showValue={showValue}
         />);
       }
       table.push(tds);
@@ -80,6 +83,7 @@ class Section extends React.Component {
             sectionCode={code}
             moveFieldsBetweenSection={moveFieldsBetweenSection}
             addFieldToSection={addFieldToSection}
+            showValue={showValue}
           >
             <Field
               theme={theme}

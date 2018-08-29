@@ -14,7 +14,8 @@ const { ReadOnly, Required } = Enums.EditViewType;
 
 class SectionFieldEditDialog extends React.Component {
   valueChange(checkedValues) {
-    this.props.setEditField({ showValue: checkedValues });
+    const { fieldId } = this.props.fieldEditDialog;
+    this.props.setEditField({ showValue: { [`${fieldId}`]: checkedValues }, fieldId });
   }
   save() {
     const {
@@ -34,6 +35,7 @@ class SectionFieldEditDialog extends React.Component {
       requiredDisable,
       readOnlyDisable,
       showValue,
+      fieldId,
     } = this.props.fieldEditDialog;
 
     return (
@@ -49,7 +51,7 @@ class SectionFieldEditDialog extends React.Component {
         <Row>
           <Col span={22} offset={2}>
             <span className={classNames(cx('field-edit-dialog-label'), 'pr-lg')}>{fieldLabel}: </span>
-            <CheckboxGroup value={showValue} onChange={checkedValues => this.valueChange(checkedValues)}>
+            <CheckboxGroup value={showValue[fieldId]} onChange={checkedValues => this.valueChange(checkedValues)}>
               <span className={classNames(cx('field-edit-dialog-checkbox'), 'pr-lg')}>
                 <Checkbox value={Required} disabled={requiredDisable}> {formatMessage({ id: 'page.layouts.edit.required' })} </Checkbox>
               </span>
