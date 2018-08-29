@@ -18,7 +18,9 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 
-const defaultProps = {};
+const defaultProps = {
+  description: '',
+};
 const propTypes = {
   intl: intlShape.isRequired,
   // TODO: extract to a common check for { id, display_value }
@@ -27,7 +29,7 @@ const propTypes = {
     display_value: PropTypes.string.isRequired,
   })).isRequired,
   status: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   lastModifiedAt: PropTypes.string.isRequired,
   lastModifiedBy: PropTypes.string.isRequired,
 };

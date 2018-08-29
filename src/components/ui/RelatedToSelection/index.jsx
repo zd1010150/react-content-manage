@@ -6,12 +6,17 @@ const { OptGroup, Option } = Select;
 
 
 const defaultProps = {
+  leadGroupLabel: 'Leads',
   accountGroupLabel: 'Accounts',
   opportunityGroupLabel: 'Opportunities',
   onChange: null,
 };
 const propTypes = {
   relatedTo: PropTypes.string.isRequired,
+  leadGroupLabel: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.node,
+  ]),
   accountGroupLabel: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.node,
@@ -20,6 +25,10 @@ const propTypes = {
     PropTypes.string,
     PropTypes.node,
   ]),
+  leads: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  })).isRequired,
   accounts: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -32,9 +41,11 @@ const propTypes = {
 };
 
 const RelatedToSelection = ({
+  leadGroupLabel,
   accountGroupLabel,
   opportunityGroupLabel,
   relatedTo,
+  leads,
   accounts,
   opportunities,
   onChange,
@@ -45,6 +56,9 @@ const RelatedToSelection = ({
     onChange={onChange}
     value={relatedTo}
   >
+    <OptGroup label={leadGroupLabel}>
+      {leads.map(a => <Option key={a.id} value={a.id}>{a.name}</Option>)}
+    </OptGroup>
     <OptGroup label={accountGroupLabel}>
       {accounts.map(a => <Option key={a.id} value={a.id}>{a.name}</Option>)}
     </OptGroup>
