@@ -1,7 +1,8 @@
 import Enums from 'utils/EnumsManager';
 import { SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS, SET_ACTIVE_VIEW, SET_PAGE_SIZE } from './actionTypes';
 
-const { PhantomId } = Enums;
+const { PhantomId, DefaultPageConfigs } = Enums;
+const { PageSize } = DefaultPageConfigs;
 
 const initialState = {
   activeViewId: {
@@ -16,7 +17,7 @@ const initialState = {
   tableParams: {},
   selectedFieldOptions: [],
   views: [],
-  PageSizeValue: 25,
+  PageSizeValue: PageSize,
 };
 
 const objectList = (state = initialState, action) => {
