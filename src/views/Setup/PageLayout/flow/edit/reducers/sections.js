@@ -50,7 +50,7 @@ const initSection = (sections) => {
 };
 
 
-const insertFields = (fields, sourceField, position) => {
+const insertFields = (fields, sourceField, position, fieldId, showValue) => {
   let [x, y] = position;
   let newTargetColumnFields = [];
   const targetColumnFields = fields && fields[y] ? fields[y] : [];
@@ -58,7 +58,12 @@ const insertFields = (fields, sourceField, position) => {
   x = x > columnLenght ? columnLenght : x; // 修正插入的位置
   if (x === columnLenght) {
     newTargetColumnFields = targetColumnFields.slice();
-    newTargetColumnFields.push(Object.assign({}, sourceField, { x: columnLenght, y }));
+    newTargetColumnFields.push(Object.assign({}, sourceField, {
+      x: columnLenght,
+      y,
+      pageReadonly: !_.isEmpty(showValue[fieldId]) && showValue[fieldId][0] === ReadOnly,
+      pageRequired: !_.isEmpty(showValue[fieldId]) && showValue[fieldId][0] === Required,
+    }));
   } else if (x >= 0 && x < columnLenght) {
     newTargetColumnFields = targetColumnFields.slice(0, x);
     for (let i = x; i < columnLenght; i++) {
@@ -67,7 +72,12 @@ const insertFields = (fields, sourceField, position) => {
         y,
       });
     }
-    newTargetColumnFields[x] = Object.assign({}, sourceField, { x, y });
+    newTargetColumnFields[x] = Object.assign({}, sourceField, {
+      x,
+      y,
+      pageReadonly: !_.isEmpty(showValue[fieldId]) && showValue[fieldId][0] === ReadOnly,
+      pageRequired: !_.isEmpty(showValue[fieldId]) && showValue[fieldId][0] === Required,
+    });
   }
 
   return Object.assign({}, fields, { [y]: newTargetColumnFields });
@@ -81,11 +91,11 @@ const insertFields = (fields, sourceField, position) => {
  * @param position
  */
 const addFieldToSection = (state, {
-  allFields, fieldId, sectionCode, position,
+  allFields, fieldId, sectionCode, position, showValue,
 }) => {
   const section = state.filter(item => item.code === sectionCode)[0];
   const field = allFields.filter(item => item.id === fieldId)[0];
-  const newFields = insertFields(section.fields, field, position);
+  const newFields = insertFields(section.fields, field, position, fieldId, showValue);
   const newSection = getRowsAndCols(Object.assign({}, section, { fields: newFields }));
   return state.map((item) => {
     if (item.code === sectionCode) {
@@ -138,11 +148,11 @@ const deleteFieldFromSection = (state, {
 };
 
 const moveField = (state, {
-  fieldId, allFields, sourceSectionCode, targetSectionCode, position,
+  fieldId, allFields, sourceSectionCode, targetSectionCode, position, showValue,
 }) => {
   const deletedSection = deleteFieldFromSection(state, { fieldId, sectionCode: sourceSectionCode });
   return addFieldToSection(deletedSection, {
-    fieldId, allFields, sectionCode: targetSectionCode, position,
+    fieldId, allFields, sectionCode: targetSectionCode, position, showValue,
   });
 };
 const moveSection = (state, {
@@ -264,8 +274,8 @@ const changeFieldAttr = (state, {
         section.fields,
         fieldId,
         {
-          pageRequired: showValue[0] === Required,
-          pageReadonly: showValue[0] === ReadOnly,
+          pageRequired: showValue[fieldId][0] === Required,
+          pageReadonly: showValue[fieldId][0] === ReadOnly,
         },
       ),
     };

@@ -11,6 +11,7 @@ import {
   SET_TASK_SUCCESS,
   RESET_TASK,
   SET_DEFAULT_STATE,
+  SET_ROUTE_INFO,
 } from './actionTypes';
 
 
@@ -97,19 +98,25 @@ export const setFieldValue = (field, value) => ({
 });
 
 //
-export const setSuccess = () => ({
+export const setSuccess = synced => ({
   type: SET_TASK_SUCCESS,
+  payload: { synced },
 });
+
+export const setRouteInfo = info => ({
+  type: SET_ROUTE_INFO,
+  payload: { info },
+});
+
 
 //
 export const trySaveNewTask = (taskId, taskData, saveAndAddNew) => dispatch =>
   post('/admin/tasks/', { ...taskData }, dispatch).then((data) => {
     if (data && !_.isEmpty(data.data)) {
       if (saveAndAddNew) {
-        // TODO: add save and add new process
-        // dispatch(resetNewTask());
+        dispatch(setSuccess('saveAndNew'));
       } else {
-        dispatch(setSuccess());
+        dispatch(setSuccess('save'));
       }
     }
   });
@@ -120,10 +127,9 @@ export const tryUpdateTask = (taskId, taskData, saveAndAddNew) => dispatch =>
   patch(`/admin/tasks/${taskId}`, { ...taskData }, dispatch).then((data) => {
     if (data && !_.isEmpty(data.data)) {
       if (saveAndAddNew) {
-        // TODO: add save and add new process
-        // dispatch(resetNewTask());
+        dispatch(setSuccess('saveAndNew'));
       } else {
-        dispatch(setSuccess());
+        dispatch(setSuccess('save'));
       }
     }
   });

@@ -12,6 +12,7 @@ import { getThemeByType } from 'utils/common';
 import { toTimezone } from 'utils/dateTimeUtils';
 import Enums from 'utils/EnumsManager';
 import { tryDeleteAttachment, tryDeleteInvoice, tryDeleteTask, tryFetchModuleData } from '../../flow/actions';
+import { setRouteInfo } from '../../../TaskDetails/flow/actions';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -61,7 +62,9 @@ class Subpanel extends Component {
       code,
       objectId,
       objectType,
+      setRouteInfo,
     } = this.props;
+    setRouteInfo(objectType);
     this.props.tryFetchModuleData(
       code,
       objectType,
@@ -466,5 +469,6 @@ const mapDispatchToProps = {
   tryDeleteTask,
   tryFetchModuleData,
   tryDeleteInvoice,
+  setRouteInfo,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Subpanel));

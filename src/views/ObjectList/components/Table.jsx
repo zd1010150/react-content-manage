@@ -13,6 +13,7 @@ import {
   setRowSelection,
   tryFetchDataByView,
   tryDeleteClientByType,
+  setPageSize,
 } from '../flow/actions';
 
 const { FieldTypes, DefaultPageConfigs, PhantomId } = Enums;
@@ -44,11 +45,11 @@ const propTypes = {
 
 class TableWrapper extends Component {
   componentDidMount() {
-    const { activeViewId, tryFetchDataByView, objectType } = this.props;
+    const { activeViewId, tryFetchDataByView, objectType, PageSizeValue } = this.props;
     tryFetchDataByView(
-      this.props.objectType,
+      objectType,
       activeViewId[objectType],
-      { page: 1, per_page: PageSize },
+      { page: 1, per_page: PageSizeValue },
     );
   }
 
@@ -81,17 +82,19 @@ class TableWrapper extends Component {
         sortedBy: mapToAPIOrderStr(sorter.order),
       }
     }
-    const { activeViewId, objectType, tryFetchDataByView } = this.props;
+    const { activeViewId, objectType, tryFetchDataByView, setPageSize } = this.props;
+    setPageSize(paginationParams.per_page);
     return tryFetchDataByView(objectType, activeViewId[objectType], { ...paginationParams, ...sorterParams });
   }
 
   parsePagination = (meta) => {
     const { pagination } = meta;
+    const { PageSizeValue } = this.props;
     let extraParams = {};
     if (!_.isEmpty(pagination)) {
       extraParams = {
         current: pagination.current_page,
-        pageSize: pagination.per_page,
+        pageSize: PageSizeValue,
         total: pagination.total,
       };
     }
@@ -219,11 +222,13 @@ const mapStateToProps = ({ global, objectList }) => ({
   meta: objectList.meta,
   selectedRowKeys: objectList.selectedRowKeys,
   tableParams: objectList.tableParams,
+  PageSizeValue: objectList.PageSizeValue,
 });
 const mapDispatchToProps = {
   setRowSelection,
   tryFetchDataByView,
   tryDeleteClientByType,
+  setPageSize,
 };
 export default connect(
   mapStateToProps,

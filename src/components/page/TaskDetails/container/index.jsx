@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { toUtc } from 'utils/dateTimeUtils';
 import { Actions, Fields } from '../components/index';
-import { reset, setSuccess, trySaveNewTask, tryUpdateTask } from '../flow/actions';
+import { reset, setSuccess, trySaveNewTask, tryUpdateTask, setRouteInfo } from '../flow/actions';
 
 const { PhantomId, ThemeTypesInArray } = Enums;
 
@@ -45,9 +45,19 @@ class TaskDetails extends Component {
       objectId,
       objectType,
       synced,
+      routeInfo,
+      setRouteInfo,
     } = this.props;
-    if (synced) {
+    if (synced === 'save' || (synced === 'cancel' && routeInfo !== 'dashboard')) {
       history.push(`/${objectType}/${objectId}`);
+    }
+    if (synced === 'cancel' && routeInfo === 'dashboard') {
+      history.push('/dashboard');
+    }
+    if (synced === 'saveAndNew') {
+      this.props.reset();
+      setRouteInfo(objectType);
+      history.push(`/${objectType}/${objectId}/tasks/${PhantomId}`);
     }
   }
 
@@ -55,7 +65,7 @@ class TaskDetails extends Component {
     this.props.reset();
   }
 
-  handleCancel = () => this.props.setSuccess()
+  handleCancel = () => this.props.setSuccess('cancel')
 
   handleSave = (saveAndAddNew) => {
     const {
@@ -178,12 +188,15 @@ const mapStateToProps = ({ global, taskDetails }) => ({
   language: global.language,
   taskDetails,
   synced: taskDetails.synced,
+  resetTask: taskDetails.resetTask,
+  routeInfo: taskDetails.routeInfo,
 });
 const mapDispatchToProps = {
   reset,
   setSuccess,
   trySaveNewTask,
   tryUpdateTask,
+  setRouteInfo,
 };
 export default connect(
   mapStateToProps,

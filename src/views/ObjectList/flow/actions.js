@@ -1,6 +1,7 @@
 import { get, httpDelete, patch } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
-import { SET_ACTIVE_VIEW, SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS } from './actionTypes';
+import { formatOrderByUrl } from 'utils/common';
+import { SET_ACTIVE_VIEW, SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS, SET_PAGE_SIZE } from './actionTypes';
 
 const { PhantomId } = Enums;
 
@@ -9,6 +10,10 @@ const concatParams = (params) => {
 
   let str = '?';
   _.forOwn(params, (value, key) => {
+    if (key === 'orderBy' || key === 'sortedBy') {
+      str += formatOrderByUrl(value, key);
+      return true;
+    }
     str += `${key}=${value}&`;
   });
   return str;
@@ -135,4 +140,9 @@ export const tryFetchViewsByType = objectType => dispatch =>
 export const setActiveView = (viewId, objectType) => ({
   type: SET_ACTIVE_VIEW,
   payload: { viewId, objectType },
+});
+
+export const setPageSize = PageSizeValue => ({
+  type: SET_PAGE_SIZE,
+  payload: { PageSizeValue },
 });

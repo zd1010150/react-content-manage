@@ -108,3 +108,7 @@ export const isDateRelatedType = (type) => {
   if (_.isEmpty(type) || !_.isString(type)) return false;
   return type === DateOnly || type === DateTime;
 };
+
+export const formatOrderByUrl = (value, key) => {
+  return key === 'orderBy' ? `${key}=${value}` : `:${value}`;
+};

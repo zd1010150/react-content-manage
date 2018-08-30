@@ -1,5 +1,5 @@
 import { toTimezone } from 'utils/dateTimeUtils';
-import { ADD_NEW_SUBJECT, REMOVE_MY_SUBJECT, RESET_TASK, SET_TASK_ASSIGNEE, SET_TASK_ASSIGNEES, SET_TASK_FIELD, SET_TASK_FIELDS, SET_TASK_RECENT_ASSIGNEES, SET_TASK_SUBJECTS, SET_TASK_SUCCESS } from './actionTypes';
+import { ADD_NEW_SUBJECT, REMOVE_MY_SUBJECT, RESET_TASK, SET_TASK_ASSIGNEE, SET_TASK_ASSIGNEES, SET_TASK_FIELD, SET_TASK_FIELDS, SET_TASK_RECENT_ASSIGNEES, SET_TASK_SUBJECTS, SET_TASK_SUCCESS, SET_ROUTE_INFO } from './actionTypes';
 
 const initialState = {
   globalSubjects: [],
@@ -14,7 +14,9 @@ const initialState = {
   // default status is 'Not Started'
   statusCode: 0,
   subject: '',
-  synced: false,
+  synced: '',
+  routeInfo: '',
+  resetTask: false,
 };
 
 const mapResponseToStore = ({
@@ -63,7 +65,7 @@ const taskDetails = (state = initialState, action) => {
         mySubjects: [ ...state.mySubjects, newSubject ],
       };
 
-    
+
     case REMOVE_MY_SUBJECT:
       const { mySubjectId } = action.payload;
       return {
@@ -119,11 +121,18 @@ const taskDetails = (state = initialState, action) => {
 
 
     case SET_TASK_SUCCESS:
+      const { synced } = action.payload;
       return {
         ...state,
-        synced: true,
+        synced,
       };
 
+    case SET_ROUTE_INFO:
+      const { info } = action.payload;
+      return {
+        ...state,
+        routeInfo: info,
+      };
 
     case RESET_TASK:
       return {
@@ -131,6 +140,7 @@ const taskDetails = (state = initialState, action) => {
         globalSubjects: state.globalSubjects,
         mySubjects: state.mySubjects,
         assignees: state.assignees,
+        recentAssignees: state.recentAssignees,
       };
 
 
