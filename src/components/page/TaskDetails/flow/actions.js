@@ -11,6 +11,7 @@ import {
   SET_TASK_SUCCESS,
   RESET_TASK,
   SET_DEFAULT_STATE,
+  SET_ROUTE_INFO,
 } from './actionTypes';
 
 
@@ -100,6 +101,11 @@ export const setFieldValue = (field, value) => ({
 export const setSuccess = synced => ({
   type: SET_TASK_SUCCESS,
   payload: { synced },
+});
+
+export const setRouteInfo = info => ({
+  type: SET_ROUTE_INFO,
+  payload: { info },
 });
 
 

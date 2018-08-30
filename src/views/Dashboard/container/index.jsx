@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import LeftSection from '../components/leftSection';
 import { fetchNewLeads, fetchNewAccounts, fetchLatestObject, fetchLatestActivity } from '../flow/action';
 import styles from '../index.less';
+import { setRouteInfo } from '../../../components/page/TaskDetails/flow/actions';
 
 
 const cx = classNames.bind(styles);
@@ -15,6 +16,7 @@ class Dashboard extends Component {
       fetchNewAccounts,
       fetchLatestObject,
       fetchLatestActivity,
+      setRouteInfo,
     } = this.props;
     fetchNewLeads();
     fetchNewAccounts();
@@ -23,12 +25,12 @@ class Dashboard extends Component {
   }
   render() {
     const {
-      leads, accounts, objects, activities, taskStatus,
+      leads, accounts, objects, activities, taskStatus, setRouteInfo
     } = this.props;
     return (
       <div className={cx('dashboard-wrapper')}>
         <div className={cx('leftSection-wrapper')}>
-          <LeftSection leads={leads} accounts={accounts} objects={objects} activities={activities} taskStatus={taskStatus} />
+          <LeftSection leads={leads} accounts={accounts} objects={objects} activities={activities} taskStatus={taskStatus} setRouteInfo={setRouteInfo} />
         </div>
         <div className={cx('right-section-wrapper')}>
                 welcome!
@@ -48,6 +50,7 @@ const mapDispatchToProps = {
   fetchNewAccounts,
   fetchLatestObject,
   fetchLatestActivity,
+  setRouteInfo,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

@@ -1,5 +1,5 @@
 import { toTimezone } from 'utils/dateTimeUtils';
-import { ADD_NEW_SUBJECT, REMOVE_MY_SUBJECT, RESET_TASK, SET_TASK_ASSIGNEE, SET_TASK_ASSIGNEES, SET_TASK_FIELD, SET_TASK_FIELDS, SET_TASK_RECENT_ASSIGNEES, SET_TASK_SUBJECTS, SET_TASK_SUCCESS } from './actionTypes';
+import { ADD_NEW_SUBJECT, REMOVE_MY_SUBJECT, RESET_TASK, SET_TASK_ASSIGNEE, SET_TASK_ASSIGNEES, SET_TASK_FIELD, SET_TASK_FIELDS, SET_TASK_RECENT_ASSIGNEES, SET_TASK_SUBJECTS, SET_TASK_SUCCESS, SET_ROUTE_INFO } from './actionTypes';
 
 const initialState = {
   globalSubjects: [],
@@ -15,6 +15,7 @@ const initialState = {
   statusCode: 0,
   subject: '',
   synced: '',
+  routeInfo: '',
   resetTask: false,
 };
 
@@ -64,7 +65,7 @@ const taskDetails = (state = initialState, action) => {
         mySubjects: [ ...state.mySubjects, newSubject ],
       };
 
-    
+
     case REMOVE_MY_SUBJECT:
       const { mySubjectId } = action.payload;
       return {
@@ -124,6 +125,13 @@ const taskDetails = (state = initialState, action) => {
       return {
         ...state,
         synced,
+      };
+
+    case SET_ROUTE_INFO:
+      const { info } = action.payload;
+      return {
+        ...state,
+        routeInfo: info,
       };
 
     case RESET_TASK:

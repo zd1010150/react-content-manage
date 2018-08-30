@@ -22,7 +22,7 @@ class LeftSection extends React.Component {
   }
   render() {
     const {
-      leads, accounts, objects, activities, intl, history,
+      leads, accounts, objects, activities, intl, history, setRouteInfo,
     } = this.props;
     const { formatMessage } = intl;
     const rightActions = (<Button
@@ -32,10 +32,11 @@ class LeftSection extends React.Component {
       icon="eye"
       onClick={() => {
                 history.push('/Task');
+                setRouteInfo('dashboard');
             }}
     >
       { formatMessage({ id: 'global.ui.button.viewAll' })}
-                          </Button>);
+    </Button>);
     return (
       <div>
         <Row>
@@ -45,7 +46,7 @@ class LeftSection extends React.Component {
                 { leads.map(l =>
                   (<li key={l.id} className={cx('single-link')}>
                     <Link title={l.name} className={`${objTypeAndClassTypeMap.leads}-theme-text`} to={`leads/${l.id}`}>{l.name}</Link>
-                   </li>))
+                  </li>))
 
                 }
               </ul>
@@ -57,7 +58,7 @@ class LeftSection extends React.Component {
                 { accounts.map(l =>
                   (<li key={l.id} className={cx('single-link')}>
                     <Link title={l.name} className={`${objTypeAndClassTypeMap.accounts}-theme-text`} to={`accounts/${l.id}`}>{l.name}</Link>
-                  </li>)) }
+                   </li>)) }
               </ul>
             </Panel>
           </Col>
@@ -67,7 +68,7 @@ class LeftSection extends React.Component {
                 { objects.map(l =>
                   (<li key={l.id} className={cx('single-link')}>
                     <Link title={l.name} className={`${objTypeAndClassTypeMap[l.object_type]}-theme-text`} to={`${l.object_type}/${l.id}`}>{l.name}</Link>
-                   </li>)) }
+                  </li>)) }
               </ul>
             </Panel>
           </Col>
@@ -111,7 +112,7 @@ class LeftSection extends React.Component {
                         </span>
                       </div>
                     </td>
-                  </tr>))}
+                                        </tr>))}
                 </tbody>
               </table>
             </Panel>
