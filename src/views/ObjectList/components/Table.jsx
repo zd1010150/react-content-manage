@@ -45,11 +45,11 @@ const propTypes = {
 
 class TableWrapper extends Component {
   componentDidMount() {
-    const { activeViewId, tryFetchDataByView, objectType } = this.props;
+    const { activeViewId, tryFetchDataByView, objectType, PageSizeValue } = this.props;
     tryFetchDataByView(
       objectType,
       activeViewId[objectType],
-      { page: 1, per_page: PageSize },
+      { page: 1, per_page: PageSizeValue },
     );
   }
 
