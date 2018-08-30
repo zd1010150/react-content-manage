@@ -14,7 +14,8 @@ const initialState = {
   // default status is 'Not Started'
   statusCode: 0,
   subject: '',
-  synced: false,
+  synced: '',
+  resetTask: false,
 };
 
 const mapResponseToStore = ({
@@ -119,11 +120,11 @@ const taskDetails = (state = initialState, action) => {
 
 
     case SET_TASK_SUCCESS:
+      const { synced } = action.payload;
       return {
         ...state,
-        synced: true,
+        synced,
       };
-
 
     case RESET_TASK:
       return {
@@ -131,6 +132,7 @@ const taskDetails = (state = initialState, action) => {
         globalSubjects: state.globalSubjects,
         mySubjects: state.mySubjects,
         assignees: state.assignees,
+        recentAssignees: state.recentAssignees,
       };
 
 

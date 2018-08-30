@@ -12,11 +12,11 @@ const buttons = [
     key: 'save',
     icon: 'save',
   },
-  // {
-  //   cls: 'saveAndNewBtn',
-  //   key: 'saveAndNew',
-  //   icon: 'plus',
-  // },
+  {
+    cls: 'saveAndNewBtn',
+    key: 'saveAndNew',
+    icon: 'plus',
+  },
   {
     cls: 'cancelBtn',
     key: 'cancel',
@@ -78,7 +78,7 @@ const Actions = ({
         return _onDelete;
       case 'save':
         return _onSave;
-      case 'saveandnew':
+      case 'saveAndNew':
         return _onSaveAndNew;
     };
   }
