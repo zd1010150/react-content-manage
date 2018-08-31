@@ -2,7 +2,7 @@
 import { get } from 'store/http/httpAction';
 import Enums from 'utils/EnumsManager';
 import { setTools } from 'components/page/DetailsToolbar/flow/actions';
-import { setModules } from 'components/page/DetailsSubpanels/flow/actions';
+import { setModules, tryFetchModuleData } from 'components/page/DetailsSubpanels/flow/actions';
 import { getFetchUrl, getUpdateUrl, getRequestMethod } from './utils/requests';
 import mapToRequestBody from './utils/mapToRequestBody';
 import {
@@ -19,8 +19,11 @@ import {
   SET_ACCOUNT_NAME,
 } from './actionTypes';
 
-const { PhantomId, ObjectTypes } = Enums;
+
+const { PhantomId, ObjectTypes, DetailModules, DefaultPageConfigs } = Enums;
+const { PageSizeSmall } = DefaultPageConfigs;
 const { Accounts, Opportunities } = ObjectTypes;
+const { Logs } = DetailModules;
 
 
 /**
@@ -38,7 +41,6 @@ const setAccountNameField = relatedAccount => ({
 export const tryFetchAccountInfo = accountId => dispatch =>
   get(`/admin/${Accounts}/${accountId}`, {}, dispatch).then(data => {
     if (data && !_.isEmpty(data.data) && data.data.name) {
-      console.log('creating new opp from acct2');
       dispatch(setAccountNameField(data.data));
     }
   });
@@ -53,10 +55,14 @@ export const tryFetchObjectDetails = (objectId, objectType, accountId) => (dispa
         dispatch(setSections(data.mapped_values, sections));
         dispatch(setTools(tools));
         dispatch(setModules(modules));
+        // refresh log on update primary details
+        dispatch(tryFetchModuleData(Logs, objectType, objectId, {
+          page: 1,
+          per_page: PageSizeSmall,
+        }));
       }
       // special case for 'Account Name' field when create new opportunity from account
       if (accountId && objectType === Opportunities) {
-        console.log('creating new opp from acct');
         dispatch(tryFetchAccountInfo(accountId));
       }
     }

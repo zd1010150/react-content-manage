@@ -298,7 +298,7 @@ class Subpanel extends Component {
       case Logs:
         columns = [
           {
-            dataIndex: 'updated_at',
+            dataIndex: 'created_at',
             title: formatMessage({ id: `${i18n}.date` }),
             render: text => toTimezone(text, true),
           },
