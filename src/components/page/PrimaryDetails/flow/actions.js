@@ -56,10 +56,12 @@ export const tryFetchObjectDetails = (objectId, objectType, accountId) => (dispa
         dispatch(setTools(tools));
         dispatch(setModules(modules));
         // refresh log on update primary details
-        dispatch(tryFetchModuleData(Logs, objectType, objectId, {
-          page: 1,
-          per_page: PageSizeSmall,
-        }));
+        if (objectId !== PhantomId) {
+          dispatch(tryFetchModuleData(Logs, objectType, objectId, {
+            page: 1,
+            per_page: PageSizeSmall,
+          }));
+        }
       }
       // special case for 'Account Name' field when create new opportunity from account
       if (accountId && objectType === Opportunities) {
