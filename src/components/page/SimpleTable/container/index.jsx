@@ -1,13 +1,14 @@
 /* eslint arrow-parens: ["error", "as-needed"] */
 import { Button, Icon, Table } from 'antd';
+import { getRouteDataByKeys } from 'components/hoc/index';
 import { Panel, PopDeleteConfirm } from 'components/ui/index';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Enums from 'utils/EnumsManager';
 import { toTimezone } from 'utils/dateTimeUtils';
+import Enums from 'utils/EnumsManager';
 import { tryDeleteById, tryFetchData } from '../flow/actions';
 
 const {
@@ -40,8 +41,11 @@ const propTypes = {
 
 class SimpleTable extends Component {
   componentDidMount() {
-    const { objectId, tryFetchData } = this.props;
-    tryFetchData(objectId);
+    // NOTES: the condition will check if go to opportunity page, if yes then skip data fetch
+    // TODO: rethink a better way to resolve the issue#188
+    const { accountId, objectId } = this.props;
+    if (!_.isEmpty(accountId) && !_.isEmpty(objectId)) return;
+    this.props.tryFetchData(objectId);
   }
 
   handleDeleteClick = id => this.props.tryDeleteById(id, this.props.objectId)
@@ -190,4 +194,7 @@ const mapDispatchToProps = {
   tryDeleteById,
   tryFetchData,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SimpleTable));
+export default getRouteDataByKeys(['accountId', 'objectId'])(connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(injectIntl(SimpleTable)));
