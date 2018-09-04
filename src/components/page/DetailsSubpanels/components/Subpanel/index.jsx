@@ -182,6 +182,7 @@ class Subpanel extends Component {
     switch (code) {
       case TaskOpen:
         editLink = `${objectType}/${objectId}/tasks`;
+      case TaskHistory:
         columns = [
           {
             key: 'related_to',
@@ -204,58 +205,26 @@ class Subpanel extends Component {
             dataIndex: 'subject',
             title: formatMessage({ id: `${i18n}.subject` }),
             render: (text, record) => {
-              return (
-                <Link
-                  className={`${theme}-theme-text`}
-                  to={`/${editLink}/${record.id}`}
-                >
-                  {text}
-                </Link>
-              );
-            },
-          },
-          {
-            dataIndex: 'status_code',
-            title: formatMessage({ id: `${i18n}.status` }),
-            render: text => {
-              const status = statuses.find(status => status.id === text);
-              return status ? status.display_value : null;
-            },
-          },
-          {
-            dataIndex: 'priority_code',
-            title: formatMessage({ id: `${i18n}.priority` }),
-            render: text => {
-              const priority = priorities.find(priority => priority.id === text);
-              return priority ? priority.display_value : null;
-            },
-          },
-          {
-            dataIndex: 'due_date',
-            title: formatMessage({ id: `${i18n}.dueOn` }),
-            render: text => toTimezone(text),
-          },
-          {
-            dataIndex: 'updated_at',
-            title: formatMessage({ id: `${i18n}.lastModifiedAt` }),
-            render: text => toTimezone(text, true),
-          },
-        ];
-        break;
-      case TaskHistory:
-        columns = [
-          {
-            dataIndex: 'subject',
-            title: formatMessage({ id: `${i18n}.subject` }),
-            render: (text, record) => {
-              return (
-                <Link
-                  className={`${theme}-theme-text`}
-                  to={`/${objectType}/${objectId}/tasks/history/${record.id}`}
-                >
-                  {text}
-                </Link>
-              );
+              if (code === TaskOpen) {
+                return (
+                  <Link
+                    className={`${theme}-theme-text`}
+                    to={`/${objectType}/${objectId}/tasks/history/${record.id}`}
+                  >
+                    {text}
+                  </Link>
+                );
+              }
+              if (code === TaskHistory) {
+                return (
+                  <Link
+                    className={`${theme}-theme-text`}
+                    to={`/${editLink}/${record.id}`}
+                  >
+                    {text}
+                  </Link>
+                );
+              }
             },
           },
           {
