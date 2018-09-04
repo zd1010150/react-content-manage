@@ -205,7 +205,7 @@ class Subpanel extends Component {
             dataIndex: 'subject',
             title: formatMessage({ id: `${i18n}.subject` }),
             render: (text, record) => {
-              if (code === TaskOpen) {
+              if (code === TaskHistory) {
                 return (
                   <Link
                     className={`${theme}-theme-text`}
@@ -215,7 +215,7 @@ class Subpanel extends Component {
                   </Link>
                 );
               }
-              if (code === TaskHistory) {
+              if (code === TaskOpen) {
                 return (
                   <Link
                     className={`${theme}-theme-text`}
