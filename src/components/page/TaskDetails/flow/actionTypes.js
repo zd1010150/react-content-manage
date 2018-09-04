@@ -10,3 +10,5 @@ export const SET_TASK_SUCCESS = 'SET_TASK_SUCCESS';
 export const RESET_TASK = 'RESET_TASK';
 export const SET_DEFAULT_STATE = 'SET_TASK_DEFAULT_STATE';
 export const SET_ROUTE_INFO = 'SET_ROUTE_INFO';
+export const SET_RELATED_TOS = 'SET_RELATED_TOS';
+export const SET_RELATED_TO = 'SET_RELATED_TO';

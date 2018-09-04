@@ -177,29 +177,85 @@ class Subpanel extends Component {
     } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui.table';
-
     let columns = [];
     let editLink = '';
     switch (code) {
       case TaskOpen:
         editLink = `${objectType}/${objectId}/tasks`;
+        columns = [
+          {
+            key: 'related_to',
+            title: formatMessage({ id: `${i18n}.relatedTo` }),
+            render: (text, record) => {
+              if (objectType !== record.taskable_type) {
+                return (
+                  <Link
+                    className={`${theme}-theme-text`}
+                    to={`/${objectType}/${objectId}/${record.taskable_type}/${record.relate_user.id}`}
+                  >
+                    {record.relate_user.name}
+                  </Link>
+                );
+              }
+              return record.relate_user.name;
+            },
+          },
+          {
+            dataIndex: 'subject',
+            title: formatMessage({ id: `${i18n}.subject` }),
+            render: (text, record) => {
+              return (
+                <Link
+                  className={`${theme}-theme-text`}
+                  to={`/${editLink}/${record.id}`}
+                >
+                  {text}
+                </Link>
+              );
+            },
+          },
+          {
+            dataIndex: 'status_code',
+            title: formatMessage({ id: `${i18n}.status` }),
+            render: text => {
+              const status = statuses.find(status => status.id === text);
+              return status ? status.display_value : null;
+            },
+          },
+          {
+            dataIndex: 'priority_code',
+            title: formatMessage({ id: `${i18n}.priority` }),
+            render: text => {
+              const priority = priorities.find(priority => priority.id === text);
+              return priority ? priority.display_value : null;
+            },
+          },
+          {
+            dataIndex: 'due_date',
+            title: formatMessage({ id: `${i18n}.dueOn` }),
+            render: text => toTimezone(text),
+          },
+          {
+            dataIndex: 'updated_at',
+            title: formatMessage({ id: `${i18n}.lastModifiedAt` }),
+            render: text => toTimezone(text, true),
+          },
+        ];
+        break;
       case TaskHistory:
         columns = [
           {
             dataIndex: 'subject',
             title: formatMessage({ id: `${i18n}.subject` }),
             render: (text, record) => {
-              if (code === TaskHistory) {
-                return (
-                  <Link
-                    className={`${theme}-theme-text`}
-                    to={`/${objectType}/${objectId}/tasks/history/${record.id}`}
-                  >
-                    {text}
-                  </Link>
-                );
-              }
-              return text;
+              return (
+                <Link
+                  className={`${theme}-theme-text`}
+                  to={`/${objectType}/${objectId}/tasks/history/${record.id}`}
+                >
+                  {text}
+                </Link>
+              );
             },
           },
           {
@@ -387,7 +443,7 @@ class Subpanel extends Component {
           return (
             <Fragment>
               <Link target="_blank" to={record.url}>
-                <Icon style={{fontWeight: 400 }} className="cursor-pointer" size="small" type="eye" />
+                <Icon style={{ fontWeight: 400 }} className="cursor-pointer" size="small" type="eye" />
               </Link>
               <Link to={`/${editLink}/${id}`}>
                 <Icon className="cursor-pointer ml-sm" size="small" type="edit" />
