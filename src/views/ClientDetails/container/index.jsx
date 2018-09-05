@@ -8,9 +8,6 @@ import { getThemeByType } from 'utils/common';
 const { PhantomId } = Enums;
 
 class ObjectDetails extends Component {
-  componentDidUpdate() {
-    ReactDom.findDOMNode(this).scrollIntoView();
-  }
   render() {
     const {
       accountId,

@@ -14,6 +14,7 @@ const SubMainLayout = ({ rightSiderCollapsed, rightSiderWidth }) => (
 
   <div
     className={cx('content-wrapper')}
+    id="detailPage"
     style={{ padding: '10px 15px',
           margin: 0,
           overflow: 'auto',
