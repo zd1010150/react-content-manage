@@ -188,19 +188,19 @@ class Subpanel extends Component {
             key: 'related_to',
             title: formatMessage({ id: `${i18n}.relatedTo` }),
             render: (text, record) => {
-              if (objectType !== record.taskable_type) {
+              if (objectType !== record.taskable_type && record !== null && record !== undefined) {
                 return (
                   <Link
                     className={`${getThemeByType(record.taskable_type)}-theme-text`}
                     to={`/${objectType}/${objectId}/${record.taskable_type}/${record.relate_user.id}`}
                   >
-                    {record.relate_user.name}
+                    {record !== null && record !== undefined ? record.relate_user.name : ''}
                   </Link>
                 );
               }
               return (
                 <span className={`${getThemeByType(record.taskable_type)}-theme-text`}>
-                  {record.relate_user.name}
+                  {record !== null && record !== undefined ? record.relate_user.name : ''}
                 </span>
               );
             },
@@ -352,19 +352,19 @@ class Subpanel extends Component {
             key: 'related_to',
             title: formatMessage({ id: `${i18n}.relatedTo` }),
             render: (text, record) => {
-              if (objectType !== record.invoice_able_type) {
+              if (objectType !== record.invoice_able_type && record !== null && record !== undefined) {
                 return (
                   <Link
                     className={`${getThemeByType(record.invoice_able_type)}-theme-text`}
                     to={`/${objectType}/${objectId}/${record.invoice_able_type}/${record.invoice_able_id}`}
                   >
-                    {record.invoice_able.name}
+                    {record !== null && record !== undefined ? record.invoice_able.name : ''}
                   </Link>
                 );
               }
               return (
                 <span className={`${getThemeByType(record.invoice_able_type)}-theme-text`}>
-                  {record.invoice_able.name}
+                  {record !== null && record !== undefined ? record.invoice_able.name : ''}
                 </span>
               );
             },
