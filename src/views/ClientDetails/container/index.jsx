@@ -1,6 +1,5 @@
 import { DetailsSubpanels, DetailsToolbar, PrimaryDetails } from 'components/page/index';
 import React, { Component, Fragment } from 'react';
-import ReactDom from 'react-dom';
 import { connect } from 'react-redux';
 import Enums from 'utils/EnumsManager';
 import { getThemeByType } from 'utils/common';

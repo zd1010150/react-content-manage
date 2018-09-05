@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 
 const SetupLayout = ({ rightSiderCollapsed, rightSiderWidth, appRoutHash }) => (
 
-  <div className={cx('content-wrapper')} id="detailPage" key={appRoutHash}>
+  <div className={cx('content-wrapper')} id="mainContent" key={appRoutHash}>
     <SetupSider />
     <div
       className={cx('setup-content-layout-wrapper')}
