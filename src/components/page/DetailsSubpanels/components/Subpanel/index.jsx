@@ -177,7 +177,6 @@ class Subpanel extends Component {
     } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui.table';
-
     let columns = [];
     let editLink = '';
     switch (code) {
@@ -185,6 +184,23 @@ class Subpanel extends Component {
         editLink = `${objectType}/${objectId}/tasks`;
       case TaskHistory:
         columns = [
+          {
+            key: 'related_to',
+            title: formatMessage({ id: `${i18n}.relatedTo` }),
+            render: (text, record) => {
+              if (objectType !== record.taskable_type) {
+                return (
+                  <Link
+                    className={`${theme}-theme-text`}
+                    to={`/${objectType}/${objectId}/${record.taskable_type}/${record.relate_user.id}`}
+                  >
+                    {record.relate_user.name}
+                  </Link>
+                );
+              }
+              return record.relate_user.name;
+            },
+          },
           {
             dataIndex: 'subject',
             title: formatMessage({ id: `${i18n}.subject` }),
@@ -199,7 +215,16 @@ class Subpanel extends Component {
                   </Link>
                 );
               }
-              return text;
+              if (code === TaskOpen) {
+                return (
+                  <Link
+                    className={`${theme}-theme-text`}
+                    to={`/${editLink}/${record.id}`}
+                  >
+                    {text}
+                  </Link>
+                );
+              }
             },
           },
           {
@@ -387,7 +412,7 @@ class Subpanel extends Component {
           return (
             <Fragment>
               <Link target="_blank" to={record.url}>
-                <Icon style={{fontWeight: 400 }} className="cursor-pointer" size="small" type="eye" />
+                <Icon style={{ fontWeight: 400 }} className="cursor-pointer" size="small" type="eye" />
               </Link>
               <Link to={`/${editLink}/${id}`}>
                 <Icon className="cursor-pointer ml-sm" size="small" type="edit" />
