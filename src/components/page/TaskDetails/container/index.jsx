@@ -11,6 +11,8 @@ import { Actions, Fields } from '../components/index';
 import { reset, setSuccess, trySaveNewTask, tryUpdateTask, setRouteInfo } from '../flow/actions';
 
 const { PhantomId, ThemeTypesInArray } = Enums;
+const getRelateToId = value => value.split('__')[1];
+const getRelatedToType = value => value.split('__')[0];
 
 const mapStoreToRequest = ({
   assigneeId,
@@ -19,6 +21,7 @@ const mapStoreToRequest = ({
   priorityCode,
   statusCode,
   subject,
+  relatedTo,
 }, objectId, objectType) => ({
   assign_to_user_id: assigneeId,
   subject,
@@ -26,8 +29,8 @@ const mapStoreToRequest = ({
   priority_code: priorityCode,
   due_date: toUtc(dueTime),
   comments,
-  taskable_type: objectType,
-  taskable_id: objectId,
+  taskable_id: Number(getRelateToId(relatedTo)),
+  taskable_type: getRelatedToType(relatedTo),
 });
 
 
