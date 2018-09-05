@@ -3,9 +3,8 @@ import { withRouter } from 'react-router';
 
 class ScrollToTop extends React.Component {
   componentDidUpdate(prevProps) {
-    const mainContent = document.querySelector('#mainContent');
-    if (this.props.location !== prevProps.location && document.contains(mainContent)) {
-      mainContent.scrollTo(0, 0);
+    if (this.props.location !== prevProps.location && document.querySelector('#mainContent')) {
+      document.querySelector('#mainContent').scrollTo(0, 0);
     }
   }
 
