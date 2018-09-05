@@ -1,14 +1,15 @@
 import Enums from 'utils/EnumsManager';
 import { SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS, SET_ACTIVE_VIEW, SET_PAGE_SIZE } from './actionTypes';
 
-const { PhantomId, DefaultPageConfigs } = Enums;
+const { PhantomId, DefaultPageConfigs, ObjectTypes } = Enums;
 const { PageSize } = DefaultPageConfigs;
+const {  Leads, Accounts, Opportunities } = ObjectTypes;
 
 const initialState = {
   activeViewId: {
-    leads: PhantomId,
-    accounts: PhantomId,
-    opportunities: PhantomId,
+    leads: localStorage.hasOwnProperty(Leads) ? parseInt(localStorage.getItem(Leads)) : PhantomId,
+    accounts: localStorage.hasOwnProperty(Accounts) ? parseInt(localStorage.getItem(Accounts)) : PhantomId,
+    opportunities: localStorage.hasOwnProperty(Opportunities) ? parseInt(localStorage.getItem(Opportunities)) : PhantomId,
   },
   columns: [],
   data: [],
@@ -69,6 +70,7 @@ const objectList = (state = initialState, action) => {
 
     case SET_ACTIVE_VIEW:
       const { viewId, objectType } = action.payload;
+      localStorage.setItem(objectType, viewId);
       return {
         ...state,
         activeViewId: {
