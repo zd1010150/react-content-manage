@@ -2,20 +2,21 @@ import Enums from 'utils/EnumsManager';
 import { setStore, getStore } from 'utils/localStorage';
 import { SET_DATA, SET_OPTIONS, SET_ROW_SELECTION, SET_VIEWS, SET_ACTIVE_VIEW, SET_PAGE_SIZE } from './actionTypes';
 
-const { PhantomId, DefaultPageConfigs, LocalStorageKeys } = Enums;
+const { PhantomId, DefaultPageConfigs, LocalStorageKeys, ObjectTypes } = Enums;
 const { PageSize } = DefaultPageConfigs;
-const { crmViewId, ViewIdKey } = LocalStorageKeys;
+const { crmViewId } = LocalStorageKeys;
+const { Leads, Accounts, Opportunities } = ObjectTypes;
 
 const parseViewId = (type) => {
-  const value = getStore(ViewIdKey) ? JSON.parse(getStore(ViewIdKey)) : null;
+  const value = getStore(crmViewId) ? JSON.parse(getStore(crmViewId)) : null;
   return value ? value[type] : PhantomId;
 };
 
 const initialState = {
   activeViewId: {
-    leads: parseViewId(crmViewId.leads),
-    accounts: parseViewId(crmViewId.accounts),
-    opportunities: parseViewId(crmViewId.opportunities),
+    leads: parseViewId(Leads),
+    accounts: parseViewId(Accounts),
+    opportunities: parseViewId(Opportunities),
   },
   columns: [],
   data: [],
@@ -76,8 +77,7 @@ const objectList = (state = initialState, action) => {
 
     case SET_ACTIVE_VIEW:
       const { viewId, objectType } = action.payload;
-      crmViewId[objectType] = viewId;
-      setStore(ViewIdKey, {
+      setStore(crmViewId, {
         ...state.activeViewId,
         [objectType]: viewId,
       });

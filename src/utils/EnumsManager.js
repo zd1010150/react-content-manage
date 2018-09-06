@@ -126,12 +126,7 @@ const EnumsManager = Object.freeze({
     Email: 'crmEmails',
     Timezone: 'crmTimezone',
     LanguaegOfApp: 'crmAppLanguage',
-    ViewIdKey: 'crmViewId',
-    crmViewId: {
-      leads: 'leads',
-      accounts: 'accounts',
-      opportunities: 'opportunities',
-    },
+    crmViewId: 'crmViewId',
   }),
 
   PhantomId: '0000-0000',
