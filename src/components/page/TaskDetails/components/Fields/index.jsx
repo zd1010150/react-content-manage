@@ -1,6 +1,6 @@
 import { Col, DatePicker, Icon, Input, Row, Select } from 'antd';
 import classNames from 'classnames/bind';
-import { AssigneeModal, SubjectsModal } from 'components/ui/index';
+import { AssigneeModal, SubjectsModal, RelatedToSelection } from 'components/ui/index';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -17,6 +17,8 @@ import {
   tryFetchAssignees,
   tryFetchRecentAssignees,
   tryFetchTaskSubjects,
+  tryFetchRelatedTos,
+  setRelatedTo,
 } from '../../flow/actions';
 
 const { TextArea } = Input;
@@ -58,8 +60,9 @@ class TaskFields extends Component {
       tryFetchAssignees,
       tryFetchRecentAssignees,
       tryFetchTaskSubjects,
+      tryFetchRelatedTos,
     } = this.props;
-    
+
     if (taskId !== PhantomId) {
       tryFetchTask(taskId, objectId, objectType, defaultStateId);
     } else {
@@ -67,8 +70,11 @@ class TaskFields extends Component {
       tryFetchAssignees(objectId, objectType);
       tryFetchRecentAssignees(objectType);
       tryFetchTaskSubjects();
+      tryFetchRelatedTos(objectId, objectType, taskId);
     }
   }
+
+  handleRelatedToChange = id => this.props.setRelatedTo(id)
 
   handleAssigneeModalCancel = $ => this.setState({ assigneeModalVisible: false })
 
@@ -82,18 +88,18 @@ class TaskFields extends Component {
 
   handleSubjectModalOpen = $ => this.setState({ subjectModalVisible: true })
 
-  handleSubjectSelect = name => {
+  handleSubjectSelect = (name) => {
     this.props.setFieldValue('subject', name);
     return this.setState({ subjectModalVisible: false });
   }
 
   handleFieldChange = (field, value) => this.props.setFieldValue(field, value)
 
-  handleRowClick = id => {
+  handleRowClick = (id) => {
     this.props.setAssignee(Number(id));
     return this.setState({ assigneeModalVisible: false });
   }
-  
+
   render() {
     const { assigneeModalVisible, subjectModalVisible } = this.state;
     const {
@@ -112,12 +118,16 @@ class TaskFields extends Component {
       statuses,
       subject,
       isHistoryTask,
+      leads,
+      accounts,
+      opportunities,
+      relatedTo,
     } = this.props;
 
     const { formatMessage } = intl;
     const i18nPrefix = 'page.taskDetails.labels';
     const i18nPh = 'global.ui.placeholders';
-    
+
     const labelCls = cx('label');
     const rowCls = cx('row');
 
@@ -221,6 +231,20 @@ class TaskFields extends Component {
               value={dueTime === null || dueTime === '' ? undefined : moment(dueTime, dateFormat)}
             />
           </Col>
+          <Col {...colLayout}>
+            <div className={labelCls}>
+              {formatMessage({ id: `${i18nPrefix}.relatedTo` })}
+            </div>
+
+            <RelatedToSelection
+              relatedTo={relatedTo}
+              leads={leads}
+              accounts={accounts}
+              opportunities={opportunities}
+              onChange={this.handleRelatedToChange}
+              isHistoryTask={isHistoryTask}
+            />
+          </Col>
         </Row>
         <Row className={rowCls}>
           <div style={{ fontWeight: 700 }}>
@@ -257,6 +281,10 @@ const mapStateToProps = ({ global, taskDetails }) => ({
   recentAssignees: taskDetails.recentAssignees,
   statusCode: taskDetails.statusCode,
   subject: taskDetails.subject,
+  leads: taskDetails.relatedLeads,
+  accounts: taskDetails.relatedAccounts,
+  opportunities: taskDetails.relatedOpportunities,
+  relatedTo: taskDetails.relatedTo,
 });
 const mapDispatchToProps = {
   setAssignee,
@@ -267,5 +295,7 @@ const mapDispatchToProps = {
   tryFetchAssignees,
   tryFetchRecentAssignees,
   tryFetchTaskSubjects,
+  tryFetchRelatedTos,
+  setRelatedTo,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TaskFields));

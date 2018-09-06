@@ -35,7 +35,7 @@ export const mergeSuccess = () => ({
 });
 //
 export const tryMergeLeads = mergedData => dispatch =>
-  post('/admin/leads/merge', mergedData, dispatch).then((data) => {
+  post('/admin/leads/merge_p1', mergedData, dispatch).then((data) => {
     if (data && !_.isEmpty(data.data)) {
       dispatch(mergeSuccess());
     }

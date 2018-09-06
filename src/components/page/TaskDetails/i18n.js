@@ -12,6 +12,7 @@ export default {
       comments: '评论',
       moreOptions: '更多选项...',
       recentOptions: '最近选择过',
+      relatedTo: '相关者',
     },
   },
   en: {
@@ -27,6 +28,7 @@ export default {
       comments: 'Comments',
       moreOptions: 'More options...',
       recentOptions: 'Recent Selections',
+      relatedTo: 'Related To',
     },
   },
 };

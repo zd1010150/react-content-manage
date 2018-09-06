@@ -177,7 +177,6 @@ class Subpanel extends Component {
     } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui.table';
-
     let columns = [];
     let editLink = '';
     switch (code) {
@@ -185,6 +184,27 @@ class Subpanel extends Component {
         editLink = `${objectType}/${objectId}/tasks`;
       case TaskHistory:
         columns = [
+          {
+            key: 'related_to',
+            title: formatMessage({ id: `${i18n}.relatedTo` }),
+            render: (text, record) => {
+              if (objectType !== record.taskable_type && record && record.relate_user) {
+                return (
+                  <Link
+                    className={`${getThemeByType(record.taskable_type)}-theme-text`}
+                    to={`/${objectType}/${objectId}/${record.taskable_type}/${record.relate_user.id}`}
+                  >
+                    {record.relate_user.name}
+                  </Link>
+                );
+              }
+              return (
+                <span className={`${getThemeByType(record.taskable_type)}-theme-text`}>
+                  {record && record.relate_user ? record.relate_user.name : ''}
+                </span>
+              );
+            },
+          },
           {
             dataIndex: 'subject',
             title: formatMessage({ id: `${i18n}.subject` }),
@@ -199,7 +219,16 @@ class Subpanel extends Component {
                   </Link>
                 );
               }
-              return text;
+              if (code === TaskOpen) {
+                return (
+                  <Link
+                    className={`${theme}-theme-text`}
+                    to={`/${editLink}/${record.id}`}
+                  >
+                    {text}
+                  </Link>
+                );
+              }
             },
           },
           {
@@ -322,14 +351,23 @@ class Subpanel extends Component {
           {
             key: 'related_to',
             title: formatMessage({ id: `${i18n}.relatedTo` }),
-            render: (text, record) => (
-              <Link
-                className={`${getThemeByType(record.invoice_able_type)}-theme-text`}
-                to={`/${record.invoice_able_type}/${record.invoice_able_id}`}
-              >
-                {record.invoice_able.name}
-              </Link>
-            ),
+            render: (text, record) => {
+              if (objectType !== record.invoice_able_type && record && record.invoice_able) {
+                return (
+                  <Link
+                    className={`${getThemeByType(record.invoice_able_type)}-theme-text`}
+                    to={`/${objectType}/${objectId}/${record.invoice_able_type}/${record.invoice_able_id}`}
+                  >
+                    {record.invoice_able.name}
+                  </Link>
+                );
+              }
+              return (
+                <span className={`${getThemeByType(record.invoice_able_type)}-theme-text`}>
+                  {record && record.invoice_able ? record.invoice_able.name : ''}
+                </span>
+              );
+            },
           },
           {
             dataIndex: 'status',
@@ -387,7 +425,7 @@ class Subpanel extends Component {
           return (
             <Fragment>
               <Link target="_blank" to={record.url}>
-                <Icon style={{fontWeight: 400 }} className="cursor-pointer" size="small" type="eye" />
+                <Icon style={{ fontWeight: 400 }} className="cursor-pointer" size="small" type="eye" />
               </Link>
               <Link to={`/${editLink}/${id}`}>
                 <Icon className="cursor-pointer ml-sm" size="small" type="edit" />

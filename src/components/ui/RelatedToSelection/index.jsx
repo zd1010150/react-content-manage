@@ -9,7 +9,9 @@ const defaultProps = {
   leadGroupLabel: 'Leads',
   accountGroupLabel: 'Accounts',
   opportunityGroupLabel: 'Opportunities',
+  size: 'default',
   onChange: null,
+  isHistoryTask: false,
 };
 const propTypes = {
   relatedTo: PropTypes.string.isRequired,
@@ -38,6 +40,8 @@ const propTypes = {
     name: PropTypes.string.isRequired,
   })).isRequired,
   onChange: PropTypes.func,
+  size: PropTypes.string,
+  isHistoryTask: PropTypes.bool,
 };
 
 const RelatedToSelection = ({
@@ -49,12 +53,15 @@ const RelatedToSelection = ({
   accounts,
   opportunities,
   onChange,
+  size,
+  isHistoryTask,
 }) => (
   <Select
     className="full-width"
-    size="small"
+    size={size}
     onChange={onChange}
     value={relatedTo}
+    disabled={isHistoryTask}
   >
     <OptGroup label={leadGroupLabel}>
       {leads.map(a => <Option key={a.id} value={a.id}>{a.name}</Option>)}
