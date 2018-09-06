@@ -188,7 +188,7 @@ class Subpanel extends Component {
             key: 'related_to',
             title: formatMessage({ id: `${i18n}.relatedTo` }),
             render: (text, record) => {
-              if (objectType !== record.taskable_type && record.relate_user !== null && record.relate_user !== undefined) {
+              if (objectType !== record.taskable_type && record && record.relate_user) {
                 return (
                   <Link
                     className={`${getThemeByType(record.taskable_type)}-theme-text`}
@@ -200,7 +200,7 @@ class Subpanel extends Component {
               }
               return (
                 <span className={`${getThemeByType(record.taskable_type)}-theme-text`}>
-                  {record.relate_user !== null && record.relate_user !== undefined ? record.relate_user.name : ''}
+                  {record && record.relate_user ? record.relate_user.name : ''}
                 </span>
               );
             },
@@ -352,7 +352,7 @@ class Subpanel extends Component {
             key: 'related_to',
             title: formatMessage({ id: `${i18n}.relatedTo` }),
             render: (text, record) => {
-              if (objectType !== record.invoice_able_type && record.invoice_able !== null && record.invoice_able !== undefined) {
+              if (objectType !== record.invoice_able_type && record && record.invoice_able) {
                 return (
                   <Link
                     className={`${getThemeByType(record.invoice_able_type)}-theme-text`}
@@ -364,7 +364,7 @@ class Subpanel extends Component {
               }
               return (
                 <span className={`${getThemeByType(record.invoice_able_type)}-theme-text`}>
-                  {record.invoice_able !== null && record.invoice_able !== undefined ? record.invoice_able.name : ''}
+                  {record && record.invoice_able ? record.invoice_able.name : ''}
                 </span>
               );
             },
