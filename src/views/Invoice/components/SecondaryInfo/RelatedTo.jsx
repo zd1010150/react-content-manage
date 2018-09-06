@@ -55,6 +55,7 @@ class RelatedTo extends Component {
           accounts={accounts}
           opportunities={opportunities}
           onChange={this.handleRelatedToChange}
+          size="small"
         />
       </Fragment>
     );
