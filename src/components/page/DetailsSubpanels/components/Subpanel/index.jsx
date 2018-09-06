@@ -188,17 +188,21 @@ class Subpanel extends Component {
             key: 'related_to',
             title: formatMessage({ id: `${i18n}.relatedTo` }),
             render: (text, record) => {
-              if (objectType !== record.taskable_type) {
+              if (objectType !== record.taskable_type && record && record.relate_user) {
                 return (
                   <Link
-                    className={`${theme}-theme-text`}
+                    className={`${getThemeByType(record.taskable_type)}-theme-text`}
                     to={`/${objectType}/${objectId}/${record.taskable_type}/${record.relate_user.id}`}
                   >
                     {record.relate_user.name}
                   </Link>
                 );
               }
-              return record.relate_user.name;
+              return (
+                <span className={`${getThemeByType(record.taskable_type)}-theme-text`}>
+                  {record && record.relate_user ? record.relate_user.name : ''}
+                </span>
+              );
             },
           },
           {
@@ -347,14 +351,23 @@ class Subpanel extends Component {
           {
             key: 'related_to',
             title: formatMessage({ id: `${i18n}.relatedTo` }),
-            render: (text, record) => (
-              <Link
-                className={`${getThemeByType(record.invoice_able_type)}-theme-text`}
-                to={`/${record.invoice_able_type}/${record.invoice_able_id}`}
-              >
-                {record.invoice_able.name}
-              </Link>
-            ),
+            render: (text, record) => {
+              if (objectType !== record.invoice_able_type && record && record.invoice_able) {
+                return (
+                  <Link
+                    className={`${getThemeByType(record.invoice_able_type)}-theme-text`}
+                    to={`/${objectType}/${objectId}/${record.invoice_able_type}/${record.invoice_able_id}`}
+                  >
+                    {record.invoice_able.name}
+                  </Link>
+                );
+              }
+              return (
+                <span className={`${getThemeByType(record.invoice_able_type)}-theme-text`}>
+                  {record && record.invoice_able ? record.invoice_able.name : ''}
+                </span>
+              );
+            },
           },
           {
             dataIndex: 'status',
