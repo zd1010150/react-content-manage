@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { mapToAPIOrderStr } from 'utils/common';
 import { toTimezone } from 'utils/dateTimeUtils';
+import { setModules } from 'components/page/DetailsSubpanels/flow/actions';
 import {
   setRowSelection,
   tryFetchDataByView,
@@ -45,12 +46,13 @@ const propTypes = {
 
 class TableWrapper extends Component {
   componentDidMount() {
-    const { activeViewId, tryFetchDataByView, objectType, PageSizeValue } = this.props;
+    const { activeViewId, tryFetchDataByView, objectType, PageSizeValue, setModules } = this.props;
     tryFetchDataByView(
       objectType,
       activeViewId[objectType],
       { page: 1, per_page: PageSizeValue },
     );
+    setModules([]);
   }
 
   handleDeleteClick = (id) => {
@@ -229,6 +231,7 @@ const mapDispatchToProps = {
   tryFetchDataByView,
   tryDeleteClientByType,
   setPageSize,
+  setModules,
 };
 export default connect(
   mapStateToProps,
