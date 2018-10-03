@@ -45,6 +45,7 @@ const initialState = {
   data: [],
   keys: [],
   mergedData: {},
+  newMergedId: '',
   mergeSuccess: false,
 };
 
@@ -105,9 +106,11 @@ const mergence = (state = initialState, action) => {
 
 
     case MERGE_SUCCESS:
+      const { newMergedId } = action.payload;
       return {
         ...state,
         mergeSuccess: true,
+        newMergedId,
       };
 
 

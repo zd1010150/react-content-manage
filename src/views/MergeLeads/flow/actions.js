@@ -30,14 +30,15 @@ export const setMasterRecord = masterId => ({
   payload: { masterId },
 });
 //
-export const mergeSuccess = () => ({
+export const mergeSuccess = newMergedId => ({
   type: MERGE_SUCCESS,
+  payload: { newMergedId },
 });
 //
 export const tryMergeLeads = mergedData => dispatch =>
   post('/admin/leads/merge_p1', mergedData, dispatch).then((data) => {
     if (data && !_.isEmpty(data.data)) {
-      dispatch(mergeSuccess());
+      dispatch(mergeSuccess(data.data.id));
     }
   });
 
