@@ -149,8 +149,8 @@ class Subpanel extends Component {
   parsePagination = meta => {
     // hide pagination if unnecessary
     if (!_.isObject(meta)
-        || !_.isObject(meta.pagination)
-        || meta.pagination.total <= PageSizeSmall) {
+      || !_.isObject(meta.pagination)
+      || meta.pagination.total <= PageSizeSmall) {
       return false;
     }
 
@@ -253,7 +253,7 @@ class Subpanel extends Component {
             render: text => toTimezone(text),
           },
           {
-            dataIndex: 'updated_at',
+            dataIndex: 'last_modified_date',
             title: formatMessage({ id: `${i18n}.lastModifiedAt` }),
             render: text => toTimezone(text, true),
           },
