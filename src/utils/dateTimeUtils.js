@@ -70,8 +70,13 @@ export const toUtc = (str, isConvertingTime = false) => {
   const sourceSetting = getTimeSetting(isConvertingTime);
   const utcFormat = isConvertingTime ? DefaultApiTimeFormat : DefaultApiDateFormat;
 
+  const date = moment(str, sourceSetting.format);
+  if (!isConvertingTime && date.isValid()) {
+    return date.format(utcFormat);
+  }
   // Create a moment instance w/ a specific timezone
   const timezone = momentTz.tz(str, sourceSetting.format, sourceSetting.code);
+
   if (!timezone.isValid()) return null;
   // Convert to utc time
   return timezone.utc().format(utcFormat);
