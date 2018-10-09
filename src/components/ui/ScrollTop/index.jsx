@@ -3,8 +3,10 @@ import { withRouter } from 'react-router';
 
 class ScrollToTop extends React.Component {
   componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
-      window.scrollTo(0, 0);
+    const node = document.querySelector('#mainContent');
+    if (this.props.location !== prevProps.location && node) {
+      // NOTES: IE doesn't support node scrollTo, it only supports document scrollTo
+      node.scrollTop = 0;
     }
   }
 

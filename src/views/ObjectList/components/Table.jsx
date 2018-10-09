@@ -9,10 +9,12 @@ import { Link } from 'react-router-dom';
 import Enums from 'utils/EnumsManager';
 import { mapToAPIOrderStr } from 'utils/common';
 import { toTimezone } from 'utils/dateTimeUtils';
+import { setModules } from 'components/page/DetailsSubpanels/flow/actions';
 import {
   setRowSelection,
   tryFetchDataByView,
   tryDeleteClientByType,
+  setPageSize,
 } from '../flow/actions';
 
 const { FieldTypes, DefaultPageConfigs, PhantomId } = Enums;
@@ -30,10 +32,7 @@ const { Options, PageSize } = DefaultPageConfigs;
 
 
 const propTypes = {
-  activeViewId: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]).isRequired,
+  activeViewId: PropTypes.object.isRequired,
   columns: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
   meta: PropTypes.object.isRequired,
@@ -47,11 +46,13 @@ const propTypes = {
 
 class TableWrapper extends Component {
   componentDidMount() {
-    this.props.tryFetchDataByView(
-      this.props.objectType,
-      PhantomId,
-      { page: 1, per_page: PageSize },
+    const { activeViewId, tryFetchDataByView, objectType, PageSizeValue, setModules } = this.props;
+    tryFetchDataByView(
+      objectType,
+      activeViewId[objectType],
+      { page: 1, per_page: PageSizeValue },
     );
+    setModules([]);
   }
 
   handleDeleteClick = (id) => {
@@ -62,7 +63,7 @@ class TableWrapper extends Component {
       tableParams,
       meta,
     } = this.props;
-    tryDeleteClientByType(objectType, id, tableParams, meta, activeViewId);
+    tryDeleteClientByType(objectType, id, tableParams, meta, activeViewId[objectType]);
   }
 
   handleSelectionChange = selectedKeys => this.props.setRowSelection(selectedKeys)
@@ -83,17 +84,19 @@ class TableWrapper extends Component {
         sortedBy: mapToAPIOrderStr(sorter.order),
       }
     }
-    const { activeViewId, objectType, tryFetchDataByView } = this.props;
-    return tryFetchDataByView(objectType, activeViewId, { ...paginationParams, ...sorterParams });
+    const { activeViewId, objectType, tryFetchDataByView, setPageSize } = this.props;
+    setPageSize(paginationParams.per_page);
+    return tryFetchDataByView(objectType, activeViewId[objectType], { ...paginationParams, ...sorterParams });
   }
 
   parsePagination = (meta) => {
     const { pagination } = meta;
+    const { PageSizeValue } = this.props;
     let extraParams = {};
     if (!_.isEmpty(pagination)) {
       extraParams = {
         current: pagination.current_page,
-        pageSize: pagination.per_page,
+        pageSize: PageSizeValue,
         total: pagination.total,
       };
     }
@@ -123,10 +126,10 @@ class TableWrapper extends Component {
         extraConfigs.render = text => toTimezone(text, type === DateTime);
         break;
       case Lookup:
-        if(column.field_name === 'target_account_id') {
+        if (column.field_name === 'target_account_id') {
           extraConfigs.render = (lookup, record) => (
             <Link
-              className={`account-theme-text`}
+              className="account-theme-text"
               to={`accounts/${record.target_account_id.id}`}
             >
               {lookup}
@@ -221,11 +224,14 @@ const mapStateToProps = ({ global, objectList }) => ({
   meta: objectList.meta,
   selectedRowKeys: objectList.selectedRowKeys,
   tableParams: objectList.tableParams,
+  PageSizeValue: objectList.PageSizeValue,
 });
 const mapDispatchToProps = {
   setRowSelection,
   tryFetchDataByView,
   tryDeleteClientByType,
+  setPageSize,
+  setModules,
 };
 export default connect(
   mapStateToProps,

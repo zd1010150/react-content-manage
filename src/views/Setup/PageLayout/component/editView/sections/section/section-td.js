@@ -11,19 +11,21 @@ const cx = classNames.bind(styles);
 const fieldTarget = {
   drop(props, monitor) {
     const {
-      x, y, sectionCode, moveFieldsBetweenSection, addFieldToSection, allFields,
+      x, y, sectionCode, moveFieldsBetweenSection, addFieldToSection, allFields, showValue,
     } = props;
     const { fieldId, sourceSectionCode } = monitor.getItem();
     if (_.isEmpty(sourceSectionCode)) { // drag from allfields to these td
+      showValue[fieldId] = [];
       addFieldToSection({
         allFields,
         fieldId,
         sectionCode,
         position: [x, y],
+        showValue,
       });
     } else {
       moveFieldsBetweenSection({ // move between sections
-        fieldId, allFields, sourceSectionCode, targetSectionCode: sectionCode, position: [x, y],
+        fieldId, allFields, sourceSectionCode, targetSectionCode: sectionCode, position: [x, y], showValue,
       });
     }
   },

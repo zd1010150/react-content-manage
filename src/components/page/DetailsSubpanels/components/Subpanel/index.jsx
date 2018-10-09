@@ -8,13 +8,14 @@ import React, { Component, Fragment } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Enums from 'utils/EnumsManager';
+import { getThemeByType } from 'utils/common';
 import { toTimezone } from 'utils/dateTimeUtils';
+import Enums from 'utils/EnumsManager';
+import { tryDeleteAttachment, tryDeleteInvoice, tryDeleteTask, tryFetchModuleData } from '../../flow/actions';
+import { setRouteInfo } from '../../../TaskDetails/flow/actions';
 import styles from './index.less';
-import { tryDeleteAttachment, tryDeleteTask, tryFetchModuleData } from '../../flow/actions';
 
 const cx = classNames.bind(styles);
-
 const {
   DefaultPageConfigs,
   DetailModules,
@@ -30,6 +31,7 @@ const {
   Opportunities,
   TaskOpen,
   TaskHistory,
+  Invoice,
 } = DetailModules;
 const { PageSizeSmall } = DefaultPageConfigs;
 
@@ -60,9 +62,15 @@ class Subpanel extends Component {
       code,
       objectId,
       objectType,
-      tryFetchModuleData,
+      setRouteInfo,
     } = this.props;
-    tryFetchModuleData(code, objectType, objectId, { per_page: PageSizeSmall });
+    setRouteInfo(objectType);
+    this.props.tryFetchModuleData(
+      code,
+      objectType,
+      objectId,
+      { per_page: PageSizeSmall },
+    );
   }
 
   getActionBtnByModule = () => {
@@ -86,6 +94,9 @@ class Subpanel extends Component {
       case Attachments:
         link = `/${objectType}/${objectId}/attachments/${PhantomId}`;
         break;
+      case Invoice:
+        link = `/${objectType}/${objectId}/invoice/${PhantomId}`;
+        break;
       case TaskHistory:
       case Logs:
       default:
@@ -107,14 +118,17 @@ class Subpanel extends Component {
       objectType,
       tryDeleteTask,
       tryDeleteAttachment,
+      tryDeleteInvoice,
     } = this.props;
     switch (code) {
       case TaskOpen:
         return tryDeleteTask(code, id, objectType, objectId);
       case Attachments:
         return tryDeleteAttachment(code, id, objectType, objectId);
+      case Invoice:
+        return tryDeleteInvoice(code, id, objectType, objectId);
       default:
-        console.log('no such code has been found.');
+        return console.warn('Current code has no delete handler!');
     }
   }
 
@@ -163,7 +177,6 @@ class Subpanel extends Component {
     } = this.props;
     const { formatMessage } = intl;
     const i18n = 'global.ui.table';
-
     let columns = [];
     let editLink = '';
     switch (code) {
@@ -171,6 +184,27 @@ class Subpanel extends Component {
         editLink = `${objectType}/${objectId}/tasks`;
       case TaskHistory:
         columns = [
+          {
+            key: 'related_to',
+            title: formatMessage({ id: `${i18n}.relatedTo` }),
+            render: (text, record) => {
+              if (objectType !== record.taskable_type && record && record.relate_user) {
+                return (
+                  <Link
+                    className={`${getThemeByType(record.taskable_type)}-theme-text`}
+                    to={`/${objectType}/${objectId}/${record.taskable_type}/${record.relate_user.id}`}
+                  >
+                    {record.relate_user.name}
+                  </Link>
+                );
+              }
+              return (
+                <span className={`${getThemeByType(record.taskable_type)}-theme-text`}>
+                  {record && record.relate_user ? record.relate_user.name : ''}
+                </span>
+              );
+            },
+          },
           {
             dataIndex: 'subject',
             title: formatMessage({ id: `${i18n}.subject` }),
@@ -185,7 +219,16 @@ class Subpanel extends Component {
                   </Link>
                 );
               }
-              return text;
+              if (code === TaskOpen) {
+                return (
+                  <Link
+                    className={`${theme}-theme-text`}
+                    to={`/${editLink}/${record.id}`}
+                  >
+                    {text}
+                  </Link>
+                );
+              }
             },
           },
           {
@@ -284,7 +327,7 @@ class Subpanel extends Component {
       case Logs:
         columns = [
           {
-            dataIndex: 'updated_at',
+            dataIndex: 'created_at',
             title: formatMessage({ id: `${i18n}.date` }),
             render: text => toTimezone(text, true),
           },
@@ -298,11 +341,59 @@ class Subpanel extends Component {
           },
         ];
         break;
+      case Invoice:
+        editLink = `${objectType}/${objectId}/invoice`;
+        columns = [
+          {
+            dataIndex: 'invoice_no',
+            title: formatMessage({ id: `${i18n}.invoiceNo` }),
+          },
+          {
+            key: 'related_to',
+            title: formatMessage({ id: `${i18n}.relatedTo` }),
+            render: (text, record) => {
+              if (objectType !== record.invoice_able_type && record && record.invoice_able) {
+                return (
+                  <Link
+                    className={`${getThemeByType(record.invoice_able_type)}-theme-text`}
+                    to={`/${objectType}/${objectId}/${record.invoice_able_type}/${record.invoice_able_id}`}
+                  >
+                    {record.invoice_able.name}
+                  </Link>
+                );
+              }
+              return (
+                <span className={`${getThemeByType(record.invoice_able_type)}-theme-text`}>
+                  {record && record.invoice_able ? record.invoice_able.name : ''}
+                </span>
+              );
+            },
+          },
+          {
+            dataIndex: 'status',
+            title: formatMessage({ id: `${i18n}.status` }),
+          },
+          {
+            dataIndex: 'due_date',
+            title: formatMessage({ id: `${i18n}.dueOn` }),
+            render: text => toTimezone(text, false),
+          },
+          {
+            dataIndex: 'last_modified_by_user',
+            title: formatMessage({ id: `${i18n}.modifiedBy` }),
+          },
+          {
+            dataIndex: 'updated_at',
+            title: formatMessage({ id: `${i18n}.lastModifiedAt` }),
+            render: text => toTimezone(text, false),
+          },
+        ];
+        break;
       default:
         console.log('The module is not found.');
     }
     // TODO: need to add checking about permissions of edit and delete to decide whether shows 'Action' column
-    if (code === TaskOpen || code === Opportunities) {
+    if (code === TaskOpen || code === Opportunities || code === Invoice) {
       columns.unshift({
         key: 'actions',
         className: cx('firstCol'),
@@ -334,7 +425,7 @@ class Subpanel extends Component {
           return (
             <Fragment>
               <Link target="_blank" to={record.url}>
-                <Icon style={{fontWeight: 400 }} className="cursor-pointer" size="small" type="eye" />
+                <Icon style={{ fontWeight: 400 }} className="cursor-pointer" size="small" type="eye" />
               </Link>
               <Link to={`/${editLink}/${id}`}>
                 <Icon className="cursor-pointer ml-sm" size="small" type="edit" />
@@ -402,6 +493,8 @@ class Subpanel extends Component {
 }
 
 
+Subpanel.defaultProps = defaultProps;
+Subpanel.propTypes = propTypes;
 const mapStateToProps = ({ global, clientDetails }) => ({
   language: global.language,
   categories: global.settings.categories,
@@ -413,5 +506,7 @@ const mapDispatchToProps = {
   tryDeleteAttachment,
   tryDeleteTask,
   tryFetchModuleData,
+  tryDeleteInvoice,
+  setRouteInfo,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Subpanel));

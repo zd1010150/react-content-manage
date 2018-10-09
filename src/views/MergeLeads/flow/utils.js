@@ -3,20 +3,27 @@ import Enums from 'utils/EnumsManager';
 
 const { FieldTypes, MasterKey } = Enums;
 const { DateOnly, DateTime, Lookup } = FieldTypes;
-const toApi = (data, keys) => {
-  const dataCopy = _.cloneDeep(data);
+
+const replaceValueWithSource = (dataCopy, key, data) => {
+  // if the value of dataCopy is a object type, then it includes id and name. The first condition is to map the object type value.
+  if (data[key.key] !== undefined && _.isObject(data[key.key]) && data[key.key].id !== undefined && dataCopy[key.key] === data[key.key].id) {
+    return dataCopy[key.key] = data.id;
+  }
+  if (data[key.key] !== undefined && !_.isObject(data[key.key]) && dataCopy[key.key] === data[key.key]) {
+    return dataCopy[key.key] = data.id;
+  }
+  return dataCopy[key.key];
+};
+
+const toApi = (mergedData, keys, sourceData) => {
+  const dataCopy = _.cloneDeep(mergedData);
   // First, need to remove master record id, due to request format, see more on our POSTMAN doc
   delete dataCopy[MasterKey];
-  // Second, convert all data to utc format
   keys.forEach((key) => {
-    if (key.type === DateOnly || key.type === DateTime) {
-      if (dataCopy[key.key] !== undefined) {
-        const value = dataCopy[key.key];
-        dataCopy[key.key] = toUtc(value, key.type === DateTime);
-      }
-    }
+    sourceData.forEach((data) => {
+      replaceValueWithSource(dataCopy, key, data);
+    });
   });
-
   return dataCopy;
 };
 

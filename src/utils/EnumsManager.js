@@ -48,6 +48,7 @@ const BaseEnums = Object.freeze({
     EmailSent: 'EmailSent',
     Attachments: 'Attachments',
     Logs: 'Logs',
+    Invoice: 'Invoice',
   }),
 
   DateTimeSubTypes: Object.freeze({
@@ -90,6 +91,27 @@ const BaseEnums = Object.freeze({
     HasRelation: 'has_relation',
   }),
 
+  InvoiceItemsListColumns: Object.freeze({
+    Action: 'action',
+    Description: 'description',
+    Code: 'code',
+    Quantity: 'quantity',
+    UnitPrice: 'unitPrice',
+    Total: 'total',
+  }),
+
+  InvoiceSummaryColumns: Object.freeze({
+    SDescription: 'sDescription',
+    SAddition: 'sAddition',
+    STotal: 'sTotal',
+  }),
+
+  InvoiceSummaryRows: Object.freeze({
+    Subtotal: 'subtotal',
+    Tax: 'tax',
+    GrandTotal: 'grandTotal',
+  }),
+
 });
 
 const tableIntl = 'global.ui.table';
@@ -104,6 +126,7 @@ const EnumsManager = Object.freeze({
     Email: 'crmEmails',
     Timezone: 'crmTimezone',
     LanguaegOfApp: 'crmAppLanguage',
+    crmViewId: 'crmViewId',
   }),
 
   PhantomId: '0000-0000',
@@ -164,6 +187,7 @@ const EnumsManager = Object.freeze({
     OBJECTSHARE: 'OBJECTSHARE',
     OBJECTDETAILS: 'OBJECTDETAILS',
     CONVERSION: 'CONVERSION',
+    INVOICE: 'INVOICE',
     CRITERIA: 'CRITERIA',
   }),
 
@@ -221,6 +245,7 @@ const EnumsManager = Object.freeze({
       EmailSent: 'EmailSent',
       Attachments: 'Attachments',
       Logs: 'Logs',
+      Invoice: 'Invoice',
     },
     [BaseEnums.ObjectTypes.Accounts]: {
       Opportunities: 'Opportunities',
@@ -229,6 +254,7 @@ const EnumsManager = Object.freeze({
       EmailSent: 'EmailSent',
       Attachments: 'Attachments',
       Logs: 'Logs',
+      Invoice: 'Invoice',
     },
     [BaseEnums.ObjectTypes.Opportunities]: {
       TaskOpen: 'TaskOpen',
@@ -236,6 +262,7 @@ const EnumsManager = Object.freeze({
       EmailSent: 'EmailSent',
       Attachments: 'Attachments',
       Logs: 'Logs',
+      Invoice: 'Invoice',
     },
   },
 
@@ -374,6 +401,37 @@ const EnumsManager = Object.freeze({
         titleId: `${tableIntl}.action`,
       },
     ],
+    [BaseEnums.DetailModules.Invoice]: [
+      {
+        dataIndex: 'action',
+        titleId: `${tableIntl}.action`,
+      },
+      {
+        dataIndex: 'invoice_no',
+        titleId: `${tableIntl}.invoiceNo`,
+      },
+      {
+        dataIndex: 'related_to',
+        titleId: `${tableIntl}.relatedTo`,
+      },
+      {
+        dataIndex: 'status',
+        titleId: `${tableIntl}.status`,
+      },
+
+      {
+        dataIndex: 'due_date',
+        titleId: `${tableIntl}.dueOn`,
+      },
+      {
+        dataIndex: 'last_modified_by_user',
+        titleId: `${tableIntl}.modifiedBy`,
+      },
+      {
+        dataIndex: 'last_modified_at',
+        titleId: `${tableIntl}.lastModifiedAt`,
+      },
+    ],
   },
 
   MaxDisplayResults: 20,
@@ -400,6 +458,8 @@ const EnumsManager = Object.freeze({
     DefaultDateFormat: 'DD-MM-YYYY',
     DefaultTimeFormat: 'DD-MM-YYYY HH:mm:ss',
     // Used sydney timezone as default for display
+    UTCTimezone: 'UTC',
+    DefaultTimezone: 'Australia/Sydney',
     DefaultOffset: '+1100',
     DateFormatKey: 'dateFormat',
     TimeFormatKey: 'timeFormat',
@@ -425,6 +485,24 @@ const EnumsManager = Object.freeze({
   EditViewType: Object.freeze({
     ReadOnly: 'readOnly',
     Required: 'required',
+  }),
+
+  FileExtensions: Object.freeze({
+    Images: '.jpg, .png, .gif, .jpeg',
+    Pdf: '.pdf',
+  }),
+
+  InvoicePage: Object.freeze({
+    ItemsList: Object.freeze({
+      Columns: BaseEnums.InvoiceItemsListColumns,
+      ColumnsInArray: Object.freeze(_.values(BaseEnums.InvoiceItemsListColumns)),
+    }),
+    Summary: Object.freeze({
+      Columns: BaseEnums.InvoiceSummaryColumns,
+      ColumnsInArray: Object.freeze(_.values(BaseEnums.InvoiceSummaryColumns)),
+      Rows: BaseEnums.InvoiceSummaryRows,
+      RowsInArray: Object.freeze(_.values(BaseEnums.InvoiceSummaryRows)),
+    }),
   }),
 
 });

@@ -10,6 +10,7 @@ const {
   EmailSent,
   Attachments,
   Logs,
+  Invoice,
 } = DetailModules;
 
 const concatParams = (params) => {
@@ -42,6 +43,9 @@ const getModuleFetchUrl = (code, objectType, objectId, params) => {
       break;
     case Logs:
       url = `crm_logs/object/${objectType}/${objectId}/index`;
+      break;
+    case Invoice:
+      url = `invoice/for-object/${objectType}/${objectId}`;
       break;
     default:
       console.log(' No such module.');
@@ -81,6 +85,14 @@ export const tryDeleteTask = (code, taskId, objectType, objectId) => dispatch =>
 //
 export const tryDeleteAttachment = (code, fileId, objectType, objectId) => dispatch =>
   httpDelete(`/admin/files/${fileId}`, {}, dispatch).then((data) => {
+    if (data && data.deleted) {
+      // TODO: replace per_page with actual params
+      dispatch(tryFetchModuleData(code, objectType, objectId, { page: 1, per_page: 10 }));
+    }
+  });
+
+export const tryDeleteInvoice = (code, invoiceId, objectType, objectId) => dispatch =>
+  httpDelete(`/admin/invoice/${invoiceId}`, {}, dispatch).then((data) => {
     if (data && data.deleted) {
       // TODO: replace per_page with actual params
       dispatch(tryFetchModuleData(code, objectType, objectId, { page: 1, per_page: 10 }));

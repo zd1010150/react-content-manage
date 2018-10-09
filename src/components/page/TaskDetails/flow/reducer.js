@@ -1,10 +1,22 @@
 import { toTimezone } from 'utils/dateTimeUtils';
-import { ADD_NEW_SUBJECT, REMOVE_MY_SUBJECT, RESET_TASK, SET_TASK_ASSIGNEE, SET_TASK_ASSIGNEES, SET_TASK_FIELD, SET_TASK_FIELDS, SET_TASK_RECENT_ASSIGNEES, SET_TASK_SUBJECTS, SET_TASK_SUCCESS } from './actionTypes';
+import Enums from 'utils/EnumsManager';
+import { formatRelatedTos } from './utils';
+import { ADD_NEW_SUBJECT, REMOVE_MY_SUBJECT, RESET_TASK, SET_TASK_ASSIGNEE, SET_TASK_ASSIGNEES, SET_TASK_FIELD, SET_TASK_FIELDS, SET_TASK_RECENT_ASSIGNEES, SET_TASK_SUBJECTS, SET_TASK_SUCCESS, SET_ROUTE_INFO, SET_RELATED_TOS, SET_RELATED_TO } from './actionTypes';
+
+const {
+  Leads,
+  Accounts,
+  Opportunities,
+} = Enums.ObjectTypes;
 
 const initialState = {
+  relatedLeads: [],
+  relatedAccounts: [],
+  relatedOpportunities: [],
   globalSubjects: [],
   mySubjects: [],
   assignees: [],
+  relatedTo: '',
   assigneeId: '',
   comments: '',
   dueTime: null,
@@ -14,7 +26,9 @@ const initialState = {
   // default status is 'Not Started'
   statusCode: 0,
   subject: '',
-  synced: false,
+  synced: '',
+  routeInfo: '',
+  resetTask: false,
 };
 
 const mapResponseToStore = ({
@@ -60,16 +74,16 @@ const taskDetails = (state = initialState, action) => {
       const { newSubject } = action.payload;
       return {
         ...state,
-        mySubjects: [ ...state.mySubjects, newSubject ],
+        mySubjects: [...state.mySubjects, newSubject],
       };
 
-    
+
     case REMOVE_MY_SUBJECT:
       const { mySubjectId } = action.payload;
       return {
         ...state,
         mySubjects: state.mySubjects.filter(subject => subject.id !== mySubjectId),
-      }
+      };
 
     case SET_TASK_ASSIGNEE:
       const { assigneeId } = action.payload;
@@ -119,11 +133,18 @@ const taskDetails = (state = initialState, action) => {
 
 
     case SET_TASK_SUCCESS:
+      const { synced } = action.payload;
       return {
         ...state,
-        synced: true,
+        synced,
       };
 
+    case SET_ROUTE_INFO:
+      const { info } = action.payload;
+      return {
+        ...state,
+        routeInfo: info,
+      };
 
     case RESET_TASK:
       return {
@@ -131,6 +152,25 @@ const taskDetails = (state = initialState, action) => {
         globalSubjects: state.globalSubjects,
         mySubjects: state.mySubjects,
         assignees: state.assignees,
+        recentAssignees: state.recentAssignees,
+        relatedLeads: state.relatedLeads,
+        relatedAccounts: state.relatedAccounts,
+        relatedOpportunities: state.relatedOpportunities,
+        relatedTo: state.relatedTo,
+      };
+
+    case SET_RELATED_TOS:
+      return {
+        ...state,
+        relatedLeads: formatRelatedTos(action.payload.data, Leads),
+        relatedAccounts: formatRelatedTos(action.payload.data, Accounts),
+        relatedOpportunities: formatRelatedTos(action.payload.data, Opportunities),
+      };
+
+    case SET_RELATED_TO:
+      return {
+        ...state,
+        relatedTo: action.payload.id,
       };
 
 

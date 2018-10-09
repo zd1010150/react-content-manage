@@ -35,6 +35,19 @@ class field extends React.Component {
     isShowActions: false,
   }
   componentDidMount() {
+    const {
+      id,
+      pageRequired,
+      pageReadonly,
+      setEditField,
+    } = this.props;
+
+    let fieldShowValue = [];
+    if (pageReadonly || pageRequired) {
+      fieldShowValue = pageReadonly ? [ReadOnly] : [Required];
+    }
+    setEditField({ showValue: { [`${id}`]: fieldShowValue } });
+
     this.props.connectDragPreview(getEmptyImage(), {
       captureDraggingState: true,
     });
@@ -69,9 +82,9 @@ class field extends React.Component {
       } = this.props;
       const requiredDisable = isSystem || isLayoutRequired;
       const readOnlyDisable = isSystem || isLayoutRequired;
-      let optionShowValue = [];
+      let fieldShowValue = [];
       if (pageReadonly || pageRequired) {
-        optionShowValue = pageReadonly ? [ReadOnly] : [Required];
+        fieldShowValue = pageReadonly ? [ReadOnly] : [Required];
       }
       setEditField({
         isShow: true,
@@ -80,7 +93,7 @@ class field extends React.Component {
         sectionCode,
         requiredDisable,
         readOnlyDisable,
-        showValue: optionShowValue,
+        showValue: { [`${id}`]: fieldShowValue },
       });
     }
     render() {

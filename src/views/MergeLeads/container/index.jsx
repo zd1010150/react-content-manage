@@ -25,10 +25,10 @@ class MergeLeads extends Component {
 
   componentDidUpdate() {
     // Modify the history here to avoid warning about render method
-    const { mergeSuccess, history } = this.props;
-    if (mergeSuccess) {
+    const { mergeSuccess, history, newMergedId } = this.props;
+    if (newMergedId && mergeSuccess) {
       // TODO: need to decide which page to return to, because the original ids may not be find, and new id may not be accessible
-      return history.push('/leads');
+      return history.push(`/leads/${newMergedId}`);
     }
   }
 
@@ -60,6 +60,7 @@ const mapStateToProps = ({ global, mergence, duplicates }) => ({
   selectedLeadIds: duplicates.selectedRowKeys,
   data: mergence.data,
   mergeSuccess: mergence.mergeSuccess,
+  newMergedId: mergence.newMergedId,
 });
 const mapDispatchToProps = {
   resetState,
