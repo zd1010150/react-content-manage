@@ -8,7 +8,8 @@ import Enums from 'utils/EnumsManager';
 import { getStore, setStore } from 'utils/localStorage';
 import { DEFAULT_DATE_SETTING } from 'config/app.config';
 import { LOGIN_SUCCESS } from 'views/LoginForm/flow/actionTypes';
-import { SET_ACCOUNTINFO,
+import {
+  SET_ACCOUNTINFO,
   SET_GLOBAL_SETTING,
   SET_LOGO,
   SET_PAGETITLE,
@@ -198,7 +199,7 @@ const getTimeZone = (state, globalSetting, loginUser) => {
     ...state,
     ...newDateFormat,
     ...newOffset,
-    code: time_zone.id || DefaultTimezone,
+    code: time_zone && time_zone.id || DefaultTimezone,
   }));
   return newState;
 };
